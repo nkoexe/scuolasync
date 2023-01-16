@@ -1,0 +1,1 @@
+del obj, obj.elimina() e obj.cancella() sono la stessa cosa

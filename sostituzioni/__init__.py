@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+"""
+Sistema per la gestione di sostituzioni, notizie ed eventi scolastici dell'istituto "Gandhi" di Merano.
+"""
+
 __author__ = "Niccolò Ragazzi, Chiara Gandolfi"
 __copyright__ = "Copyright 2023, ..."
 __credits__ = ["Niccolò Ragazzi", "Chiara Gandolfi"]
