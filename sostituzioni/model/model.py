@@ -5,13 +5,13 @@ descr
 """
 
 from typing import List
-from datetime import _Time as Time, _Date as Date, _Datetime # ??????
+from datetime import _Time as Time, _Date as Date, datetime
 
 
 class Aula:
     def __init__(self, numero: str, piano: int):
         self._numero = numero
-        self._piano = piano
+        self._piano  = piano
 
 
 class Classe:
@@ -36,30 +36,67 @@ class OraPredefinita:
 
 
 class Sostituzione:
-    def __init__(self, id: int, aula: Aula, classe: Classe, docente: Docente | None = None, data: Date | None = None, oraInizio: Time | None = None, oraFine: Time | None = None, oraPredefinita: OraPredefinita | None = None, note: str | None = None, pubblicato: bool = False, cancellato: bool = False):
+    def __init__(
+        self,
+        id: int,
+        aula: Aula,
+        classe: Classe,
+        docente: Docente | None = None,
+        data: Date | None = None,
+        oraInizio: Time | None = None,
+        oraFine: Time | None = None,
+        oraPredefinita: OraPredefinita | None = None,
+        note: str | None = None,
+        pubblicato: bool = False,
+        cancellato: bool = False,
+    ):
         self._cancellato = False
 
 
 class Evento:
-    def __init__(self, id: int, testo: str | None = None, dataOraInizio: Date, urgente: bool = False):
+    def __init__(
+        self,
+        id: int,
+        testo: str,
+        data_ora_inizio: datetime | None = None,
+        data_ora_fine: datetime | None = None,
+        urgente: bool = False,
+    ):
+        self._id, self._testo, self._data_ora_inizio, self._data_ora_fine, urgente = (
+            id,
+            testo,
+            data_ora_inizio,
+            data_ora_fine,
+            urgente,
+        )
         self._cancellato = False
 
 
 class Notizia:
-    def __init__(self, ):
+    def __init__(
+        self,
+        id: int,
+        testo: str,
+        data_ora_inizio: datetime | None = None,
+        data_ora_fine: datetime | None = None,
+    ):
+        self._id = id
+        self._testo = testo
+        self._data_ora_inizio = (data_ora_inizio,)
+        self._data_ora_fine = data_ora_fine
         self._cancellato = False
 
 
 class Visualizzazione:
-    def __init__(self, ):
+    def __init__(self,):
         pass
 
 
 class VisualizzazioneOnline:
-    def __init__(self, ):
+    def __init__(self,):
         pass
 
 
 class VisualizzazioneFisica:
-    def __init__(self, ):
+    def __init__(self,):
         pass
