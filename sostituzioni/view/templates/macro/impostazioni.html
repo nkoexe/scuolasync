@@ -1,0 +1,13 @@
+{% macro textfield(title, descr, value) %}
+<li>
+  <h4>{{title}}</h4>
+  <p>{{descr}}</p>
+  <input type="text" value="{{value}}" />
+</li>
+{% endmacro %} {% macro checkbox(title, descr, checked) %}
+<li>
+  <h4>{{title}}</h4>
+  <p>{{descr}}</p>
+  <input type="checkbox" {% if checked %}checked{% endif %} />
+</li>
+{% endmacro %}

@@ -26,9 +26,10 @@ class ElementoDatabase:
 class ElementoConStorico:
     def __init__(self):
         self._cancellato = False
-        self.elimina = self.cancella = self.__del__
 
-    def __del__(self):
+        self.elimina = self.cancella = self.__del__
+        
+    def __del__(self, mantieni_in_storico: bool = True):
         self._cancellato = True
 
     @property
@@ -41,15 +42,15 @@ class ElementoConStorico:
 
 class Aula(ElementoDatabase, ElementoConStorico):
     @beartype
-    def __init__(self, numero: str, piano: int):
+    def __init__(self, numero: str, piano: str):
         ElementoDatabase.__init__(self)
         ElementoConStorico.__init__(self)
 
-        self._numero = numero
-        self._piano = piano
+        self.numero = numero
+        self.piano = piano
 
     @beartype
-    def modifica(self, numero: str | None = None, piano: int | None = None):
+    def modifica(self, numero: str | None = None, piano: str | None = None):
         if not any((numero, piano)):
             logging.debug('Nessun parametro passato ad aula.modifica, ')
             return
@@ -75,7 +76,7 @@ class Aula(ElementoDatabase, ElementoConStorico):
 
     @beartype
     @piano.setter
-    def piano(self, new):
+    def piano(self, new: str):
         self._piano = new
 
 
@@ -85,8 +86,8 @@ class Classe(ElementoDatabase, ElementoConStorico):
         ElementoDatabase.__init__(self)
         ElementoConStorico.__init__(self)
 
-        self._nome = nome
-        self._aule_ospitanti = aule_ospitanti
+        self.nome = nome
+        self.aule_ospitanti = aule_ospitanti
 
     @property
     def nome(self):
@@ -113,8 +114,8 @@ class Docente(ElementoDatabase, ElementoConStorico):
         ElementoDatabase.__init__(self)
         ElementoConStorico.__init__(self)
 
-        self._nome = nome
-        self._cognome = cognome
+        self.nome = nome
+        self.cognome = cognome
 
     @property
     def nome(self):
@@ -140,9 +141,9 @@ class OraPredefinita(ElementoDatabase):
     def __init__(self, numero: int, ora_inizio: time, ora_fine: time):
         ElementoDatabase.__init__(self)
 
-        self._numero = numero
-        self._ora_inizio = ora_inizio
-        self._ora_fine = ora_fine
+        self.numero = numero
+        self.ora_inizio = ora_inizio
+        self.ora_fine = ora_fine
 
     @property
     def ora_inizio(self):
@@ -182,16 +183,15 @@ class Sostituzione(ElementoDatabase, ElementoConStorico):
         ElementoConStorico.__init__(self)
 
         self._id = id
-        self._aula = aula
-        self._classe = classe
-        self._docente = docente
-        self._data = data
-        self._ora_inizio = ora_inizio
-        self._ora_fine = ora_fine
-        self._ora_predefinita = ora_predefinita
-        self._note = note
-        self._pubblicato = pubblicato
-        self._cancellato = False
+        self.aula = aula
+        self.classe = classe
+        self.docente = docente
+        self.data = data
+        self.ora_inizio = ora_inizio
+        self.ora_fine = ora_fine
+        self.ora_predefinita = ora_predefinita
+        self.note = note
+        self.pubblicato = pubblicato
 
 
 class Evento(ElementoDatabase, ElementoConStorico):
@@ -208,10 +208,10 @@ class Evento(ElementoDatabase, ElementoConStorico):
         ElementoConStorico.__init__(self)
 
         self._id = id
-        self._testo = testo
-        self._data_ora_inizio = data_ora_inizio
-        self._data_ora_fine = data_ora_fine
-        self._urgente = urgente
+        self.testo = testo
+        self.data_ora_inizio = data_ora_inizio
+        self.data_ora_fine = data_ora_fine
+        self.urgente = urgente
 
 
 class Notizia(ElementoDatabase, ElementoConStorico):
@@ -227,10 +227,9 @@ class Notizia(ElementoDatabase, ElementoConStorico):
         ElementoConStorico.__init__(self)
 
         self._id = id
-        self._testo = testo
-        self._data_ora_inizio = (data_ora_inizio,)
-        self._data_ora_fine = data_ora_fine
-        self._cancellato = False
+        self.testo = testo
+        self.data_ora_inizio = (data_ora_inizio,)
+        self.data_ora_fine = data_ora_fine
 
 
 class Visualizzazione(ElementoDatabase):
@@ -251,7 +250,10 @@ class VisualizzazioneFisica(Visualizzazione):
         ElementoDatabase.__init__(self)
 
 
-s1 = Sostituzione(1, Aula('1', 1), Classe('1', []), data=date(2022, 2, 2))
-n1 = Notizia(1, 'ciao', datetime(2022, 2, 2, 16, 10), datetime(2022, 2, 2, 17, 10))
+a1 = Aula('R2', '2')
+c1 = Classe('6 LC', [])
+d1 = Docente('Chiara', 'Gnadolfi')
 
-print(s1.cancellato)
+s1 = Sostituzione(1, a1, c1, data=date(2022, 2, 2))
+n1 = Notizia(1, '1dsadsadsadsadsaddnsajuidbiasb dasbid bsyiaby dihs ahi dis iod bhab hd sah dbhsabdb hsabdhas', datetime(2022, 2, 2, 16, 10), datetime(2022, 2, 2, 17, 10))
+

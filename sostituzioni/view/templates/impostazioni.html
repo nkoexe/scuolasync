@@ -1,0 +1,17 @@
+{% from "macro/impostazioni.html" import textfield, checkbox with context %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Impostazioni</title>
+  </head>
+  <body>
+    <h1>Impostazioni</h1>
+    <button onclick="location.href=`{{ url_for('online.index') }}`">Indietro</button>
+    <ul>
+      {{ textfield('ciao', 'prova provolona', 'test') }} {{ textfield('ciao 2', 'prova provolona ona ona', 'test2') }} {{ textfield('ciao 3!', 'prova
+      provolona', 'testone') }} {{ checkbox('heyoo', 'provetta', False) }}
+    </ul>
+  </body>
+</html>
