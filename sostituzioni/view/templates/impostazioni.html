@@ -9,9 +9,25 @@
   <body>
     <h1>Impostazioni</h1>
     <button onclick="location.href=`{{ url_for('online.index') }}`">Indietro</button>
+    <br>
+    {% for sezione in impostazioni %}
+    <a href="#{{sezione.id}}"><button>{{sezione.titolo}}</button></a>
+    {% endfor %}
     <ul>
-      {{ textfield('ciao', 'prova provolona', 'test') }} {{ textfield('ciao 2', 'prova provolona ona ona', 'test2') }} {{ textfield('ciao 3!', 'prova
-      provolona', 'testone') }} {{ checkbox('heyoo', 'provetta', False) }}
+      {% for sezione in impostazioni %}
+        <h3 id="{{sezione.id}}">{{sezione.titolo}}</h3>
+        {% for opzione in sezione.opzioni %}
+          {% if opzione.tipo == 'testo' %}
+          {{ textfield(opzione.titolo, opzione.descrizione, opzione.valore) }}
+          {% elif opzione.tipo == 'bool' %}
+          {{ checkbox(opzione.titolo, opzione.descrizione, opzione.valore) }}
+          {% elif opzione.tipo == 'lista' %}
+          {% for campo in opzione.valori %}
+            {{ textfield(campo.titolo, campo.descrizione, campo.valore) }}
+          {% endfor %}
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
     </ul>
   </body>
 </html>

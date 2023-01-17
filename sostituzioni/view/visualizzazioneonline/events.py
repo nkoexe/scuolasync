@@ -1,8 +1,9 @@
+import logging
+
 from flask import session
 from flask_socketio import emit
-from .. import socketio
 
-import logging
+from sostituzioni.view import socketio
 
 
 @socketio.on('evento')

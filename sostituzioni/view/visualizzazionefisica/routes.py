@@ -1,5 +1,5 @@
 from flask import render_template
-from . import fisica
+from sostituzioni.view.visualizzazionefisica import fisica
 
 
 @fisica.route('/fisica')

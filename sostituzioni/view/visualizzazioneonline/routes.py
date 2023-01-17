@@ -1,5 +1,6 @@
 from flask import render_template
-from . import online
+
+from sostituzioni.view.visualizzazioneonline import online
 
 
 @online.route('/')

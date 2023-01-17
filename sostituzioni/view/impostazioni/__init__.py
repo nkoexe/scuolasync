@@ -2,4 +2,4 @@ from flask import Blueprint
 
 impostazioni = Blueprint('impostazioni', __name__)
 
-from . import routes, events
+from sostituzioni.view.impostazioni import routes, events

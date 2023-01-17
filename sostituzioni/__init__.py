@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """
 Sistema per la gestione di sostituzioni, notizie ed eventi scolastici dell'istituto "Gandhi" di Merano.
 """

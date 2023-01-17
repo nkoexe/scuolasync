@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, request
-from . import login
+from sostituzioni.view.login import login
 
 import logging
 

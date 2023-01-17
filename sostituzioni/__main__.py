@@ -6,10 +6,11 @@ descr
 
 import logging
 
-from view import create_app, socketio
-
-
 logging.basicConfig(level=logging.DEBUG)
+
+from sostituzioni.view import create_app, socketio
+# from sostituzioni.control.configurazione import configurazione
+
 
 app = create_app()
 
