@@ -4,10 +4,6 @@
 descr
 """
 
-import logging
-
-logging.basicConfig(level=logging.DEBUG)
-
 from sostituzioni.view import main
 
 

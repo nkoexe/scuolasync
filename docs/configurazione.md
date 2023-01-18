@@ -36,7 +36,7 @@ La singola opzione può avere diversi tipi di campi, tutti con questa struttura 
 
 ### Lista di tutti i campi previsti
 
-I campi possibili sono: text, num, unitnum, bool, select, color.
+I campi possibili sono: text, num, unitnum, bool, color, select.
 
 Ogni campo è identificato dal suo attributo "type", che può solo avere uno dei sopracitati nominativi.
 
@@ -70,7 +70,7 @@ Ogni campo è identificato dal suo attributo "type", che può solo avere uno dei
     "interval": [0, 100], // Impostare [null, null] per non imporre limiti
     "default": 45,
     "value": 57,
-    "units": ["px", "pt", "em"]
+    "units": ["px", "pt", "em"],
     "defaultunit": "pt",
     "unit": "px",
   }
@@ -86,6 +86,16 @@ Ogni campo è identificato dal suo attributo "type", che può solo avere uno dei
   }
 ```
 
+- Color
+
+```jsonc
+  "config": {
+    "type": "color",
+    "default": "#000000",
+    "value": "#ffffff"
+  }
+```
+
 - Selezione dropdown
 
 ```jsonc
@@ -94,15 +104,5 @@ Ogni campo è identificato dal suo attributo "type", che può solo avere uno dei
     "choices": ["In Produzione", "In Manutenzione", "In Sviluppo"],
     "default": "In Produzione",
     "value": "In Manutenzione"
-  }
-```
-
-- Color
-
-```jsonc
-  "config": {
-    "type": "color",
-    "default": "#000000",
-    "value": "#ffffff"
   }
 ```

@@ -3,7 +3,6 @@
     "title": "Sistema",
     "descr": "",
     "options": {
-
       "sysstate": {
         "title": "Stato del sistema",
         "descr": "",
@@ -30,7 +29,6 @@
     "title": "Prestazioni di sistema",
     "descr": "",
     "options": {
-
       "hotreload": {
         "title": "Hot reload",
         "descr": "Applica immediatamente le impostazioni cambiate. Utile per vedere istantaneamente i cambiamenti di colori e font, ma sconsigliato in ogni altro caso.",
