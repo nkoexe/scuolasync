@@ -3,19 +3,21 @@ Gestione della configurazione del sistema tramite il file configurazione.ini
 """
 
 from pathlib import Path
+from json import load
 
 from beartype._decor.decormain import beartype
 from beartype.typing import List
 
 # un file singolo o file di configurazione per ogni categoria?
-CONFIG_FILE = Path(__file__).parent.parent / 'database' / ''
+CONFIG_FILE = Path(__file__).parent.parent / 'database' / 'configurazione.json'
 
 
 class Sezione:
     """
     Gruppo di opzioni.
     """
-    def __init__(self, titolo: str, descrizione: str | None = None, opzioni: List | None = None):
+    @beartype
+    def __init__(self, id: str, titolo: str, descrizione: str | None = None, opzioni: List = []):
         self.titolo = titolo
         self.id = titolo.replace(' ', '').lower()
         self.descrizione = descrizione
@@ -27,7 +29,7 @@ class Opzione:
     Singola opzione per la configurazione del sistema.
     """
     @beartype
-    def __init__(self, titolo: str | None = None, descrizione: str | None = None):
+    def __init__(self, id: str, titolo: str | None = None, descrizione: str | None = None):
         self.titolo = titolo
         self.descrizione = descrizione
         self.tipo = None
@@ -55,35 +57,21 @@ class Opzione:
 
 
 class Configurazione:
+    @beartype
     def __init__(self, file: Path = CONFIG_FILE):
-        #* Leggere da config file
+        with open(file) as configfile:
+            self.data = load(configfile)
+
+        self.configurazione = []
+
+        for sectionid, sectiondata in self.data.items():
+            sezione = Sezione(sectionid, sectiondata.get('title', sectiondata.get('descr')))
+
+            for optionid, optiondata in sectiondata.get('options').items():
+                opzione = Opzione(optionid, optiondata.get('title'), optiondata.get('descr'))
 
         # configurazione di test
-        self.configurazione = [
-            Sezione(
-                'Test sezione1',
-                opzioni=[
-                    Opzione('Testo', 'Esempio di campo di testo.').testo('testone'),
-                    Opzione('Prova 2', 'Esempio di campo di testo.').testo('testone due'),
-                    Opzione('Prova 3', 'Esempio di campo di testo.').testo('testone'),
-                    Opzione('Prova 4', 'Esempio di campo di testo.').testo('testone'),
-                    Opzione('Vero o falso??', 'Non so dimmi tu.').booleano(False),
-                    Opzione('Vero o falso??', 'Non so dimmi tu.').booleano(True)
-                ]
-            ),
-            Sezione(
-                'Note standard',
-                opzioni=[
-                    Opzione(
-                        'Note Standard',
-                        'Descrizione bla bla imposta le note standard di sistema.',
-                    ).lista(
-                        [Opzione().testo('Nota standard #1'),
-                         Opzione().testo('Nota standard #2')]
-                    )
-                ]
-            )
-        ]
 
 
-configurazione = Configurazione()
+if __name__ == '__main__':
+    c = Configurazione()

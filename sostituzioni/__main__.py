@@ -8,15 +8,7 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-from sostituzioni.view import create_app, socketio
-# from sostituzioni.control.configurazione import configurazione
-
-
-app = create_app()
-
-
-def main():
-    socketio.run(app, '0.0.0.0', debug=True)
+from sostituzioni.view import main
 
 
 if __name__ == '__main__':

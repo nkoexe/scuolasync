@@ -1,0 +1,44 @@
+{
+  "sistema": {
+    "title": "Sistema",
+    "descr": "",
+    "options": {
+
+      "sysstate": {
+        "title": "Stato del sistema",
+        "descr": "",
+        "config": {
+          "type": "select",
+          "choices": ["In Produzione", "In Manutenzione", "In Sviluppo"],
+          "value": "In Manutenzione"
+        }
+      },
+
+      "maintenancemsg": {
+        "title": "Messaggio di manutenzione",
+        "descr": "Testo che verrà mostrato agli utenti che cercano di accedere al sito quando esso è in modalità manutenzione.",
+        "config": {
+          "type": "text",
+          "max-lenght": null,
+          "value": "Sistema attualmente in manutenzione."
+        }
+      }
+    }
+  },
+
+  "prestazioni": {
+    "title": "Prestazioni di sistema",
+    "descr": "",
+    "options": {
+
+      "hotreload": {
+        "title": "Hot reload",
+        "descr": "Applica immediatamente le impostazioni cambiate. Utile per vedere istantaneamente i cambiamenti di colori e font, ma sconsigliato in ogni altro caso.",
+        "config": {
+          "type": "bool",
+          "value": false
+        }
+      }
+    }
+  }
+}
