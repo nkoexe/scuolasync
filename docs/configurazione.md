@@ -102,7 +102,7 @@ Ogni campo è identificato dal suo attributo "type", che può solo avere uno dei
   "config": {
     "type": "select",
     "choices": ["In Produzione", "In Manutenzione", "In Sviluppo"],
-    "default": "In Produzione",
-    "value": "In Manutenzione"
+    "default": 0,
+    "value": 2
   }
 ```

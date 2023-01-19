@@ -20,11 +20,11 @@ class Sezione:
     Gruppo di opzioni.
     """
     @beartype
-    def __init__(self, id: str, titolo: str, descrizione: str | None = None, opzioni: List = []):
+    def __init__(self, id: str, title: str, descr: str | None = None):
         self.id = id
-        self.titolo = titolo
-        self.descrizione = descrizione
-        self.opzioni = opzioni
+        self.title = title
+        self.descr = descr
+        self.options = []
 
 
 class Opzione:
@@ -40,10 +40,10 @@ class Opzione:
     SELEZIONE = 'select'
 
     @beartype
-    def __init__(self, id: str, titolo: str | None = None, descrizione: str | None = None):
+    def __init__(self, id: str, title: str | None = None, descr: str | None = None):
         self.id = id
-        self.titolo = titolo
-        self.descrizione = descrizione
+        self.title = title
+        self.descr = descr
 
     @beartype
     def testo(self, configurazione):
@@ -85,8 +85,8 @@ class Opzione:
     def selezione(self, configurazione):
         self.type = self.SELEZIONE
         self.choices: List[str] = configurazione.get('choices')
-        self.default: str = configurazione.get('default')
-        self.value: str = configurazione.get('value')
+        self.default: int = configurazione.get('default')
+        self.value: int = configurazione.get('value')
 
 
 class Configurazione:
@@ -104,19 +104,12 @@ class Configurazione:
         self.configurazione = []
 
         for sectionid, sectiondata in self.data.items():
-            sezione = Sezione(sectionid, sectiondata.get(
-                'title', sectiondata.get('descr')))
-
-            print(sezione.descrizione)
+            sezione = Sezione(sectionid, sectiondata.get('title'), sectiondata.get('descr'))
 
             for optionid, optiondata in sectiondata.get('options').items():
                 opzione = Opzione(optionid, optiondata.get('title'), optiondata.get('descr'))
 
-                print(opzione.descrizione)
-
                 config = optiondata.get('config')
-
-                print(config)
 
                 match config.get('type'):
 
@@ -125,11 +118,13 @@ class Configurazione:
 
                     case Opzione.NUMERO:
                         opzione.numero(config)
+                        print('NUMEROOOOOOO')
 
                     case Opzione.NUMERO_UNITA:
                         opzione.numero_unita(config)
 
                     case Opzione.BOOLEANO:
+                        print('BOOOOOOOOOOOOO')
                         opzione.booleano(config)
 
                     case Opzione.COLORE:
@@ -141,7 +136,7 @@ class Configurazione:
                     case _:
                         logging.warning(f'Nel caricamento della configurazione, opzione con id {optionid} non ha un tipo valido.')
 
-                sezione.opzioni.append(opzione)
+                sezione.options.append(opzione)
 
             self.configurazione.append(sezione)
 
@@ -149,4 +144,9 @@ class Configurazione:
 if __name__ == '__main__':  # * test
     logging.basicConfig(level=logging.DEBUG)
     c = Configurazione()
-    print(c.configurazione)
+
+    for s in c.configurazione:
+        print(s.title)
+
+        for o in s.options:
+            print('-', o.title)

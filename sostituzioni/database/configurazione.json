@@ -8,23 +8,27 @@
         "descr": "",
         "config": {
           "type": "select",
-          "choices": ["In Produzione", "In Manutenzione", "In Sviluppo"],
-          "value": "In Manutenzione"
+          "choices": [
+            "In Produzione",
+            "In Manutenzione",
+            "In Sviluppo"
+          ],
+          "default": 0,
+          "value": 2
         }
       },
-
       "maintenancemsg": {
         "title": "Messaggio di manutenzione",
         "descr": "Testo che verrà mostrato agli utenti che cercano di accedere al sito quando esso è in modalità manutenzione.",
         "config": {
           "type": "text",
           "max-lenght": null,
+          "default": "Sistema in manutenzione",
           "value": "Sistema attualmente in manutenzione."
         }
       }
     }
   },
-
   "prestazioni": {
     "title": "Prestazioni di sistema",
     "descr": "",
@@ -34,6 +38,7 @@
         "descr": "Applica immediatamente le impostazioni cambiate. Utile per vedere istantaneamente i cambiamenti di colori e font, ma sconsigliato in ogni altro caso.",
         "config": {
           "type": "bool",
+          "default": false,
           "value": false
         }
       }

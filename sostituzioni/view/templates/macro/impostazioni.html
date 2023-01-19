@@ -1,19 +1,20 @@
-{% macro textfield(title, descr, value) %}
-<li>
-  <h4>{{title}}</h4>
-  <p>{{descr}}</p>
-  <input type="text" value="{{value}}" />
-</li>
-{% endmacro %} {% macro section(title, descr) %}
-<li>
-  <h4>{{title}}</h4>
-  <p>{{descr}}</p>
-  <input type="text" value="{{value}}" />
-</li>
-{% endmacro %} {% macro checkbox(title, descr, checked) %}
-<li>
-  <h4>{{title}}</h4>
-  <p>{{descr}}</p>
-  <input type="checkbox" {% if checked %}checked{% endif %} />
-</li>
+{% macro textfield(opzione) %}
+  <input id="{{opzione.id}}" type="text" value="{{opzione.value}}" />
+{% endmacro %}
+{% macro numberfield(opzione) %}
+  <input id="{{opzione.id}}" type="number" value="{{opzione.value}}" {% if opzione.interval[0] %}min={{opzione.interval[0]}}{% endif %}{% if opzione.interval[1] %}max={{opzione.interval[1]}}{% endif %}/>
+{% endmacro %}
+{% macro unitnumberfield(opzione) %}
+{% endmacro %}
+{% macro checkbox(opzione) %}
+  <input id="{{opzione.id}}" type="checkbox" {% if opzione.value %}checked{% endif %} />
+{% endmacro %}
+{% macro colorpicker(opzione) %}
+{% endmacro %}
+{% macro dropdown(opzione) %}
+<select name="{{opzione.id}}" id="{{opzione.id}}">
+  {% for optionindex in len(opzione.choices) %}
+  <option value="{{optionindex}}" option.value==optionindex}}selected{{endif}}>{{opzione.choices[optionindex]}}</option>
+  {% endfor %}
+</select>
 {% endmacro %}
