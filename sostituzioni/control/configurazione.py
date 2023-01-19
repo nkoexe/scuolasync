@@ -46,21 +46,21 @@ class Opzione:
         self.descr = descr
 
     @beartype
-    def testo(self, configurazione):
+    def testo(self, configurazione: Dict):
         self.type = self.TESTO
         self.default = configurazione.get('default')
         self.max_lenght = configurazione.get('max_lenght')
         self.value = configurazione.get('value')
 
     @beartype
-    def numero(self, configurazione):
+    def numero(self, configurazione: Dict):
         self.type = self.NUMERO
         self.interval: List[int | None] = configurazione.get('interval')
         self.default: int = configurazione.get('default')
         self.value: int = configurazione.get('value')
 
     @beartype
-    def numero_unita(self, configurazione):
+    def numero_unita(self, configurazione: Dict):
         self.type = self.NUMERO_UNITA
         self.interval: List[int] = configurazione.get('interval')
         self.default: int = configurazione.get('default')
@@ -70,19 +70,19 @@ class Opzione:
         self.unit: str = configurazione.get('unit')
 
     @beartype
-    def booleano(self, configurazione):
+    def booleano(self, configurazione: Dict):
         self.type = self.BOOLEANO
         self.default: bool = configurazione.get('default')
         self.value: bool = configurazione.get('value')
 
     @beartype
-    def colore(self, configurazione):
+    def colore(self, configurazione: Dict):
         self.type = self.TESTO
         self.default: str = configurazione.get('default')
         self.value: str = configurazione.get('value')
 
     @beartype
-    def selezione(self, configurazione):
+    def selezione(self, configurazione: Dict):
         self.type = self.SELEZIONE
         self.choices: List[str] = configurazione.get('choices')
         self.default: int = configurazione.get('default')
@@ -118,13 +118,11 @@ class Configurazione:
 
                     case Opzione.NUMERO:
                         opzione.numero(config)
-                        print('NUMEROOOOOOO')
 
                     case Opzione.NUMERO_UNITA:
                         opzione.numero_unita(config)
 
                     case Opzione.BOOLEANO:
-                        print('BOOOOOOOOOOOOO')
                         opzione.booleano(config)
 
                     case Opzione.COLORE:

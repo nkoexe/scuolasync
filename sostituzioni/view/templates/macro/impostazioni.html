@@ -13,8 +13,8 @@
 {% endmacro %}
 {% macro dropdown(opzione) %}
 <select name="{{opzione.id}}" id="{{opzione.id}}">
-  {% for optionindex in len(opzione.choices) %}
-  <option value="{{optionindex}}" option.value==optionindex}}selected{{endif}}>{{opzione.choices[optionindex]}}</option>
+  {% for optionindex in range(opzione.choices|length) %}
+  <option value="{{optionindex}}" {% if opzione.value==optionindex %}selected{% endif %}>{{opzione.choices[optionindex]}}</option>
   {% endfor %}
 </select>
 {% endmacro %}

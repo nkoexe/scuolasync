@@ -2,26 +2,28 @@ import logging
 
 from flask import Flask
 from flask_socketio import SocketIO
+from flask_wtf.csrf import CSRFProtect
 
 from sostituzioni.control.configurazione import Configurazione
-
-
-logging.basicConfig(level=logging.DEBUG)
-logging.getLogger('geventwebsocket.handler').setLevel(logging.ERROR)
-logging.getLogger('werkzeug').setLevel(logging.ERROR)
 
 
 configurazione = Configurazione()
 
 app = Flask(__name__)
 app.debug = True
-app.config['SECRET_KEY'] = 'aaaaa'
+app.config.update(
+    SECRET_KEY='aaaaa',
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+)
 
+csrf = CSRFProtect(app)
 socketio = SocketIO(app)
 
 
 def main():
-    logging.debug(f'Importing blueprints..')
+    logging.debug('Importing blueprints..')
 
     from sostituzioni.view.impostazioni import impostazioni as impostazioni_blueprint
     from sostituzioni.view.login import login as login_blueprint

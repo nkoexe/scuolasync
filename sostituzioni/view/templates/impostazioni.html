@@ -22,23 +22,22 @@
               <h5>{{opzione.title}}</h5>
               <p>{{opzione.descr}}</p>
               {% if opzione.type == opzione.TESTO %}
-              {{ textfield(opzione) }}
+                {{ textfield(opzione) }}
               {% elif opzione.type == opzione.NUMERO %}
-              {{ numberfield(opzione) }}
+                {{ numberfield(opzione) }}
               {% elif opzione.type == opzione.NUMERO_UNITA %}
-              {{ unitnumberfield(opzione) }}
+                {{ unitnumberfield(opzione) }}
               {% elif opzione.type == opzione.BOOLEANO %}
-              {{ checkbox(opzione) }}
+                {{ checkbox(opzione) }}
               {% elif opzione.type == opzione.COLORE %}
-              {{ colorpicker(opzione) }}
+                {{ colorpicker(opzione) }}
               {% elif opzione.type == opzione.SELEZIONE %}
-              {{ dropdown(opzione) }}
+                {{ dropdown(opzione) }}
               {% endif %}
             </li>
           {% endfor %}
         </ul>
         {% endfor %}
-          
     </ul>
   </body>
 </html>
