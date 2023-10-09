@@ -1,20 +1,33 @@
-{% macro textfield(opzione) %}
-  <input id="{{opzione.id}}" type="text" value="{{opzione.value}}" />
+{% macro opzione_testo(opzione) %}
+<div id="{{opzione.id}}" class="opzione opzione_testo">
+  <input type="text" value="{{opzione.valore}}" onkeypress="mostra_pulsante_applica()">
+</div>
 {% endmacro %}
-{% macro numberfield(opzione) %}
-  <input id="{{opzione.id}}" type="number" value="{{opzione.value}}" {% if opzione.interval[0] %}min={{opzione.interval[0]}}{% endif %}{% if opzione.interval[1] %}max={{opzione.interval[1]}}{% endif %}/>
+
+{% macro opzione_numero(opzione) %}
+<div id="{{opzione.id}}"class="opzione opzione_numero">
+  <input type="number" value="{{opzione.valore}}" {% if opzione.intervallo %}min={{opzione.intervallo[0]}} max={{opzione.intervallo[1]}}{% endif %} onkeypress="mostra_pulsante_applica()"/>
+</div>
 {% endmacro %}
-{% macro unitnumberfield(opzione) %}
+
+{% macro opzione_numero_unita(opzione) %}
 {% endmacro %}
-{% macro checkbox(opzione) %}
-  <input id="{{opzione.id}}" type="checkbox" {% if opzione.value %}checked{% endif %} />
+
+{% macro opzione_checkbox(opzione) %}
+<div id="{{opzione.id}}" class="opzione opzione_booleano">
+  <input type="checkbox" {% if opzione.valore %}checked{% endif %} onclick="mostra_pulsante_applica()"/>
+</div>
 {% endmacro %}
-{% macro colorpicker(opzione) %}
+
+{% macro opzione_colorpicker(opzione) %}
 {% endmacro %}
-{% macro dropdown(opzione) %}
-<select name="{{opzione.id}}" id="{{opzione.id}}">
-  {% for optionindex in range(opzione.choices|length) %}
-  <option value="{{optionindex}}" {% if opzione.value==optionindex %}selected{% endif %}>{{opzione.choices[optionindex]}}</option>
-  {% endfor %}
-</select>
+
+{% macro opzione_selezione(opzione) %}
+<div id="{{opzione.id}}" class="opzione opzione_selezione">
+  <select onchange="mostra_pulsante_applica()">
+    {% for optionindex in range(opzione.scelte|length) %}
+      <option value="{{optionindex}}" {% if opzione.valore==optionindex %}selected{% endif %}>{{opzione.scelte[optionindex]}}</option>
+    {% endfor %}
+  </select>
+</div>
 {% endmacro %}

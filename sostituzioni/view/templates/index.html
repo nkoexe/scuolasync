@@ -3,17 +3,17 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-    <script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" async></script>
+    <script defer>
       var socket = io();
     </script>
-    <script src="{{ url_for('static', filename='scripts/logout.js') }}"></script>
+    <!-- <script src="{{ url_for('static', filename='scripts/logout.js') }}"></script> -->
   </head>
   <body>
     <h1>Sostituzioni</h1>
-    <button onclick="location.href=`{{ url_for('login.logout')}}`">Logout</button>
+    <button onclick="location.href=`{{ url_for('auth.logout')}}`">Logout</button>
     <button onclick="location.href=`{{ url_for('impostazioni.main')}}`">Impostazioni</button>
     <button onclick="socket.emit('evento', {ciao:'ok'})">Test socket</button>
     <ul>

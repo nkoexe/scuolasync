@@ -1,47 +1,65 @@
 {
-  "sistema": {
-    "title": "Sistema",
-    "descr": "",
-    "options": {
-      "sysstate": {
-        "title": "Stato del sistema",
-        "descr": "",
-        "config": {
-          "type": "select",
-          "choices": [
-            "In Produzione",
-            "In Manutenzione",
-            "In Sviluppo"
-          ],
-          "default": 0,
-          "value": 2
-        }
-      },
-      "maintenancemsg": {
-        "title": "Messaggio di manutenzione",
-        "descr": "Testo che verrà mostrato agli utenti che cercano di accedere al sito quando esso è in modalità manutenzione.",
-        "config": {
-          "type": "text",
-          "max-lenght": null,
-          "default": "Sistema in manutenzione",
-          "value": "Sistema attualmente in manutenzione."
-        }
-      }
+  "sezioni": {
+    "sistema": {
+      "titolo": "Sistema",
+      "descrizione": ""
+    },
+    "test": {
+      "titolo": "Test",
+      "descrizione": "boh opzioni di test per testare you know il sistema"
     }
   },
-  "prestazioni": {
-    "title": "Prestazioni di sistema",
-    "descr": "",
-    "options": {
-      "hotreload": {
-        "title": "Hot reload",
-        "descr": "Applica immediatamente le impostazioni cambiate. Utile per vedere istantaneamente i cambiamenti di colori e font, ma sconsigliato in ogni altro caso.",
-        "config": {
-          "type": "bool",
-          "default": false,
-          "value": false
-        }
-      }
+  "opzioni": {
+    "sysstate": {
+      "titolo": "Stato del sistema",
+      "descrizione": "",
+      "sezione": "sistema",
+      "tipo": "selezione",
+      "scelte": [
+        "In Produzione",
+        "In Manutenzione",
+        "In Sviluppo"
+      ],
+      "default": 0,
+      "valore": 2
+    },
+    "maintenancemsg": {
+      "titolo": "Messaggio di manutenzione",
+      "descrizione": "Testo che verr\u00e0 mostrato agli utenti che cercano di accedere al sito quando esso \u00e8 in modalit\u00e0 manutenzione.",
+      "sezione": "sistema",
+      "tipo": "testo",
+      "lunghezza_massima": null,
+      "default": "Sistema in manutenzione",
+      "valore": "Sistema attualmente in manutenzione."
+    },
+    "hotreload": {
+      "titolo": "Hot reload",
+      "descrizione": "Applica immediatamente le impostazioni cambiate. Utile per vedere istantaneamente i cambiamenti di colori e font, ma sconsigliato in ogni altro caso. (test checkbox, non implementare seriamente)",
+      "sezione": "test",
+      "tipo": "booleano",
+      "default": false,
+      "valore": true
+    },
+    "numeroebbasta": {
+      "titolo": "Numero",
+      "descrizione": "e basta",
+      "sezione": "test",
+      "tipo": "numero",
+      "intervallo": null,
+      "default": 2,
+      "valore": 4
+    },
+    "numero_intervallo": {
+      "titolo": "NNumero",
+      "descrizione": "Con intervallo tra -10 e 399",
+      "sezione": "test",
+      "tipo": "numero",
+      "intervallo": [
+        -10,
+        399
+      ],
+      "default": 7,
+      "valore": 345
     }
   }
 }

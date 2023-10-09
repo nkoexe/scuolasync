@@ -1,43 +1,60 @@
-{% from "macro/impostazioni.html" import textfield, numberfield, unitnumberfield, checkbox, colorpicker, dropdown with context %}
+{% from "macro/impostazioni.html" import opzione_testo, 
+                                         opzione_numero,
+                                         opzione_numero_unita,
+                                         opzione_checkbox,
+                                         opzione_colorpicker,
+                                         opzione_selezione with context %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="{{ url_for('static', filename='scripts/impostazioni.js') }}" defer></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script>
+      var socket = io();
+    </script>
     <title>Impostazioni</title>
   </head>
   <body>
     <h1>Impostazioni</h1>
     <button onclick="location.href=`{{ url_for('online.index') }}`">Indietro</button>
     <br>
-    {% for sezione in impostazioni %}
-    <a href="#{{sezione.id}}"><button>{{sezione.title}}</button></a>
+    {% for sezione in configurazione.sezioni %}
+      <a href="#{{sezione.id}}"><button>{{sezione.titolo}}</button></a>
     {% endfor %}
-    <ul>
-      {% for sezione in impostazioni %}
-        <h3 id="{{sezione.id}}">{{sezione.title}}</h3>
-        <ul>
-          {% for opzione in sezione.options %}
-            <li>
-              <h5>{{opzione.title}}</h5>
-              <p>{{opzione.descr}}</p>
-              {% if opzione.type == opzione.TESTO %}
-                {{ textfield(opzione) }}
-              {% elif opzione.type == opzione.NUMERO %}
-                {{ numberfield(opzione) }}
-              {% elif opzione.type == opzione.NUMERO_UNITA %}
-                {{ unitnumberfield(opzione) }}
-              {% elif opzione.type == opzione.BOOLEANO %}
-                {{ checkbox(opzione) }}
-              {% elif opzione.type == opzione.COLORE %}
-                {{ colorpicker(opzione) }}
-              {% elif opzione.type == opzione.SELEZIONE %}
-                {{ dropdown(opzione) }}
+      <ul>
+        {% for sezione in configurazione.sezioni %}
+          <li id="{{sezione.id}}">
+            <h3>{{sezione.titolo}}</h3>
+            <p>{{sezione.descrizione}}</p>
+            <ul>
+              {% for opzione in configurazione.opzioni %}
+              {% if opzione.sezione == sezione.id %}
+                <li>
+                  <h5>{{opzione.titolo}}</h5>
+                  <p>{{opzione.descrizione}}</p>
+                  {% if opzione.tipo == opzione.TESTO %}
+                    {{ opzione_testo(opzione) }}
+                  {% elif opzione.tipo == opzione.NUMERO %}
+                    {{ opzione_numero(opzione) }}
+                  {% elif opzione.tipo == opzione.NUMERO_UNITA %}
+                    {{ opzione_numero_unita(opzione) }}
+                  {% elif opzione.tipo == opzione.BOOLEANO %}
+                    {{ opzione_checkbox(opzione) }}
+                  {% elif opzione.tipo == opzione.COLORE %}
+                    {{ opzione_colorpicker(opzione) }}
+                  {% elif opzione.tipo == opzione.SELEZIONE %}
+                    {{ opzione_selezione(opzione) }}
+                  {% endif %}
+                </li>
               {% endif %}
-            </li>
-          {% endfor %}
-        </ul>
+              {% endfor %}
+            </ul>
+          </li>
         {% endfor %}
-    </ul>
+      </ul>
+      <button id="applica" onclick="applica()">Applica</button>
+    </form>
   </body>
 </html>

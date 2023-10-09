@@ -1,29 +1,29 @@
 from flask import render_template, redirect, url_for, request
-from sostituzioni.view.login import login
 
-import logging
+from sostituzioni.logger import logger
+from sostituzioni.view.auth import auth
 
 
-@login.route('/login', methods=['GET', 'POST'])
-def main():
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
     if request.method == 'GET':
         return render_template('login.html')
 
     usr = request.form['username']
     psw = request.form['password']
 
-    logging.debug(f'Tentativo di login dell\'utente {usr}')
+    logger.debug(f'Tentativo di login dell\'utente {usr}')
 
     if psw != 'ciao':
-        logging.debug(f'Login di {usr} fallito.')
+        logger.debug(f'Login di {usr} fallito.')
 
         return render_template('login.html')
 
-    logging.debug(f'Login di {usr} effettuato con successo.')
+    logger.debug(f'Login di {usr} effettuato con successo.')
 
     return redirect(url_for('online.index'))  # maybe distinguere qui un utente per la visualizzazione fisica?
 
 
-@login.route('/logout')
+@auth.route('/logout')
 def logout():
-    return redirect(url_for('login.main'))
+    return redirect(url_for('auth.login'))

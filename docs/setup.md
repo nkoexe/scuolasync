@@ -7,4 +7,5 @@
   - flask-socketio
   - flask-sqlalchemy
   - flask-wtf
+  - oauthlib
   - beartype

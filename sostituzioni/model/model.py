@@ -28,7 +28,7 @@ class ElementoConStorico:
         self._cancellato = False
 
         self.elimina = self.cancella = self.__del__
-        
+
     def __del__(self, mantieni_in_storico: bool = True):
         self._cancellato = True
 
@@ -256,4 +256,3 @@ d1 = Docente('Chiara', 'Gnadolfi')
 
 s1 = Sostituzione(1, a1, c1, data=date(2022, 2, 2))
 n1 = Notizia(1, '1dsadsadsadsadsaddnsajuidbiasb dasbid bsyiaby dihs ahi dis iod bhab hd sah dbhsabdb hsabdhas', datetime(2022, 2, 2, 16, 10), datetime(2022, 2, 2, 17, 10))
-

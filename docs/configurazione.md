@@ -1,5 +1,6 @@
 # File di configurazione del sistema
 
+! obsoleto, da rifare completamente
 File json per le impostazioni di configurazione.
 
 ## Struttura del file

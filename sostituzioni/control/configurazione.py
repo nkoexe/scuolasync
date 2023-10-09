@@ -3,15 +3,15 @@ Gestione della configurazione del sistema tramite il file configurazione.json
 """
 
 from pathlib import Path
-from json import load
+from json import load, dump
 
 from beartype._decor.decormain import beartype
-from beartype.typing import List, Dict
+from beartype.typing import List, Dict, Any
 
-import logging
+from sostituzioni.logger import logger
 
 
-# un file singolo o file di configurazione per ogni categoria?
+# todo mettere tutte le variabili di questo tipo in un file separato (databasepath, static ecccc)
 CONFIG_FILE = Path(__file__).parent.parent / 'database' / 'configurazione.json'
 
 
@@ -20,11 +20,11 @@ class Sezione:
     Gruppo di opzioni.
     """
     @beartype
-    def __init__(self, id: str, title: str, descr: str | None = None):
+    def __init__(self, id: str, dati: Dict):
         self.id = id
-        self.title = title
-        self.descr = descr
-        self.options = []
+        self.titolo = dati.get('titolo')
+        self.descrizione = dati.get('descrizione')
+        self.opzioni = []
 
 
 class Opzione:
@@ -32,119 +32,255 @@ class Opzione:
     Singola opzione per la configurazione del sistema.
     """
 
-    TESTO = 'text'
-    NUMERO = 'num'
-    NUMERO_UNITA = 'unitnum'
-    BOOLEANO = 'bool'
-    COLORE = 'color'
-    SELEZIONE = 'select'
+    TESTO = 'testo'
+    NUMERO = 'numero'
+    NUMERO_UNITA = 'numero_unita'
+    BOOLEANO = 'booleano'
+    COLORE = 'colore'
+    SELEZIONE = 'selezione'
 
     @beartype
-    def __init__(self, id: str, title: str | None = None, descr: str | None = None):
+    def __init__(self, id: str, dati: Dict):
         self.id = id
-        self.title = title
-        self.descr = descr
+
+        self.titolo = dati.get('titolo')
+        self.descrizione = dati.get('descrizione')
+        self.sezione = dati.get('sezione')
+
+        self.tipo = dati.get('tipo')
+
+        match self.tipo:
+
+            case self.TESTO:
+                self.lunghezza_massima = dati.get('lunghezza_massima')
+                self.default = dati.get('default')
+                self.valore = dati.get('valore')
+
+            case self.NUMERO:
+                self.intervallo: List[int | None] = dati.get('intervallo')
+                self.default: int | float = dati.get('default')
+                self.valore: int | float = dati.get('valore')
+
+            case self.NUMERO_UNITA:
+                self.intervallo: List[int] = dati.get('intervallo')
+                self.scelte_unita: List[str] = dati.get('scelte_unita')
+                self.unita_default: str = dati.get('unita_default')
+                self.unita: str = dati.get('unita')
+                self.default: int | float = dati.get('default')
+                self.valore: int | float = dati.get('valore')
+
+            case self.BOOLEANO:
+                self.default: bool = dati.get('default')
+                self.valore: bool = dati.get('valore')
+
+            case self.COLORE:
+                self.default: str = dati.get('default')
+                self.valore: str = dati.get('valore')
+
+            case self.SELEZIONE:
+                self.scelte: List[str] = dati.get('scelte')
+                self.default: int = dati.get('default')
+                self.valore: int = dati.get('valore')
+
+            case _:
+                logger.error(f'Nel caricamento della configurazione, opzione con id {self.id} non ha un tipo valido ({self.tipo})')
 
     @beartype
-    def testo(self, configurazione: Dict):
-        self.type = self.TESTO
-        self.default = configurazione.get('default')
-        self.max_lenght = configurazione.get('max_lenght')
-        self.value = configurazione.get('value')
+    def set(self, dati: Any):
 
-    @beartype
-    def numero(self, configurazione: Dict):
-        self.type = self.NUMERO
-        self.interval: List[int | None] = configurazione.get('interval')
-        self.default: int = configurazione.get('default')
-        self.value: int = configurazione.get('value')
+        # if not isinstance(valore, type(opzione.valore)):
+        #     logger.debug(f"Setter: id {id_opzione}, valore {valore} ({type(valore)}) non accettato, usare {type(opzione.valore)}")
+        #     return False
 
-    @beartype
-    def numero_unita(self, configurazione: Dict):
-        self.type = self.NUMERO_UNITA
-        self.interval: List[int] = configurazione.get('interval')
-        self.default: int = configurazione.get('default')
-        self.value: int = configurazione.get('value')
-        self.units: List[str] = configurazione.get('units')
-        self.default_unit: str = configurazione.get('default_unit')
-        self.unit: str = configurazione.get('unit')
+        match self.tipo:
 
-    @beartype
-    def booleano(self, configurazione: Dict):
-        self.type = self.BOOLEANO
-        self.default: bool = configurazione.get('default')
-        self.value: bool = configurazione.get('value')
+            case self.TESTO:
+                assert isinstance(dati, str)
 
-    @beartype
-    def colore(self, configurazione: Dict):
-        self.type = self.TESTO
-        self.default: str = configurazione.get('default')
-        self.value: str = configurazione.get('value')
+                if (self.lunghezza_massima is not None) and (len(dati) > self.lunghezza_massima):
+                    logger.debug(f'Setter {self.id}, valore {dati} sfora la lunghezza massima di {self.lunghezza_massima}')
+                    return False
 
-    @beartype
-    def selezione(self, configurazione: Dict):
-        self.type = self.SELEZIONE
-        self.choices: List[str] = configurazione.get('choices')
-        self.default: int = configurazione.get('default')
-        self.value: int = configurazione.get('value')
+                self.valore = dati
+                return True
+
+            case self.NUMERO:
+                assert isinstance(dati, (int, float))
+
+                if (self.intervallo is not None) and not (self.intervallo[0] <= dati <= self.intervallo[1]):
+                    logger.debug(f'Setter {self.id}, valore {dati} sfora l\'intervallo di {self.intervallo}')
+                    return False
+
+                self.valore = dati
+                return True
+
+            case self.NUMERO_UNITA:
+                self.intervallo
+                self.scelte_unita
+
+            case self.BOOLEANO:
+                assert isinstance(dati, bool)
+
+                self.valore = dati
+                return True
+
+            case self.COLORE:
+                pass
+
+            case self.SELEZIONE:
+                self.valore = dati
+
+    def esporta(self):
+        dati = {
+            'titolo': self.titolo,
+            'descrizione': self.descrizione,
+            'sezione': self.sezione,
+            'tipo': self.tipo
+        }
+
+        match self.tipo:
+
+            case self.TESTO:
+                dati['lunghezza_massima'] = self.lunghezza_massima
+                dati['default'] = self.default
+                dati['valore'] = self.valore
+
+            case self.NUMERO:
+                dati['intervallo'] = self.intervallo
+                dati['default'] = self.default
+                dati['valore'] = self.valore
+
+            case self.NUMERO_UNITA:
+                dati['intervallo'] = self.intervallo
+                dati['scelte_unita'] = self.scelte_unita
+                dati['unita_default'] = self.unita_default
+                dati['unita'] = self.unita
+                dati['default'] = self.default
+                dati['valore'] = self.valore
+
+            case self.BOOLEANO:
+                dati['default'] = self.default
+                dati['valore'] = self.valore
+
+            case self.COLORE:
+                dati['default'] = self.default
+                dati['valore'] = self.valore
+
+            case self.SELEZIONE:
+                dati['scelte'] = self.scelte
+                dati['default'] = self.default
+                dati['valore'] = self.valore
+
+        return dati
+
+
+class Opzioni(List):
+    """
+    Lista di opzioni
+    Essenzialmente semplicemente una lista, con funzionalità aggiunte di ricerca per id
+    """
+
+    def __init__(self):
+        super().__init__(self)
+
+    def __getitem__(self, id):
+        for opzione in self:
+            if opzione.id == id:
+                return opzione
+
+        logger.warn(f'Cercando nelle opzioni, nessun id {id} trovato.')
+        return None
+
+    def ids(self):
+        id_list = []
+        for opzione in self:
+            id_list.append(opzione.id)
+
+        return id_list
 
 
 class Configurazione:
     @beartype
     def __init__(self, file: Path = CONFIG_FILE):
-        logging.debug('Inizializzazione caricamento configurazione')
+        logger.debug('Inizializzazione caricamento configurazione')
 
         with open(file, encoding='utf-8') as configfile:
-            logging.debug('Caricamento file di configurazione..')
+            logger.debug('Caricamento file di configurazione..')
             self.data = load(configfile)
-            logging.debug(f'Raw data: {self.data}')
+            logger.debug(f'Raw data: {self.data}')
 
         # Todo: controllare validità file
 
-        self.configurazione = []
+        self.sezioni = []
+        self.opzioni = Opzioni()
 
-        for sectionid, sectiondata in self.data.items():
-            sezione = Sezione(sectionid, sectiondata.get('title'), sectiondata.get('descr'))
+        for sectionid, sectiondata in self.data.get('sezioni').items():
+            sezione = Sezione(sectionid, sectiondata)
+            self.sezioni.append(sezione)
 
-            for optionid, optiondata in sectiondata.get('options').items():
-                opzione = Opzione(optionid, optiondata.get('title'), optiondata.get('descr'))
+        for optionid, optiondata in self.data.get('opzioni').items():
+            opzione = Opzione(optionid, optiondata)
+            self.opzioni.append(opzione)
 
-                config = optiondata.get('config')
+        # Tutti i dati sono caricati in oggetti, self.data non verrà aggiornato quindi eliminarlo per sicurezza
+        del self.data
 
-                match config.get('type'):
+    @beartype
+    def get(self, id_opzione: str):
+        pass
 
-                    case Opzione.TESTO:
-                        opzione.testo(config)
+    @beartype
+    def set(self, id_opzione: str, dati: Any):
+        if id_opzione not in self.opzioni.ids():
+            logger.debug(f"Setter: id {id_opzione} non riconosciuto.")
+            return False
 
-                    case Opzione.NUMERO:
-                        opzione.numero(config)
+        return self.opzioni[id_opzione].set(dati)
 
-                    case Opzione.NUMERO_UNITA:
-                        opzione.numero_unita(config)
+        # controllo validità valore
 
-                    case Opzione.BOOLEANO:
-                        opzione.booleano(config)
+        # if hasattr(opzione, 'lunghezza_massima') and opzione.lunghezza_massima is not None:
+        #     if valore > opzione.lunghezza_massima:
+        #         logger.debug(f"Setter: id {id_opzione}, valore {valore} sfora la lunghezza massima di {opzione.lunghezza_massima}")
+        #         return False
 
-                    case Opzione.COLORE:
-                        opzione.colore(config)
+        # if hasattr(opzione, 'intervallo') and opzione.intervallo is not None:
+        #     if not (opzione.intervallo[0] <= valore <= opzione.intervallo[1]):
+        #         logger.debug(f"Setter: id {id_opzione}, valore {valore} sfora l'intervallo di {opzione.intervallo}")
+        #         return False
 
-                    case Opzione.SELEZIONE:
-                        opzione.selezione(config)
+    @beartype
+    def aggiorna(self, configurazione: Dict, salva=True):
+        for key, dati in configurazione.items():
+            self.set(key, dati)
 
-                    case _:
-                        logging.warning(f'Nel caricamento della configurazione, opzione con id {optionid} non ha un tipo valido.')
+        if salva:
+            self.esporta()
 
-                sezione.options.append(opzione)
+    @beartype
+    def esporta(self, file: str | Path = CONFIG_FILE):
+        dati = {
+            'sezioni': {
+                s.id: {'titolo': s.titolo, 'descrizione': s.descrizione} for s in self.sezioni
+            },
+            'opzioni': {
+                o.id: o.esporta() for o in self.opzioni
 
-            self.configurazione.append(sezione)
+            }
+        }
+
+        with open(file, 'w') as f:
+            dump(dati, f, indent=2)
 
 
 if __name__ == '__main__':  # * test
-    logging.basicConfig(level=logging.DEBUG)
     c = Configurazione()
 
-    for s in c.configurazione:
-        print(s.title)
+    for s in c.sezioni:
+        print(s.titolo)
 
-        for o in s.options:
-            print('-', o.title)
+        for o in c.opzioni:
+            if o.sezione == s.id:
+                print('-', o.titolo)
+
+    print(c.esporta())

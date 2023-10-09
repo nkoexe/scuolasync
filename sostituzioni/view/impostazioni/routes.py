@@ -6,4 +6,4 @@ from sostituzioni.view.impostazioni import impostazioni
 
 @impostazioni.route('/impostazioni')
 def main():
-    return render_template('impostazioni.html', impostazioni=configurazione.configurazione)
+    return render_template('impostazioni.html', configurazione=configurazione)
