@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS aula (
+    numero VARCHAR(20) PRIMARY KEY,
+    piano VARCHAR(20) NOT NULL,
+    cancellato BOOLEAN NOT NULL
+);

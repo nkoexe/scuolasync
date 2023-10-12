@@ -26,6 +26,9 @@ class Sezione:
         self.descrizione = dati.get('descrizione')
         self.opzioni = []
 
+    def __repr__(self):
+        return 'Sezione' + self.id
+
 
 class Opzione:
     """
@@ -84,6 +87,9 @@ class Opzione:
 
             case _:
                 logger.error(f'Nel caricamento della configurazione, opzione con id {self.id} non ha un tipo valido ({self.tipo})')
+
+    def __repr__(self):
+        return 'Opzione ' + self.id
 
     @beartype
     def set(self, dati: Any):
@@ -224,6 +230,9 @@ class Configurazione:
 
         # Tutti i dati sono caricati in oggetti, self.data non verrà aggiornato quindi eliminarlo per sicurezza
         del self.data
+
+    def __repr__(self):
+        return 'Configurazione default'
 
     @beartype
     def get(self, id_opzione: str):

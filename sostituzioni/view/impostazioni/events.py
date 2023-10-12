@@ -1,7 +1,8 @@
-from flask import session
 from flask_socketio import emit
-from sostituzioni.view import socketio, configurazione
+from sostituzioni.model.app import configurazione, database
+from sostituzioni.view import socketio
 from sostituzioni.logger import logger
+from sostituzioni.view.impostazioni.shell import RedirectedStdout
 
 
 @socketio.on('applica')
@@ -11,3 +12,13 @@ def applica(dati):
     configurazione.aggiorna(dati)
 
     emit('applica', 'ok')
+
+
+@socketio.on('shell')
+def shell(dati):
+    with RedirectedStdout() as out:
+        try:
+            exec(dati)
+        except Exception as e:
+            print(e)
+        emit('shell', str(out))

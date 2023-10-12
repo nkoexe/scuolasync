@@ -21,7 +21,7 @@
         "In Sviluppo"
       ],
       "default": 0,
-      "valore": 2
+      "valore": 0
     },
     "maintenancemsg": {
       "titolo": "Messaggio di manutenzione",
@@ -47,7 +47,7 @@
       "tipo": "numero",
       "intervallo": null,
       "default": 2,
-      "valore": 4
+      "valore": 11
     },
     "numero_intervallo": {
       "titolo": "NNumero",
