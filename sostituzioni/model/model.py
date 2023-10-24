@@ -8,13 +8,13 @@ from datetime import date, datetime, time
 from beartype._decor.decormain import beartype
 from beartype.typing import List
 
-from sostituzioni.model.app import database
+from sostituzioni.control.database import database
 
 
 # -----------------------------------------------
 
 
-class ElementoDatabase(database.Model):
+class ElementoDatabase():
     def __init__(self):
         super().__init__()
 
@@ -43,46 +43,42 @@ class ElementoConStorico(ElementoDatabase):
 
 
 class Aula(ElementoConStorico):
+    @beartype
+    def __init__(self, numero: str, piano: str):
+        super().__init__()
 
-    numero = database.Column(database.String(20), primary_key=True)
-    piano = database.Column(database.String(20), nullable=False)
+        self.numero = numero
+        self.piano = piano
 
-    # @beartype
-    # def __init__(self, numero: str, piano: str):
-    #     super().__init__()
+    @beartype
+    def modifica(self, numero: str | None = None, piano: str | None = None):
+        if not any((numero, piano)):
+            logging.debug('Nessun parametro passato ad aula.modifica, ')
+            return
 
-    #     self.numero = numero
-    #     self.piano = piano
+        if numero:
+            self.numero = numero
 
-    # @beartype
-    # def modifica(self, numero: str | None = None, piano: str | None = None):
-    #     if not any((numero, piano)):
-    #         logging.debug('Nessun parametro passato ad aula.modifica, ')
-    #         return
+        if piano:
+            self.piano = piano
 
-    #     if numero:
-    #         self.numero = numero
+    @property
+    def numero(self):
+        return self._numero
 
-    #     if piano:
-    #         self.piano = piano
+    @beartype
+    @numero.setter
+    def numero(self, new: str):
+        self._numero = new
 
-    # @property
-    # def numero(self):
-    #     return self._numero
+    @property
+    def piano(self):
+        return self._piano
 
-    # @beartype
-    # @numero.setter
-    # def numero(self, new: str):
-    #     self._numero = new
-
-    # @property
-    # def piano(self):
-    #     return self._piano
-
-    # @beartype
-    # @piano.setter
-    # def piano(self, new: str):
-    #     self._piano = new
+    @beartype
+    @piano.setter
+    def piano(self, new: str):
+        self._piano = new
 
 
 class Classe(ElementoDatabase, ElementoConStorico):

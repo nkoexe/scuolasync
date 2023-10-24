@@ -8,11 +8,18 @@ from json import load, dump
 from beartype._decor.decormain import beartype
 from beartype.typing import List, Dict, Any
 
-from sostituzioni.logger import logger
+# from sostituzioni.logger import logger
+import logging as logger
 
 
-# todo mettere tutte le variabili di questo tipo in un file separato (databasepath, static ecccc)
-CONFIG_FILE = Path(__file__).parent.parent / 'database' / 'configurazione.json'
+ROOT_PATH = Path(__file__).parent.parent
+CONFIG_FILE = ROOT_PATH / 'database' / 'configurazione.json'
+
+
+def parsepath(pathstring: str) -> Path:
+    pathstring = pathstring.replace('%ROOT%', str(ROOT_PATH))
+
+    return Path(pathstring)
 
 
 class Sezione:
@@ -41,6 +48,7 @@ class Opzione:
     BOOLEANO = 'booleano'
     COLORE = 'colore'
     SELEZIONE = 'selezione'
+    PERCORSO = 'percorso'
 
     @beartype
     def __init__(self, id: str, dati: Dict):
@@ -84,6 +92,14 @@ class Opzione:
                 self.scelte: List[str] = dati.get('scelte')
                 self.default: int = dati.get('default')
                 self.valore: int = dati.get('valore')
+
+            case self.PERCORSO:
+                self.radice: int = dati.get('radice')
+                self.scelte_radice: List[str] = dati.get('scelte_radice')
+                self.default: str = dati.get('default')
+                self.valore: str = dati.get('valore')
+
+                self.path = parsepath(self.scelte_radice[self.radice]) / parsepath(self.valore)
 
             case _:
                 logger.error(f'Nel caricamento della configurazione, opzione con id {self.id} non ha un tipo valido ({self.tipo})')
@@ -135,6 +151,12 @@ class Opzione:
 
             case self.SELEZIONE:
                 self.valore = dati
+                return True
+
+            case self.PERCORSO:
+                self.radice = dati[0]
+                self.valore = dati[1]
+                return True
 
     def esporta(self):
         dati = {
@@ -174,6 +196,12 @@ class Opzione:
 
             case self.SELEZIONE:
                 dati['scelte'] = self.scelte
+                dati['default'] = self.default
+                dati['valore'] = self.valore
+
+            case self.PERCORSO:
+                dati['radice'] = self.radice
+                dati['scelte_radice'] = self.scelte_radice
                 dati['default'] = self.default
                 dati['valore'] = self.valore
 
@@ -231,17 +259,46 @@ class Configurazione:
         # Tutti i dati sono caricati in oggetti, self.data non verrà aggiornato quindi eliminarlo per sicurezza
         del self.data
 
+        # Aggiorna il percorso base di sistema
+        self.set('rootpath', [0, ROOT_PATH])
+
     def __repr__(self):
         return 'Configurazione default'
 
     @beartype
-    def get(self, id_opzione: str):
-        pass
+    def get(self, id_opzione: str) -> Opzione | None:
+        """
+        La funzione get recupera un oggetto Opzione in base al suo ID o restituisce None se l'ID non è trovato.
+
+        :param id_opzione: Il parametro id_opzione è una stringa che rappresenta l'ID di un'opzione.
+        :type id_opzione: str
+
+        :return: Il metodo get restituisce un'istanza della classe Opzione se l'id_opzione è
+        trovato nel dizionario self.opzioni. Se l'id_opzione non viene trovato, restituisce None.
+        """
+        if id_opzione not in self.opzioni.ids():
+            logger.warning(f"Getter: id {id_opzione} non trovato.")
+            return None
+
+        return self.opzioni[id_opzione]
 
     @beartype
-    def set(self, id_opzione: str, dati: Any):
+    def set(self, id_opzione: str, dati: Any) -> bool:
+        """
+        La funzione verifica se l'ID dell'opzione fornito è valido e imposta il valore di quell'opzione se lo è.
+
+        :param id_opzione: Il parametro id_opzione è una stringa che rappresenta l'ID di un'opzione.
+        :type id_opzione: str
+
+        :param dati: Il valore o i valori che verranno inseriti. A dipendere dal tipo dell'opzione, questo parametro può
+                     essere un testo, un numero, un booleano, o una lista di valori se l'opzione è composta.
+
+        :return: Success. Se l'id_opzione non è riconosciuto, restituisce False. In caso contrario,
+                 chiama il metodo set dell'oggetto opzioni[id_opzione] con il parametro dati e restituisce il risultato.
+        """
+
         if id_opzione not in self.opzioni.ids():
-            logger.debug(f"Setter: id {id_opzione} non riconosciuto.")
+            logger.warning(f"Setter: id {id_opzione} non riconosciuto.")
             return False
 
         return self.opzioni[id_opzione].set(dati)
@@ -260,6 +317,19 @@ class Configurazione:
 
     @beartype
     def aggiorna(self, configurazione: Dict, salva=True):
+        """
+        Questa funzione aggiorna le impostazioni di configurazione utilizzando un dizionario 'configurazione' che
+        contiene coppie chiave-valore, dove ogni chiave rappresenta l'id di un'opzione e il valore (singolo o multiplo)
+        corrispondente rappresenta il nuovo valore per quell'opzione.
+
+        :param configurazione: Dizionario contenente i dati di configurazione da aggiornare.
+        :type configurazione: dict
+
+        :param salva: Un flag booleano che determina se la configurazione aggiornata deve essere esportata su file.
+                      (valore predefinito: True)
+        :type salva: bool
+        """
+
         for key, dati in configurazione.items():
             self.set(key, dati)
 
@@ -268,6 +338,13 @@ class Configurazione:
 
     @beartype
     def esporta(self, file: str | Path = CONFIG_FILE):
+        """
+        La funzione esporta esporta i dati di configurazione in un file nel formato JSON.
+
+        :param file: Il parametro file rappresenta il percorso del file in cui i dati verranno esportati.
+        :type file: str | Path
+        """
+
         dati = {
             'sezioni': {
                 s.id: {'titolo': s.titolo, 'descrizione': s.descrizione} for s in self.sezioni
@@ -282,14 +359,6 @@ class Configurazione:
             dump(dati, f, indent=2)
 
 
-if __name__ == '__main__':  # * test
-    c = Configurazione()
+configurazione = Configurazione()
 
-    for s in c.sezioni:
-        print(s.titolo)
-
-        for o in c.opzioni:
-            if o.sezione == s.id:
-                print('-', o.titolo)
-
-    print(c.esporta())
+print(configurazione.get('databasepath').path)

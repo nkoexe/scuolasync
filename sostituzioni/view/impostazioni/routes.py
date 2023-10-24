@@ -1,6 +1,6 @@
 from flask import render_template
 
-from sostituzioni.model.app import configurazione
+from sostituzioni.control.configurazione import configurazione
 from sostituzioni.view.impostazioni import impostazioni
 
 

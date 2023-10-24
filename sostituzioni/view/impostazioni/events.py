@@ -1,5 +1,6 @@
 from flask_socketio import emit
-from sostituzioni.model.app import configurazione, database
+from sostituzioni.control.configurazione import configurazione
+from sostituzioni.control.database import database
 from sostituzioni.view import socketio
 from sostituzioni.logger import logger
 from sostituzioni.view.impostazioni.shell import RedirectedStdout

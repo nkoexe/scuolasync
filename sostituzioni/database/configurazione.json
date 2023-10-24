@@ -7,12 +7,17 @@
     "test": {
       "titolo": "Test",
       "descrizione": "boh opzioni di test per testare you know il sistema"
+    },
+    "percorsi": {
+      "titolo": "Percorsi",
+      "descrizione": ""
     }
   },
   "opzioni": {
     "sysstate": {
       "titolo": "Stato del sistema",
       "descrizione": "",
+      "disabilitato": false,
       "sezione": "sistema",
       "tipo": "selezione",
       "scelte": [
@@ -26,6 +31,7 @@
     "maintenancemsg": {
       "titolo": "Messaggio di manutenzione",
       "descrizione": "Testo che verr\u00e0 mostrato agli utenti che cercano di accedere al sito quando esso \u00e8 in modalit\u00e0 manutenzione.",
+      "disabilitato": false,
       "sezione": "sistema",
       "tipo": "testo",
       "lunghezza_massima": null,
@@ -35,6 +41,7 @@
     "hotreload": {
       "titolo": "Hot reload",
       "descrizione": "Applica immediatamente le impostazioni cambiate. Utile per vedere istantaneamente i cambiamenti di colori e font, ma sconsigliato in ogni altro caso. (test checkbox, non implementare seriamente)",
+      "disabilitato": false,
       "sezione": "test",
       "tipo": "booleano",
       "default": false,
@@ -43,6 +50,7 @@
     "numeroebbasta": {
       "titolo": "Numero",
       "descrizione": "e basta",
+      "disabilitato": false,
       "sezione": "test",
       "tipo": "numero",
       "intervallo": null,
@@ -52,6 +60,7 @@
     "numero_intervallo": {
       "titolo": "NNumero",
       "descrizione": "Con intervallo tra -10 e 399",
+      "disabilitato": false,
       "sezione": "test",
       "tipo": "numero",
       "intervallo": [
@@ -60,6 +69,28 @@
       ],
       "default": 7,
       "valore": 345
+    },
+    "rootpath": {
+      "titolo": "Percorso radice - Root",
+      "descrizione": "Percorso della cartella nella quale sono posizionati i file di questo sistema.",
+      "disabilitato": true,
+      "sezione": "percorsi",
+      "tipo": "percorso",
+      "radice": 0,
+      "scelte_radice": ["/"],
+      "default": "",
+      "valore": ""
+    },
+    "databasepath": {
+      "titolo": "Posizione database",
+      "descrizione": "Percorso nel quale si trova il database del sistema.",
+      "disabilitato": false,
+      "sezione": "percorsi",
+      "tipo": "percorso",
+      "radice": 1,
+      "scelte_radice": ["/", "%ROOT%"],
+      "default": "database/test.db",
+      "valore": "database/test.db"
     }
   }
 }
