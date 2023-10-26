@@ -25,7 +25,7 @@ class Database:
 # -----------------------------------------------
 
 
-class ElementoDatabase():
+class ElementoDatabase:
     def __init__(self):
         super().__init__()
 
@@ -36,7 +36,7 @@ class ElementoDatabase():
         pass
 
 
-class ElementoConStorico(ElementoDatabase):
+class ElementoDatabaseConStorico(ElementoDatabase):
     def __init__(self):
         self._cancellato = False
 
@@ -53,11 +53,10 @@ class ElementoConStorico(ElementoDatabase):
 # -----------------------------------------------
 
 
-class Aula(ElementoDatabase, ElementoConStorico):
+class Aula(ElementoDatabaseConStorico):
     @beartype
     def __init__(self, numero: str, piano: str):
-        ElementoDatabase.__init__(self)
-        ElementoConStorico.__init__(self)
+        super(Aula, self).__init__()
 
         self.numero = numero
         self.piano = piano
@@ -65,7 +64,7 @@ class Aula(ElementoDatabase, ElementoConStorico):
     @beartype
     def modifica(self, numero: str | None = None, piano: str | None = None):
         if not any((numero, piano)):
-            logging.debug('Nessun parametro passato ad aula.modifica, ')
+            logging.warning('Nessun parametro passato ad aula.modifica')
             return
 
         if numero:
@@ -93,11 +92,10 @@ class Aula(ElementoDatabase, ElementoConStorico):
         self._piano = new
 
 
-class Classe(ElementoDatabase, ElementoConStorico):
+class Classe(ElementoDatabaseConStorico):
     @beartype
     def __init__(self, nome: str, aule_ospitanti: List[Aula]):
-        ElementoDatabase.__init__(self)
-        ElementoConStorico.__init__(self)
+        super(Classe, self).__init__()
 
         self.nome = nome
         self.aule_ospitanti = aule_ospitanti
@@ -121,11 +119,10 @@ class Classe(ElementoDatabase, ElementoConStorico):
         self._aule_ospitanti = new
 
 
-class Docente(ElementoDatabase, ElementoConStorico):
+class Docente(ElementoDatabaseConStorico):
     @beartype
     def __init__(self, nome: str, cognome: str):
-        ElementoDatabase.__init__(self)
-        ElementoConStorico.__init__(self)
+        super(Docente, self).__init__()
 
         self.nome = nome
         self.cognome = cognome
@@ -152,7 +149,7 @@ class Docente(ElementoDatabase, ElementoConStorico):
 class OraPredefinita(ElementoDatabase):
     @beartype
     def __init__(self, numero: int, ora_inizio: time, ora_fine: time):
-        ElementoDatabase.__init__(self)
+        super(OraPredefinita, self).__init__()
 
         self.numero = numero
         self.ora_inizio = ora_inizio
@@ -177,7 +174,7 @@ class OraPredefinita(ElementoDatabase):
         self._nome = new
 
 
-class Sostituzione(ElementoDatabase, ElementoConStorico):
+class Sostituzione(ElementoDatabaseConStorico):
     @beartype
     def __init__(
         self,
@@ -192,8 +189,7 @@ class Sostituzione(ElementoDatabase, ElementoConStorico):
         note: str | None = None,
         pubblicato: bool = False,
     ):
-        ElementoDatabase.__init__(self)
-        ElementoConStorico.__init__(self)
+        super(Sostituzione, self).__init__()
 
         self._id = id
         self.aula = aula
@@ -207,7 +203,7 @@ class Sostituzione(ElementoDatabase, ElementoConStorico):
         self.pubblicato = pubblicato
 
 
-class Evento(ElementoDatabase, ElementoConStorico):
+class Evento(ElementoDatabaseConStorico):
     @beartype
     def __init__(
         self,
@@ -217,8 +213,7 @@ class Evento(ElementoDatabase, ElementoConStorico):
         data_ora_fine: datetime | None = None,
         urgente: bool = False,
     ):
-        ElementoDatabase.__init__(self)
-        ElementoConStorico.__init__(self)
+        super(Evento, self).__init__()
 
         self._id = id
         self.testo = testo
@@ -227,7 +222,7 @@ class Evento(ElementoDatabase, ElementoConStorico):
         self.urgente = urgente
 
 
-class Notizia(ElementoDatabase, ElementoConStorico):
+class Notizia(ElementoDatabaseConStorico):
     @beartype
     def __init__(
         self,
@@ -236,8 +231,7 @@ class Notizia(ElementoDatabase, ElementoConStorico):
         data_ora_inizio: datetime | None = None,
         data_ora_fine: datetime | None = None,
     ):
-        ElementoDatabase.__init__(self)
-        ElementoConStorico.__init__(self)
+        super(Notizia, self).__init__()
 
         self._id = id
         self.testo = testo
@@ -248,19 +242,19 @@ class Notizia(ElementoDatabase, ElementoConStorico):
 class Visualizzazione(ElementoDatabase):
     @beartype
     def __init__(self):
-        ElementoDatabase.__init__(self)
+        super(Visualizzazione, self).__init__()
 
 
 class VisualizzazioneOnline(Visualizzazione):
     @beartype
     def __init__(self):
-        ElementoDatabase.__init__(self)
+        super(VisualizzazioneOnline, self).__init__()
 
 
 class VisualizzazioneFisica(Visualizzazione):
     @beartype
     def __init__(self):
-        ElementoDatabase.__init__(self)
+        super(VisualizzazioneFisica, self).__init__()
 
 
 database = Database()
