@@ -11,6 +11,8 @@ from beartype.typing import List, Dict, Any
 # from sostituzioni.logger import logger
 import logging as logger
 
+from sostituzioni.lib.searchablelist import SearchableList
+
 
 ROOT_PATH = Path(__file__).parent.parent
 CONFIG_FILE = ROOT_PATH / 'database' / 'configurazione.json'
@@ -208,31 +210,6 @@ class Opzione:
         return dati
 
 
-class Opzioni(List):
-    """
-    Lista di opzioni
-    Essenzialmente semplicemente una lista, con funzionalità aggiunte di ricerca per id
-    """
-
-    def __init__(self):
-        super().__init__(self)
-
-    def __getitem__(self, id):
-        for opzione in self:
-            if opzione.id == id:
-                return opzione
-
-        logger.warn(f'Cercando nelle opzioni, nessun id {id} trovato.')
-        return None
-
-    def ids(self):
-        id_list = []
-        for opzione in self:
-            id_list.append(opzione.id)
-
-        return id_list
-
-
 class Configurazione:
     @beartype
     def __init__(self, file: Path = CONFIG_FILE):
@@ -246,7 +223,7 @@ class Configurazione:
         # Todo: controllare validità file
 
         self.sezioni = []
-        self.opzioni = Opzioni()
+        self.opzioni = SearchableList()
 
         for sectionid, sectiondata in self.data.get('sezioni').items():
             sezione = Sezione(sectionid, sectiondata)
@@ -276,7 +253,7 @@ class Configurazione:
         :return: Il metodo get restituisce un'istanza della classe Opzione se l'id_opzione è
         trovato nel dizionario self.opzioni. Se l'id_opzione non viene trovato, restituisce None.
         """
-        if id_opzione not in self.opzioni.ids():
+        if self.opzioni[id_opzione] is None:
             logger.warning(f"Getter: id {id_opzione} non trovato.")
             return None
 
@@ -297,7 +274,7 @@ class Configurazione:
                  chiama il metodo set dell'oggetto opzioni[id_opzione] con il parametro dati e restituisce il risultato.
         """
 
-        if id_opzione not in self.opzioni.ids():
+        if id_opzione not in self.opzioni.keys():
             logger.warning(f"Setter: id {id_opzione} non riconosciuto.")
             return False
 

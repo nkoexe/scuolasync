@@ -2,6 +2,7 @@ from flask import render_template
 
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.view.impostazioni import impostazioni
+from sostituzioni.model import aule
 
 
 @impostazioni.route('/impostazioni')

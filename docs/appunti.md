@@ -10,6 +10,6 @@ per aggiornare la vista js non riceve raw data ma html gia renderizzato da flask
 
 ## Todo:
 
-modificare sql creazione database per mettere piano aula come stringa
-macro impostazioni di: numero, dropdown (scelta multipla), color
+macro impostazioni di: color
 sezione in impostazioni per impostare lista aule, classi, docenti ecc hardcoded, unica cosa modulare è il blocco personalizzato 'docente' o 'classe' (con selezione per aula preferita e lista)
+check all'avvio per file di configurazione e database, al momento se non ci sono quelli il sistema crasha, in caso creare 
