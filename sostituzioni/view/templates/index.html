@@ -1,13 +1,15 @@
-{% from "macro/sostituzione.html" import sostituzione with context %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" async></script>
-    <script defer>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script>
       var socket = io();
+      socket.on('resp', (data) => {
+        console.log(data)
+      })
     </script>
     <!-- <script src="{{ url_for('static', filename='scripts/logout.js') }}"></script> -->
   </head>
@@ -16,8 +18,8 @@
     <button onclick="location.href=`{{ url_for('auth.logout')}}`">Logout</button>
     <button onclick="location.href=`{{ url_for('impostazioni.main')}}`">Impostazioni</button>
     <button onclick="socket.emit('evento', {ciao:'ok'})">Test socket</button>
-    <ul>
-      {{ sostituzione('ciao') }}
+    <ul id="sostituzioni">
     </ul>
+    <script src="{{url_for('static', filename='scripts/sostituzioni.js')}}"></script>
   </body>
 </html>
