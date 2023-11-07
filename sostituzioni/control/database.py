@@ -2,15 +2,15 @@
 database controller
 """
 
-from beartype.typing import List, Dict
+from beartype.typing import List, Dict, Tuple
 from beartype._decor.decormain import beartype
 from datetime import date, datetime, time
-import logging
 import sqlite3
 
 from sostituzioni.lib.searchablelist import SearchableList
 from sostituzioni.logger import logger
 from sostituzioni.control.configurazione import configurazione
+from pprint import pprint
 
 
 class Database:
@@ -26,60 +26,139 @@ class Database:
                 self.connection.row_factory = sqlite3.Row
 
                 self.cursor = self.connection.cursor()
-            except Exception as e:
+            except sqlite3.Error as e:
                 logger.error(e)
+                exit()
 
-    def execute(self, sql):
+    def close(self):
+        if self.connection:
+            self.connection.commit()
+            self.cursor.close()
+            self.connection.close()
+
+    def execute(self, query: str, values: List | None = None):
         self.connect()
-        self.cursor.execute(sql)
+        try:
+            if values is not None:
+                self.cursor.execute(query, list(values))
+                self.connection.commit()
+            else:
+                self.cursor.execute(query)
+        except sqlite3.Error as e:
+            logger.error(e)
+            self.connection.rollback()
 
-    def get_all_from(self, table: str) -> List[Dict]:
-        self.execute('SELECT * FROM ' + table)
+    # def get_all_from(self, table: str) -> List[Dict]:
+    #     self.execute('SELECT * FROM ' + table)
+
+    #     return [dict(row) for row in self.cursor.fetchall()]
+
+    @beartype
+    def get(self, table: str, columns: str | Tuple[str] = '*', where: str | Tuple[str] | None = None, limit: int | None = None):
+        """
+        Esempi:
+        database.get('aula', 'numero')
+        database.get('aula', ('numero', 'piano'), where=('numero=100', 'cancellato=0'))
+        """
+
+        if isinstance(columns, tuple):
+            columns = ', '.join(columns)
+
+        query = f'SELECT {columns} from {table}'
+
+        if where is not None:
+            if isinstance(where, tuple):
+                where = ' AND '.join(where)
+
+            query += f' WHERE {where}'
+
+        if limit is not None:
+            query += f' LIMIT {limit}'
+
+        self.execute(query)
 
         return [dict(row) for row in self.cursor.fetchall()]
 
-    def load_all(self):
-        aule = SearchableList('numero')
-        classi = SearchableList('nome')
-        docenti = SearchableList()  # quale cazzo è l'id in questo caso??????? modifico per includere anche chiavi tuple????
-        ore_predefinite = SearchableList()
-        sostituzioni = SearchableList()
-        eventi = SearchableList()
-        notizie = SearchableList()
-        visualizzazioni_online = SearchableList()
-        visualizzazioni_fisiche = SearchableList()
+    @beartype
+    def insert(self, table: str, **data):
+        """
+        Esempio: database.insert('aula', numero='214', piano='2')
+        """
+        assert data
 
-        db_aule = database.get_all_from('aula')
-        for db_aula in db_aule:
-            aula = Aula(db_aula['numero'], db_aula['piano'], bool(db_aula['cancellato']))
-            aule.append(aula)
+        columns = ', '.join(data.keys())
+        values = ', '.join('?' for i in data)
 
-        db_classi = database.get_all_from('classe')
-        for db_classe in db_classi:
-            # Istanziare con attributo aule_ospitanti vuoto, in quanto lo aggiungiamo in seguito
-            classe = Classe(db_classe['nome'], [], bool(db_classe['cancellato']))
-            classi.append(classe)
+        query = f'INSERT INTO {table} ({columns}) VALUES({values});'
 
-        db_aule_classi = database.get_all_from('aula_ospita_classe')
-        for db_aula_classe in db_aule_classi:
-            classi[db_aula_classe['nome_classe']].aule_ospitanti.append(db_aula_classe['numero_aula'])
+        self.execute(query, data.values())
 
-        db_docenti = database.get_all_from('docente')
-        for db_docente in db_docenti:
-            docente = Docente(db_docente['nome'], db_docente['cognome'], bool(db_docente['cancellato']))
-            docenti.append(docente)
+    @beartype
+    def update(self, table: str, where: str | Tuple[str] | None = None, **values):
+        assert where
+        assert values
 
-        # db_ore_predefinite = database.get_all_from('ora_predefinita')
-        # for db_ora_predefinita in db_ore_predefinite:
-        #     ora_predefinita = OraPredefinita(db_ora_predefinita['numero'], db_ora_predefinita['ora_inizio'], db_ora_predefinita['ora_fine'])
-        #     ore_predefinite.append(ora_predefinita)
+        query = f'UPDATE {table} SET {", ".join([f"{column} = {value}" for (column, value) in values.items()])}'
 
-        # db_sostituzioni = database.get_all_from('aula')
-        # for db_aula in db_sostituzioni:
-        #     aula = Aula(db_aula['numero'], db_aula['piano'], bool(db_aula['cancellato']))
-        #     sostituzioni.append(aula)
+        if where is not None:
+            if isinstance(where, tuple):
+                where = ' AND '.join(where)
 
-        return aule, classi, docenti, ore_predefinite, sostituzioni, eventi, notizie, visualizzazioni_online, visualizzazioni_fisiche
+            query += f' WHERE {where}'
+
+        self.execute(query)
+
+    @beartype
+    def delete(self, table: str, where: str | Tuple[str]):
+        if isinstance(where, tuple):
+            where = ' AND '.join(where)
+
+        query = f'DELETE FROM {table} WHERE {where}'
+
+        self.execute(query)
+
+    # def load_all(self):
+    #     aule = SearchableList('numero')
+    #     classi = SearchableList('nome')
+    #     docenti = SearchableList()  # quale cazzo è l'id in questo caso??????? modifico per includere anche chiavi tuple????
+    #     ore_predefinite = SearchableList()
+    #     sostituzioni = SearchableList()
+    #     eventi = SearchableList()
+    #     notizie = SearchableList()
+    #     visualizzazioni_online = SearchableList()
+    #     visualizzazioni_fisiche = SearchableList()
+
+    #     db_aule = database.get_all_from('aula')
+    #     for db_aula in db_aule:
+    #         aula = Aula(db_aula['numero'], db_aula['piano'], bool(db_aula['cancellato']))
+    #         aule.append(aula)
+
+    #     db_classi = database.get_all_from('classe')
+    #     for db_classe in db_classi:
+    #         # Istanziare con attributo aule_ospitanti vuoto, in quanto lo aggiungiamo in seguito
+    #         classe = Classe(db_classe['nome'], [], bool(db_classe['cancellato']))
+    #         classi.append(classe)
+
+    #     db_aule_classi = database.get_all_from('aula_ospita_classe')
+    #     for db_aula_classe in db_aule_classi:
+    #         classi[db_aula_classe['nome_classe']].aule_ospitanti.append(db_aula_classe['numero_aula'])
+
+    #     db_docenti = database.get_all_from('docente')
+    #     for db_docente in db_docenti:
+    #         docente = Docente(db_docente['nome'], db_docente['cognome'], bool(db_docente['cancellato']))
+    #         docenti.append(docente)
+
+    #     # db_ore_predefinite = database.get_all_from('ora_predefinita')
+    #     # for db_ora_predefinita in db_ore_predefinite:
+    #     #     ora_predefinita = OraPredefinita(db_ora_predefinita['numero'], db_ora_predefinita['ora_inizio'], db_ora_predefinita['ora_fine'])
+    #     #     ore_predefinite.append(ora_predefinita)
+
+    #     # db_sostituzioni = database.get_all_from('aula')
+    #     # for db_aula in db_sostituzioni:
+    #     #     aula = Aula(db_aula['numero'], db_aula['piano'], bool(db_aula['cancellato']))
+    #     #     sostituzioni.append(aula)
+
+    #     return aule, classi, docenti, ore_predefinite, sostituzioni, eventi, notizie, visualizzazioni_online, visualizzazioni_fisiche
 
 
 # -----------------------------------------------
@@ -114,6 +193,9 @@ class ElementoDatabaseConStorico(ElementoDatabase):
 
 
 class Aula(ElementoDatabaseConStorico):
+    def load():
+        return database.get('aula')
+
     @beartype
     def __init__(self, numero: str, piano: str, cancellato: bool):
         super(Aula, self).__init__(cancellato)
@@ -127,7 +209,7 @@ class Aula(ElementoDatabaseConStorico):
     @beartype
     def modifica(self, numero: str | None = None, piano: str | None = None):
         if not any((numero, piano)):
-            logging.warning('Nessun parametro passato ad aula.modifica')
+            logger.warning('Nessun parametro passato ad aula.modifica')
             return
 
         if numero:
@@ -326,3 +408,7 @@ class VisualizzazioneFisica(Visualizzazione):
 
 
 database = Database()
+
+# database.insert('aula', numero=120, piano=1)
+# database.delete('aula', where=('numero=120'))
+# pprint(database.get('aula'))

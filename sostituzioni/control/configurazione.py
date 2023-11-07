@@ -337,5 +337,3 @@ class Configurazione:
 
 
 configurazione = Configurazione()
-
-print(configurazione.get('databasepath').path)

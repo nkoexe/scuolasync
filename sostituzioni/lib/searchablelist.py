@@ -8,9 +8,12 @@ class SearchableList(List):
     """
 
     @beartype
-    def __init__(self, key_name: str = 'id'):
-        super().__init__(self)
+    def __init__(self, key_name: str = 'id', values: list | None = None):
+        super(SearchableList, self).__init__()
+
         self.key = key_name
+        if values is not None:
+            self.extend(values)
 
     def __getitem__(self, id):
         for element in self:
@@ -38,10 +41,3 @@ class SearchableList(List):
 class Test:
     def __init__(self) -> None:
         self.aa = 'pasta'
-
-
-lista = SearchableList('aa')
-
-tes = Test()
-lista.append(tes)
-print(lista['pasta'])

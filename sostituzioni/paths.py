@@ -7,3 +7,5 @@ CONFIGURAZIONE = ROOT / 'database' / 'configurazione.json'
 
 FLASK_TEMPLATES = ROOT / 'view' / 'templates'
 FLASK_STATIC = ROOT / 'view' / 'static'
+
+# todo: file not needed, use paths in configuration instead
