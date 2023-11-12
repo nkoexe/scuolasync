@@ -220,13 +220,11 @@ class Aula(ElementoDatabaseConStorico):
 
     @property
     def numero(self):
-        print('get numero')
         return self._numero
 
     @beartype
     @numero.setter
     def numero(self, new: str):
-        print('set numero')
         self._numero = new
 
     @property
