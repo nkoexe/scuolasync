@@ -4,15 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sostituzioni</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script> -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"></link> -->
     <script>
       var socket = io();
-      socket.on('resp', (data) => {
-        console.log(data)
-      })
     </script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"></link> -->
     <!-- <script src="{{ url_for('static', filename='scripts/logout.js') }}"></script> -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style/index.css') }}">
   </head>
@@ -25,14 +25,21 @@
         <button onclick="socket.emit('test', {ciao:'ok'})">Test socket</button></div>
       <div id="eventi-frame" class="frame">eventi</div>
       <div id="sostituzioni-frame" class="frame">
-        <div id="sostituzioni-filtri-container">filtri delle sostituzioni</div>
+        <div id="sostituzioni-filtri-container">
+          <div id="sostituzioni-filtro-data">data</div>
+          <div id="sostituzioni-filtro-ora">ora</div>
+          <div id="sostituzioni-filtro-aula">aula</div>
+          <div id="sostituzioni-filtro-classe">classe</div>
+          <div id="sostituzioni-filtro-docente">docente</div>
+          <div id="sostituzioni-filtro-note">note</div>
+        </div>
         <div id="sostituzioni-container">
-          sostituzioni
           <ul id="sostituzioni-lista">
           </ul>
         </div>
       </div>
     </div>
     <script src="{{url_for('static', filename='scripts/sostituzioni.js')}}"></script>
+    <script src="{{url_for('static', filename='scripts/ui.js')}}"></script>
   </body>
 </html>

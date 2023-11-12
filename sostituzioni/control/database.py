@@ -10,7 +10,6 @@ import sqlite3
 from sostituzioni.lib.searchablelist import SearchableList
 from sostituzioni.logger import logger
 from sostituzioni.control.configurazione import configurazione
-from pprint import pprint
 
 
 class Database:
@@ -54,7 +53,7 @@ class Database:
     #     return [dict(row) for row in self.cursor.fetchall()]
 
     @beartype
-    def get(self, table: str, columns: str | Tuple[str] = '*', where: str | Tuple[str] | None = None, limit: int | None = None):
+    def get(self, table: str, columns: str | Tuple[str] = '*', where: str | Tuple[str] | None = None, limit: int | None = None) -> SearchableList:
         """
         Esempi:
         database.get('aula', 'numero')
@@ -78,7 +77,7 @@ class Database:
         self.connect()
         self.execute(query)
 
-        result = [dict(row) for row in self.cursor.fetchall()]
+        result = SearchableList(values=[dict(row) for row in self.cursor.fetchall()])
 
         self.close()
 
@@ -179,9 +178,6 @@ class ElementoDatabase:
     def __init__(self):
         super().__init__()
 
-    def load(self, table: str):
-        return database.get(table)
-
     def modifica(self):
         pass
 
@@ -208,9 +204,13 @@ class ElementoDatabaseConStorico(ElementoDatabase):
 
 class Aula(ElementoDatabaseConStorico):
     TABLENAME = 'aula'
+    KEY = 'numero'
 
     def load():
-        return database.get(Aula.TABLENAME)
+        aule = database.get(Aula.TABLENAME)
+        aule.key = Aula.KEY
+
+        return aule
 
     @beartype
     def __init__(self, numero: str, piano: str, cancellato: bool):
@@ -254,6 +254,21 @@ class Aula(ElementoDatabaseConStorico):
 
 
 class Classe(ElementoDatabaseConStorico):
+    TABLENAME = 'classe'
+    KEY = 'nome'
+
+    def load():
+        classi = database.get(Classe.TABLENAME)
+        classi.key = Classe.KEY
+
+        for classe in classi:
+            classe['aule_ospitanti'] = []
+
+        for relazione in database.get('aula_ospita_classe'):
+            classi[relazione['nome_classe']]['aule_ospitanti'].append(relazione['numero_aula'])
+
+        return classi
+
     @beartype
     def __init__(self, nome: str, aule_ospitanti: List[Aula], cancellato: bool):
         super(Classe, self).__init__(cancellato)
@@ -281,6 +296,15 @@ class Classe(ElementoDatabaseConStorico):
 
 
 class Docente(ElementoDatabaseConStorico):
+    TABLENAME = 'docente'
+    KEY = ('nome', 'cognome')
+
+    def load():
+        docenti = database.get(Docente.TABLENAME)
+        docenti.key = Docente.KEY
+
+        return docenti
+
     @beartype
     def __init__(self, nome: str, cognome: str, cancellato: bool):
         super(Docente, self).__init__(cancellato)
@@ -308,6 +332,15 @@ class Docente(ElementoDatabaseConStorico):
 
 
 class OraPredefinita(ElementoDatabase):
+    TABLENAME = 'ora_predefinita'
+    KEY = 'numero'
+
+    def load():
+        ore_predefinite = database.get(OraPredefinita.TABLENAME)
+        ore_predefinite.key = OraPredefinita.KEY
+
+        return ore_predefinite
+
     @beartype
     def __init__(self, numero: int, ora_inizio: time, ora_fine: time):
         super(OraPredefinita, self).__init__()
@@ -336,6 +369,12 @@ class OraPredefinita(ElementoDatabase):
 
 
 class Sostituzione(ElementoDatabaseConStorico):
+    TABLENAME = 'sostituzione'
+    KEY = 'id'
+
+    def load():
+        return database.get(Sostituzione.TABLENAME)
+
     @beartype
     def __init__(
         self,
@@ -366,6 +405,12 @@ class Sostituzione(ElementoDatabaseConStorico):
 
 
 class Evento(ElementoDatabaseConStorico):
+    TABLENAME = 'evento'
+    KEY = 'id'
+
+    def load():
+        return database.get(Evento.TABLENAME)
+
     @beartype
     def __init__(
         self,
@@ -386,6 +431,12 @@ class Evento(ElementoDatabaseConStorico):
 
 
 class Notizia(ElementoDatabaseConStorico):
+    TABLENAME = 'notizia'
+    KEY = 'id'
+
+    def load():
+        return database.get(Notizia.TABLENAME)
+
     @beartype
     def __init__(
         self,

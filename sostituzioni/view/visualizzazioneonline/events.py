@@ -14,3 +14,4 @@ def evento(data):
 @socketio.on('connect')
 def connect():
     emit('lista sostituzioni', sostituzioni())
+    # emit('lista eventi', eventi())

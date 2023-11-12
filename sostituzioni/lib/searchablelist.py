@@ -1,5 +1,5 @@
 from beartype._decor.decormain import beartype
-from beartype.typing import List
+from beartype.typing import List, Tuple
 
 
 class SearchableList(List):
@@ -8,7 +8,7 @@ class SearchableList(List):
     """
 
     @beartype
-    def __init__(self, key_name: str = 'id', values: list | None = None):
+    def __init__(self, key_name: str | Tuple = 'id', values: list | None = None):
         super(SearchableList, self).__init__()
 
         self.key = key_name
@@ -16,17 +16,33 @@ class SearchableList(List):
             self.extend(values)
 
     def __getitem__(self, id):
-        for element in self:
-            if getattr(element, self.key) == id:
-                return element
+        return self.get(id)
 
-        return None
+    def get(self, id, key: str | Tuple | None = None):
+        if key is None:
+            key = self.key
 
-    def get(self, id, key_name):
-        # todo complete, get ma con una key personalizzata
-        for element in self:
-            if getattr(element, self.key) == id:
-                return element
+        if isinstance(key, str):
+            for element in self:
+                if isinstance(element, dict):
+                    if element[key] == id:
+                        return element
+                elif isinstance(element, object):
+                    if getattr(element, key) == id:
+                        return element
+                else:
+                    raise TypeError(f'SearchableList.get: non è possibile ricercare elementi di tipo {type(element)}')
+
+        elif isinstance(key, Tuple):
+            for element in self:
+                if isinstance(element, dict):
+                    if all(element[k] == v for k, v in zip(key, id)):
+                        return element
+                elif isinstance(element, object):
+                    if all(getattr(element, k) == v for k, v in zip(key, id)):
+                        return element
+                else:
+                    raise TypeError(f'SearchableList.get: non è possibile ricercare elementi di tipo {type(element)}')
 
         return None
 
@@ -39,5 +55,15 @@ class SearchableList(List):
 
 
 class Test:
-    def __init__(self) -> None:
-        self.aa = 'pasta'
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
+
+    def __repr__(self):
+        return f'{self.a} {self.b}'
+
+
+if __name__ == '__main__':
+    a = SearchableList(key_name='a', values=[Test('ciao', 'buon'), Test('hello', 'good')])
+    print(a.get('ciao'))
+    print(a.get(('ciao', 'a'), ('a', 'b')))

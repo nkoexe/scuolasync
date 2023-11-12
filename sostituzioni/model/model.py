@@ -13,20 +13,16 @@ def load(data: ElementoDatabase, filtri=None):
 
 
 def sostituzioni():
-    return load(Aula)
+    return load(Sostituzione)
 
 
-# print(database.get('aula_ospita_classe'))
-
-
+# from time import time
 # print('start', time())
 # total = 0
-
 # for i in range(10000):
 #     start_time = time()
 #     database.get('permesso', where=f'nome="permesso{i}"')
 #     end_time = time()
 #     total += end_time - start_time
-
 # print('total', total)
 # print('average', total / 10000)
