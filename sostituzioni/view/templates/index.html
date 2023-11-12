@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Sostituzioni</title>
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"></link> -->
     <script>
       var socket = io();
       socket.on('resp', (data) => {
@@ -12,14 +14,25 @@
       })
     </script>
     <!-- <script src="{{ url_for('static', filename='scripts/logout.js') }}"></script> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/index.css') }}">
   </head>
   <body>
-    <h1>Sostituzioni</h1>
-    <button onclick="location.href=`{{ url_for('auth.logout')}}`">Logout</button>
-    <button onclick="location.href=`{{ url_for('impostazioni.main')}}`">Impostazioni</button>
-    <button onclick="socket.emit('evento', {ciao:'ok'})">Test socket</button>
-    <ul id="sostituzioni">
-    </ul>
+    <div id="main-container">
+      <div id="header" class="frame">
+        <h1>Sostituzioni</h1>
+        <button onclick="location.href=`{{ url_for('auth.logout')}}`">Logout</button>
+        <button onclick="location.href=`{{ url_for('impostazioni.main')}}`">Impostazioni</button>
+        <button onclick="socket.emit('test', {ciao:'ok'})">Test socket</button></div>
+      <div id="eventi-frame" class="frame">eventi</div>
+      <div id="sostituzioni-frame" class="frame">
+        <div id="sostituzioni-filtri-container">filtri delle sostituzioni</div>
+        <div id="sostituzioni-container">
+          sostituzioni
+          <ul id="sostituzioni-lista">
+          </ul>
+        </div>
+      </div>
+    </div>
     <script src="{{url_for('static', filename='scripts/sostituzioni.js')}}"></script>
   </body>
 </html>

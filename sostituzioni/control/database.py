@@ -35,9 +35,9 @@ class Database:
             self.connection.commit()
             self.cursor.close()
             self.connection.close()
+            self.connection = None
 
     def execute(self, query: str, values: List | None = None):
-        self.connect()
         try:
             if values is not None:
                 self.cursor.execute(query, list(values))
@@ -75,9 +75,14 @@ class Database:
         if limit is not None:
             query += f' LIMIT {limit}'
 
+        self.connect()
         self.execute(query)
 
-        return [dict(row) for row in self.cursor.fetchall()]
+        result = [dict(row) for row in self.cursor.fetchall()]
+
+        self.close()
+
+        return result
 
     @beartype
     def insert(self, table: str, **data):
@@ -91,7 +96,9 @@ class Database:
 
         query = f'INSERT INTO {table} ({columns}) VALUES({values});'
 
+        self.connect()
         self.execute(query, data.values())
+        self.close()
 
     @beartype
     def update(self, table: str, where: str | Tuple[str] | None = None, **values):
@@ -106,7 +113,9 @@ class Database:
 
             query += f' WHERE {where}'
 
+        self.connect()
         self.execute(query)
+        self.close()
 
     @beartype
     def delete(self, table: str, where: str | Tuple[str]):
@@ -115,7 +124,9 @@ class Database:
 
         query = f'DELETE FROM {table} WHERE {where}'
 
+        self.connect()
         self.execute(query)
+        self.close()
 
     # def load_all(self):
     #     aule = SearchableList('numero')
@@ -168,6 +179,9 @@ class ElementoDatabase:
     def __init__(self):
         super().__init__()
 
+    def load(self, table: str):
+        return database.get(table)
+
     def modifica(self):
         pass
 
@@ -193,8 +207,10 @@ class ElementoDatabaseConStorico(ElementoDatabase):
 
 
 class Aula(ElementoDatabaseConStorico):
+    TABLENAME = 'aula'
+
     def load():
-        return database.get('aula')
+        return database.get(Aula.TABLENAME)
 
     @beartype
     def __init__(self, numero: str, piano: str, cancellato: bool):

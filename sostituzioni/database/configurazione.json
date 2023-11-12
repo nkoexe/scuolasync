@@ -26,7 +26,7 @@
         "In Sviluppo"
       ],
       "default": 0,
-      "valore": 0
+      "valore": 2
     },
     "maintenancemsg": {
       "titolo": "Messaggio di manutenzione",
@@ -73,13 +73,15 @@
     "rootpath": {
       "titolo": "Percorso radice - Root",
       "descrizione": "Percorso della cartella nella quale sono posizionati i file di questo sistema.",
-      "disabilitato": true,
       "sezione": "percorsi",
+      "disabilitato": true,
       "tipo": "percorso",
       "radice": 0,
-      "scelte_radice": ["/"],
+      "scelte_radice": [
+        "/"
+      ],
       "default": "",
-      "valore": ""
+      "valore": "/home/nxco/Proj/sostituzioni/sostituzioni"
     },
     "databasepath": {
       "titolo": "Posizione database",
@@ -88,7 +90,10 @@
       "sezione": "percorsi",
       "tipo": "percorso",
       "radice": 1,
-      "scelte_radice": ["/", "%ROOT%"],
+      "scelte_radice": [
+        "/",
+        "%ROOT%"
+      ],
       "default": "database/test.db",
       "valore": "database/test.db"
     }

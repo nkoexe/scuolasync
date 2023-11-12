@@ -8,9 +8,7 @@ from json import load, dump
 from beartype._decor.decormain import beartype
 from beartype.typing import List, Dict, Any
 
-# from sostituzioni.logger import logger
-import logging as logger
-
+from sostituzioni.logger import logger
 from sostituzioni.lib.searchablelist import SearchableList
 
 
@@ -56,11 +54,12 @@ class Opzione:
     def __init__(self, id: str, dati: Dict):
         self.id = id
 
-        self.titolo = dati.get('titolo')
-        self.descrizione = dati.get('descrizione')
-        self.sezione = dati.get('sezione')
+        self.titolo: str = dati.get('titolo')
+        self.descrizione: str = dati.get('descrizione')
+        self.sezione: str = dati.get('sezione')
+        self.disabilitato: bool = dati.get('disabilitato')
 
-        self.tipo = dati.get('tipo')
+        self.tipo: str = dati.get('tipo')
 
         match self.tipo:
 
@@ -165,6 +164,7 @@ class Opzione:
             'titolo': self.titolo,
             'descrizione': self.descrizione,
             'sezione': self.sezione,
+            'disabilitato': self.disabilitato,
             'tipo': self.tipo
         }
 
@@ -204,8 +204,8 @@ class Opzione:
             case self.PERCORSO:
                 dati['radice'] = self.radice
                 dati['scelte_radice'] = self.scelte_radice
-                dati['default'] = self.default
-                dati['valore'] = self.valore
+                dati['default'] = str(self.default)
+                dati['valore'] = str(self.valore)
 
         return dati
 

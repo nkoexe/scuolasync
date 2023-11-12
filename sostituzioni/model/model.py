@@ -8,12 +8,12 @@ from sostituzioni.control.database import (database, ElementoDatabase,
                                            VisualizzazioneOnline, VisualizzazioneFisica)
 
 
-def load(data: ElementoDatabase):
+def load(data: ElementoDatabase, filtri=None):
     return data.load()
 
 
 def sostituzioni():
-    return load(Sostituzione)
+    return load(Aula)
 
 
 # print(database.get('aula_ospita_classe'))
