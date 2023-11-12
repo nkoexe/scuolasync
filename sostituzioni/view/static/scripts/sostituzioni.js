@@ -2,22 +2,22 @@ const sostituzione_template = `
 <li>
 <div class="sostituzione">
   <div class="sostituzione-data">
-    <p>{data}</p>
+    <span>{data}</span>
   </div>
   <div class="sostituzione-data sostituzione-ora">
-    <p>{ora}</p>
+    <span>{ora}</span>
   </div>
   <div class="sostituzione-data sostituzione-classe">
-    <p>{nome_classe}</p>
+    <span>{nome_classe}</span>
   </div>
   <div class="sostituzione-data sostituzione-aula">
-    <p>{numero_aula}</p>
+    <span>{numero_aula}</span>
   </div>
   <div class="sostituzione-data sostituzione-docente">
-    <p>{nome_docente} {cognome_docente}</p>
+    <span>{nome_docente} {cognome_docente}</span>
   </div>
   <div class="sostituzione-data sostituzione-note">
-    <p>{note}</p>
+    <span>{note}</span>
   </div>
   <div class="sostituzione-pulsanti">
     <button>Modifica</button>
@@ -49,8 +49,8 @@ socket.on('lista sostituzioni', (data) => {
     add_sostituzione(element.id, element.pubblicato, element.cancellato, element.data, element.ora_inizio, element.ora_fine, element.numero_ora_predefinita, element.numero_aula, element.nome_classe, element.nome_docente, element.cognome_docente, element.note)
   })
 
+  add_sostituzione(0, 0, 0, 'data', 1, 1, 4, 'aula', 'classe', 'ciccio', 'bombo', 'questa è una nota. che palle. persona del futuro, ciao. è il 12 novembre e sono ancora sano di mente.')
 
-  add_sostituzione(0, 0, 0, 'djsaiodnmsioadj isad s')
   for (let index = 0; index < 50; index++) {
     add_sostituzione('test')
   }

@@ -142,9 +142,12 @@ body {
 
 /* SOSTITUZIONI */
 #sostituzioni-container {
+    overflow: auto;
     height: 100%;
     max-height: 100%;
-    overflow: auto;
+    min-width: 900px;
+    /* questo min-width è stato messo sia per mantenere spazio per la lettura chiara dei dati, sia perché i filtri non erano allineati con i dati
+    todo: rimuovere e cercare di rendere responsive l'area filtri */
 }
 
 
