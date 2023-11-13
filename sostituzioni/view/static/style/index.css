@@ -13,6 +13,10 @@
 
 } */
 
+* {
+    box-sizing: border-box;
+}
+
 html,
 body {
     margin: 0;
@@ -140,6 +144,23 @@ body {
     flex: 1;
 }
 
+#sostituzioni-filtri-container .sostituzioni-filtri-ricerca {
+    width: 100%;
+    height: 100%;
+    padding: 0.5rem;
+    /* box-shadow: 0 2px 10px 0px #00000040; */
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+#sostituzioni-filtri-container .sostituzioni-filtri-input {
+    width: 100%;
+    height: 80%;
+    padding: 10px 10px;
+    outline: none;
+    border: none;
+}
+
 /* SOSTITUZIONI */
 #sostituzioni-container {
     overflow: auto;
@@ -154,26 +175,27 @@ body {
 /* LISTA SOSTITUZIONI */
 #sostituzioni-lista {
     list-style-type: none;
-    margin: 0;
+    box-sizing: border-box;
     padding: 0;
+    margin: 0;
+    margin-left: 0.5vw;
 }
 
 #sostituzioni-lista li {
     position: relative;
     width: 100%;
-    min-height: 2.5rem;
-    height: 2.5rem;
 }
 
 /* SINGOLA SOSTITUZIONE */
 #sostituzioni-lista .sostituzione {
     display: flex;
     flex-wrap: nowrap;
-    align-items: center;
+    align-items: stretch;
     width: 100%;
-    height: 100%;
+    min-height: 2.5rem;
+    max-height: 4rem;
     background-color: var(--color-sostituzioni-lista2);
-    border-radius: 1rem;
+    border-radius: 0;
 }
 
 /* colori alternati */
@@ -182,7 +204,7 @@ body {
 }
 
 #sostituzioni-lista .sostituzione div.sostituzione-data {
-    height: 100%;
+    overflow: auto;
     border-right: 1px solid var(--color-sostituzioni-lista1);
 }
 
@@ -195,13 +217,13 @@ body {
 }
 
 /* fix radius del primo elemento a sinistra */
-#sostituzioni-lista .sostituzione div.sostituzione-data :first-of-type {
+#sostituzioni-lista .sostituzione div.sostituzione-data:first-of-type {
     border-top-left-radius: inherit;
     border-bottom-left-radius: inherit;
 }
 
 /* e dell'ultimo a destra */
-#sostituzioni-lista .sostituzione div.sostituzione-data :last-of-type {
+#sostituzioni-lista .sostituzione div.sostituzione-data:last-of-type {
     border-top-right-radius: inherit;
     border-bottom-right-radius: inherit;
     border-right: none;
