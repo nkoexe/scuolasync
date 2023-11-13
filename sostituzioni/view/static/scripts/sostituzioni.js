@@ -30,14 +30,6 @@ const sostituzione_template = `
 let lista_sostituzioni = []
 let lista_sostituzioni_visualizzate = []
 
-let lista_classi = new Index()
-let lista_aule = new Index()
-let lista_docenti = new Index()
-
-lista_aule.add(0, '5lsa')
-lista_aule.add(1, '4lsa')
-
-
 
 const sostituzioni_container = document.getElementById('sostituzioni-lista')
 
@@ -57,7 +49,7 @@ function add_sostituzione(id, pubblicato, cancellato, data, ora_inizio, ora_fine
 
 function modifica_sostituzione(id) {
   let sostituzione = lista_sostituzioni.find(element => element.id === id)
-  console.log('modifica sostituzione ' + id)
+  console.log('modifica sostituzione ' + sostituzione.id)
 }
 function duplica_sostituzione(id) {
   console.log('duplica sostituzione ' + id)
@@ -67,6 +59,7 @@ function elimina_sostituzione(id) {
 }
 
 function refresh_sostituzioni() {
+  sostituzioni_container.innerHTML = ''
   lista_sostituzioni_visualizzate.forEach(element => {
     add_sostituzione(element.id, element.pubblicato, element.cancellato, element.data, element.ora_inizio, element.ora_fine, element.numero_ora_predefinita, element.numero_aula, element.nome_classe, element.nome_docente, element.cognome_docente, element.note)
   })
@@ -77,14 +70,12 @@ function refresh_sostituzioni() {
   // }
 }
 
+socket.on('lista eventi', (data) => { })
+
 socket.on('lista sostituzioni', (data) => {
-  lista_sostituzioni = List(data)
+  lista_sostituzioni = data
   lista_sostituzioni_visualizzate = data
   refresh_sostituzioni()
 })
 
-socket.on('lista aule', (data) => {
-  lista_aule.forEach(element => {
-    console.log(element)
-  })
-})
+socket.on('lista notizie', (data) => { })

@@ -11,7 +11,6 @@
     <script>
       var socket = io();
     </script>
-    <script src="https://cdn.jsdelivr.net/gh/nextapps-de/flexsearch@0.7.31/dist/flexsearch.compact.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script> -->
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"></link> -->
     <!-- <script src="{{ url_for('static', filename='scripts/logout.js') }}"></script> -->
@@ -32,32 +31,42 @@
           </div>
           <div id="sostituzioni-filtro-ora">
             <div class="sostituzioni-filtri-ricerca">
-              <input type="text" class="sostituzioni-filtri-input" placeholder="Ora" />
-              <ul class="sostituzioni-filtri-suggerimenti"></ul>
+              <input type="text" id="sostituzioni-filtri-input-ora" class="sostituzioni-filtri-input" placeholder="Ora" />
+              <div id="sostituzioni-filtri-suggerimenti-ora" class="sostituzioni-filtri-suggerimenti">
+                <ul></ul>
+              </div>
             </div>
           </div>
           <div id="sostituzioni-filtro-classe">
             <div class="sostituzioni-filtri-ricerca">
-              <input type="text" class="sostituzioni-filtri-input" placeholder="Classe" />
-              <ul class="sostituzioni-filtri-suggerimenti"></ul>
+              <input type="text" placeholder="Classe" />
+              <div>
+                <ul></ul>
+              </div>
             </div>
           </div>
           <div id="sostituzioni-filtro-aula">
             <div class="sostituzioni-filtri-ricerca">
-              <input type="text" class="sostituzioni-filtri-input" placeholder="Aula" />
-              <ul class="sostituzioni-filtri-suggerimenti"></ul>
+              <input type="text" id="sostituzioni-filtri-input-aula" class="sostituzioni-filtri-input" placeholder="Aula" />
+              <div id="sostituzioni-filtri-suggerimenti-aula" class="sostituzioni-filtri-suggerimenti">
+                <ul></ul>
+              </div>
             </div>
           </div>
           <div id="sostituzioni-filtro-docente">
             <div class="sostituzioni-filtri-ricerca">
-              <input type="text" class="sostituzioni-filtri-input" placeholder="Docente" />
-              <ul class="sostituzioni-filtri-suggerimenti"></ul>
+              <input type="text" id="sostituzioni-filtri-input-docente" class="sostituzioni-filtri-input" placeholder="Docente" />
+              <div id="sostituzioni-filtri-suggerimenti-docente" class="sostituzioni-filtri-suggerimenti">
+                <ul></ul>
+              </div>
             </div>
           </div>
           <div id="sostituzioni-filtro-note">
             <div class="sostituzioni-filtri-ricerca">
-              <input type="text" class="sostituzioni-filtri-input" placeholder="Note" />
-              <ul class="sostituzioni-filtri-suggerimenti"></ul>
+              <input type="text" id="sostituzioni-filtri-input-note" class="sostituzioni-filtri-input" placeholder="Note" />
+              <div id="sostituzioni-filtri-suggerimenti-note" class="sostituzioni-filtri-suggerimenti">
+                <ul></ul>
+              </div>
             </div>
           </div>
         </div>
@@ -67,7 +76,9 @@
         </div>
       </div>
     </div>
+    <script src="{{url_for('static', filename='scripts/fuzzyset.js')}}"></script>
     <script src="{{url_for('static', filename='scripts/sostituzioni.js')}}"></script>
+    <script src="{{url_for('static', filename='scripts/filtri_sostituzioni.js')}}"></script>
     <script src="{{url_for('static', filename='scripts/ui.js')}}"></script>
   </body>
 </html>

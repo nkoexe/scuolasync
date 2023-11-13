@@ -31,6 +31,12 @@ body {
     font-family: 'Gabarito', sans-serif;
 }
 
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
 /* SCROLLBAR */
 body {
     scrollbar-width: thin;
@@ -153,12 +159,22 @@ body {
     overflow: hidden;
 }
 
-#sostituzioni-filtri-container .sostituzioni-filtri-input {
+#sostituzioni-filtri-container .sostituzioni-filtri-ricerca input {
     width: 100%;
     height: 80%;
     padding: 10px 10px;
     outline: none;
     border: none;
+}
+
+#sostituzioni-filtri-container .sostituzioni-filtri-ricerca div {
+    display: none;
+    position: absolute;
+    overflow: auto;
+    z-index: 10;
+    width: 15rem;
+    max-height: 20rem;
+    background-color: white;
 }
 
 /* SOSTITUZIONI */
@@ -174,10 +190,6 @@ body {
 
 /* LISTA SOSTITUZIONI */
 #sostituzioni-lista {
-    list-style-type: none;
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
     margin-left: 0.5vw;
 }
 

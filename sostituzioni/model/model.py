@@ -12,8 +12,32 @@ def load(data: ElementoDatabase, filtri=None):
     return data.load()
 
 
+def aule():
+    return load(Aula)
+
+
+def classi():
+    return load(Classe)
+
+
+def docenti():
+    return load(Docente)
+
+
+def ore_predefinite():
+    return load(OraPredefinita)
+
+
 def sostituzioni():
     return load(Sostituzione)
+
+
+def eventi():
+    return load(Evento)
+
+
+def notizie():
+    return load(Notizia)
 
 
 # from time import time
