@@ -8,3 +8,4 @@
   - flask-wtf
   - oauthlib
   - beartype
+- Accertarsi che il file di configurazione e il database siano correttamente posizionati (al momento il sistema non si avvia altrimenti)
