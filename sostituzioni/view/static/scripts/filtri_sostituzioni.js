@@ -18,25 +18,36 @@ const ui_lista_classe = ui_dropdown_classe.children[0]
 
 function render_lista_filtri(ui_lista, lista, funzione) {
     ui_lista.innerHTML = ''
-    console.log('gang')
     lista.forEach((element) => {
-        ui_lista.innerHTML += '<li onclick="' + funzione + '"><span>' + element + '</span></li>'
+        ui_lista.innerHTML += '<li onclick="' + funzione + '(\'' + element + '\')"><span>' + element + '</span></li>'
     })
 }
 
-function filtra_classe(classe) {}
+function filtra_classe(classe) {
+    console.log('filtro classe ' + classe)
+}
 
+function genera_dropdown_classe() {
+    search = ui_input_classe.value
+    if (search.length == 0) {
+        render_lista_filtri(ui_lista_classe, lista_classi.values(), 'filtra_classe')
+    } else {
+        lista = lista_classi.get(search, [], .1).map(obj => obj[1])
+        render_lista_filtri(ui_lista_classe, lista, null)
+    }
+}
 ui_input_classe.onfocus = (event) => {
     ui_dropdown_classe.style.display = 'block'
-    render_lista_filtri(ui_lista_classe, lista_classi.values(), null)
+    genera_dropdown_classe()
 }
 ui_input_classe.onblur = (event) => {
+    console.log(event)
     ui_dropdown_classe.style.display = 'none'
 }
 ui_input_classe.oninput = (event) => {
-    lista = lista_classi.get(ui_input_classe.value, [], .1).map(obj => obj[1])
-    render_lista_filtri(ui_lista_classe, lista, null)
+    genera_dropdown_classe()
 }
+
 
 // socket.on('lista aule', (data) => {
 //     lista_aule = []

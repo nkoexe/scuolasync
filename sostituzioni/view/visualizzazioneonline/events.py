@@ -1,5 +1,4 @@
 from flask_socketio import emit
-
 from sostituzioni.model.model import aule, classi, docenti, ore_predefinite, sostituzioni, eventi, notizie
 from sostituzioni.view import socketio
 from sostituzioni.logger import logger
