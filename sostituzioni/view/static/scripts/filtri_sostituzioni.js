@@ -16,21 +16,26 @@ const ui_lista_classe = ui_dropdown_classe.children[0]
 // const input_note = document.getElementById('sostituzioni-filtri-input-note')
 // const dropdown_note = document.getElementById('sostituzioni-filtri-suggerimenti-note')
 
+function render_lista_filtri(ui_lista, lista, funzione) {
+    ui_lista.innerHTML = ''
+    console.log('gang')
+    lista.forEach((element) => {
+        ui_lista.innerHTML += '<li onclick="' + funzione + '"><span>' + element + '</span></li>'
+    })
+}
+
+function filtra_classe(classe) {}
+
 ui_input_classe.onfocus = (event) => {
     ui_dropdown_classe.style.display = 'block'
-    ui_lista_classe.innerHTML = ''
-    lista_classi.values().forEach((element) => {
-        ui_lista_classe.innerHTML += '<li>' + element + '</li>'
-    })
+    render_lista_filtri(ui_lista_classe, lista_classi.values(), null)
 }
 ui_input_classe.onblur = (event) => {
     ui_dropdown_classe.style.display = 'none'
 }
 ui_input_classe.oninput = (event) => {
-    ui_lista_classe.innerHTML = ''
-    lista_classi.get(ui_input_classe.value, []).forEach((element) => {
-        ui_lista_classe.innerHTML += '<li>' + element[1] + '</li>'
-    })
+    lista = lista_classi.get(ui_input_classe.value, [], .1).map(obj => obj[1])
+    render_lista_filtri(ui_lista_classe, lista, null)
 }
 
 // socket.on('lista aule', (data) => {
