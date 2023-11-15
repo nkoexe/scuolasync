@@ -189,7 +189,8 @@ body {
     padding: 0 1rem;
 }
 
-#sostituzioni-filtri-container .sostituzioni-filtri-ricerca li:hover {
+#sostituzioni-filtri-container .sostituzioni-filtri-ricerca li:hover,
+#sostituzioni-filtri-container .sostituzioni-filtri-ricerca li.lista_current {
     background-color: #cccccc;
 }
 
