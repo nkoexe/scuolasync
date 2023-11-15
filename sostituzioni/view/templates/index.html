@@ -1,30 +1,44 @@
 <!DOCTYPE html>
 <html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sostituzioni</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-    <script>
-      var socket = io();
-    </script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script> -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"></link> -->
-    <!-- <script src="{{ url_for('static', filename='scripts/logout.js') }}"></script> -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/index.css') }}">
-  </head>
-  <body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sostituzioni</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script> -->
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"></link> -->
+  <!-- <script src="{{ url_for('static', filename='scripts/logout.js') }}"></script> -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/index.css') }}">
+</head>
+
+<body>
+  <div id="header">
+    <img id="header-logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Gandhi">
+    <div id="header-separator"></div>
+    <h1 id="header-titolo">Gestione Digitale</h1>
+    <div id="header-pulsantitest">
+      <button onclick="location.href=`{{ url_for('auth.logout')}}`">Logout</button>
+      <button onclick="location.href=`{{ url_for('impostazioni.main')}}`">Impostazioni</button>
+      <button onclick="socket.emit('test', {ciao:'ok'})">Test socket</button>
+    </div>
+  </div>
+  <div id="main-window">
     <div id="main-container">
-      <div id="header" class="frame">
-        <h1>Sostituzioni</h1>
-        <button onclick="location.href=`{{ url_for('auth.logout')}}`">Logout</button>
-        <button onclick="location.href=`{{ url_for('impostazioni.main')}}`">Impostazioni</button>
-        <button onclick="socket.emit('test', {ciao:'ok'})">Test socket</button></div>
-      <div id="eventi-frame" class="frame">eventi</div>
+      <div id="eventi-frame" class="frame">
+        <h2>Eventi</h2>
+      </div>
+      <div id="notizie-frame" class="frame">
+        <h2>Notizie</h2>
+      </div>
       <div id="sostituzioni-frame" class="frame">
+        <div id="header-sostituzioni">
+          <h2 id="header-sostituzioni-titolo">Sostituzioni</h2>
+          <div id="pulsante-nuova-sostituzione" onclick="mostra_gestione_dati()"><span class="icon">+</span><span>Nuova</span></div>
+        </div>
         <div id="sostituzioni-filtri-container">
           <div id="sostituzioni-filtro-data">
             <span>data</span>
@@ -48,7 +62,7 @@
           <div id="sostituzioni-filtro-aula">
             <div class="sostituzioni-filtri-ricerca">
               <input type="text" id="sostituzioni-filtri-input-aula" class="sostituzioni-filtri-input" placeholder="Aula" />
-              <div id="sostituzioni-filtri-suggerimenti-aula" class="sostituzioni-filtri-suggerimenti">
+              <div class="sostituzioni-filtri-suggerimenti">
                 <ul></ul>
               </div>
             </div>
@@ -56,7 +70,7 @@
           <div id="sostituzioni-filtro-docente">
             <div class="sostituzioni-filtri-ricerca">
               <input type="text" id="sostituzioni-filtri-input-docente" class="sostituzioni-filtri-input" placeholder="Docente" />
-              <div id="sostituzioni-filtri-suggerimenti-docente" class="sostituzioni-filtri-suggerimenti">
+              <div class="sostituzioni-filtri-suggerimenti">
                 <ul></ul>
               </div>
             </div>
@@ -64,7 +78,7 @@
           <div id="sostituzioni-filtro-note">
             <div class="sostituzioni-filtri-ricerca">
               <input type="text" id="sostituzioni-filtri-input-note" class="sostituzioni-filtri-input" placeholder="Note" />
-              <div id="sostituzioni-filtri-suggerimenti-note" class="sostituzioni-filtri-suggerimenti">
+              <div class="sostituzioni-filtri-suggerimenti">
                 <ul></ul>
               </div>
             </div>
@@ -76,9 +90,18 @@
         </div>
       </div>
     </div>
-    <script src="{{url_for('static', filename='scripts/fuzzyset.js')}}"></script>
-    <script src="{{url_for('static', filename='scripts/sostituzioni.js')}}"></script>
-    <script src="{{url_for('static', filename='scripts/filtri_sostituzioni.js')}}"></script>
-    <script src="{{url_for('static', filename='scripts/ui.js')}}"></script>
-  </body>
+    <div id="gestione-dati-container">
+      <div id="gestione-dati-frame">
+        test
+        <div onclick="nascondi_gestione_dati()"></div>
+      </div>
+    </div>
+  </div>
+  <script src="{{url_for('static', filename='scripts/fuzzyset.js')}}"></script>
+  <script src="{{url_for('static', filename='scripts/sostituzioni.js')}}"></script>
+  <script src="{{url_for('static', filename='scripts/filtri_sostituzioni.js')}}"></script>
+  <script src="{{url_for('static', filename='scripts/ui.js')}}"></script>
+  <script src="{{url_for('static', filename='scripts/onlinesocket.js')}}"></script>
+</body>
+
 </html>

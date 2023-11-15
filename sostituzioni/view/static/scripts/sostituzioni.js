@@ -69,13 +69,3 @@ function refresh_sostituzioni() {
   //   add_sostituzione()
   // }
 }
-
-socket.on('lista eventi', (data) => { })
-
-socket.on('lista sostituzioni', (data) => {
-  lista_sostituzioni = data
-  lista_sostituzioni_visualizzate = data
-  refresh_sostituzioni()
-})
-
-socket.on('lista notizie', (data) => { })
