@@ -1,18 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
-  </head>
-  <body>
-    <h1>Login</h1>
-    <br />
-    <form action="" method="post">
-      <input type="hidden" name="csrf_token" value = "{{ csrf_token() }}" /> 
-      <input type="text" name="username" />
-      <input type="password" name="password" />
-      <input type="submit" value="Login" />
-    </form>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <script src="https://accounts.google.com/gsi/client" async></script>
+  <script src="{{ url_for('static', filename='scripts/login.js') }}"></script>
+</head>
+
+<body>
+  <h1>Login</h1>
+  <br />
+  <form action="" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <input type="text" name="username" />
+    <input type="password" name="password" />
+    <input type="submit" value="Login" />
+  </form>
+  <br>
+  <div id="g_id_onload" data-client_id="985141409906-s8ghsaeeqko93ngldqv8l728oidab0k5.apps.googleusercontent.com" data-context="signin" data-ux_mode="popup" data-callback="submit_login" data-auto_prompt="false"></div>
+  <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="continue_with" data-size="large" data-logo_alignment="left" data-width="250"></div>
+</body>
+
 </html>
