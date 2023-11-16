@@ -129,6 +129,11 @@ class Filtro {
         }
         this.render_lista()
     }
+
+    rimuovi_ordinamento() {
+        this.ui_ordinamento_frecciasu.classList.remove('selected')
+        this.ui_ordinamento_frecciagiu.classList.remove('selected')
+    }
 }
 
 function sostituzioni_applica_filtri() {
@@ -154,7 +159,11 @@ function sostituzioni_applica_filtri() {
 }
 
 function sostituzioni_ordina() {
-    
+    if (!ore.ordina) ore.rimuovi_ordinamento()
+    if (!classi.ordina) classi.rimuovi_ordinamento()
+    if (!aule.ordina) aule.rimuovi_ordinamento()
+    if (!docenti.ordina) docenti.rimuovi_ordinamento()
+
     if (ore.ordina) {
         if (ore.verso_ordinamento === 1)
             lista_sostituzioni_visualizzate.sort((a, b) => b.ora_predefinita - a.ora_predefinita)

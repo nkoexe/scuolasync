@@ -4,6 +4,10 @@
       "titolo": "Sistema",
       "descrizione": ""
     },
+    "visualizzazioneonline": {
+      "titolo": "Visualizzazione Online",
+      "descrizione": ""
+    },
     "test": {
       "titolo": "Test",
       "descrizione": "boh opzioni di test per testare you know il sistema"
@@ -17,8 +21,8 @@
     "sysstate": {
       "titolo": "Stato del sistema",
       "descrizione": "",
-      "disabilitato": false,
       "sezione": "sistema",
+      "disabilitato": false,
       "tipo": "selezione",
       "scelte": [
         "In Produzione",
@@ -31,18 +35,28 @@
     "maintenancemsg": {
       "titolo": "Messaggio di manutenzione",
       "descrizione": "Testo che verr\u00e0 mostrato agli utenti che cercano di accedere al sito quando esso \u00e8 in modalit\u00e0 manutenzione.",
-      "disabilitato": false,
       "sezione": "sistema",
+      "disabilitato": false,
       "tipo": "testo",
       "lunghezza_massima": null,
       "default": "Sistema in manutenzione",
       "valore": "Sistema attualmente in manutenzione."
     },
+    "nosostituzionimsg": {
+      "titolo": "Errore nessuna sostituzione",
+      "descrizione": "Testo che verr\u00e0 mostrato quando non ci sono sostituzioni da visualizzare per i filtri che l'utente ha impostato.",
+      "sezione": "visualizzazioneonline",
+      "disabilitato": false,
+      "tipo": "testo",
+      "lunghezza_massima": null,
+      "default": "Nessuna sostituzione per i filtri impostati.",
+      "valore": "Nessuna sostituzione per i filtri impostati :/"
+    },
     "hotreload": {
       "titolo": "Hot reload",
       "descrizione": "Applica immediatamente le impostazioni cambiate. Utile per vedere istantaneamente i cambiamenti di colori e font, ma sconsigliato in ogni altro caso. (test checkbox, non implementare seriamente)",
-      "disabilitato": false,
       "sezione": "test",
+      "disabilitato": false,
       "tipo": "booleano",
       "default": false,
       "valore": true
@@ -50,8 +64,8 @@
     "numeroebbasta": {
       "titolo": "Numero",
       "descrizione": "e basta",
-      "disabilitato": false,
       "sezione": "test",
+      "disabilitato": false,
       "tipo": "numero",
       "intervallo": null,
       "default": 2,
@@ -60,8 +74,8 @@
     "numero_intervallo": {
       "titolo": "NNumero",
       "descrizione": "Con intervallo tra -10 e 399",
-      "disabilitato": false,
       "sezione": "test",
+      "disabilitato": false,
       "tipo": "numero",
       "intervallo": [
         -10,
@@ -81,13 +95,13 @@
         "/"
       ],
       "default": "",
-      "valore": "/home/nxco/Proj/sostituzioni/sostituzioni"
+      "valore": "C:\\Users\\nicco\\Programming\\sostituzioni\\sostituzioni"
     },
     "databasepath": {
       "titolo": "Posizione database",
       "descrizione": "Percorso nel quale si trova il database del sistema.",
-      "disabilitato": false,
       "sezione": "percorsi",
+      "disabilitato": false,
       "tipo": "percorso",
       "radice": 1,
       "scelte_radice": [

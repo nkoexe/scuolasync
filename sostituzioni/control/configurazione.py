@@ -106,7 +106,7 @@ class Opzione:
                 logger.error(f'Nel caricamento della configurazione, opzione con id {self.id} non ha un tipo valido ({self.tipo})')
 
     def __repr__(self):
-        return 'Opzione ' + self.id
+        return self.valore
 
     @beartype
     def set(self, dati: Any):

@@ -212,6 +212,7 @@ body {
     height: 100%;
 }
 
+/* larghezza dei riquadri dei filtri, da matchare con i riquadri delle sostituzioni */
 #sostituzioni-filtro-data {
     width: 8rem;
 }
@@ -236,6 +237,7 @@ body {
     flex: 1;
 }
 
+/* SINGOLO FILTRO */
 #sostituzioni-filtri-container .sostituzioni-filtri-ricerca {
     display: flex;
     /* position: relative; */
@@ -259,6 +261,7 @@ body {
     color: #ffffffaa;
 }
 
+/* INDICATORE ORDINAMENTO */
 #sostituzioni-filtri-container .sostituzioni-ordinamento {
     height: 100%;
     width: 40px;
@@ -273,14 +276,14 @@ body {
     width: 0;
     height: 0;
     border: 6px solid transparent;
-    border-bottom-color: #ffffffbb;
+    border-bottom-color: #ffffff88;
 }
 
 #sostituzioni-filtri-container .sostituzioni-ordinamento .sostituzioni-ordinamento-arrowdown {
     width: 0;
     height: 0;
     border: 6px solid transparent;
-    border-top-color: #ffffffbb;
+    border-top-color: #ffffff88;
 }
 
 #sostituzioni-filtri-container .sostituzioni-ordinamento .sostituzioni-ordinamento-arrowup.selected {
@@ -292,6 +295,7 @@ body {
 }
 
 
+/* DROPDOWN SUGGERIMENTI */
 #sostituzioni-filtri-container .sostituzioni-filtri-dropdown {
     display: none;
     position: absolute;
@@ -335,6 +339,18 @@ body {
     todo: rimuovere e cercare di rendere responsive l'area filtri */
 }
 
+#sostituzioni-messaggio-informativo {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+#sostituzioni-messaggio-informativo span {
+    margin: auto;
+    font-size: 20px;
+    color: #ffffffad;
+}
+
 
 /* LISTA SOSTITUZIONI */
 #sostituzioni-lista {
@@ -364,6 +380,7 @@ body {
 }
 
 #sostituzioni-lista .sostituzione div.sostituzione-data {
+    display: flex;
     overflow: auto;
     border-right: 1px solid var(--color-sostituzioni-lista1);
 }
@@ -372,9 +389,11 @@ body {
     border-right: 1px solid var(--color-sostituzioni-lista2);
 }
 
-#sostituzioni-lista .sostituzione p {
-    margin: 0;
+#sostituzioni-lista .sostituzione div.sostituzione-data span {
+    margin: auto;
+    margin-left: 10px;
 }
+
 
 /* fix radius del primo elemento a sinistra */
 #sostituzioni-lista .sostituzione div.sostituzione-data:first-of-type {
