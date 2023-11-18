@@ -10,54 +10,68 @@ opzione_selezione with context %}
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="{{ url_for('static', filename='scripts/impostazioni.js') }}" defer></script>
-  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-  <script>
-    var socket = io();
-  </script>
   <title>Impostazioni</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/impostazioni.css') }}">
+  <script src="{{ url_for('static', filename='scripts/impostazioni.js') }}" defer></script>
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
 </head>
 
 <body>
-  <h1>Impostazioni</h1>
-  <button onclick="location.href=`{{ url_for('online.index') }}`">Indietro</button>
-  <br>
-  {% for sezione in configurazione.sezioni %}
+  <div id="header">
+    <h1>Impostazioni</h1>
+  </div>
+
+  <!-- {% for sezione in configurazione.sezioni %}
   <a href="#{{sezione.id}}"><button>{{sezione.titolo}}</button></a>
-  {% endfor %}
-  <ul>
-    {% for sezione in configurazione.sezioni %}
-    <li id="{{sezione.id}}">
-      <h3>{{sezione.titolo}}</h3>
-      <p>{{sezione.descrizione}}</p>
-      <ul>
-        {% for opzione in configurazione.opzioni %}
-        {% if opzione.sezione == sezione.id %}
-        <li>
-          <h5>{{opzione.titolo}}</h5>
-          <p>{{opzione.descrizione}}</p>
-          {% if opzione.tipo == opzione.TESTO %}
-          {{ opzione_testo(opzione) }}
-          {% elif opzione.tipo == opzione.NUMERO %}
-          {{ opzione_numero(opzione) }}
-          {% elif opzione.tipo == opzione.NUMERO_UNITA %}
-          {{ opzione_numero_unita(opzione) }}
-          {% elif opzione.tipo == opzione.BOOLEANO %}
-          {{ opzione_checkbox(opzione) }}
-          {% elif opzione.tipo == opzione.COLORE %}
-          {{ opzione_colorpicker(opzione) }}
-          {% elif opzione.tipo == opzione.SELEZIONE %}
-          {{ opzione_selezione(opzione) }}
-          {% endif %}
-        </li>
-        {% endif %}
-        {% endfor %}
-      </ul>
-    </li>
-    {% endfor %}
-  </ul>
-  <button id="applica" onclick="applica()">Applica</button>
+  {% endfor %} -->
+  <div id="sezioni-container">
+    <ul id="sezioni-list">
+      {% for sezione in configurazione.sezioni %}
+      <li id="{{sezione.id}}" class="sezione">
+        <div class="sezione-header">
+          <h3 class="sezione-titolo">{{sezione.titolo}}</h3>
+          <p class="sezione-descrizione">{{sezione.descrizione}}</p>
+          <div class="sezione-header-icon"><span>＋</span></div>
+        </div>
+        <div class="opzioni-expandible">
+          <div class="opzioni-container">
+            <ul class="opzioni-lista">
+              {% for opzione in configurazione.opzioni %}
+              {% if opzione.sezione == sezione.id %}
+              <li class="opzione">
+                <h5 class="opzione-titolo">{{opzione.titolo}}</h5>
+                <p class="opzione-descrizione">{{opzione.descrizione}}</p>
+                {% if opzione.tipo == opzione.TESTO %}
+                {{ opzione_testo(opzione) }}
+                {% elif opzione.tipo == opzione.NUMERO %}
+                {{ opzione_numero(opzione) }}
+                {% elif opzione.tipo == opzione.NUMERO_UNITA %}
+                {{ opzione_numero_unita(opzione) }}
+                {% elif opzione.tipo == opzione.BOOLEANO %}
+                {{ opzione_checkbox(opzione) }}
+                {% elif opzione.tipo == opzione.COLORE %}
+                {{ opzione_colorpicker(opzione) }}
+                {% elif opzione.tipo == opzione.SELEZIONE %}
+                {{ opzione_selezione(opzione) }}
+                {% endif %}
+              </li>
+              <div class="opzioni-separator"></div>
+              {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div id="footer">
+    <button id="pulsante-applica" onclick="applica()">Applica</button>
+  </div>
   </form>
 </body>
 

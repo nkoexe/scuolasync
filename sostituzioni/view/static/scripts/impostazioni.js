@@ -1,4 +1,23 @@
-const pulsante_applica = document.getElementById("applica");
+const socket = io();
+
+const pulsante_applica = document.getElementById('applica');
+
+
+let sezioni = document.getElementsByClassName('sezione-header');
+
+for (let index = 0; index < sezioni.length; index++) {
+    sezioni[index].addEventListener('click', () => {
+        sezioni[index].classList.toggle('expanded');
+
+        let listaopzioni = sezioni[index].nextElementSibling;
+        if (listaopzioni.style.maxHeight) {
+            listaopzioni.style.maxHeight = null;
+        } else {
+            listaopzioni.style.maxHeight = listaopzioni.scrollHeight + 'px';
+        }
+    });
+}
+
 
 function mostra_pulsante_applica() {
     pulsante_applica.disabled = false;
