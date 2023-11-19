@@ -1,21 +1,31 @@
 {% macro opzione_testo(opzione) %}
-<div id="{{opzione.id}}" class="opzione-testo">
-  <input type="text" value="{{opzione.valore}}" onkeypress="mostra_pulsante_applica()">
+<div id="{{opzione.id}}" class="opzione opzione-testo">
+  <input type="text" value="{{opzione.valore}}" onkeypress="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %}>
 </div>
 {% endmacro %}
 
 {% macro opzione_numero(opzione) %}
-<div id="{{opzione.id}}"class="opzione-numero">
-  <input type="number" value="{{opzione.valore}}" {% if opzione.intervallo %}min={{opzione.intervallo[0]}} max={{opzione.intervallo[1]}}{% endif %} onkeypress="mostra_pulsante_applica()"/>
+<div id="{{opzione.id}}" class="opzione opzione-numero">
+  <input type="number" value="{{opzione.valore}}" {% if opzione.intervallo %}min={{opzione.intervallo[0]}} max={{opzione.intervallo[1]}}{% endif %} onkeypress="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %} />
 </div>
 {% endmacro %}
 
 {% macro opzione_numero_unita(opzione) %}
+<div id="{{opzione.id}}" class="opzione opzione-numero-unita">
+  <input type="number" value="{{opzione.valore}}" {% if opzione.intervallo %}min={{opzione.intervallo[0]}} max={{opzione.intervallo[1]}}{% endif %} onkeypress="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %} />
+  <div class="container-selezione">
+    <select onchange="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %}>
+      {% for optionindex in range(opzione.scelte_unita|length) %}
+      <option value="{{optionindex}}" {% if opzione.unita==optionindex %}selected{% endif %}>{{opzione.scelte_unita[optionindex]}}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
 {% endmacro %}
 
 {% macro opzione_checkbox(opzione) %}
-<div id="{{opzione.id}}" class="opzione-booleano">
-  <input type="checkbox" {% if opzione.valore %}checked{% endif %} onclick="mostra_pulsante_applica()"/>
+<div id="{{opzione.id}}" class="opzione opzione-booleano">
+  <input type="checkbox" {% if opzione.valore %}checked{% endif %} onclick="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %} />
 </div>
 {% endmacro %}
 
@@ -23,11 +33,24 @@
 {% endmacro %}
 
 {% macro opzione_selezione(opzione) %}
-<div id="{{opzione.id}}" class="opzione-selezione">
-  <select onchange="mostra_pulsante_applica()">
+<div id="{{opzione.id}}" class="opzione opzione-selezione container-selezione">
+  <select onchange="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %}>
     {% for optionindex in range(opzione.scelte|length) %}
-      <option value="{{optionindex}}" {% if opzione.valore==optionindex %}selected{% endif %}>{{opzione.scelte[optionindex]}}</option>
+    <option value="{{optionindex}}" {% if opzione.valore==optionindex %}selected{% endif %}>{{opzione.scelte[optionindex]}}</option>
     {% endfor %}
   </select>
+</div>
+{% endmacro %}
+
+{% macro opzione_percorso(opzione) %}
+<div id="{{opzione.id}}" class="opzione opzione-percorso">
+  <div class="container-selezione">
+    <select onchange="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %}>
+      {% for optionindex in range(opzione.scelte_radice|length) %}
+      <option value="{{optionindex}}" {% if opzione.radice==optionindex %}selected{% endif %}>{{opzione.scelte_radice[optionindex]}}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <input type="text" value="{{opzione.valore}}" onkeypress="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %} />
 </div>
 {% endmacro %}

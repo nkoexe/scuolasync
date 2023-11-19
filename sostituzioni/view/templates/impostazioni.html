@@ -3,7 +3,8 @@ opzione_numero,
 opzione_numero_unita,
 opzione_checkbox,
 opzione_colorpicker,
-opzione_selezione with context %}
+opzione_selezione,
+opzione_percorso with context %}
 <!DOCTYPE html>
 <html lang="it">
 
@@ -42,7 +43,7 @@ opzione_selezione with context %}
             <ul class="opzioni-lista">
               {% for opzione in configurazione.opzioni %}
               {% if opzione.sezione == sezione.id %}
-              <li class="opzione">
+              <li>
                 <h5 class="opzione-titolo">{{opzione.titolo}}</h5>
                 <p class="opzione-descrizione">{{opzione.descrizione}}</p>
                 {% if opzione.tipo == opzione.TESTO %}
@@ -57,6 +58,8 @@ opzione_selezione with context %}
                 {{ opzione_colorpicker(opzione) }}
                 {% elif opzione.tipo == opzione.SELEZIONE %}
                 {{ opzione_selezione(opzione) }}
+                {% elif opzione.tipo == opzione.PERCORSO %}
+                {{ opzione_percorso(opzione) }}
                 {% endif %}
               </li>
               <div class="opzioni-separator"></div>
@@ -70,7 +73,7 @@ opzione_selezione with context %}
     </ul>
   </div>
   <div id="footer">
-    <button id="pulsante-applica" onclick="applica()">Applica</button>
+    <button id="pulsante-applica" onclick="applica()" disabled>Applica</button>
   </div>
   </form>
 </body>

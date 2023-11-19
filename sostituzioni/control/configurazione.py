@@ -74,10 +74,10 @@ class Opzione:
                 self.valore: int | float = dati.get('valore')
 
             case self.NUMERO_UNITA:
-                self.intervallo: List[int] = dati.get('intervallo')
+                self.intervallo: List[int | None] = dati.get('intervallo')
                 self.scelte_unita: List[str] = dati.get('scelte_unita')
-                self.unita_default: str = dati.get('unita_default')
-                self.unita: str = dati.get('unita')
+                self.unita_default: int = dati.get('unita_default')
+                self.unita: int = dati.get('unita')
                 self.default: int | float = dati.get('default')
                 self.valore: int | float = dati.get('valore')
 
@@ -130,7 +130,7 @@ class Opzione:
             case self.NUMERO:
                 assert isinstance(dati, (int, float))
 
-                if (self.intervallo is not None) and not (self.intervallo[0] <= dati <= self.intervallo[1]):
+                if ((self.intervallo[0] is not None) and not (self.intervallo[0] <= dati)) and ((self.intervallo[1] is not None) and not (dati <= self.intervallo[1])):
                     logger.debug(f'Setter {self.id}, valore {dati} sfora l\'intervallo di {self.intervallo}')
                     return False
 
@@ -138,8 +138,19 @@ class Opzione:
                 return True
 
             case self.NUMERO_UNITA:
-                self.intervallo
-                self.scelte_unita
+                assert isinstance(dati, list)
+                assert len(dati) == 2
+                assert isinstance(dati[0], (int, float))
+                assert isinstance(dati[1], int)
+                assert 0 <= dati[1] < len(self.scelte_unita)
+
+                if ((self.intervallo[0] is not None) and not (self.intervallo[0] <= dati[0])) and ((self.intervallo[1] is not None) and not (dati[0] <= self.intervallo[1])):
+                    logger.debug(f'Setter {self.id}, valore {dati[0]} sfora l\'intervallo di {self.intervallo}')
+                    return False
+
+                self.valore = dati[0]
+                self.unita = dati[1]
+                return True
 
             case self.BOOLEANO:
                 assert isinstance(dati, bool)
@@ -151,12 +162,24 @@ class Opzione:
                 pass
 
             case self.SELEZIONE:
+                assert isinstance(dati, int)
+                assert 0 <= dati < len(self.scelte)
+
                 self.valore = dati
                 return True
 
             case self.PERCORSO:
+                assert isinstance(dati, list)
+                assert len(dati) == 2
+                assert isinstance(dati[0], int)
+                assert isinstance(dati[1], str)
+                assert 0 <= dati[0] < len(self.scelte_radice)
+
                 self.radice = dati[0]
                 self.valore = dati[1]
+
+                self.path = parsepath(self.scelte_radice[self.radice]) / parsepath(self.valore)
+
                 return True
 
     def esporta(self):
@@ -237,7 +260,7 @@ class Configurazione:
         del self.data
 
         # Aggiorna il percorso base di sistema
-        self.set('rootpath', [0, ROOT_PATH])
+        self.set('rootpath', [0, str(ROOT_PATH)])
 
     def __repr__(self):
         return 'Configurazione default'
@@ -280,20 +303,8 @@ class Configurazione:
 
         return self.opzioni[id_opzione].set(dati)
 
-        # controllo validità valore
-
-        # if hasattr(opzione, 'lunghezza_massima') and opzione.lunghezza_massima is not None:
-        #     if valore > opzione.lunghezza_massima:
-        #         logger.debug(f"Setter: id {id_opzione}, valore {valore} sfora la lunghezza massima di {opzione.lunghezza_massima}")
-        #         return False
-
-        # if hasattr(opzione, 'intervallo') and opzione.intervallo is not None:
-        #     if not (opzione.intervallo[0] <= valore <= opzione.intervallo[1]):
-        #         logger.debug(f"Setter: id {id_opzione}, valore {valore} sfora l'intervallo di {opzione.intervallo}")
-        #         return False
-
     @beartype
-    def aggiorna(self, configurazione: Dict, salva=True):
+    def aggiorna(self, configurazione: Dict, salva=True) -> bool:
         """
         Questa funzione aggiorna le impostazioni di configurazione utilizzando un dizionario 'configurazione' che
         contiene coppie chiave-valore, dove ogni chiave rappresenta l'id di un'opzione e il valore (singolo o multiplo)
@@ -308,10 +319,15 @@ class Configurazione:
         """
 
         for key, dati in configurazione.items():
-            self.set(key, dati)
+            ok = self.set(key, dati)
+
+            if not ok:
+                return False
 
         if salva:
             self.esporta()
+
+        return True
 
     @beartype
     def esporta(self, file: str | Path = CONFIG_FILE):

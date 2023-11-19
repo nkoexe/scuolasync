@@ -50,7 +50,7 @@
       "tipo": "testo",
       "lunghezza_massima": null,
       "default": "Nessuna sostituzione per i filtri impostati.",
-      "valore": "Nessuna sostituzione per i filtri impostati :/"
+      "valore": "Nessuna sostituzione per i filtri impostati :("
     },
     "hotreload": {
       "titolo": "Hot reload",
@@ -67,9 +67,33 @@
       "sezione": "test",
       "disabilitato": false,
       "tipo": "numero",
-      "intervallo": null,
-      "default": 2,
+      "intervallo": [
+        null,
+        null
+      ],
+      "default": 10,
       "valore": 11
+    },
+    "numerounita": {
+      "titolo": "Numero",
+      "descrizione": "con unit\u00e0 di misura?? Wow!!!! che ingegno, che grandiosit\u00e0.",
+      "sezione": "test",
+      "disabilitato": false,
+      "tipo": "numero_unita",
+      "intervallo": [
+        null,
+        null
+      ],
+      "scelte_unita": [
+        "px",
+        "em",
+        "rem",
+        "cm"
+      ],
+      "unita_default": 0,
+      "unita": 0,
+      "default": 20,
+      "valore": 20
     },
     "numero_intervallo": {
       "titolo": "NNumero",
