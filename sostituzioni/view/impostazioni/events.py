@@ -10,9 +10,12 @@ from sostituzioni.view.impostazioni.shell import RedirectedStdout
 def applica(dati):
     logger.debug(f'ricevuto: {dati}')
 
-    ok = configurazione.aggiorna(dati)
+    try:
+        configurazione.aggiorna(dati)
+    except ValueError as e:
+        emit('applica impostazioni errore', str(e))
 
-    emit('applica impostazioni fatto', ok)
+    emit('applica impostazioni successo')
 
 
 @socketio.on('shell')

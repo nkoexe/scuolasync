@@ -85,10 +85,10 @@ function applica() {
     socket.emit("applica impostazioni", dati);
 }
 
-socket.on("applica impostazioni fatto", (data) => {
-    if (data == true) {
-        location.reload();
-    } else {
-        console.log("Errore applicazione impostazioni");
-    }
+socket.on("applica impostazioni errore", (errore) => {
+    alert(errore);
+})
+
+socket.on("applica impostazioni successo", (data) => {
+    location.reload();
 })

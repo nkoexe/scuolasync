@@ -130,9 +130,9 @@ class Opzione:
             case self.NUMERO:
                 assert isinstance(dati, (int, float))
 
-                if ((self.intervallo[0] is not None) and not (self.intervallo[0] <= dati)) and ((self.intervallo[1] is not None) and not (dati <= self.intervallo[1])):
+                if ((self.intervallo[0] is not None) and not (self.intervallo[0] <= dati)) or ((self.intervallo[1] is not None) and not (dati <= self.intervallo[1])):
                     logger.debug(f'Setter {self.id}, valore {dati} sfora l\'intervallo di {self.intervallo}')
-                    return False
+                    raise ValueError(f'Valore {dati} sfora l\'intervallo di {self.intervallo}.')
 
                 self.valore = dati
                 return True
