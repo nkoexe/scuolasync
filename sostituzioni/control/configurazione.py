@@ -109,11 +109,11 @@ class Opzione:
         return self.valore
 
     @beartype
-    def set(self, dati: Any):
+    def set(self, dati: Any, force: bool = False):
 
-        # if not isinstance(valore, type(opzione.valore)):
-        #     logger.debug(f"Setter: id {id_opzione}, valore {valore} ({type(valore)}) non accettato, usare {type(opzione.valore)}")
-        #     return False
+        if not force and self.disabilitato:
+            logger.debug(f'Setter {self.id} disabilitato, impossibile aggiornare l\'opzione.')
+            return False
 
         match self.tipo:
 
@@ -259,8 +259,9 @@ class Configurazione:
         # Tutti i dati sono caricati in oggetti, self.data non verrà aggiornato quindi eliminarlo per sicurezza
         del self.data
 
-        # Aggiorna il percorso base di sistema
-        self.set('rootpath', [0, str(ROOT_PATH)])
+        # Aggiorna il percorso base di sistema e quello del file di configurazione
+        self.set('rootpath', [0, str(ROOT_PATH)], force=True)
+        self.set('configpath', [0, str(CONFIG_FILE)], force=True)
 
     def __repr__(self):
         return 'Configurazione default'
@@ -283,7 +284,7 @@ class Configurazione:
         return self.opzioni[id_opzione]
 
     @beartype
-    def set(self, id_opzione: str, dati: Any) -> bool:
+    def set(self, id_opzione: str, dati: Any, force: bool = False) -> bool:
         """
         La funzione verifica se l'ID dell'opzione fornito è valido e imposta il valore di quell'opzione se lo è.
 
@@ -293,6 +294,8 @@ class Configurazione:
         :param dati: Il valore o i valori che verranno inseriti. A dipendere dal tipo dell'opzione, questo parametro può
                      essere un testo, un numero, un booleano, o una lista di valori se l'opzione è composta.
 
+        :param force: Forza l'aggiornamento di un'impostazione, anche se essa è disabilitata.
+
         :return: Success. Se l'id_opzione non è riconosciuto, restituisce False. In caso contrario,
                  chiama il metodo set dell'oggetto opzioni[id_opzione] con il parametro dati e restituisce il risultato.
         """
@@ -301,7 +304,7 @@ class Configurazione:
             logger.warning(f"Setter: id {id_opzione} non riconosciuto.")
             return False
 
-        return self.opzioni[id_opzione].set(dati)
+        return self.opzioni[id_opzione].set(dati, force)
 
     @beartype
     def aggiorna(self, configurazione: Dict, salva=True) -> bool:

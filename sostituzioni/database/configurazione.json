@@ -106,7 +106,7 @@
         399
       ],
       "default": 7,
-      "valore": 345
+      "valore": 3459
     },
     "rootpath": {
       "titolo": "Percorso radice - Root",
@@ -119,7 +119,21 @@
         "/"
       ],
       "default": "",
-      "valore": "C:\\Users\\nicco\\Programming\\sostituzioni\\sostituzioni"
+      "valore": "/home/nxco/Proj/sostituzioni/sostituzioni"
+    },
+    "configpath": {
+      "titolo": "Percorso file di configurazione",
+      "descrizione": "Posizione del file JSON delle impostazioni del sistema, quello che si sta modificando in questo momento.",
+      "sezione": "percorsi",
+      "disabilitato": true,
+      "tipo": "percorso",
+      "radice": 0,
+      "scelte_radice": [
+        "/",
+        "%ROOT%"
+      ],
+      "default": "database/configurazione.json",
+      "valore": "/home/nxco/Proj/sostituzioni/sostituzioni/database/configurazione.json"
     },
     "databasepath": {
       "titolo": "Posizione database",
