@@ -449,37 +449,3 @@ body {
 #sostituzioni-lista li:hover .sostituzione-pulsanti {
     opacity: 1;
 }
-
-/* POPUP */
-#gestione-dati-container {
-    position: absolute;
-    display: none;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 100;
-    background-color: #0000001f;
-    /* pointer-events: none; */
-}
-
-#gestione-dati-frame {
-    /* pointer-events: all; */
-    min-width: 400px;
-    min-height: 500px;
-    width: 70%;
-    height: 80%;
-    margin: auto;
-    background-color: white;
-    border-radius: 1rem;
-    box-shadow: 0 10px 25px #00000032;
-}
-
-/* test */
-#gestione-dati-frame div {
-    float: right;
-    width: 30px;
-    height: 30px;
-    border-radius: 15px;
-    box-shadow: 0 2px 5px #00000099;
-}
