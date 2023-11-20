@@ -6,13 +6,13 @@ from sostituzioni.logger import logger
 from sostituzioni.view.impostazioni.shell import RedirectedStdout
 
 
-@socketio.on('applica')
+@socketio.on('applica impostazioni')
 def applica(dati):
     logger.debug(f'ricevuto: {dati}')
 
-    configurazione.aggiorna(dati)
+    ok = configurazione.aggiorna(dati)
 
-    emit('applica', 'ok')
+    emit('applica impostazioni fatto', ok)
 
 
 @socketio.on('shell')

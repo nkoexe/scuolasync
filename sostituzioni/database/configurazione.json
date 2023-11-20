@@ -2,11 +2,11 @@
   "sezioni": {
     "sistema": {
       "titolo": "Sistema",
-      "descrizione": ""
+      "descrizione": "Impostazioni generali di sistema, riguardanti il lato tecnico"
     },
     "visualizzazioneonline": {
       "titolo": "Visualizzazione Online",
-      "descrizione": ""
+      "descrizione": "Configurazione di impostazioni legate alla visualizzazione degli elementi nell'interfaccia online: preferenze visive, colori, dimensioni font."
     },
     "test": {
       "titolo": "Test",
@@ -14,7 +14,7 @@
     },
     "percorsi": {
       "titolo": "Percorsi",
-      "descrizione": ""
+      "descrizione": "Configurazione di directory e percorsi di file utilizzati dal sistema. Include posizione del file di configurazione, del database, ed informazioni sulla collocazione del sistema nel server."
     }
   },
   "opzioni": {
@@ -50,7 +50,7 @@
       "tipo": "testo",
       "lunghezza_massima": null,
       "default": "Nessuna sostituzione per i filtri impostati.",
-      "valore": "Nessuna sostituzione per i filtri impostati :/"
+      "valore": "Nessuna sostituzione per i filtri impostati :("
     },
     "hotreload": {
       "titolo": "Hot reload",
@@ -67,9 +67,33 @@
       "sezione": "test",
       "disabilitato": false,
       "tipo": "numero",
-      "intervallo": null,
-      "default": 2,
+      "intervallo": [
+        null,
+        null
+      ],
+      "default": 10,
       "valore": 11
+    },
+    "numerounita": {
+      "titolo": "Numero",
+      "descrizione": "con unit\u00e0 di misura?? Wow!!!! che ingegno, che grandiosit\u00e0.",
+      "sezione": "test",
+      "disabilitato": false,
+      "tipo": "numero_unita",
+      "intervallo": [
+        null,
+        null
+      ],
+      "scelte_unita": [
+        "px",
+        "em",
+        "rem",
+        "cm"
+      ],
+      "unita_default": 0,
+      "unita": 0,
+      "default": 20,
+      "valore": 20
     },
     "numero_intervallo": {
       "titolo": "NNumero",
