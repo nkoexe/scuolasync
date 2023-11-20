@@ -117,6 +117,7 @@ ul {
 }
 
 .opzioni-container {
+    height: 100%;
     background-color: var(--color-opzioni);
     margin: 10px 0;
     padding: 15px;
@@ -183,6 +184,7 @@ select {
 input[type="checkbox"] {
     appearance: none;
     position: relative;
+    margin-left: 10px;
     width: 32px;
     height: 32px;
     color: var(--color-text-opzione);
