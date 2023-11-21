@@ -24,6 +24,12 @@ def login():
         return render_template('login.html')
 
 
+@auth.route('/logincodetest', methods=['POST'])
+def login_post_test():
+    print(request.data)
+    return 'ok'
+
+
 @auth.route('/logout')
 @login_required
 def logout():
