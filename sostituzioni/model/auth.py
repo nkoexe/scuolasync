@@ -27,10 +27,16 @@ login_manager = LoginManager(app)
 class User(UserMixin):
     def __init__(self, id):
         self.id = id
+        self.ruolo = ''
         self.permessi = []
-        self.is_authenticated = True
-        self.is_active = True
-        self.is_anonymous = False
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_active(self):
+        return True
 
 
 def sso_login(request):
@@ -55,17 +61,16 @@ def sso_login(request):
     response_user_info = requests.get(uri, headers=headers, data=body)
     info = response_user_info.json()
 
-    return authenticate_user(info)
+    return authenticate_user(info['email'])
 
 
-def authenticate_user(user_info):
-    if 'niccolo' in user_info['email']:
-        return True
-
-    if 'gandhimerano.com' not in user_info['email']:
+def authenticate_user(email):
+    if 'gandhimerano.com' not in email and 'nic' not in email:
         return False
 
-    login_user(load_user(user_info['email']))
+    print(email, 'ha eseguito il login')
+
+    login_user(load_user(email))
 
     return True
 

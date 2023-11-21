@@ -1,12 +1,14 @@
 from flask_socketio import emit
-from sostituzioni.control.configurazione import configurazione
-from sostituzioni.control.database import database
-from sostituzioni.view import socketio
+
 from sostituzioni.logger import logger
+from sostituzioni.control.configurazione import configurazione
+from sostituzioni.model.auth import login_required
+from sostituzioni.view import socketio
 from sostituzioni.view.impostazioni.shell import RedirectedStdout
 
 
 @socketio.on('applica impostazioni')
+@login_required
 def applica(dati):
     logger.debug(f'ricevuto: {dati}')
 
@@ -19,6 +21,7 @@ def applica(dati):
 
 
 @socketio.on('shell')
+@login_required
 def shell(dati):
     with RedirectedStdout() as out:
         try:
