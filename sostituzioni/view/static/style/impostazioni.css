@@ -101,8 +101,7 @@ ul {
     rotate: 45deg;
 }
 
-.sezione-header:hover .sezione-header-icon span,
-.sezione-header:focus .sezione-header-icon span {
+.sezione-header:hover .sezione-header-icon span {
     scale: 1.3;
 }
 
@@ -181,6 +180,10 @@ select {
     cursor: pointer;
 }
 
+select:disabled {
+    cursor: default;
+}
+
 input[type="checkbox"] {
     appearance: none;
     position: relative;
@@ -241,6 +244,10 @@ input[type="checkbox"]:checked::before {
     top: 45%;
 }
 
+.container-selezione:has(:disabled)::after {
+    opacity: 0.5;
+}
+
 .opzione-testo {}
 
 .opzione-numero {}
@@ -270,16 +277,8 @@ input[type="checkbox"]:checked::before {
     background-color: var(--color-footer);
 }
 
-
-#pulsante-applica:disabled {
-    background-color: #ffffff66;
-    color: #00000066;
-    box-shadow: none;
-}
-
-#pulsante-applica {
+.pulsante-footer {
     margin: auto;
-    margin-right: 30px;
     padding: 10px 20px;
     background-color: white;
     border: none;
@@ -290,10 +289,20 @@ input[type="checkbox"]:checked::before {
     transition: all 0.1s;
 }
 
-#pulsante-applica:not(:disabled):hover {
+.pulsante-footer:disabled {
+    background-color: #ffffff66;
+    color: #00000066;
+    box-shadow: none;
+}
+
+.pulsante-footer:not(:disabled):hover {
     box-shadow: 0 5px 10px #000000aa;
 }
 
-#pulsante-applica:active {
+.pulsante-footer:not(:disabled):active {
     scale: 0.95;
+}
+
+#pulsante-applica {
+    margin-right: 30px;
 }

@@ -16,6 +16,7 @@ opzione_percorso with context %}
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/header.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/impostazioni.css') }}">
   <script src="{{ url_for('static', filename='scripts/impostazioni.js') }}" defer></script>
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
@@ -23,7 +24,9 @@ opzione_percorso with context %}
 
 <body>
   <div id="header">
-    <h1>Impostazioni</h1>
+    <img id="header-logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Gandhi">
+    <div id="header-separator"></div>
+    <h1 id="header-titolo">Impostazioni</h1>
   </div>
 
   <!-- {% for sezione in configurazione.sezioni %}
@@ -73,7 +76,7 @@ opzione_percorso with context %}
     </ul>
   </div>
   <div id="footer">
-    <button id="pulsante-applica" onclick="applica()" disabled>Applica</button>
+    <button id="pulsante-applica" class="pulsante-footer" onclick="applica()" disabled>Applica</button>
   </div>
   </form>
 </body>

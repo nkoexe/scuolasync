@@ -72,7 +72,7 @@
         null
       ],
       "default": 10,
-      "valore": 11
+      "valore": 2.2
     },
     "numerounita": {
       "titolo": "Numero",
@@ -106,7 +106,7 @@
         399
       ],
       "default": 7,
-      "valore": 3459
+      "valore": 100
     },
     "rootpath": {
       "titolo": "Percorso radice - Root",
