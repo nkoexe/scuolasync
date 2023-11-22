@@ -4,17 +4,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login</title>
+  <title>Gestione Digitale | Gandhi Merano</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/login.css') }}">
 </head>
 
 <body>
-  <h1>Login</h1>
-  <button id="button-login">Sign in with Google</button>
-  <script>
-    document.getElementById('button-login').onclick = () => {
-      location.href = "/googlesso"
-    }
-  </script>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div id="messages-container">
+    {% for message in messages %}
+    <div><span class="icon">!</span>{{message}}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+  <div id="login-container">
+    <div id="title-frame">
+      <div>I.I.S.S "Gandhi" - Merano</div>
+      <h1>Gestione digitale</h1>
+    </div>
+    <div id="loginbutton-frame">
+      <a href="/googlesso" id="button-accedi">Accedi</a>
+    </div>
+
+    <div id="notes-frame">
+      <p>L'accesso al sistema è eseguito tramite l'account Google appartenente al tuo istituto scolastico.</p>
+      <p>Assicurati di selezionare il tuo account 'gandhimerano.com'.</p>
+      <p>Non riesci ad accedere? <a href="/fottiti">Richiedi l'accesso.</a></p>
+    </div>
+  </div>
 </body>
 
 </html>

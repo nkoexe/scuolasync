@@ -5,6 +5,11 @@ from sostituzioni.model.auth import current_user, login_required, permesso, sso_
 from sostituzioni.view.auth import auth
 
 
+@auth.route('/fottiti')
+def fottiti():
+    return "vai a fotterti"
+
+
 @auth.route('/login')
 def login():
     if current_user.is_authenticated:
@@ -20,6 +25,7 @@ def googlessoredirect():
 
 @auth.route('/loginredirect')
 def loginredirect():
+    """Richiesta di autorizzazione dopo l'autenticazione con Google"""
 
     sso_login(request)
 

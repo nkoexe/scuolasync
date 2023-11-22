@@ -1,0 +1,93 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Gabarito', sans-serif;
+    filter: none;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+#messages-container {
+    margin: auto;
+    margin-bottom: 10px;
+    width: 60vh;
+    max-width: 90%;
+}
+
+#messages-container div {
+    display: flex;
+    padding: 10px 15px;
+    background-color: #df1a24;
+    color: white;
+    font-size: 20px;
+    border-radius: 3vh;
+}
+
+#messages-container div span.icon {
+    width: 40px;
+    margin: auto;
+    font-size: 40px;
+}
+
+#messages-container+#login-container {
+    margin-top: 10px;
+}
+
+#login-container {
+    margin: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 4vh;
+    height: 70vh;
+    max-height: 70vh;
+    width: 60vh;
+    max-width: 90%;
+    box-shadow: 0 5px 10px #000000aa;
+    border-radius: 3vh;
+}
+
+#title-frame {
+    text-align: center;
+}
+
+#loginbutton-frame {
+    flex: 1;
+    display: flex;
+}
+
+#button-accedi {
+    padding: 15px 30px;
+    margin: auto;
+    font-size: 30px;
+    background-color: #C00F19;
+    color: white;
+    border-radius: 1rem;
+    box-shadow: 0 1px 3px #0000001f, 0 1px 2px #0000003d;
+    transition: box-shadow 0.2s, scale 0.1s;
+    text-decoration: none;
+    user-select: none;
+}
+
+#button-accedi:hover {
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
+}
+
+
+#button-accedi:active {
+    scale: 0.95;
+}
+
+#notes-frame {
+    font-size: 10px;
+}

@@ -1,4 +1,4 @@
-from flask import abort, redirect, url_for
+from flask import abort, redirect, url_for, flash
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from functools import wraps
 import requests
@@ -61,11 +61,15 @@ def sso_login(request):
     response_user_info = requests.get(uri, headers=headers, data=body)
     info = response_user_info.json()
 
-    return authenticate_user(info['email'])
+    result = authenticate_user(info['email'])
+    if result:
+        return True
+    else:
+        flash('Questo account non è autorizzato all\'accesso al sistema.')
 
 
 def authenticate_user(email):
-    if 'gandhimerano.com' not in email and 'nic' not in email:
+    if 'gandhimerano.com' not in email and 'niccolo.ragazzi' not in email:
         return False
 
     print(email, 'ha eseguito il login')
