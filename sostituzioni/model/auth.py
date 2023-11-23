@@ -9,8 +9,8 @@ from sostituzioni.control.database import database
 from sostituzioni.model.app import app
 
 
-OAUTH_CLIENT_ID = '985141409906-s8ghsaeeqko93ngldqv8l728oidab0k5.apps.googleusercontent.com'
-OAUTH_CLIENT_SECRET = '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'
+OAUTH_CLIENT_ID = '824960094253-vlhoqf37teg8i307fkeui4041tmu2lk9.apps.googleusercontent.com'
+OAUTH_CLIENT_SECRET = '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'
 
 OAUTH_CLIENT = oauth2.WebApplicationClient(OAUTH_CLIENT_ID)
 GOOGLE_SSO_REQ_URI = OAUTH_CLIENT.prepare_request_uri(
