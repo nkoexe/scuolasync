@@ -13,8 +13,8 @@ from sostituzioni.control.configurazione import configurazione
 
 
 class Database:
-    def __init__(self):
-        self.path = configurazione.get('databasepath').path
+    def __init__(self, path):
+        self.path = path
         self.connection = None
 
     def connect(self):
@@ -58,6 +58,7 @@ class Database:
         Esempi:
         database.get('aula', 'numero')
         database.get('aula', ('numero', 'piano'), where=('numero=100', 'cancellato=0'))
+        database.get('utente', where='email=esempio@gandhimerano.com', limit=1)
         """
 
         if isinstance(columns, tuple):
@@ -472,8 +473,15 @@ class VisualizzazioneFisica(Visualizzazione):
         super(VisualizzazioneFisica, self).__init__()
 
 
-database = Database()
+# --------------------
 
-# database.insert('aula', numero=120, piano=1)
-# database.delete('aula', where=('numero=120'))
-# pprint(database.get('aula'))
+
+class Utente(ElementoDatabase):
+    pass
+
+
+# --------------------
+
+
+database = Database(configurazione.get('databasepath').path)
+authdatabase = Database(configurazione.get('authdatabasepath').path)

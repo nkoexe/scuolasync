@@ -148,6 +148,20 @@
       ],
       "default": "database/test.db",
       "valore": "database/test.db"
+    },
+    "authdatabasepath": {
+      "titolo": "Posizione database gestione utenti",
+      "descrizione": "Percorso del database nel quale sono salvati i dati degli utenti autorizzati ad accedere al sistema.",
+      "sezione": "percorsi",
+      "disabilitato": false,
+      "tipo": "percorso",
+      "radice": 1,
+      "scelte_radice": [
+        "/",
+        "%ROOT%"
+      ],
+      "default": "database/auth.db",
+      "valore": "database/auth.db"
     }
   }
 }

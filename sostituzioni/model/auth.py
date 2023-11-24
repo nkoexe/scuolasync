@@ -69,7 +69,7 @@ def sso_login(request):
 
 
 def authenticate_user(email):
-    if 'gandhimerano.com' not in email and 'niccolo.ragazzi' not in email:
+    if False:
         return False
 
     print(email, 'ha eseguito il login')
