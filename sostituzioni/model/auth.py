@@ -5,7 +5,7 @@ import requests
 from oauthlib import oauth2
 import json
 
-from sostituzioni.control.database import database
+from sostituzioni.control.database import authdatabase
 from sostituzioni.model.app import app
 
 
@@ -69,7 +69,7 @@ def sso_login(request):
 
 
 def authenticate_user(email):
-    if False:
+    authdatabase.get()
         return False
 
     print(email, 'ha eseguito il login')

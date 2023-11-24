@@ -477,7 +477,17 @@ class VisualizzazioneFisica(Visualizzazione):
 
 
 class Utente(ElementoDatabase):
-    pass
+    TABLENAME = 'utente'
+    KEY = 'email'
+
+    def load():
+        return authdatabase.get(Utente.TABLENAME)
+
+    @beartype
+    def __init__(self, email: str, ):
+        super(Utente, self).__init__()
+
+        self.email = email
 
 
 # --------------------
