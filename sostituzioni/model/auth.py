@@ -69,8 +69,8 @@ def sso_login(request):
 
 
 def authenticate_user(email):
-    authdatabase.get()
-        return False
+    # authdatabase.get()
+    # return False
 
     print(email, 'ha eseguito il login')
 
