@@ -1,21 +1,9 @@
 from flask_socketio import SocketIO
 from flask_wtf.csrf import CSRFProtect
-from secrets import token_hex
 
 from sostituzioni.logger import logger
 from sostituzioni.model.app import app
-from sostituzioni.paths import FLASK_TEMPLATES, FLASK_STATIC
 
-
-app.config.update(
-    SECRET_KEY=token_hex(32),
-    SESSION_COOKIE_SECURE=True,
-    SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE='Lax'
-)
-
-app.template_folder = FLASK_TEMPLATES
-app.static_folder = FLASK_STATIC
 
 csrf = CSRFProtect(app)
 socketio = SocketIO(app, manage_session=False)

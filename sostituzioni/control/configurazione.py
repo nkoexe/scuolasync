@@ -54,10 +54,11 @@ class Opzione:
     def __init__(self, id: str, dati: Dict):
         self.id = id
 
-        self.titolo: str = dati.get('titolo')
-        self.descrizione: str = dati.get('descrizione')
-        self.sezione: str = dati.get('sezione')
-        self.disabilitato: bool = dati.get('disabilitato')
+        self.titolo: str = dati.get('titolo', 'Titolo Opzione')
+        self.descrizione: str = dati.get('descrizione', 'Descrizione Opzione')
+        self.sezione: str = dati.get('sezione', 'test')
+        self.disabilitato: bool = dati.get('disabilitato', False)
+        self.nascosto: bool = dati.get('nascosto', False)
 
         self.tipo: str = dati.get('tipo')
 
@@ -111,7 +112,7 @@ class Opzione:
     @beartype
     def set(self, dati: Any, force: bool = False):
 
-        if not force and self.disabilitato:
+        if not force and (self.disabilitato or self.nascosto):
             logger.debug(f'Setter {self.id} disabilitato, impossibile aggiornare l\'opzione.')
             return False
 
@@ -188,6 +189,7 @@ class Opzione:
             'descrizione': self.descrizione,
             'sezione': self.sezione,
             'disabilitato': self.disabilitato,
+            'nascosto': self.nascosto,
             'tipo': self.tipo
         }
 

@@ -23,6 +23,7 @@
       "descrizione": "",
       "sezione": "sistema",
       "disabilitato": false,
+      "nascosto": false,
       "tipo": "selezione",
       "scelte": [
         "In Produzione",
@@ -37,6 +38,7 @@
       "descrizione": "Testo che verr\u00e0 mostrato agli utenti che cercano di accedere al sito quando esso \u00e8 in modalit\u00e0 manutenzione.",
       "sezione": "sistema",
       "disabilitato": false,
+      "nascosto": false,
       "tipo": "testo",
       "lunghezza_massima": null,
       "default": "Sistema in manutenzione",
@@ -47,6 +49,7 @@
       "descrizione": "Testo che verr\u00e0 mostrato quando non ci sono sostituzioni da visualizzare per i filtri che l'utente ha impostato.",
       "sezione": "visualizzazioneonline",
       "disabilitato": false,
+      "nascosto": false,
       "tipo": "testo",
       "lunghezza_massima": null,
       "default": "Nessuna sostituzione per i filtri impostati.",
@@ -57,15 +60,17 @@
       "descrizione": "Applica immediatamente le impostazioni cambiate. Utile per vedere istantaneamente i cambiamenti di colori e font, ma sconsigliato in ogni altro caso. (test checkbox, non implementare seriamente)",
       "sezione": "test",
       "disabilitato": false,
+      "nascosto": false,
       "tipo": "booleano",
       "default": false,
-      "valore": false
+      "valore": true
     },
     "numeroebbasta": {
       "titolo": "Numero",
       "descrizione": "e basta",
       "sezione": "test",
       "disabilitato": false,
+      "nascosto": false,
       "tipo": "numero",
       "intervallo": [
         null,
@@ -79,6 +84,7 @@
       "descrizione": "con unit\u00e0 di misura?? Wow!!!! che ingegno, che grandiosit\u00e0.",
       "sezione": "test",
       "disabilitato": false,
+      "nascosto": false,
       "tipo": "numero_unita",
       "intervallo": [
         null,
@@ -100,6 +106,7 @@
       "descrizione": "Con intervallo tra -10 e 399",
       "sezione": "test",
       "disabilitato": false,
+      "nascosto": false,
       "tipo": "numero",
       "intervallo": [
         -10,
@@ -113,6 +120,7 @@
       "descrizione": "Percorso della cartella nella quale sono posizionati i file di questo sistema.",
       "sezione": "percorsi",
       "disabilitato": true,
+      "nascosto": false,
       "tipo": "percorso",
       "radice": 0,
       "scelte_radice": [
@@ -126,6 +134,7 @@
       "descrizione": "Posizione del file JSON delle impostazioni del sistema, quello che si sta modificando in questo momento.",
       "sezione": "percorsi",
       "disabilitato": true,
+      "nascosto": false,
       "tipo": "percorso",
       "radice": 0,
       "scelte_radice": [
@@ -140,6 +149,7 @@
       "descrizione": "Percorso nel quale si trova il database del sistema.",
       "sezione": "percorsi",
       "disabilitato": false,
+      "nascosto": false,
       "tipo": "percorso",
       "radice": 1,
       "scelte_radice": [
@@ -154,6 +164,7 @@
       "descrizione": "Percorso del database nel quale sono salvati i dati degli utenti autorizzati ad accedere al sistema.",
       "sezione": "percorsi",
       "disabilitato": false,
+      "nascosto": false,
       "tipo": "percorso",
       "radice": 1,
       "scelte_radice": [
@@ -162,6 +173,36 @@
       ],
       "default": "database/utenti.db",
       "valore": "database/utenti.db"
+    },
+    "flaskstaticdir": {
+      "titolo": "Cartella file statici",
+      "descrizione": "File statici utilizzati dal sistema: CSS, JS, immagini e icone.",
+      "sezione": "percorsi",
+      "disabilitato": false,
+      "nascosto": true,
+      "tipo": "percorso",
+      "radice": 1,
+      "scelte_radice": [
+        "/",
+        "%ROOT%"
+      ],
+      "default": "view/static",
+      "valore": "view/static"
+    },
+    "flasktemplatedir": {
+      "titolo": "Cartella template HTML",
+      "descrizione": "Cartella nella quale si trovano i template delle pagine HTML usate dal sistema.",
+      "sezione": "percorsi",
+      "disabilitato": false,
+      "nascosto": true,
+      "tipo": "percorso",
+      "radice": 1,
+      "scelte_radice": [
+        "/",
+        "%ROOT%"
+      ],
+      "default": "view/templates",
+      "valore": "view/templates"
     }
   }
 }

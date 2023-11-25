@@ -45,6 +45,7 @@ opzione_percorso with context %}
           <div class="opzioni-container">
             <ul class="opzioni-lista">
               {% for opzione in configurazione.opzioni %}
+              {% if not opzione.nascosto %}
               {% if opzione.sezione == sezione.id %}
               <li>
                 <h5 class="opzione-titolo">{{opzione.titolo}}</h5>
@@ -66,6 +67,7 @@ opzione_percorso with context %}
                 {% endif %}
               </li>
               <div class="opzioni-separator"></div>
+              {% endif %}
               {% endif %}
               {% endfor %}
             </ul>
