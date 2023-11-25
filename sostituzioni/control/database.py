@@ -480,8 +480,9 @@ class Utente(ElementoDatabase):
     TABLENAME = 'utente'
     KEY = 'email'
 
-    def load():
-        return authdatabase.get(Utente.TABLENAME)
+    # Trovare un modo per mettere una singola funzione load nella classe Elementodatabase
+    def load(columns: str | Tuple[str] = '*', where: str | Tuple[str] | None = None, limit: int | None = None):
+        return authdatabase.get(Utente.TABLENAME, columns, where, limit)
 
     @beartype
     def __init__(self, email: str, ):

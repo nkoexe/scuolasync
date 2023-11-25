@@ -18,7 +18,7 @@ app.template_folder = FLASK_TEMPLATES
 app.static_folder = FLASK_STATIC
 
 csrf = CSRFProtect(app)
-socketio = SocketIO(app)
+socketio = SocketIO(app, manage_session=False)
 
 logger.debug('Importing blueprints..')
 from sostituzioni.view.impostazioni import impostazioni as impostazioni_blueprint

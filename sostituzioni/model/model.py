@@ -5,7 +5,7 @@ descr
 from sostituzioni.control.database import (database, ElementoDatabase,
                                            Aula, Classe, Docente, OraPredefinita,
                                            Sostituzione, Evento, Notizia,
-                                           VisualizzazioneOnline, VisualizzazioneFisica)
+                                           VisualizzazioneOnline, VisualizzazioneFisica, Utente)
 
 
 def load(data: ElementoDatabase, filtri=None):

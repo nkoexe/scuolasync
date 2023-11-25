@@ -1,11 +1,11 @@
-from flask import abort, redirect, url_for, flash
+from flask import abort, redirect, url_for, flash, session
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from functools import wraps
 import requests
 from oauthlib import oauth2
 import json
 
-from sostituzioni.control.database import authdatabase
+from sostituzioni.control.database import authdatabase, Utente
 from sostituzioni.model.app import app
 
 
@@ -24,7 +24,7 @@ GOOGLE_SSO_REQ_URI = OAUTH_CLIENT.prepare_request_uri(
 login_manager = LoginManager(app)
 
 
-class User(UserMixin):
+class User(UserMixin, Utente):
     def __init__(self, id):
         self.id = id
         self.ruolo = ''
@@ -69,12 +69,14 @@ def sso_login(request):
 
 
 def authenticate_user(email):
-    # authdatabase.get()
-    # return False
+    userdata = User.load(where=f"email='{email}'")
 
-    print(email, 'ha eseguito il login')
+    if not userdata:
+        return False
 
-    login_user(load_user(email))
+    session.permanent = True
+
+    login_user(User(email))
 
     return True
 
