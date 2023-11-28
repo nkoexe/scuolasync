@@ -37,7 +37,7 @@
       <div id="sostituzioni-frame" class="frame">
         <div id="header-sostituzioni">
           <h2 id="header-sostituzioni-titolo">Sostituzioni</h2>
-          <div id="pulsante-nuova-sostituzione" onclick="mostra_gestione_dati()"><span class="icon">+</span><span>Nuova</span></div>
+          <div id="pulsante-nuova-sostituzione" onclick="mostra_gestione_sostituzione()"><span class="icon">+</span><span>Nuova</span></div>
         </div>
         <div id="sostituzioni-filtri-container">
           <div id="sostituzioni-filtro-data">
@@ -107,20 +107,29 @@
         </div>
       </div>
     </div>
-    <div id="gestione-dati-container">
+    <div id="gestione-dati-container" class="hidden">
       <div id="gestione-dati-frame">
-        test
-        <div id="pulsante-chiudi-gestione-dati" onclick="nascondi_gestione_dati()"></div>
+        <div id="gestione-dati-sostituzione" class="gestione-dati-element hidden">
+          <div>data <input id="gestione-dati-sostituzione-data" type="date"> ora <input id="gestione-dati-sostituzione-ora" type="number"></div>
+          <div>docente <input id="gestione-dati-sostituzione-docente" type="text"></div>
+          <div>classe <input id="gestione-dati-sostituzione-classe" type="number"><br>aula <input id="gestione-dati-sostituzione-aula" type="number"></div>
+          <div>note <input id="gestione-dati-sostituzione-note" type="text"></div>
+        </div>
+        <div id="gestione-dati-evento" class="gestione-dati-element hidden"></div>
+        <div id="gestione-dati-notizia" class="gestione-dati-element hidden"></div>
+        <button id="pulsante-applica-gestione-dati">Applica</button>
+        <div id="pulsante-chiudi-gestione-dati" onclick="nascondi_gestione_dati()"><span>✕</span></div>
       </div>
     </div>
   </div>
   <script>
     const messaggio_nessuna_sostituzione = "{{ configurazione.get('nosostituzionimsg') }}"
   </script>
-  <script src="{{url_for('static', filename='scripts/fuzzyset.js')}}"></script>
+  <script src="{{url_for('static', filename='scripts/lib/fuzzyset.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/sostituzioni.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/filtri_sostituzioni.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/ui.js')}}"></script>
+  <script src="{{url_for('static', filename='scripts/gestione_dati.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/onlinesocket.js')}}"></script>
 </body>
 

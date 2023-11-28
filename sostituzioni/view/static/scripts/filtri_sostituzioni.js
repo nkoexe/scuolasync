@@ -138,62 +138,62 @@ class Filtro {
 
 function sostituzioni_applica_filtri() {
     lista_sostituzioni_visualizzate = lista_sostituzioni
-    if (ore.selected !== null) {
-        lista_sostituzioni_visualizzate = lista_sostituzioni_visualizzate.filter(element => element.ora_predefinita === ore.selected)
+    if (filtro_ore.selected !== null) {
+        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.ora_predefinita === filtro_ore.selected)
     }
-    if (classi.selected !== null) {
-        lista_sostituzioni_visualizzate = lista_sostituzioni_visualizzate.filter(element => element.nome_classe === classi.selected)
+    if (filtro_classi.selected !== null) {
+        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.nome_classe === filtro_classi.selected)
     }
-    if (aule.selected !== null) {
-        lista_sostituzioni_visualizzate = lista_sostituzioni_visualizzate.filter(element => element.numero_aula === aule.selected)
+    if (filtro_aule.selected !== null) {
+        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.numero_aula === filtro_aule.selected)
     }
-    if (docenti.selected !== null) {
-        lista_sostituzioni_visualizzate = lista_sostituzioni_visualizzate.filter(element => element.nome_docente + ' ' + element.cognome_docente === docenti.selected)
+    if (filtro_docenti.selected !== null) {
+        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.nome_docente + ' ' + element.cognome_docente === filtro_docenti.selected)
     }
-    if (note.selected !== null) {
+    if (filtro_note.selected !== null) {
         // todo: implement fuzzy search
-        lista_sostituzioni_visualizzate = lista_sostituzioni_visualizzate.filter(element => element.note === note.selected)
+        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.note === filtro_note.selected)
     }
 
     sostituzioni_ordina()
 }
 
 function sostituzioni_ordina() {
-    if (!ore.ordina) ore.rimuovi_ordinamento()
-    if (!classi.ordina) classi.rimuovi_ordinamento()
-    if (!aule.ordina) aule.rimuovi_ordinamento()
-    if (!docenti.ordina) docenti.rimuovi_ordinamento()
+    if (!filtro_ore.ordina) filtro_ore.rimuovi_ordinamento()
+    if (!filtro_classi.ordina) filtro_classi.rimuovi_ordinamento()
+    if (!filtro_aule.ordina) filtro_aule.rimuovi_ordinamento()
+    if (!filtro_docenti.ordina) filtro_docenti.rimuovi_ordinamento()
 
-    if (ore.ordina) {
-        if (ore.verso_ordinamento === 1)
-            lista_sostituzioni_visualizzate.sort((a, b) => b.ora_predefinita - a.ora_predefinita)
+    if (filtro_ore.ordina) {
+        if (filtro_ore.verso_ordinamento === 1)
+            sostituzioni_visualizzate.sort((a, b) => b.ora_predefinita - a.ora_predefinita)
         else
-            lista_sostituzioni_visualizzate.sort((a, b) => a.ora_predefinita - b.ora_predefinita)
+            sostituzioni_visualizzate.sort((a, b) => a.ora_predefinita - b.ora_predefinita)
     }
-    if (classi.ordina) {
-        if (classi.verso_ordinamento === 1)
-            lista_sostituzioni_visualizzate.sort((a, b) => b.nome_classe.localeCompare(a.nome_classe))
+    if (filtro_classi.ordina) {
+        if (filtro_classi.verso_ordinamento === 1)
+            sostituzioni_visualizzate.sort((a, b) => b.nome_classe.localeCompare(a.nome_classe))
         else
-            lista_sostituzioni_visualizzate.sort((a, b) => a.nome_classe.localeCompare(b.nome_classe))
+            sostituzioni_visualizzate.sort((a, b) => a.nome_classe.localeCompare(b.nome_classe))
     }
-    if (aule.ordina) {
-        if (aule.verso_ordinamento === 1)
-            lista_sostituzioni_visualizzate.sort((a, b) => b.numero_aula.localeCompare(a.numero_aula))
+    if (filtro_aule.ordina) {
+        if (filtro_aule.verso_ordinamento === 1)
+            sostituzioni_visualizzate.sort((a, b) => b.numero_aula.localeCompare(a.numero_aula))
         else
-            lista_sostituzioni_visualizzate.sort((a, b) => a.numero_aula.localeCompare(b.numero_aula))
+            sostituzioni_visualizzate.sort((a, b) => a.numero_aula.localeCompare(b.numero_aula))
     }
-    if (docenti.ordina) {
-        if (docenti.verso_ordinamento === 1)
-            lista_sostituzioni_visualizzate.sort((a, b) => b.nome_docente.localeCompare(a.nome_docente) || b.cognome_docente.localeCompare(a.cognome_docente))
+    if (filtro_docenti.ordina) {
+        if (filtro_docenti.verso_ordinamento === 1)
+            sostituzioni_visualizzate.sort((a, b) => b.nome_docente.localeCompare(a.nome_docente) || b.cognome_docente.localeCompare(a.cognome_docente))
         else
-            lista_sostituzioni_visualizzate.sort((a, b) => a.nome_docente.localeCompare(b.nome_docente) || a.cognome_docente.localeCompare(b.cognome_docente))
+            sostituzioni_visualizzate.sort((a, b) => a.nome_docente.localeCompare(b.nome_docente) || a.cognome_docente.localeCompare(b.cognome_docente))
     }
 
     refresh_sostituzioni()
 }
 
-ore = new Filtro('ore', 'sostituzioni-filtro-ora')
-classi = new Filtro('classi', 'sostituzioni-filtro-classe')
-aule = new Filtro('aule', 'sostituzioni-filtro-aula')
-docenti = new Filtro('docenti', 'sostituzioni-filtro-docente')
-note = new Filtro('note', 'sostituzioni-filtro-note', false)
+filtro_ore = new Filtro('ore', 'sostituzioni-filtro-ora')
+filtro_classi = new Filtro('classi', 'sostituzioni-filtro-classe')
+filtro_aule = new Filtro('aule', 'sostituzioni-filtro-aula')
+filtro_docenti = new Filtro('docenti', 'sostituzioni-filtro-docente')
+filtro_note = new Filtro('note', 'sostituzioni-filtro-note', false)

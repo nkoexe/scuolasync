@@ -1,6 +1,6 @@
 #gestione-dati-container {
     position: absolute;
-    display: none;
+    display: flex;
     top: 0;
     left: 0;
     width: 100%;
@@ -12,6 +12,7 @@
 
 #gestione-dati-frame {
     /* pointer-events: all; */
+    position: relative;
     min-width: 400px;
     min-height: 500px;
     width: 70%;
@@ -22,10 +23,31 @@
     box-shadow: 0 10px 25px #00000032;
 }
 
+#gestione-dati-frame .gestione-dati-element {
+    width: 100%;
+    height: 100%;
+}
+
+#pulsante-applica-gestione-dati {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
 #pulsante-chiudi-gestione-dati {
-    float: right;
-    width: 30px;
-    height: 30px;
-    border-radius: 15px;
-    box-shadow: 0 2px 5px #00000099;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 65px;
+    height: 40px;
+    border-top-right-radius: 1rem;
+    text-align: center;
+    padding: 7px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#pulsante-chiudi-gestione-dati:hover {
+    background-color: #ce0c0c;
+    color: white;
 }

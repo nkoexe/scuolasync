@@ -78,11 +78,53 @@ class Database:
         self.connect()
         self.execute(query)
 
-        result = SearchableList(values=[dict(row) for row in self.cursor.fetchall()])
+        rows = SearchableList(values=[dict(row) for row in self.cursor.fetchall()])
 
         self.close()
 
-        return result
+        rows = self.convert_loading_data(table, rows)
+
+        return rows
+
+    def convert_loading_data(self, table_name, rows):
+        """
+        Converte date da unix timestamp a datetime object
+        Carica liste da diverse tabelle
+        """
+
+        match table_name:
+            # Serve convertire gli orari da stringhe a qualcos'altro?
+            # case OraPredefinita.TABLENAME:
+            #     for row in rows:
+            #         row['ora_inizio_default'] = 0
+            #         row['ora_fine_default'] = 0
+
+            case Sostituzione.TABLENAME:
+                for row in rows:
+                    row['data'] = datetime.fromtimestamp(row['data'])
+                    # row['ora_inizio'] =
+                    # row['ora_fine'] =
+
+            case Evento.TABLENAME:
+                for row in rows:
+                    row['data_ora_inizio'] = datetime.fromtimestamp(row['data_ora_inizio'])
+                    row['data_ora_fine'] = datetime.fromtimestamp(row['data_ora_fine'])
+
+            case Notizia.TABLENAME:
+                for row in rows:
+                    row['data_ora_inizio'] = datetime.fromtimestamp(row['data_ora_inizio'])
+                    row['data_ora_fine'] = datetime.fromtimestamp(row['data_ora_fine'])
+
+            case Classe.TABLENAME:
+                rows.key = Classe.KEY
+
+                for classe in rows:
+                    classe['aule_ospitanti'] = []
+
+                for relazione in self.get('aula_ospita_classe'):
+                    rows[relazione['nome_classe']]['aule_ospitanti'].append(relazione['numero_aula'])
+
+        return rows
 
     @beartype
     def insert(self, table: str, **data):
@@ -176,6 +218,13 @@ class Database:
 
 
 class ElementoDatabase:
+    @staticmethod
+    def load(item):
+        data = database.get(item.TABLENAME)
+        data.key = item.KEY
+
+        return data
+
     def __init__(self):
         super().__init__()
 
@@ -206,12 +255,6 @@ class ElementoDatabaseConStorico(ElementoDatabase):
 class Aula(ElementoDatabaseConStorico):
     TABLENAME = 'aula'
     KEY = 'numero'
-
-    def load():
-        aule = database.get(Aula.TABLENAME)
-        aule.key = Aula.KEY
-
-        return aule
 
     @beartype
     def __init__(self, numero: str, piano: str, cancellato: bool):
@@ -258,18 +301,6 @@ class Classe(ElementoDatabaseConStorico):
     TABLENAME = 'classe'
     KEY = 'nome'
 
-    def load():
-        classi = database.get(Classe.TABLENAME)
-        classi.key = Classe.KEY
-
-        for classe in classi:
-            classe['aule_ospitanti'] = []
-
-        for relazione in database.get('aula_ospita_classe'):
-            classi[relazione['nome_classe']]['aule_ospitanti'].append(relazione['numero_aula'])
-
-        return classi
-
     @beartype
     def __init__(self, nome: str, aule_ospitanti: List[Aula], cancellato: bool):
         super(Classe, self).__init__(cancellato)
@@ -299,12 +330,6 @@ class Classe(ElementoDatabaseConStorico):
 class Docente(ElementoDatabaseConStorico):
     TABLENAME = 'docente'
     KEY = ('nome', 'cognome')
-
-    def load():
-        docenti = database.get(Docente.TABLENAME)
-        docenti.key = Docente.KEY
-
-        return docenti
 
     @beartype
     def __init__(self, nome: str, cognome: str, cancellato: bool):
@@ -336,12 +361,6 @@ class OraPredefinita(ElementoDatabase):
     TABLENAME = 'ora_predefinita'
     KEY = 'numero'
 
-    def load():
-        ore_predefinite = database.get(OraPredefinita.TABLENAME)
-        ore_predefinite.key = OraPredefinita.KEY
-
-        return ore_predefinite
-
     @beartype
     def __init__(self, numero: int, ora_inizio: time, ora_fine: time):
         super(OraPredefinita, self).__init__()
@@ -372,9 +391,6 @@ class OraPredefinita(ElementoDatabase):
 class Sostituzione(ElementoDatabaseConStorico):
     TABLENAME = 'sostituzione'
     KEY = 'id'
-
-    def load():
-        return database.get(Sostituzione.TABLENAME)
 
     @beartype
     def __init__(
@@ -409,9 +425,6 @@ class Evento(ElementoDatabaseConStorico):
     TABLENAME = 'evento'
     KEY = 'id'
 
-    def load():
-        return database.get(Evento.TABLENAME)
-
     @beartype
     def __init__(
         self,
@@ -435,9 +448,6 @@ class Notizia(ElementoDatabaseConStorico):
     TABLENAME = 'notizia'
     KEY = 'id'
 
-    def load():
-        return database.get(Notizia.TABLENAME)
-
     @beartype
     def __init__(
         self,
@@ -456,21 +466,11 @@ class Notizia(ElementoDatabaseConStorico):
 
 
 class Visualizzazione(ElementoDatabase):
+    TABLENAME = 'visualizzazione'
+
     @beartype
     def __init__(self):
         super(Visualizzazione, self).__init__()
-
-
-class VisualizzazioneOnline(Visualizzazione):
-    @beartype
-    def __init__(self):
-        super(VisualizzazioneOnline, self).__init__()
-
-
-class VisualizzazioneFisica(Visualizzazione):
-    @beartype
-    def __init__(self):
-        super(VisualizzazioneFisica, self).__init__()
 
 
 # --------------------
@@ -489,6 +489,13 @@ class Utente(ElementoDatabase):
         super(Utente, self).__init__()
 
         self.email = email
+
+
+# --------------------
+
+
+def load_data(item: ElementoDatabase):
+    return ElementoDatabase.load(item)
 
 
 # --------------------

@@ -1,46 +1,66 @@
 const socket = io();
 
+let eventi = []
+let notizie = []
+let sostituzioni = []
+let sostituzioni_visualizzate = []
+
+let ore_predefinite = []
+let aule = []
+let classi = []
+let docenti = []
+
+
 
 socket.on('lista eventi', (data) => {
-
+    eventi = data
+})
+socket.on('lista notizie', (data) => {
+    notizie = data
 })
 
 socket.on('lista sostituzioni', (data) => {
-    lista_sostituzioni = data
-    lista_sostituzioni_visualizzate = data
+    sostituzioni = data
+    sostituzioni_visualizzate = sostituzioni
+
     refresh_sostituzioni()
 })
 
-socket.on('lista notizie', (data) => {
-
-})
 
 
 socket.on('lista ore predefinite', (data) => {
-    ore.lista_completa = FuzzySet();
-    for (let index = 0; index < data.length; index++) {
-        ore.lista_completa.add(data[index].numero.toString());
+    ore_predefinite = data
+
+    filtro_ore.lista_completa = FuzzySet();
+    for (let index = 0; index < ore_predefinite.length; index++) {
+        filtro_ore.lista_completa.add(ore_predefinite[index].numero.toString());
     }
 })
 
 socket.on('lista aule', (data) => {
-    aule.lista_completa = FuzzySet();
-    for (let index = 0; index < data.length; index++) {
-        aule.lista_completa.add(data[index].numero);
+    aule = data
+
+    filtro_aule.lista_completa = FuzzySet();
+    for (let index = 0; index < aule.length; index++) {
+        filtro_aule.lista_completa.add(aule[index].numero);
     }
 })
 
 socket.on('lista classi', (data) => {
-    classi.lista_completa = FuzzySet();
-    for (let index = 0; index < data.length; index++) {
-        classi.lista_completa.add(data[index].nome);
+    classi = data
+
+    filtro_classi.lista_completa = FuzzySet();
+    for (let index = 0; index < classi.length; index++) {
+        filtro_classi.lista_completa.add(classi[index].nome);
     }
 })
 
 socket.on('lista docenti', (data) => {
-    docenti.lista_completa = FuzzySet();
-    for (let index = 0; index < data.length; index++) {
-        docenti.lista_completa.add(data[index].nome + ' ' + data[index].cognome);
+    docenti = data
+
+    filtro_docenti.lista_completa = FuzzySet();
+    for (let index = 0; index < docenti.length; index++) {
+        filtro_docenti.lista_completa.add(docenti[index].nome + ' ' + docenti[index].cognome);
     }
 })
 

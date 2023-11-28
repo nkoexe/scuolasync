@@ -63,7 +63,7 @@
       "nascosto": false,
       "tipo": "booleano",
       "default": false,
-      "valore": true
+      "valore": false
     },
     "numeroebbasta": {
       "titolo": "Numero",

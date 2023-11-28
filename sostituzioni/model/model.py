@@ -1,15 +1,31 @@
 """
 descr
 """
+from beartype._decor.decormain import beartype
 
 from sostituzioni.control.database import (database, ElementoDatabase,
                                            Aula, Classe, Docente, OraPredefinita,
                                            Sostituzione, Evento, Notizia,
-                                           VisualizzazioneOnline, VisualizzazioneFisica, Utente)
+                                           Visualizzazione, Utente, load_data)
+
+
+class VisualizzazioneOnline(Visualizzazione):
+    @beartype
+    def __init__(self):
+        super(VisualizzazioneOnline, self).__init__()
+
+
+class VisualizzazioneFisica(Visualizzazione):
+    @beartype
+    def __init__(self):
+        super(VisualizzazioneFisica, self).__init__()
+
+
+# -------------------
 
 
 def load(data: ElementoDatabase, filtri=None):
-    return data.load()
+    return load_data(data)
 
 
 def aule():

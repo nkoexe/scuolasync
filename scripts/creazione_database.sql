@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS evento (
 CREATE TABLE IF NOT EXISTS visualizzazione_mostra_evento (
     nome_visualizzazione VARCHAR(50) NOT NULL REFERENCES visualizzazione(nome) ON UPDATE CASCADE,
     id_evento INTEGER NOT NULL REFERENCES evento(id) ON UPDATE CASCADE,
-
+ 
     PRIMARY KEY (nome_visualizzazione, id_evento)
 );
 

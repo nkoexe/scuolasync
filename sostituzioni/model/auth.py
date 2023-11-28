@@ -62,6 +62,7 @@ def sso_login(request):
     info = response_user_info.json()
 
     result = authenticate_user(info['email'])
+
     if result:
         return True
     else:
