@@ -1,4 +1,4 @@
-const socket = io();
+const socket = io("/impostazioni");
 
 const pulsante_applica = document.getElementById('pulsante-applica');
 

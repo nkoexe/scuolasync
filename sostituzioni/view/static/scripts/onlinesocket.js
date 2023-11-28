@@ -27,7 +27,6 @@ socket.on('lista sostituzioni', (data) => {
 })
 
 
-
 socket.on('lista ore predefinite', (data) => {
     ore_predefinite = data
 
@@ -64,3 +63,19 @@ socket.on('lista docenti', (data) => {
     }
 })
 
+
+// ----------------
+
+function carica_nuova_sostituzione(pubblicato, data, ora_predefinita, ora_inizio, ora_fine, docente, classe, aula, note) {
+    socket.emit('nuova sostituzione', {
+        pubblicato: pubblicato,
+        data: data,
+        ora_predefinita: ora_predefinita,
+        ora_inizio: ora_inizio,
+        ora_fine: ora_fine,
+        docente: docente,
+        classe: classe,
+        aula: aula,
+        note: note,
+    })
+}

@@ -7,7 +7,7 @@ from sostituzioni.view import socketio
 from sostituzioni.view.impostazioni.shell import RedirectedStdout
 
 
-@socketio.on('applica impostazioni')
+@socketio.on('applica impostazioni', namespace='/impostazioni')
 @login_required
 def applica(dati):
     logger.debug(f'ricevuto: {dati}')

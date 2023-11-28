@@ -112,7 +112,7 @@ class Filtro {
     render_lista() {
         this.ui_lista.innerHTML = ''
         for (let index = 0; index < this.lista_visualizzati.length; index++) {
-            this.ui_lista.innerHTML += '<li id="lista_' + this.nome + index + '" onmousedown="' + this.nome + '.callback(\'' + this.lista_visualizzati[index] + '\')"><span>' + this.lista_visualizzati[index]; + '</span></li>'
+            this.ui_lista.innerHTML += '<li id="lista_' + this.nome + index + '" onmousedown="filtro_' + this.nome + '.callback(\'' + this.lista_visualizzati[index] + '\')"><span>' + this.lista_visualizzati[index]; + '</span></li>'
         }
     }
 
@@ -137,7 +137,7 @@ class Filtro {
 }
 
 function sostituzioni_applica_filtri() {
-    lista_sostituzioni_visualizzate = lista_sostituzioni
+    sostituzioni_visualizzate = sostituzioni
     if (filtro_ore.selected !== null) {
         sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.ora_predefinita === filtro_ore.selected)
     }

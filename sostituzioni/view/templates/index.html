@@ -37,7 +37,7 @@
       <div id="sostituzioni-frame" class="frame">
         <div id="header-sostituzioni">
           <h2 id="header-sostituzioni-titolo">Sostituzioni</h2>
-          <div id="pulsante-nuova-sostituzione" onclick="mostra_gestione_sostituzione()"><span class="icon">+</span><span>Nuova</span></div>
+          <div id="pulsante-nuova-sostituzione" onclick="mostra_nuova_sostituzione()"><span class="icon">+</span><span>Nuova</span></div>
         </div>
         <div id="sostituzioni-filtri-container">
           <div id="sostituzioni-filtro-data">
@@ -110,10 +110,11 @@
     <div id="gestione-dati-container" class="hidden">
       <div id="gestione-dati-frame">
         <div id="gestione-dati-sostituzione" class="gestione-dati-element hidden">
-          <div>data <input id="gestione-dati-sostituzione-data" type="date"> ora <input id="gestione-dati-sostituzione-ora" type="number"></div>
+          <div>data <input id="gestione-dati-sostituzione-data" type="date"> ora <input id="gestione-dati-sostituzione-ora-predefinita" type="number"> ora personalizzata <input id="gestione-dati-sostituzione-ora-inizio" type="time"><input id="gestione-dati-sostituzione-ora-fine" type="time"></div>
           <div>docente <input id="gestione-dati-sostituzione-docente" type="text"></div>
           <div>classe <input id="gestione-dati-sostituzione-classe" type="number"><br>aula <input id="gestione-dati-sostituzione-aula" type="number"></div>
           <div>note <input id="gestione-dati-sostituzione-note" type="text"></div>
+          <div>pubblica <input id="gestione-dati-sostituzione-pubblicato" type="checkbox"></div>
         </div>
         <div id="gestione-dati-evento" class="gestione-dati-element hidden"></div>
         <div id="gestione-dati-notizia" class="gestione-dati-element hidden"></div>
@@ -130,6 +131,7 @@
   <script src="{{url_for('static', filename='scripts/filtri_sostituzioni.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/ui.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/gestione_dati.js')}}"></script>
+  <script src="{{url_for('static', filename='scripts/gestione_dati_sostituzione.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/onlinesocket.js')}}"></script>
 </body>
 
