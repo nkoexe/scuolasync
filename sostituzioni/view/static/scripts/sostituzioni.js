@@ -35,6 +35,9 @@ function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizi
   else { ora = numero_ora_predefinita + 'a ora' }
   if (note == null) { note = '' }
 
+  // Converte da unix timestamp a dd/mm/yyyy
+  data = new Date(data * 1000).toLocaleDateString()
+
   return ui_sostituzione_html_template.replaceAll('{id}', id).replace('{data}', data).replace('{ora}', ora).replace('{numero_aula}', numero_aula).replace('{nome_classe}', nome_classe).replace('{nome_docente}', nome_docente).replace('{cognome_docente}', cognome_docente).replace('{note}', note)
 }
 

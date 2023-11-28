@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS sostituzione (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     pubblicato BOOLEAN NOT NULL,
     cancellato BOOLEAN NOT NULL,
-    data DATE,
+    data INTEGER,
     note VARCHAR,
     ora_inizio TIME CHECK (length (ora_inizio) = 5),
     ora_fine TIME CHECK (length (ora_fine) = 5),
@@ -99,8 +99,8 @@ CREATE TABLE IF NOT EXISTS evento (
     urgente BOOLEAN NOT NULL,
     cancellato BOOLEAN NOT NULL,
     testo VARCHAR,
-    data_ora_inizio DATETIME,
-    data_ora_fine DATETIME
+    data_ora_inizio INTEGER,
+    data_ora_fine INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS visualizzazione_mostra_evento (
@@ -114,8 +114,8 @@ CREATE TABLE IF NOT EXISTS notizia (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     cancellato BOOLEAN NOT NULL,
     testo VARCHAR,
-    data_ora_inizio DATETIME,
-    data_ora_fine DATETIME
+    data_ora_inizio INTEGER,
+    data_ora_fine INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS visualizzazione_mostra_notizia (

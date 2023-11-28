@@ -15,7 +15,7 @@ def evento(data):
 @login_required
 def connect():
     print(sostituzioni())
-    emit('lista sostituzioni', json.dumps(sostituzioni(), default=str))
+    emit('lista sostituzioni', sostituzioni())
     # emit('lista eventi', eventi())
     # emit('lista notizie', notizie())
     # emit('lista aule', aule())

@@ -82,38 +82,40 @@ class Database:
 
         self.close()
 
-        rows = self.convert_loading_data(table, rows)
+        rows = self.load_lists(table, rows)
 
         return rows
 
-    def convert_loading_data(self, table_name, rows):
+    def load_lists(self, table_name, rows):
         """
-        Converte date da unix timestamp a datetime object
         Carica liste da diverse tabelle
         """
 
         match table_name:
+            # Questa funzione convertiva le date degli oggetti da stringhe a oggetti datetime.
+            # Date le arzigogolature le date vengono ora gestite come timestamp UNIX, fino alla loro visualizzazione.
+
             # Serve convertire gli orari da stringhe a qualcos'altro?
             # case OraPredefinita.TABLENAME:
             #     for row in rows:
             #         row['ora_inizio_default'] = 0
             #         row['ora_fine_default'] = 0
 
-            case Sostituzione.TABLENAME:
-                for row in rows:
-                    row['data'] = datetime.fromtimestamp(row['data'])
-                    # row['ora_inizio'] =
-                    # row['ora_fine'] =
+            # case Sostituzione.TABLENAME:
+            #     for row in rows:
+            #         row['data'] = datetime.fromtimestamp(row['data'])
+            #         # row['ora_inizio'] =
+            #         # row['ora_fine'] =
 
-            case Evento.TABLENAME:
-                for row in rows:
-                    row['data_ora_inizio'] = datetime.fromtimestamp(row['data_ora_inizio'])
-                    row['data_ora_fine'] = datetime.fromtimestamp(row['data_ora_fine'])
+            # case Evento.TABLENAME:
+            #     for row in rows:
+            #         row['data_ora_inizio'] = datetime.fromtimestamp(row['data_ora_inizio'])
+            #         row['data_ora_fine'] = datetime.fromtimestamp(row['data_ora_fine'])
 
-            case Notizia.TABLENAME:
-                for row in rows:
-                    row['data_ora_inizio'] = datetime.fromtimestamp(row['data_ora_inizio'])
-                    row['data_ora_fine'] = datetime.fromtimestamp(row['data_ora_fine'])
+            # case Notizia.TABLENAME:
+            #     for row in rows:
+            #         row['data_ora_inizio'] = datetime.fromtimestamp(row['data_ora_inizio'])
+            #         row['data_ora_fine'] = datetime.fromtimestamp(row['data_ora_fine'])
 
             case Classe.TABLENAME:
                 rows.key = Classe.KEY
