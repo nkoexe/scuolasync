@@ -1,19 +1,34 @@
 class Selezione {
-    constructor(ui_id, lista, callback) {
-        this.id = ui_id
+    constructor({ id, lista, callback, filtra_lista, render }) {
+        this.id = id.replaceAll('-', '_')
 
-        this.ui_container = document.getElementById(ui_id)
+        this.ui_container = document.getElementById(id)
         this.ui_input = this.ui_container.getElementsByClassName('selezione-input')[0]
         this.ui_dropdown = this.ui_container.getElementsByClassName('selezione-dropdown')[0]
         this.ui_lista = this.ui_dropdown.children[0]
 
-        this.lista_completa = lista
-        this.lista_visualizzati = lista
-        this.current_index = 0
+        this.lista_elementi  // fuzzyset obj
+        this.lista_visualizzati
 
+        if (lista instanceof Array) {
+            this.aggiorna(lista)
+        }
+
+        this.current_index = 0
         this.selected = null
 
         this.callback = callback
+
+        this.filtra_lista = l => l
+        this.render = s => s
+
+        if (filtra_lista) {
+            this.filtra_lista = filtra_lista
+        }
+
+        if (render) {
+            this.render = render
+        }
 
         this.ui_input.onfocus = (event) => {
             this.current_index = -1
@@ -61,15 +76,24 @@ class Selezione {
                     event.preventDefault()
                     this.ui_input.blur()
                     if (this.current_index !== -1) {
-                        this.ui_input.value = this.lista_visualizzati[this.current_index]
+                        this.seleziona(this.render(this.lista_visualizzati[this.current_index]))
+                    } else {
+                        this.seleziona(this.ui_input.value)
                     }
-                    this.seleziona(this.ui_input.value)
                     break
                 case 27: // escape
                     this.ui_input.blur()
                     this.seleziona()
             }
         }
+    }
+
+    get valore() {
+        return this.ui_input.value
+    }
+
+    set valore(data) {
+        this.seleziona(data)
     }
 
     seleziona(data) {
@@ -81,34 +105,41 @@ class Selezione {
             this.selected = null
         }
 
-        this.callback()
+        if (this.callback) { this.callback(this.selected) }
     }
 
     aggiorna(lista) {
-        this.lista_completa = FuzzySet();
+        lista = this.filtra_lista(lista)
+        this.lista_elementi = FuzzySet()
+
         for (let index = 0; index < lista.length; index++) {
-            this.lista_completa.add(lista[index].numero.toString());
+            this.lista_elementi.add(lista[index]);
         }
     }
 
     render_lista() {
         this.ui_lista.innerHTML = ''
         for (let index = 0; index < this.lista_visualizzati.length; index++) {
-            this.ui_lista.innerHTML += '<li id="lista_' + this.id + index + '" onmousedown="filtro_' + this.id + '.seleziona(\'' + this.lista_visualizzati[index] + '\')"><span>' + this.lista_visualizzati[index]; + '</span></li>'
+            this.ui_lista.innerHTML += '<li id="lista_' + this.id + index + '" onmousedown="' + this.id + '.seleziona(\'' + this.render(this.lista_visualizzati[index]) + '\')"><span>' + this.render(this.lista_visualizzati[index]) + '</span></li>'
         }
     }
 
     genera_dropdown() {
-        if (this.lista_completa == undefined) {
+        if (this.lista_elementi == undefined) {
             this.ui_dropdown.style.display = 'none'
             return
         }
         let search = this.ui_input.value
         if (search.length == 0) {
-            this.lista_visualizzati = this.lista_completa.values()
+            this.lista_visualizzati = this.lista_elementi.values()
         } else {
-            this.lista_visualizzati = this.lista_completa.get(search, [], .1).map(obj => obj[1])
+            this.lista_visualizzati = this.lista_elementi.get(search, [], .15).map(obj => obj[1])
         }
         this.render_lista()
     }
 }
+
+function prendi_ora(ore_predefinite) { return Array.from(ore_predefinite, (ora) => ora.numero.toString()) }
+function prendi_nome(classi) { return Array.from(classi, (classe) => classe.nome) }
+function prendi_numero(aule) { return Array.from(aule, (aula) => aula.numero) }
+function prendi_nome_cognome(docenti) { return Array.from(docenti, (docente) => docente.nome + ' ' + docente.cognome) }

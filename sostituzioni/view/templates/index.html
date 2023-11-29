@@ -110,7 +110,17 @@
     <div id="gestione-dati-container" class="hidden">
       <div id="gestione-dati-frame">
         <div id="gestione-dati-sostituzione" class="gestione-dati-element hidden">
-          <div>data <input id="gestione-dati-sostituzione-data" type="date"> ora <input id="gestione-dati-sostituzione-ora-predefinita" type="number"> ora personalizzata <input id="gestione-dati-sostituzione-ora-inizio" type="time"><input id="gestione-dati-sostituzione-ora-fine" type="time"></div>
+          <div>data <input id="gestione-dati-sostituzione-data" type="date">
+            ora
+            <div id="gestione-dati-sostituzione-ora-predefinita">
+              <div class="selezione">
+                <input type="number" class="selezione-input" />a ora
+                <div class="selezione-dropdown">
+                  <ul></ul>
+                </div>
+              </div>
+            </div> ora personalizzata <input id="gestione-dati-sostituzione-ora-inizio" type="time"><input id="gestione-dati-sostituzione-ora-fine" type="time">
+          </div>
           <div id="gestione-dati-sostituzione-docente">
             <div class="selezione">
               <input type="text" placeholder="Docente" class="selezione-input" />
@@ -119,8 +129,30 @@
               </div>
             </div>
           </div>
-          <div>classe <input id="gestione-dati-sostituzione-classe" type="number"><br>aula <input id="gestione-dati-sostituzione-aula" type="number"></div>
-          <div>note <input id="gestione-dati-sostituzione-note" type="text"></div>
+          <div id="gestione-dati-sostituzione-classe">
+            <div class="selezione">
+              <input type="text" placeholder="Classe" class="selezione-input" />
+              <div class="selezione-dropdown">
+                <ul></ul>
+              </div>
+            </div>
+          </div>
+          <div id="gestione-dati-sostituzione-aula">
+            <div class="selezione">
+              <input type="text" placeholder="Aula" class="selezione-input" />
+              <div class="selezione-dropdown">
+                <ul></ul>
+              </div>
+            </div>
+          </div>
+          <div id="gestione-dati-sostituzione-note">
+            <div class="selezione">
+              <input type="text" placeholder="Note" class="selezione-input" />
+              <div class="selezione-dropdown">
+                <ul></ul>
+              </div>
+            </div>
+          </div>
           <div>pubblica <input id="gestione-dati-sostituzione-pubblicato" type="checkbox"></div>
         </div>
         <div id="gestione-dati-evento" class="gestione-dati-element hidden"></div>
@@ -132,6 +164,16 @@
   </div>
   <script>
     const messaggio_nessuna_sostituzione = "{{ configurazione.get('nosostituzionimsg') }}"
+
+    let eventi = []
+    let notizie = []
+    let sostituzioni = []
+    let sostituzioni_visualizzate = []
+
+    let ore_predefinite = []
+    let aule = []
+    let classi = []
+    let docenti = []
   </script>
   <script src="{{url_for('static', filename='scripts/lib/fuzzyset.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/lib/selezione.js')}}"></script>
