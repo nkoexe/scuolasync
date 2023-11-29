@@ -4,11 +4,15 @@ const ui_gestione_dati_sostituzione_data = document.getElementById('gestione-dat
 const ui_gestione_dati_sostituzione_ora_predefinita = document.getElementById('gestione-dati-sostituzione-ora-predefinita');
 const ui_gestione_dati_sostituzione_ora_inizio = document.getElementById('gestione-dati-sostituzione-ora-inizio');
 const ui_gestione_dati_sostituzione_ora_fine = document.getElementById('gestione-dati-sostituzione-ora-fine');
-const ui_gestione_dati_sostituzione_docente = document.getElementById('gestione-dati-sostituzione-docente');
+// const ui_gestione_dati_sostituzione_docente = document.getElementById('gestione-dati-sostituzione-docente');
 const ui_gestione_dati_sostituzione_classe = document.getElementById('gestione-dati-sostituzione-classe');
 const ui_gestione_dati_sostituzione_aula = document.getElementById('gestione-dati-sostituzione-aula');
 const ui_gestione_dati_sostituzione_note = document.getElementById('gestione-dati-sostituzione-note');
 const ui_gestione_dati_sostituzione_pubblicato = document.getElementById('gestione-dati-sostituzione-pubblicato');
+
+
+const gestione_dati_sostituzione_docente = new Selezione('gestione-dati-sostituzione-docente')
+gestione_dati_sostituzione_docente
 
 
 function mostra_gestione_sostituzione() {

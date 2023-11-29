@@ -267,7 +267,7 @@ body {
 
 
 /* DROPDOWN SUGGERIMENTI */
-#sostituzioni-filtri-container .sostituzioni-filtri-dropdown {
+#sostituzioni-filtri-container .selezione-dropdown {
     display: none;
     position: absolute;
     /* altezza div filtri*/
@@ -284,18 +284,18 @@ body {
     box-shadow: 1px 5px 8px 0px #0000006e;
 }
 
-#sostituzioni-filtri-container .sostituzioni-filtri-dropdown li {
+#sostituzioni-filtri-container .selezione-dropdown li {
     display: flex;
     height: 1.6rem;
     padding: 0 1rem;
 }
 
-#sostituzioni-filtri-container .sostituzioni-filtri-dropdown li:hover,
-#sostituzioni-filtri-container .sostituzioni-filtri-dropdown li.lista_current {
+#sostituzioni-filtri-container .selezione-dropdown li:hover,
+#sostituzioni-filtri-container .selezione-dropdown li.lista_current {
     background-color: #cccccc;
 }
 
-#sostituzioni-filtri-container .sostituzioni-filtri-dropdown li span {
+#sostituzioni-filtri-container .selezione-dropdown li span {
     margin: auto 0;
 }
 
