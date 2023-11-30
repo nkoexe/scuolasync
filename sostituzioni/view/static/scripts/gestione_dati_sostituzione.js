@@ -6,16 +6,12 @@ const gestione_dati_sostituzione_ora_fine = document.getElementById('gestione-da
 const gestione_dati_sostituzione_pubblicato = document.getElementById('gestione-dati-sostituzione-pubblicato');
 
 
-const gestione_dati_sostituzione_ora_predefinita = new Selezione({ id: 'gestione-dati-sostituzione-ora-predefinita' })
-const gestione_dati_sostituzione_docente = new Selezione({ id: 'gestione-dati-sostituzione-docente' })
-const gestione_dati_sostituzione_classe = new Selezione({ id: 'gestione-dati-sostituzione-classe' })
-const gestione_dati_sostituzione_aula = new Selezione({ id: 'gestione-dati-sostituzione-aula' })
+const gestione_dati_sostituzione_ora_predefinita = new Selezione({ id: 'gestione-dati-sostituzione-ora-predefinita', filtra_lista: prendi_ora })
+const gestione_dati_sostituzione_docente = new Selezione({ id: 'gestione-dati-sostituzione-docente', filtra_lista: prendi_nome_cognome })
+const gestione_dati_sostituzione_classe = new Selezione({ id: 'gestione-dati-sostituzione-classe', filtra_lista: prendi_nome })
+const gestione_dati_sostituzione_aula = new Selezione({ id: 'gestione-dati-sostituzione-aula', filtra_lista: prendi_numero })
 const gestione_dati_sostituzione_note = new Selezione({ id: 'gestione-dati-sostituzione-note' })
 
-gestione_dati_sostituzione_ora_predefinita.filtra_lista = prendi_ora
-gestione_dati_sostituzione_docente.filtra_lista = prendi_nome_cognome
-gestione_dati_sostituzione_classe.filtra_lista = prendi_nome
-gestione_dati_sostituzione_aula.filtra_lista = prendi_numero
 
 
 function mostra_gestione_sostituzione() {

@@ -1,5 +1,5 @@
 from flask_socketio import emit
-from sostituzioni.model import aule, classi, docenti, ore_predefinite, sostituzioni, eventi, notizie
+from sostituzioni.model.model import Aula, Classe, Docente, OraPredefinita, Sostituzione, Evento, Notizia
 from sostituzioni.model.auth import login_required
 from sostituzioni.view import socketio
 from sostituzioni.logger import logger
@@ -13,14 +13,13 @@ def evento(data):
 @socketio.on('connect')
 @login_required
 def connect():
-    print(sostituzioni())
-    emit('lista sostituzioni', sostituzioni())
-    emit('lista eventi', eventi())
-    emit('lista notizie', notizie())
-    emit('lista aule', aule())
-    emit('lista classi', classi())
-    emit('lista docenti', docenti())
-    emit('lista ore predefinite', ore_predefinite())
+    emit('lista sostituzioni', Sostituzione.load())
+    emit('lista eventi', Evento.load())
+    emit('lista notizie', Notizia.load())
+    emit('lista aule', Aula.load())
+    emit('lista classi', Classe.load())
+    emit('lista docenti', Docente.load())
+    emit('lista ore predefinite', OraPredefinita.load())
 
 
 @socketio.on('nuova sostituzione')

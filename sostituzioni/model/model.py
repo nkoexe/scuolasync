@@ -6,7 +6,12 @@ from beartype._decor.decormain import beartype
 from sostituzioni.control.database import (database, ElementoDatabase,
                                            Aula, Classe, Docente, OraPredefinita,
                                            Sostituzione, Evento, Notizia,
-                                           Visualizzazione, Utente, load_data)
+                                           Visualizzazione, Utente)
+
+
+class Sostituzione(Sostituzione):
+    def __init__(self):
+        pass
 
 
 class VisualizzazioneOnline(Visualizzazione):
@@ -19,41 +24,6 @@ class VisualizzazioneFisica(Visualizzazione):
     @beartype
     def __init__(self):
         super(VisualizzazioneFisica, self).__init__()
-
-
-# -------------------
-
-
-def load(data: ElementoDatabase, filtri=None):
-    return load_data(data)
-
-
-def aule():
-    return load(Aula)
-
-
-def classi():
-    return load(Classe)
-
-
-def docenti():
-    return load(Docente)
-
-
-def ore_predefinite():
-    return load(OraPredefinita)
-
-
-def sostituzioni():
-    return load(Sostituzione)
-
-
-def eventi():
-    return load(Evento)
-
-
-def notizie():
-    return load(Notizia)
 
 
 # from time import time

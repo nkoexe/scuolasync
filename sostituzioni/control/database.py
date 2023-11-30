@@ -220,6 +220,9 @@ class Database:
 
 
 class ElementoDatabase:
+    TABLENAME = ''
+    KEY = ''
+
     @staticmethod
     def load(item):
         data = database.get(item.TABLENAME)
@@ -257,6 +260,8 @@ class ElementoDatabaseConStorico(ElementoDatabase):
 class Aula(ElementoDatabaseConStorico):
     TABLENAME = 'aula'
     KEY = 'numero'
+
+    def load(): return ElementoDatabase.load(Aula)
 
     @beartype
     def __init__(self, numero: str, piano: str, cancellato: bool):
@@ -303,6 +308,8 @@ class Classe(ElementoDatabaseConStorico):
     TABLENAME = 'classe'
     KEY = 'nome'
 
+    def load(): return ElementoDatabase.load(Classe)
+
     @beartype
     def __init__(self, nome: str, aule_ospitanti: List[Aula], cancellato: bool):
         super(Classe, self).__init__(cancellato)
@@ -332,6 +339,8 @@ class Classe(ElementoDatabaseConStorico):
 class Docente(ElementoDatabaseConStorico):
     TABLENAME = 'docente'
     KEY = ('nome', 'cognome')
+
+    def load(): return ElementoDatabase.load(Aula)
 
     @beartype
     def __init__(self, nome: str, cognome: str, cancellato: bool):
@@ -363,6 +372,8 @@ class OraPredefinita(ElementoDatabase):
     TABLENAME = 'ora_predefinita'
     KEY = 'numero'
 
+    def load(): return ElementoDatabase.load(OraPredefinita)
+
     @beartype
     def __init__(self, numero: int, ora_inizio: time, ora_fine: time):
         super(OraPredefinita, self).__init__()
@@ -393,6 +404,8 @@ class OraPredefinita(ElementoDatabase):
 class Sostituzione(ElementoDatabaseConStorico):
     TABLENAME = 'sostituzione'
     KEY = 'id'
+
+    def load(): return ElementoDatabase.load(Sostituzione)
 
     @beartype
     def __init__(
@@ -427,6 +440,8 @@ class Evento(ElementoDatabaseConStorico):
     TABLENAME = 'evento'
     KEY = 'id'
 
+    def load(): return ElementoDatabase.load(Evento)
+
     @beartype
     def __init__(
         self,
@@ -450,6 +465,8 @@ class Notizia(ElementoDatabaseConStorico):
     TABLENAME = 'notizia'
     KEY = 'id'
 
+    def load(): return ElementoDatabase.load(Notizia)
+
     @beartype
     def __init__(
         self,
@@ -469,6 +486,9 @@ class Notizia(ElementoDatabaseConStorico):
 
 class Visualizzazione(ElementoDatabase):
     TABLENAME = 'visualizzazione'
+    KEY = 'id'
+
+    def load(): return ElementoDatabase.load(Visualizzazione)
 
     @beartype
     def __init__(self):
@@ -491,13 +511,6 @@ class Utente(ElementoDatabase):
         super(Utente, self).__init__()
 
         self.email = email
-
-
-# --------------------
-
-
-def load_data(item: ElementoDatabase):
-    return ElementoDatabase.load(item)
 
 
 # --------------------
