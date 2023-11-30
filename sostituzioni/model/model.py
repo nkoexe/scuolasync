@@ -10,8 +10,19 @@ from sostituzioni.control.database import (database, ElementoDatabase,
 
 
 class Sostituzione(Sostituzione):
-    def __init__(self):
-        pass
+    def __init__(self,
+                 id: int | None = None,
+                 aula: Aula | None = None,
+                 classe: Classe | None = None,
+                 docente: Docente | None = None,
+                 data: int | None = None,
+                 ora_inizio: str | None = None,
+                 ora_fine: str | None = None,
+                 ora_predefinita: OraPredefinita | None = None,
+                 note: str | None = None,
+                 pubblicato: bool = False
+                 ):
+
 
 
 class VisualizzazioneOnline(Visualizzazione):

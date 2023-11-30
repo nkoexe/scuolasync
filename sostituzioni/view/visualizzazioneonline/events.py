@@ -25,4 +25,4 @@ def connect():
 @socketio.on('nuova sostituzione')
 @login_required
 def nuova_sostituzione(data):
-    print(data)
+    Sostituzione()
