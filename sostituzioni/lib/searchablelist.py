@@ -1,5 +1,5 @@
 from beartype._decor.decormain import beartype
-from beartype.typing import List, Tuple
+from beartype.typing import List, Tuple, Any
 
 
 class SearchableList(List):
@@ -15,21 +15,20 @@ class SearchableList(List):
         if values is not None:
             self.extend(values)
 
-    def __getitem__(self, id):
-        return self.get(id)
-
-    def get(self, id, key: str | Tuple | None = None):
+    def get(self, id, key: str | Tuple | None = None, default: Any = None):
         if key is None:
             key = self.key
+
+        res = []
 
         if isinstance(key, str):
             for element in self:
                 if isinstance(element, dict):
                     if element[key] == id:
-                        return element
+                        res.append(element)
                 elif isinstance(element, object):
                     if getattr(element, key) == id:
-                        return element
+                        res.append(element)
                 else:
                     raise TypeError(f'SearchableList.get: non è possibile ricercare elementi di tipo {type(element)}')
 
@@ -37,14 +36,19 @@ class SearchableList(List):
             for element in self:
                 if isinstance(element, dict):
                     if all(element[k] == v for k, v in zip(key, id)):
-                        return element
+                        res.append(element)
                 elif isinstance(element, object):
                     if all(getattr(element, k) == v for k, v in zip(key, id)):
-                        return element
+                        res.append(element)
                 else:
                     raise TypeError(f'SearchableList.get: non è possibile ricercare elementi di tipo {type(element)}')
 
-        return None
+        if len(res) == 1:
+            return res[0]
+        elif len(res) > 1:
+            return res
+
+        return default
 
     def keys(self):
         id_list = []

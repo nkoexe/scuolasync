@@ -23,18 +23,26 @@ class Sostituzione(Sostituzione):
                  pubblicato: bool = False
                  ):
 
+        self.id = id
+        self.aula = aula
+        self.classe = classe
+        self.docente = docente
+        self.data = data
+        self.ora_inizio = ora_inizio
+        self.ora_fine = ora_fine
+        self.ora_predefinita = ora_predefinita
+        self.note = note
+        self.pubblicato = pubblicato
 
 
 class VisualizzazioneOnline(Visualizzazione):
-    @beartype
     def __init__(self):
-        super(VisualizzazioneOnline, self).__init__()
+        pass
 
 
 class VisualizzazioneFisica(Visualizzazione):
-    @beartype
     def __init__(self):
-        super(VisualizzazioneFisica, self).__init__()
+        pass
 
 
 # from time import time

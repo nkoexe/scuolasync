@@ -279,11 +279,11 @@ class Configurazione:
         :return: Il metodo get restituisce un'istanza della classe Opzione se l'id_opzione è
         trovato nel dizionario self.opzioni. Se l'id_opzione non viene trovato, restituisce None.
         """
-        if self.opzioni[id_opzione] is None:
+        if self.opzioni.get(id_opzione) is None:
             logger.warning(f"Getter: id {id_opzione} non trovato.")
             return None
 
-        return self.opzioni[id_opzione]
+        return self.opzioni.get(id_opzione)
 
     @beartype
     def set(self, id_opzione: str, dati: Any, force: bool = False) -> bool:
@@ -306,7 +306,7 @@ class Configurazione:
             logger.warning(f"Setter: id {id_opzione} non riconosciuto.")
             return False
 
-        return self.opzioni[id_opzione].set(dati, force)
+        return self.opzioni.get(id_opzione).set(dati, force)
 
     @beartype
     def aggiorna(self, configurazione: Dict, salva=True) -> bool:

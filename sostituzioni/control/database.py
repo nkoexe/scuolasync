@@ -2,10 +2,11 @@
 database controller
 """
 
-from beartype.typing import List, Dict, Tuple
+from beartype.typing import List, Tuple
 from beartype._decor.decormain import beartype
-from datetime import date, datetime, time
 import sqlite3
+from datetime import datetime
+import re
 
 from sostituzioni.lib.searchablelist import SearchableList
 from sostituzioni.logger import logger
@@ -53,12 +54,12 @@ class Database:
     #     return [dict(row) for row in self.cursor.fetchall()]
 
     @beartype
-    def get(self, table: str, columns: str | Tuple[str] = '*', where: str | Tuple[str] | None = None, limit: int | None = None) -> SearchableList:
+    def get(self, table: str, columns: str | Tuple = '*', where: str | Tuple | None = None, limit: int | None = None, load_lists: bool = True) -> SearchableList:
         """
         Esempi:
         database.get('aula', 'numero')
         database.get('aula', ('numero', 'piano'), where=('numero=100', 'cancellato=0'))
-        database.get('utente', where='email=esempio@gandhimerano.com', limit=1)
+        database.get('utente', where='email="esempio@gandhimerano.com"', limit=1)
         """
 
         if isinstance(columns, tuple):
@@ -82,11 +83,15 @@ class Database:
 
         self.close()
 
-        rows = self.load_lists(table, rows)
+        if load_lists:
+            rows = self.load_lists(table, rows)
 
         return rows
 
-    def load_lists(self, table_name, rows):
+    def get_one(self, table: str, columns: str | Tuple = '*', where: str | Tuple | None = None, load_lists: bool = True) -> SearchableList:
+        return self.get(table, columns, where, 1, load_lists)[0]
+
+    def load_lists(self, table_name: str, rows: SearchableList):
         """
         Carica liste da diverse tabelle
         """
@@ -118,13 +123,17 @@ class Database:
             #         row['data_ora_fine'] = datetime.fromtimestamp(row['data_ora_fine'])
 
             case Classe.TABLENAME:
-                rows.key = Classe.KEY
+                relazioni = self.get('aula_ospita_classe')
 
                 for classe in rows:
                     classe['aule_ospitanti'] = []
 
-                for relazione in self.get('aula_ospita_classe'):
-                    rows[relazione['nome_classe']]['aule_ospitanti'].append(relazione['numero_aula'])
+                    aule = relazioni.get(classe['nome'], key='nome_classe')
+                    if not aule:
+                        continue
+
+                    for aula in aule:
+                        classe['aule_ospitanti'].append(aula['numero_aula'])
 
         return rows
 
@@ -145,7 +154,7 @@ class Database:
         self.close()
 
     @beartype
-    def update(self, table: str, where: str | Tuple[str] | None = None, **values):
+    def update(self, table: str, where: str | Tuple | None = None, **values):
         assert where
         assert values
 
@@ -162,7 +171,7 @@ class Database:
         self.close()
 
     @beartype
-    def delete(self, table: str, where: str | Tuple[str]):
+    def delete(self, table: str, where: str | Tuple):
         if isinstance(where, tuple):
             where = ' AND '.join(where)
 
@@ -172,79 +181,50 @@ class Database:
         self.execute(query)
         self.close()
 
-    # def load_all(self):
-    #     aule = SearchableList('numero')
-    #     classi = SearchableList('nome')
-    #     docenti = SearchableList()  # quale cazzo è l'id in questo caso??????? modifico per includere anche chiavi tuple????
-    #     ore_predefinite = SearchableList()
-    #     sostituzioni = SearchableList()
-    #     eventi = SearchableList()
-    #     notizie = SearchableList()
-    #     visualizzazioni_online = SearchableList()
-    #     visualizzazioni_fisiche = SearchableList()
 
-    #     db_aule = database.get_all_from('aula')
-    #     for db_aula in db_aule:
-    #         aula = Aula(db_aula['numero'], db_aula['piano'], bool(db_aula['cancellato']))
-    #         aule.append(aula)
+# -----------------------------------------------
 
-    #     db_classi = database.get_all_from('classe')
-    #     for db_classe in db_classi:
-    #         # Istanziare con attributo aule_ospitanti vuoto, in quanto lo aggiungiamo in seguito
-    #         classe = Classe(db_classe['nome'], [], bool(db_classe['cancellato']))
-    #         classi.append(classe)
 
-    #     db_aule_classi = database.get_all_from('aula_ospita_classe')
-    #     for db_aula_classe in db_aule_classi:
-    #         classi[db_aula_classe['nome_classe']].aule_ospitanti.append(db_aula_classe['numero_aula'])
-
-    #     db_docenti = database.get_all_from('docente')
-    #     for db_docente in db_docenti:
-    #         docente = Docente(db_docente['nome'], db_docente['cognome'], bool(db_docente['cancellato']))
-    #         docenti.append(docente)
-
-    #     # db_ore_predefinite = database.get_all_from('ora_predefinita')
-    #     # for db_ora_predefinita in db_ore_predefinite:
-    #     #     ora_predefinita = OraPredefinita(db_ora_predefinita['numero'], db_ora_predefinita['ora_inizio'], db_ora_predefinita['ora_fine'])
-    #     #     ore_predefinite.append(ora_predefinita)
-
-    #     # db_sostituzioni = database.get_all_from('aula')
-    #     # for db_aula in db_sostituzioni:
-    #     #     aula = Aula(db_aula['numero'], db_aula['piano'], bool(db_aula['cancellato']))
-    #     #     sostituzioni.append(aula)
-
-    #     return aule, classi, docenti, ore_predefinite, sostituzioni, eventi, notizie, visualizzazioni_online, visualizzazioni_fisiche
+database = Database(configurazione.get('databasepath').path)
+authdatabase = Database(configurazione.get('authdatabasepath').path)
 
 
 # -----------------------------------------------
 
 
 class ElementoDatabase:
-    TABLENAME = ''
-    KEY = ''
+    DATABASE: Database = database
+    TABLENAME: str = ''
+    KEY: str = ''
 
-    @staticmethod
-    def load(item):
-        data = database.get(item.TABLENAME)
+    # @staticmethod
+    # def load(db, item):
+    #     data = db.get(item.TABLENAME)
+    #     data.key = item.KEY
+
+    #     return data
+
+    def load(item, columns: str | Tuple = '*', where: str | Tuple | None = None, limit: int | None = None):
+        data = item.DATABASE.get(item.TABLENAME, columns, where, limit)
         data.key = item.KEY
 
         return data
 
-    def __init__(self):
-        super().__init__()
-
     def modifica(self):
         pass
 
-    def salva(self):
-        pass
+    def inserisci(self, **data):
+        self.DATABASE.insert(self.TABLENAME, **data)
 
 
 class ElementoDatabaseConStorico(ElementoDatabase):
-    def __init__(self, cancellato):
-        self._cancellato = cancellato
+    # def __init__(self, cancellato):
+    #     self._cancellato = cancellato
 
-        self.elimina = self.cancella = self.__del__
+    #     self.elimina = self.cancella = self.__del__
+
+    def elimina(self, mantieni_in_storico: bool = True):
+        return self.__del__(mantieni_in_storico)
 
     def __del__(self, mantieni_in_storico: bool = True):
         self._cancellato = True
@@ -263,12 +243,15 @@ class Aula(ElementoDatabaseConStorico):
 
     def load(): return ElementoDatabase.load(Aula)
 
-    @beartype
-    def __init__(self, numero: str, piano: str, cancellato: bool):
-        super(Aula, self).__init__(cancellato)
+    def trova(numero):
+        return database.get_one('aula', 'numero', where=f'numero="{numero}"', load_lists=False)
 
-        self.numero = numero
-        self.piano = piano
+    # @beartype
+    # def __init__(self, numero: str, piano: str, cancellato: bool):
+    #     super(Aula, self).__init__(cancellato)
+
+    #     self.numero = numero
+    #     self.piano = piano
 
     def __repr__(self) -> str:
         return 'Aula ' + self.numero
@@ -310,12 +293,15 @@ class Classe(ElementoDatabaseConStorico):
 
     def load(): return ElementoDatabase.load(Classe)
 
-    @beartype
-    def __init__(self, nome: str, aule_ospitanti: List[Aula], cancellato: bool):
-        super(Classe, self).__init__(cancellato)
+    def trova(nome):
+        return database.get_one('classe', 'nome', where=f'nome="{nome}"', load_lists=False)
 
-        self.nome = nome
-        self.aule_ospitanti = aule_ospitanti
+    # @beartype
+    # def __init__(self, nome: str, aule_ospitanti: List[Aula], cancellato: bool):
+    #     super(Classe, self).__init__(cancellato)
+
+    #     self.nome = nome
+    #     self.aule_ospitanti = aule_ospitanti
 
     @property
     def nome(self):
@@ -340,14 +326,17 @@ class Docente(ElementoDatabaseConStorico):
     TABLENAME = 'docente'
     KEY = ('nome', 'cognome')
 
-    def load(): return ElementoDatabase.load(Aula)
+    def load(): return ElementoDatabase.load(Docente)
 
-    @beartype
-    def __init__(self, nome: str, cognome: str, cancellato: bool):
-        super(Docente, self).__init__(cancellato)
+    def trova(nome_cognome):
+        return database.get_one('docente', ('nome', 'cognome'), where=f'(nome || " " || cognome)="{nome_cognome}"')
 
-        self._nome = nome
-        self._cognome = cognome
+    # @beartype
+    # def __init__(self, nome: str, cognome: str, cancellato: bool):
+    #     super(Docente, self).__init__(cancellato)
+
+    #     self._nome = nome
+    #     self._cognome = cognome
 
     @property
     def nome(self):
@@ -374,13 +363,13 @@ class OraPredefinita(ElementoDatabase):
 
     def load(): return ElementoDatabase.load(OraPredefinita)
 
-    @beartype
-    def __init__(self, numero: int, ora_inizio: time, ora_fine: time):
-        super(OraPredefinita, self).__init__()
+    # @beartype
+    # def __init__(self, numero: int, ora_inizio: time, ora_fine: time):
+    #     super(OraPredefinita, self).__init__()
 
-        self._numero = numero
-        self._ora_inizio = ora_inizio
-        self._ora_fine = ora_fine
+    #     self._numero = numero
+    #     self._ora_inizio = ora_inizio
+    #     self._ora_fine = ora_fine
 
     @property
     def ora_inizio(self):
@@ -407,33 +396,210 @@ class Sostituzione(ElementoDatabaseConStorico):
 
     def load(): return ElementoDatabase.load(Sostituzione)
 
-    @beartype
-    def __init__(
-        self,
-        id: int,
-        cancellato: bool,
-        aula: Aula,
-        classe: Classe,
-        docente: Docente | None = None,
-        data: date | None = None,
-        ora_inizio: time | None = None,
-        ora_fine: time | None = None,
-        ora_predefinita: OraPredefinita | None = None,
-        note: str | None = None,
-        pubblicato: bool = False
-    ):
-        super(Sostituzione, self).__init__(cancellato)
+    def inserisci(self):
 
-        self._id = id
-        self._aula = aula
-        self._classe = classe
-        self._docente = docente
-        self._data = data
-        self._ora_inizio = ora_inizio
-        self._ora_fine = ora_fine
-        self._ora_predefinita = ora_predefinita
-        self._note = note
-        self._pubblicato = pubblicato
+        super().inserisci(cancellato=False, pubblicato=self.pubblicato,
+                          numero_aula=self.numero_aula, nome_classe=self.nome_classe,
+                          nome_docente=self.nome_docente, cognome_docente=self.cognome_docente, data=self.data,
+                          numero_ora_predefinita=self.ora_predefinita, ora_inizio=self.ora_inizio, ora_fine=self.ora_fine,
+                          note=self.note)
+
+    # @beartype
+    # def __init__(
+    #     self,
+    #     id: int,
+    #     cancellato: bool,
+    #     aula: Aula,
+    #     classe: Classe,
+    #     docente: Docente | None = None,
+    #     data: int | None = None,
+    #     ora_inizio: str | None = None,
+    #     ora_fine: str | None = None,
+    #     ora_predefinita: OraPredefinita | None = None,
+    #     note: str | None = None,
+    #     pubblicato: bool = False
+    # ):
+    #     super(Sostituzione, self).__init__(cancellato)
+
+    #     self._id = id
+    #     self._aula = aula
+    #     self._classe = classe
+    #     self._docente = docente
+    #     self._data = data
+    #     self._ora_inizio = ora_inizio
+    #     self._ora_fine = ora_fine
+    #     self._ora_predefinita = ora_predefinita
+    #     self._note = note
+    #     self._pubblicato = pubblicato
+
+    @property
+    def pubblicato(self):
+        return self._pubblicato
+
+    @beartype
+    @pubblicato.setter
+    def pubblicato(self, new: bool):
+        self._pubblicato = new
+
+    @property
+    def numero_aula(self):
+        return self._numero_aula
+
+    @beartype
+    @numero_aula.setter
+    def numero_aula(self, new: str | None):
+        self._numero_aula = new
+
+    @property
+    def aula(self):
+        return self._aula
+
+    @beartype
+    @aula.setter
+    def aula(self, new: str | Aula | None):
+        self._aula = None
+
+        if isinstance(new, Aula):
+            self._aula = new
+            self._numero_aula = new.numero
+        elif isinstance(new, str):
+            aula = Aula.trova(new)
+            self._numero_aula = aula['numero']
+
+    @property
+    def nome_classe(self):
+        return self._nome_classe
+
+    @beartype
+    @nome_classe.setter
+    def nome_classe(self, new: str | None):
+        self._nome_classe = new
+
+    @property
+    def classe(self):
+        return self._classe
+
+    @beartype
+    @classe.setter
+    def classe(self, new: str | Classe | None):
+        self._classe = None
+
+        if isinstance(new, Classe):
+            self._classe = new
+            self._nome_classe = new.nome
+        elif isinstance(new, str):
+            classe = Classe.trova(new)
+            print(classe)
+            self._nome_classe = classe['nome']
+
+    @property
+    def nome_docente(self):
+        return self._nome_docente
+
+    @beartype
+    @nome_docente.setter
+    def nome_docente(self, new: str | None):
+        self._nome_docente = new
+
+    @property
+    def cognome_docente(self):
+        return self._cognome_docente
+
+    @beartype
+    @cognome_docente.setter
+    def cognome_docente(self, new: str | None):
+        self._cognome_docente = new
+
+    @property
+    def docente(self):
+        return self._docente
+
+    @beartype
+    @docente.setter
+    def docente(self, new: str | Docente | None):
+        self._docente = None
+        self._nome_docente = None
+        self._cognome_docente = None
+
+        if isinstance(new, Docente):
+            self._docente = new
+            self._nome_docente = new.nome
+            self._cognome_docente = new.cognome
+        elif isinstance(new, str):
+            docente = Docente.trova(new)
+            self._nome_docente = docente['nome']
+            self._cognome_docente = docente['cognome']
+
+    @property
+    def data(self):
+        return self._data
+
+    @beartype
+    @data.setter
+    def data(self, new: int | str | None):
+        self._data = None
+
+        if isinstance(new, int):
+            self._data = new
+        elif isinstance(new, str):
+            self._data = int(datetime.strptime(new, '%Y-%m-%d').timestamp())
+
+    @property
+    def ora_inizio(self):
+        return self._ora_inizio
+
+    @beartype
+    @ora_inizio.setter
+    def ora_inizio(self, new: str | None):
+        self._ora_inizio = None
+
+        if isinstance(new, str):
+            if not new:
+                self._ora_inizio = None
+
+            elif re.match(r'^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$', new):
+                self._ora_inizio = new
+            else:
+                raise ValueError(f'Ora_inizio {new} non valida, seguire il formato XX:XX')
+
+    @property
+    def ora_fine(self):
+        return self._ora_fine
+
+    @beartype
+    @ora_fine.setter
+    def ora_fine(self, new: str | None):
+        self._ora_fine = None
+
+        if isinstance(new, str):
+            if not new:
+                self._ora_inizio = None
+
+            elif re.match(r'^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$', new):
+                self._ora_fine = new
+            else:
+                raise ValueError(f'Ora_fine {new} non valida, seguire il formato XX:XX')
+
+    @property
+    def ora_predefinita(self):
+        return self._ora_predefinita
+
+    @beartype
+    @ora_predefinita.setter
+    def ora_predefinita(self, new: int | str | None):
+        self._ora_predefinita = new
+
+        if isinstance(new, str):
+            self._ora_predefinita = int(new)
+
+    @property
+    def note(self):
+        return self._note
+
+    @beartype
+    @note.setter
+    def note(self, new: str | None):
+        self._note = new
 
 
 class Evento(ElementoDatabaseConStorico):
@@ -442,23 +608,23 @@ class Evento(ElementoDatabaseConStorico):
 
     def load(): return ElementoDatabase.load(Evento)
 
-    @beartype
-    def __init__(
-        self,
-        id: int,
-        cancellato: bool,
-        testo: str,
-        data_ora_inizio: datetime | None = None,
-        data_ora_fine: datetime | None = None,
-        urgente: bool = False,
-    ):
-        super(Evento, self).__init__(cancellato)
+    # @beartype
+    # def __init__(
+    #     self,
+    #     id: int,
+    #     cancellato: bool,
+    #     testo: str,
+    #     data_ora_inizio: datetime | None = None,
+    #     data_ora_fine: datetime | None = None,
+    #     urgente: bool = False,
+    # ):
+    #     super(Evento, self).__init__(cancellato)
 
-        self._id = id
-        self.testo = testo
-        self.data_ora_inizio = data_ora_inizio
-        self.data_ora_fine = data_ora_fine
-        self.urgente = urgente
+    #     self._id = id
+    #     self.testo = testo
+    #     self.data_ora_inizio = data_ora_inizio
+    #     self.data_ora_fine = data_ora_fine
+    #     self.urgente = urgente
 
 
 class Notizia(ElementoDatabaseConStorico):
@@ -467,21 +633,21 @@ class Notizia(ElementoDatabaseConStorico):
 
     def load(): return ElementoDatabase.load(Notizia)
 
-    @beartype
-    def __init__(
-        self,
-        id: int,
-        cancellato: bool,
-        testo: str,
-        data_ora_inizio: datetime | None = None,
-        data_ora_fine: datetime | None = None,
-    ):
-        super(Notizia, self).__init__(cancellato)
+    # @beartype
+    # def __init__(
+    #     self,
+    #     id: int,
+    #     cancellato: bool,
+    #     testo: str,
+    #     data_ora_inizio: datetime | None = None,
+    #     data_ora_fine: datetime | None = None,
+    # ):
+    #     super(Notizia, self).__init__(cancellato)
 
-        self._id = id
-        self.testo = testo
-        self.data_ora_inizio = (data_ora_inizio,)
-        self.data_ora_fine = data_ora_fine
+    #     self._id = id
+    #     self.testo = testo
+    #     self.data_ora_inizio = (data_ora_inizio,)
+    #     self.data_ora_fine = data_ora_fine
 
 
 class Visualizzazione(ElementoDatabase):
@@ -499,22 +665,14 @@ class Visualizzazione(ElementoDatabase):
 
 
 class Utente(ElementoDatabase):
+    DATABASE = authdatabase
     TABLENAME = 'utente'
     KEY = 'email'
 
-    # Trovare un modo per mettere una singola funzione load nella classe Elementodatabase
-    def load(columns: str | Tuple[str] = '*', where: str | Tuple[str] | None = None, limit: int | None = None):
-        return authdatabase.get(Utente.TABLENAME, columns, where, limit)
+    def load(*args, **kwargs): return ElementoDatabase.load(Utente, *args, **kwargs)
 
     @beartype
     def __init__(self, email: str, ):
         super(Utente, self).__init__()
 
         self.email = email
-
-
-# --------------------
-
-
-database = Database(configurazione.get('databasepath').path)
-authdatabase = Database(configurazione.get('authdatabasepath').path)

@@ -41,7 +41,7 @@ class Filtro extends Selezione {
 function sostituzioni_applica_filtri() {
     sostituzioni_visualizzate = sostituzioni
     if (sostituzioni_filtro_ora.selected !== null) {
-        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.ora_predefinita === sostituzioni_filtro_ora.selected)
+        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.numero_ora_predefinita === sostituzioni_filtro_ora.selected)
     }
     if (sostituzioni_filtro_classe.selected !== null) {
         sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.nome_classe === sostituzioni_filtro_classe.selected)
@@ -67,10 +67,32 @@ function sostituzioni_ordina() {
     if (!sostituzioni_filtro_docente.ordina) sostituzioni_filtro_docente.rimuovi_ordinamento()
 
     if (sostituzioni_filtro_ora.ordina) {
-        if (sostituzioni_filtro_ora.verso_ordinamento === 1)
-            sostituzioni_visualizzate.sort((a, b) => b.ora_predefinita - a.ora_predefinita)
-        else
-            sostituzioni_visualizzate.sort((a, b) => a.ora_predefinita - b.ora_predefinita)
+        if (sostituzioni_filtro_ora.verso_ordinamento === 1) {
+            sostituzioni_visualizzate.sort((a, b) => {
+                if (a.numero_ora_predefinita === null && b.numero_ora_predefinita === null) {
+                    console.log('wow')
+                    return b.ora_inizio.localeCompare(a.ora_inizio)
+                } else if (a.numero_ora_predefinita === null) {
+                    return 1
+                } else if (b.numero_ora_predefinita === null) {
+                    return -1
+                } else {
+                    return b.numero_ora_predefinita - a.numero_ora_predefinita
+                }
+            })
+        } else {
+            sostituzioni_visualizzate.sort((a, b) => {
+                if (a.numero_ora_predefinita === null && b.numero_ora_predefinita === null) {
+                    return a.ora_inizio.localeCompare(b.ora_inizio)
+                } else if (a.numero_ora_predefinita === null) {
+                    return 1
+                } else if (b.numero_ora_predefinita === null) {
+                    return -1
+                } else {
+                    return a.numero_ora_predefinita - b.numero_ora_predefinita
+                }
+            })
+        }
     }
     if (sostituzioni_filtro_classe.ordina) {
         if (sostituzioni_filtro_classe.verso_ordinamento === 1)

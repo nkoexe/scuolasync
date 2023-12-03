@@ -25,4 +25,11 @@ def connect():
 @socketio.on('nuova sostituzione')
 @login_required
 def nuova_sostituzione(data):
-    Sostituzione()
+    sostituzione = Sostituzione(id=None, aula=data.get('aula'), classe=data.get('classe'),
+                                docente=data.get('docente'), data=data.get('data'),
+                                ora_inizio=data.get('ora_inizio'), ora_fine=data.get('ora_fine'),
+                                ora_predefinita=data.get('ora_predefinita'), note=data.get('note'),
+                                pubblicato=data.get('pubblicato'))
+    sostituzione.inserisci()
+
+    emit('aggiornamento sostituzioni', broadcast=True)

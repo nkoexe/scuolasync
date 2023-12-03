@@ -41,6 +41,9 @@ socket.on('lista docenti', (data) => {
 })
 
 
+socket.on('aggiornamento sostituzioni', () => location.reload())
+
+
 // ----------------
 
 function carica_nuova_sostituzione(pubblicato, data, ora_predefinita, ora_inizio, ora_fine, docente, classe, aula, note) {

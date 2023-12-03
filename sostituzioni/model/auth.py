@@ -70,7 +70,7 @@ def sso_login(request):
 
 
 def authenticate_user(email):
-    userdata = User.load(where=f"email='{email}'")
+    userdata = User.load(where=f'email="{email}"')
 
     if not userdata:
         return False
