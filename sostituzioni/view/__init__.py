@@ -20,3 +20,4 @@ app.register_blueprint(visualizzazionefisica_blueprint)
 app.register_blueprint(visualizzazioneonline_blueprint)
 
 logger.debug('All blueprints registered')
+logger.info('System ready')

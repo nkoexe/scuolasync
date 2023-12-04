@@ -3,6 +3,8 @@ from secrets import token_hex
 from datetime import timedelta
 
 from sostituzioni.control.configurazione import configurazione
+from sostituzioni.control.cli import database_cli
+
 
 app = Flask(__name__)
 
@@ -19,6 +21,8 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['FLASK_ENV'] = 'development'
+
+app.cli.add_command(database_cli)
 
 
 # @app.before_request

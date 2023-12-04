@@ -73,7 +73,7 @@ opzione_percorso with context %}
               {% if sezione.id == 'sistema' %}
               <li>
                 <button>ricarica file di configurazione</button>
-                <button>restart completo del sistema</button>
+                <button onclick="server_reboot()">restart completo del sistema</button>
               </li>
               {% endif %}
             </ul>

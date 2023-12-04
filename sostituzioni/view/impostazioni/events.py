@@ -20,7 +20,7 @@ def applica(dati):
     emit('applica impostazioni successo')
 
 
-@socketio.on('shell')
+@socketio.on('shell', namespace='/shell')
 @login_required
 def shell(dati):
     with RedirectedStdout() as out:
@@ -29,3 +29,11 @@ def shell(dati):
         except Exception as e:
             print(e)
         emit('shell', str(out))
+
+
+@socketio.on('server reboot', namespace='/impostazioni')
+@login_required
+def reboot():
+    import subprocess
+    import os
+    subprocess.run([r'C:\Users\nicco\Programming\sostituzioni\sostituzioni\scripts\hardreload.bat', str(os.getpid())])

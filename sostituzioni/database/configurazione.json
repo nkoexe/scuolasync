@@ -144,6 +144,21 @@
       "default": "database/configurazione.json",
       "valore": "C:\\Users\\nicco\\Programming\\sostituzioni\\sostituzioni\\database\\configurazione.json"
     },
+    "scriptsdir": {
+      "titolo": "Directory degli script",
+      "descrizione": "Script per creazione di database, reload del sistema eccetera.",
+      "sezione": "percorsi",
+      "disabilitato": true,
+      "nascosto": true,
+      "tipo": "percorso",
+      "radice": 1,
+      "scelte_radice": [
+        "/",
+        "%ROOT%"
+      ],
+      "default": "scripts/",
+      "valore": "scripts/"
+    },
     "databasepath": {
       "titolo": "Posizione database",
       "descrizione": "Percorso nel quale si trova il database del sistema.",
@@ -156,8 +171,8 @@
         "/",
         "%ROOT%"
       ],
-      "default": "database/test.db",
-      "valore": "database/test.db"
+      "default": "database/database.db",
+      "valore": "database/test2.db"
     },
     "authdatabasepath": {
       "titolo": "Posizione database gestione utenti",

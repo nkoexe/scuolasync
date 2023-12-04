@@ -61,10 +61,22 @@ function sostituzioni_applica_filtri() {
 }
 
 function sostituzioni_ordina() {
-    if (!sostituzioni_filtro_ora.ordina) sostituzioni_filtro_ora.rimuovi_ordinamento()
-    if (!sostituzioni_filtro_classe.ordina) sostituzioni_filtro_classe.rimuovi_ordinamento()
-    if (!sostituzioni_filtro_aula.ordina) sostituzioni_filtro_aula.rimuovi_ordinamento()
-    if (!sostituzioni_filtro_docente.ordina) sostituzioni_filtro_docente.rimuovi_ordinamento()
+    if (!sostituzioni_filtro_ora.ordina) {
+        sostituzioni_filtro_ora.rimuovi_ordinamento()
+        sostituzioni_filtro_ora.verso_ordinamento = 1
+    }
+    if (!sostituzioni_filtro_classe.ordina) {
+        sostituzioni_filtro_classe.rimuovi_ordinamento()
+        sostituzioni_filtro_classe.verso_ordinamento = 1
+    }
+    if (!sostituzioni_filtro_aula.ordina) {
+        sostituzioni_filtro_aula.rimuovi_ordinamento()
+        sostituzioni_filtro_aula.verso_ordinamento = 1
+    }
+    if (!sostituzioni_filtro_docente.ordina) {
+        sostituzioni_filtro_docente.rimuovi_ordinamento()
+        sostituzioni_filtro_docente.verso_ordinamento = 1
+    }
 
     if (sostituzioni_filtro_ora.ordina) {
         if (sostituzioni_filtro_ora.verso_ordinamento === 1) {

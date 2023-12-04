@@ -85,6 +85,11 @@ function applica() {
     socket.emit("applica impostazioni", dati);
 }
 
+function server_reboot() {
+    socket.emit("server reboot")
+    setTimeout(() => { location.reload() }, 1000)
+}
+
 socket.on("applica impostazioni errore", (errore) => {
     alert(errore);
 })
