@@ -33,3 +33,9 @@ def nuova_sostituzione(data):
     sostituzione.inserisci()
 
     emit('aggiornamento sostituzioni', broadcast=True)
+
+
+@socketio.on('elimina sostituzione')
+@login_required
+def elimina_sostituzione(data):
+    Sostituzione(data.get('id')).elimina()

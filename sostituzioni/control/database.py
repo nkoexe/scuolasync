@@ -151,7 +151,13 @@ class Database:
 
         self.connect()
         self.execute(query, data.values())
+
+        self.cursor.execute('SELECT last_insert_rowid();')
+        id = self.cursor.fetchone()[0]
+
         self.close()
+
+        return id
 
     @beartype
     def update(self, table: str, where: str | Tuple | None = None, **values):
@@ -214,7 +220,7 @@ class ElementoDatabase:
         pass
 
     def inserisci(self, **data):
-        self.DATABASE.insert(self.TABLENAME, **data)
+        return self.DATABASE.insert(self.TABLENAME, **data)
 
 
 class ElementoDatabaseConStorico(ElementoDatabase):
@@ -232,6 +238,11 @@ class ElementoDatabaseConStorico(ElementoDatabase):
     @property
     def cancellato(self):
         return self._cancellato
+
+    @beartype
+    @cancellato.setter
+    def cancellato(self, new: bool | None):
+        self._cancellato = new
 
 
 # -----------------------------------------------
@@ -407,39 +418,13 @@ class Sostituzione(ElementoDatabaseConStorico):
 
     def inserisci(self):
 
-        super().inserisci(cancellato=False, pubblicato=self.pubblicato,
-                          numero_aula=self.numero_aula, nome_classe=self.nome_classe,
-                          nome_docente=self.nome_docente, cognome_docente=self.cognome_docente, data=self.data,
-                          numero_ora_predefinita=self.ora_predefinita, ora_inizio=self.ora_inizio, ora_fine=self.ora_fine,
-                          note=self.note)
+        id = super().inserisci(cancellato=False, pubblicato=self.pubblicato,
+                               numero_aula=self.numero_aula, nome_classe=self.nome_classe,
+                               nome_docente=self.nome_docente, cognome_docente=self.cognome_docente, data=self.data,
+                               numero_ora_predefinita=self.ora_predefinita, ora_inizio=self.ora_inizio, ora_fine=self.ora_fine,
+                               note=self.note)
 
-    # @beartype
-    # def __init__(
-    #     self,
-    #     id: int,
-    #     cancellato: bool,
-    #     aula: Aula,
-    #     classe: Classe,
-    #     docente: Docente | None = None,
-    #     data: int | None = None,
-    #     ora_inizio: str | None = None,
-    #     ora_fine: str | None = None,
-    #     ora_predefinita: OraPredefinita | None = None,
-    #     note: str | None = None,
-    #     pubblicato: bool = False
-    # ):
-    #     super(Sostituzione, self).__init__(cancellato)
-
-    #     self._id = id
-    #     self._aula = aula
-    #     self._classe = classe
-    #     self._docente = docente
-    #     self._data = data
-    #     self._ora_inizio = ora_inizio
-    #     self._ora_fine = ora_fine
-    #     self._ora_predefinita = ora_predefinita
-    #     self._note = note
-    #     self._pubblicato = pubblicato
+        self.id = id
 
     @property
     def pubblicato(self):
@@ -447,7 +432,7 @@ class Sostituzione(ElementoDatabaseConStorico):
 
     @beartype
     @pubblicato.setter
-    def pubblicato(self, new: bool):
+    def pubblicato(self, new: bool | None):
         self._pubblicato = new
 
     @property
@@ -498,7 +483,6 @@ class Sostituzione(ElementoDatabaseConStorico):
             self._nome_classe = new.nome
         elif isinstance(new, str):
             classe = Classe.trova(new)
-            print(classe)
             self._nome_classe = classe['nome']
 
     @property
