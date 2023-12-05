@@ -372,6 +372,15 @@ class OraPredefinita(ElementoDatabase):
     #     self._ora_fine = ora_fine
 
     @property
+    def numero(self):
+        return self._numero
+
+    @beartype
+    @numero.setter
+    def numero(self, new: str):
+        self._numero = new
+
+    @property
     def ora_inizio(self):
         return self._ora_inizio
 

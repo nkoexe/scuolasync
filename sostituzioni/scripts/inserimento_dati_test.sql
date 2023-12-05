@@ -47,3 +47,21 @@ INSERT OR IGNORE INTO aula VALUES
     ("301", 3, 0),
     ("302", 3, 0),
     ("303", 3, 0);
+
+INSERT OR IGNORE INTO classe VALUES
+    ("1 LC", 0),
+    ("1 LL", 0),
+    ("1 LS", 0),
+    ("1 LSU", 0),
+    ("1 LSA", 0),
+    ("1 ITE", 0),
+    ("2 LC", 0),
+    ("2 LL", 0),
+    ("2 LS", 0),
+    ("2 LSU", 0),
+    ("2 LSA", 0),
+    ("2 ITE", 0);
+
+INSERT OR IGNORE INTO visualizzazione VALUES
+    ("online"),
+    ("fisica");

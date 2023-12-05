@@ -34,6 +34,10 @@ def shell(dati):
 @socketio.on('server reboot', namespace='/impostazioni')
 @login_required
 def reboot():
-    import subprocess
     import os
-    subprocess.run([r'C:\Users\nicco\Programming\sostituzioni\sostituzioni\scripts\hardreload.bat', str(os.getpid())])
+
+    if os.name == 'nt':
+        os.system(f'cmd /c {configurazione.get("scriptsdir").path / "reboot.bat"} {os.getpid()}')
+
+    else:
+        os.system(f'bash {configurazione.get("scriptsdir").path / "reboot.sh"} {os.getpid()}')
