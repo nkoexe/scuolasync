@@ -29,29 +29,29 @@ function mostra_nuova_sostituzione() {
 
     gestione_dati_sostituzione_data.valueAsDate = new Date();
 
+    ui_pulsante_applica_gestione_dati.innerHTML = 'Crea'
     ui_pulsante_applica_gestione_dati.onclick = conferma_nuova_sostituzione
 }
 
 function conferma_nuova_sostituzione() {
-    carica_nuova_sostituzione(
-        gestione_dati_sostituzione_pubblicato.checked,
-        gestione_dati_sostituzione_data.value,
-        gestione_dati_sostituzione_ora_predefinita.valore,
-        gestione_dati_sostituzione_ora_inizio.value,
-        gestione_dati_sostituzione_ora_fine.value,
-        gestione_dati_sostituzione_docente.valore,
-        gestione_dati_sostituzione_classe.valore,
-        gestione_dati_sostituzione_aula.valore,
-        gestione_dati_sostituzione_note.valore
-    )
+    s_nuova_sostituzione({
+        pubblicato: gestione_dati_sostituzione_pubblicato.checked,
+        data: gestione_dati_sostituzione_data.value,
+        ora_predefinita: gestione_dati_sostituzione_ora_predefinita.valore,
+        ora_inizio: gestione_dati_sostituzione_ora_inizio.value,
+        ora_fine: gestione_dati_sostituzione_ora_fine.value,
+        docente: gestione_dati_sostituzione_docente.valore,
+        classe: gestione_dati_sostituzione_classe.valore,
+        aula: gestione_dati_sostituzione_aula.valore,
+        note: gestione_dati_sostituzione_note.valore
+    })
 }
-
 
 
 function mostra_modifica_sostituzione(id) {
     let sostituzione = sostituzioni.find(element => element.id === id)
 
-    gestione_dati_sostituzione_data.valueAsDate = new Date(sostituzione.data)
+    gestione_dati_sostituzione_data.valueAsDate = new Date(sostituzione.data * 1000)
     gestione_dati_sostituzione_ora_predefinita.valore = sostituzione.numero_ora_predefinita
     gestione_dati_sostituzione_ora_inizio.value = sostituzione.ora_inizio
     gestione_dati_sostituzione_ora_fine.value = sostituzione.ora_fine
@@ -59,7 +59,26 @@ function mostra_modifica_sostituzione(id) {
     gestione_dati_sostituzione_classe.valore = sostituzione.nome_classe
     gestione_dati_sostituzione_aula.valore = sostituzione.numero_aula
     gestione_dati_sostituzione_note.valore = sostituzione.note
+    gestione_dati_sostituzione_pubblicato.checked = sostituzione.pubblicato
 
     mostra_gestione_sostituzione()
-    ui_pulsante_applica_gestione_dati.onclick = () => console.log('modifica')
+    ui_pulsante_applica_gestione_dati.innerHTML = 'Applica'
+    ui_pulsante_applica_gestione_dati.onclick = () => conferma_modifica_sostituzione(id)
+}
+
+function conferma_modifica_sostituzione(id) {
+    s_modifica_sostituzione(
+        id, {
+        pubblicato: gestione_dati_sostituzione_pubblicato.checked,
+        data: gestione_dati_sostituzione_data.value,
+        ora_predefinita: gestione_dati_sostituzione_ora_predefinita.valore,
+        ora_inizio: gestione_dati_sostituzione_ora_inizio.value,
+        ora_fine: gestione_dati_sostituzione_ora_fine.value,
+        docente: gestione_dati_sostituzione_docente.valore,
+        classe: gestione_dati_sostituzione_classe.valore,
+        aula: gestione_dati_sostituzione_aula.valore,
+        note: gestione_dati_sostituzione_note.valore
+    })
+
+    chiudi_gestione_dati()
 }

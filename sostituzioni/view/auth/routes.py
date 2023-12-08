@@ -1,8 +1,11 @@
+import logging
 from flask import render_template, redirect, url_for, request
 
-from sostituzioni.logger import logger
 from sostituzioni.model.auth import current_user, login_required, permesso, sso_login, logout_user, GOOGLE_SSO_REQ_URI
 from sostituzioni.view.auth import auth
+
+
+logger = logging.getLogger(__name__)
 
 
 @auth.route('/fottiti')

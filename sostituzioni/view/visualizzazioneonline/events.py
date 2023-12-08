@@ -1,8 +1,11 @@
+import logging
 from flask_socketio import emit
+
 from sostituzioni.model.model import Aula, Classe, Docente, OraPredefinita, Sostituzione, Evento, Notizia
 from sostituzioni.model.auth import login_required
 from sostituzioni.view import socketio
-from sostituzioni.logger import logger
+
+logger = logging.getLogger(__name__)
 
 
 @socketio.on('test')
@@ -22,6 +25,12 @@ def connect():
     emit('lista ore predefinite', OraPredefinita.load())
 
 
+@socketio.on('richiesta sostituzioni')
+@login_required
+def richiesta_sostituzioni(filtri):
+    emit('lista sostituzioni', Sostituzione.load())
+
+
 @socketio.on('nuova sostituzione')
 @login_required
 def nuova_sostituzione(data):
@@ -35,7 +44,17 @@ def nuova_sostituzione(data):
     emit('aggiornamento sostituzioni', broadcast=True)
 
 
+@socketio.on('modifica sostituzione')
+@login_required
+def modifica_sostituzione(data):
+    Sostituzione(id=data.get('id')).modifica(data.get('data'))
+
+    emit('aggiornamento sostituzioni', broadcast=True)
+
+
 @socketio.on('elimina sostituzione')
 @login_required
-def elimina_sostituzione(data):
-    Sostituzione(data.get('id')).elimina()
+def elimina_sostituzione(data: dict):
+    Sostituzione(data.get('id')).elimina(data.get('mantieni_in_storico', True))  # usare default di configurazione
+
+    emit('aggiornamento sostituzioni', broadcast=True)

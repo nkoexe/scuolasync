@@ -7,10 +7,65 @@ from beartype._decor.decormain import beartype
 import sqlite3
 from datetime import datetime
 import re
+import logging
 
 from sostituzioni.lib.searchablelist import SearchableList
-from sostituzioni.logger import logger
 from sostituzioni.control.configurazione import configurazione
+
+logger = logging.getLogger(__name__)
+
+
+class Where:
+    def __init__(self, attribute: str, parent=None) -> None:
+        self.attribute = attribute
+        self.operator = '='
+        self.value: any = None
+        self.parent = parent
+
+    def resolve(self):
+        match self.value:
+            case None:
+                value = 'null'
+
+            case bool():
+                value = str(int(self.value))
+
+            case int():
+                value = str(self.value)
+
+            case float():
+                value = str(self.value)
+
+            case str():
+                value = '"' + self.value + '"'
+
+            case _:
+                value = '"' + str(self.value) + '"'
+
+        resolved = str(self.attribute) + self.operator + value
+
+        if isinstance(self.parent, Where):
+            resolved = self.parent.resolve() + ' AND ' + resolved
+
+        return resolved
+
+    def equals(self, value):
+        self.operator = '='
+        self.value = value
+        return self
+
+    def lessthan(self, value):
+        self.operator = '<'
+        self.value = value
+        return self
+
+    def greaterthan(self, value):
+        self.operator = '>'
+        self.value = value
+        return self
+
+    def AND(self, attribute):
+        return Where(attribute, self)
 
 
 class Database:
@@ -20,24 +75,30 @@ class Database:
 
     def connect(self):
         if not self.connection:
+            logger.debug('Trying to open database connection...')
             try:
                 self.connection = sqlite3.connect(self.path)
+                logger.debug('Database connection established.')
                 self.connection.execute('PRAGMA foreign_keys = 1')
                 self.connection.row_factory = sqlite3.Row
 
                 self.cursor = self.connection.cursor()
+                logger.debug('Database cursor created.')
             except sqlite3.Error as e:
                 logger.error(e)
                 exit()
 
     def close(self):
+        logger.debug('Closing connection to database...')
         if self.connection:
             self.connection.commit()
             self.cursor.close()
             self.connection.close()
             self.connection = None
+        logger.debug('Connection to database closed successfully')
 
     def execute(self, query: str, values: List | None = None):
+        logger.debug('Executing query ' + query)
         try:
             if values is not None:
                 self.cursor.execute(query, list(values))
@@ -54,12 +115,12 @@ class Database:
     #     return [dict(row) for row in self.cursor.fetchall()]
 
     @beartype
-    def get(self, table: str, columns: str | Tuple = '*', where: str | Tuple | None = None, limit: int | None = None, load_lists: bool = True) -> SearchableList:
+    def get(self, table: str, columns: str | Tuple = '*', where: Where | None = None, limit: int | None = None, load_lists: bool = True) -> SearchableList:
         """
         Esempi:
         database.get('aula', 'numero')
-        database.get('aula', ('numero', 'piano'), where=('numero=100', 'cancellato=0'))
-        database.get('utente', where='email="esempio@gandhimerano.com"', limit=1)
+        database.get('aula', ('numero', 'piano'), where=Where('numero').equals(100).AND('cancellato').equals(0))
+        database.get('utente', where=Where('email').equals('esempio@gandhimerano.com'), limit=1)
         """
 
         if isinstance(columns, tuple):
@@ -68,8 +129,7 @@ class Database:
         query = f'SELECT {columns} from {table}'
 
         if where is not None:
-            if isinstance(where, tuple):
-                where = ' AND '.join(where)
+            where = where.resolve()
 
             query += f' WHERE {where}'
 
@@ -88,7 +148,7 @@ class Database:
 
         return rows
 
-    def get_one(self, table: str, columns: str | Tuple = '*', where: str | Tuple | None = None, load_lists: bool = True) -> SearchableList:
+    def get_one(self, table: str, columns: str | Tuple = '*', where: Where | None = None, load_lists: bool = True) -> SearchableList:
         return self.get(table, columns, where, 1, load_lists)[0]
 
     def load_lists(self, table_name: str, rows: SearchableList):
@@ -160,26 +220,26 @@ class Database:
         return id
 
     @beartype
-    def update(self, table: str, where: str | Tuple | None = None, **values):
-        assert where
+    def update(self, table: str, where: Where | None = None, **values):
         assert values
 
-        query = f'UPDATE {table} SET {", ".join([f"{column} = {value}" for (column, value) in values.items()])}'
+        # query = f'UPDATE {table} SET {", ".join([f"{column}={value}" for (column, value) in values.items()])}'
+        query = f'UPDATE {table} SET {", ".join([f"{column}=?" for column in values.keys()])}'
 
         if where is not None:
-            if isinstance(where, tuple):
-                where = ' AND '.join(where)
+            where = where.resolve()
 
             query += f' WHERE {where}'
 
         self.connect()
-        self.execute(query)
+        self.execute(query, values.values())
         self.close()
 
+        return True
+
     @beartype
-    def delete(self, table: str, where: str | Tuple):
-        if isinstance(where, tuple):
-            where = ' AND '.join(where)
+    def delete(self, table: str, where: Where):
+        where = where.resolve()
 
         query = f'DELETE FROM {table} WHERE {where}'
 
@@ -210,17 +270,11 @@ class ElementoDatabase:
 
     #     return data
 
-    def load(item, columns: str | Tuple = '*', where: str | Tuple | None = None, limit: int | None = None):
+    def load(item, columns: str | Tuple = '*', where: Where | None = None, limit: int | None = None):
         data = item.DATABASE.get(item.TABLENAME, columns, where, limit)
         data.key = item.KEY
 
         return data
-
-    def modifica(self):
-        pass
-
-    def inserisci(self, **data):
-        return self.DATABASE.insert(self.TABLENAME, **data)
 
 
 class ElementoDatabaseConStorico(ElementoDatabase):
@@ -230,9 +284,6 @@ class ElementoDatabaseConStorico(ElementoDatabase):
     #     self.elimina = self.cancella = self.__del__
 
     def elimina(self, mantieni_in_storico: bool = True):
-        return self.__del__(mantieni_in_storico)
-
-    def __del__(self, mantieni_in_storico: bool = True):
         self._cancellato = True
 
     @property
@@ -254,8 +305,8 @@ class Aula(ElementoDatabaseConStorico):
 
     def load(): return ElementoDatabase.load(Aula)
 
-    def trova(numero):
-        return database.get_one('aula', 'numero', where=f'numero="{numero}"', load_lists=False)
+    def trova(numero: str):
+        return database.get_one('aula', 'numero', where=Where('numero').equals(numero), load_lists=False)
 
     # @beartype
     # def __init__(self, numero: str, piano: str, cancellato: bool):
@@ -305,7 +356,7 @@ class Classe(ElementoDatabaseConStorico):
     def load(): return ElementoDatabase.load(Classe)
 
     def trova(nome):
-        return database.get_one('classe', 'nome', where=f'nome="{nome}"', load_lists=False)
+        return database.get_one('classe', 'nome', where=Where('nome').equals(nome), load_lists=False)
 
     # @beartype
     # def __init__(self, nome: str, aule_ospitanti: List[Aula], cancellato: bool):
@@ -340,7 +391,7 @@ class Docente(ElementoDatabaseConStorico):
     def load(): return ElementoDatabase.load(Docente)
 
     def trova(nome_cognome):
-        return database.get_one('docente', ('nome', 'cognome'), where=f'(nome || " " || cognome)="{nome_cognome}"')
+        return database.get_one('docente', ('nome', 'cognome'), where=Where('(nome || " " || cognome)').equals(nome_cognome))
 
     # @beartype
     # def __init__(self, nome: str, cognome: str, cancellato: bool):
@@ -414,17 +465,77 @@ class Sostituzione(ElementoDatabaseConStorico):
     TABLENAME = 'sostituzione'
     KEY = 'id'
 
-    def load(): return ElementoDatabase.load(Sostituzione)
+    def load(cancellato: bool = False, where: Where | None = None):
+        where_cancellato = Where('cancellato').equals(cancellato)
+
+        if where:
+            where_cancellato.parent = where
+
+        return ElementoDatabase.load(Sostituzione, where=where_cancellato)
 
     def inserisci(self):
 
-        id = super().inserisci(cancellato=False, pubblicato=self.pubblicato,
-                               numero_aula=self.numero_aula, nome_classe=self.nome_classe,
-                               nome_docente=self.nome_docente, cognome_docente=self.cognome_docente, data=self.data,
-                               numero_ora_predefinita=self.ora_predefinita, ora_inizio=self.ora_inizio, ora_fine=self.ora_fine,
-                               note=self.note)
+        id = self.DATABASE.insert(self.TABLENAME, cancellato=False, pubblicato=self.pubblicato,
+                                  numero_aula=self.numero_aula, nome_classe=self.nome_classe,
+                                  nome_docente=self.nome_docente, cognome_docente=self.cognome_docente, data=self.data,
+                                  numero_ora_predefinita=self.ora_predefinita, ora_inizio=self.ora_inizio, ora_fine=self.ora_fine,
+                                  note=self.note)
 
         self.id = id
+
+    def modifica(self, dati):
+        if not self.id:
+            return False
+
+        if 'pubblicato' in dati:
+            self.pubblicato = dati['pubblicato']
+
+        if 'aula' in dati:
+            self.aula = dati['aula']
+
+        if 'classe' in dati:
+            self.classe = dati['classe']
+
+        if 'docente' in dati:
+            self.docente = dati['docente']
+
+        if 'data' in dati:
+            self.data = dati['data']
+
+        if 'ora_predefinita' in dati:
+            self.ora_predefinita = dati['ora_predefinita']
+
+        if 'ora_inizio' in dati:
+            self.ora_inizio = dati['ora_inizio']
+
+        if 'ora_fine' in dati:
+            self.ora_fine = dati['ora_fine']
+
+        if 'note' in dati:
+            self.note = dati['note']
+
+        return self.aggiorna()
+
+    def aggiorna(self):
+        """Update the database record with the object's new data."""
+        return self.DATABASE.update(self.TABLENAME, Where('id').equals(self.id),
+                                    pubblicato=self.pubblicato, numero_aula=self.numero_aula,
+                                    nome_classe=self.nome_classe, nome_docente=self.nome_docente,
+                                    cognome_docente=self.cognome_docente, data=self.data,
+                                    numero_ora_predefinita=self.ora_predefinita, ora_inizio=self.ora_inizio,
+                                    ora_fine=self.ora_fine, note=self.note)
+
+    def elimina(self, mantieni_in_storico: bool):
+        self.cancellato = True
+
+        if not self.id:
+            return False
+
+        if mantieni_in_storico:
+            return self.DATABASE.update(self.TABLENAME, Where('id').equals(self.id), cancellato=True)
+
+        else:
+            self.DATABASE.delete(self.TABLENAME, Where('id').equals(self.id))
 
     @property
     def pubblicato(self):
@@ -452,6 +563,10 @@ class Sostituzione(ElementoDatabaseConStorico):
     @aula.setter
     def aula(self, new: str | Aula | None):
         self._aula = None
+        self._numero_aula = None
+
+        if not new:
+            return
 
         if isinstance(new, Aula):
             self._aula = new
@@ -477,6 +592,10 @@ class Sostituzione(ElementoDatabaseConStorico):
     @classe.setter
     def classe(self, new: str | Classe | None):
         self._classe = None
+        self._nome_classe = None
+
+        if not new:
+            return
 
         if isinstance(new, Classe):
             self._classe = new
@@ -514,6 +633,9 @@ class Sostituzione(ElementoDatabaseConStorico):
         self._nome_docente = None
         self._cognome_docente = None
 
+        if not new:
+            return
+
         if isinstance(new, Docente):
             self._docente = new
             self._nome_docente = new.nome
@@ -532,6 +654,9 @@ class Sostituzione(ElementoDatabaseConStorico):
     def data(self, new: int | str | None):
         self._data = None
 
+        if not new:
+            return
+
         if isinstance(new, int):
             self._data = new
         elif isinstance(new, str):
@@ -546,11 +671,11 @@ class Sostituzione(ElementoDatabaseConStorico):
     def ora_inizio(self, new: str | None):
         self._ora_inizio = None
 
-        if isinstance(new, str):
-            if not new:
-                self._ora_inizio = None
+        if not new:
+            return
 
-            elif re.match(r'^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$', new):
+        if isinstance(new, str):
+            if re.match(r'^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$', new):
                 self._ora_inizio = new
             else:
                 raise ValueError(f'Ora_inizio {new} non valida, seguire il formato XX:XX')
@@ -564,11 +689,11 @@ class Sostituzione(ElementoDatabaseConStorico):
     def ora_fine(self, new: str | None):
         self._ora_fine = None
 
-        if isinstance(new, str):
-            if not new:
-                self._ora_inizio = None
+        if not new:
+            return
 
-            elif re.match(r'^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$', new):
+        if isinstance(new, str):
+            if re.match(r'^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$', new):
                 self._ora_fine = new
             else:
                 raise ValueError(f'Ora_fine {new} non valida, seguire il formato XX:XX')
@@ -579,11 +704,13 @@ class Sostituzione(ElementoDatabaseConStorico):
 
     @beartype
     @ora_predefinita.setter
-    def ora_predefinita(self, new: int | str | None):
-        self._ora_predefinita = new
+    def ora_predefinita(self, new: str | None):
+        self._ora_predefinita = None
 
-        if isinstance(new, str):
-            self._ora_predefinita = int(new)
+        if not new:
+            return
+
+        self._ora_predefinita = new
 
     @property
     def note(self):

@@ -1,10 +1,12 @@
+import logging
 from flask_socketio import emit
 
-from sostituzioni.logger import logger
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.model.auth import login_required
 from sostituzioni.view import socketio
 from sostituzioni.view.impostazioni.shell import RedirectedStdout
+
+logger = logging.getLogger(__name__)
 
 
 @socketio.on('applica impostazioni', namespace='/impostazioni')

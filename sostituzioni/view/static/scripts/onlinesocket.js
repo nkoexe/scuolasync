@@ -17,6 +17,7 @@ socket.on('lista sostituzioni', (data) => {
 
 
 socket.on('lista ore predefinite', (data) => {
+    console.log(data)
     ore_predefinite = data
 
     sostituzioni_filtro_ora.aggiorna(ore_predefinite)
@@ -40,22 +41,28 @@ socket.on('lista docenti', (data) => {
     sostituzioni_filtro_docente.aggiorna(docenti)
 })
 
-
-socket.on('aggiornamento sostituzioni', () => location.reload())
+// todo mostrare messaggio informativo che invita a ricaricare la pagina
+socket.on('aggiornamento sostituzioni', () => { s_richiedi_sostituzioni() })
 
 
 // ----------------
 
-function carica_nuova_sostituzione(pubblicato, data, ora_predefinita, ora_inizio, ora_fine, docente, classe, aula, note) {
-    socket.emit('nuova sostituzione', {
-        pubblicato: pubblicato,
+function s_richiedi_sostituzioni(filtri) {
+    socket.emit('richiesta sostituzioni', filtri)
+}
+
+function s_nuova_sostituzione(data) {
+    socket.emit('nuova sostituzione', data)
+}
+
+
+function s_elimina_sostituzione(id, mantieni_in_storico) {
+    socket.emit('elimina sostituzione', { id: id, mantieni_in_storico: mantieni_in_storico })
+}
+
+function s_modifica_sostituzione(id, data) {
+    socket.emit('modifica sostituzione', {
+        id: id,
         data: data,
-        ora_predefinita: ora_predefinita,
-        ora_inizio: ora_inizio,
-        ora_fine: ora_fine,
-        docente: docente,
-        classe: classe,
-        aula: aula,
-        note: note,
     })
 }

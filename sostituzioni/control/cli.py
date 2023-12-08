@@ -23,7 +23,7 @@ def crea_db(nome):
     dbpath = configurazione.get('rootpath').path / 'database' / nome
 
     if dbpath.exists():
-        print('ErroreL: Database con questo nome già esistente.')
+        print('Errore: Database con questo nome già esistente.')
         return
 
     print('File database:', dbpath)
@@ -69,8 +69,11 @@ def crea_db_utenti(nome):
 def imposta_principale(nome):
     if not nome:
         nome = 'database.db'
+    elif '.' not in nome:
+        nome = nome + '.db'
 
-    configurazione.set('databasepath', (1, 'database' / nome))
+    configurazione.set('databasepath', (1, 'database/' + nome))
+    configurazione.esporta()
 
     print(f'Database principale impostato su {nome}')
 
@@ -80,8 +83,11 @@ def imposta_principale(nome):
 def imposta_principale_utenti(nome):
     if not nome:
         nome = 'utenti.db'
+    elif '.' not in nome:
+        nome = nome + '.db'
 
-    configurazione.set('authdatabasepath', (1, 'database' / nome))
+    configurazione.set('authdatabasepath', (1, 'database/' + nome))
+    configurazione.esporta()
 
     print(f'Database utenti impostato su {nome}')
 
@@ -89,11 +95,12 @@ def imposta_principale_utenti(nome):
 @database_cli.command("inserisci-test")
 @click.argument("nome", type=str, required=False)
 def inserisci_db(nome):
-
     sqlpath = configurazione.get('scriptsdir').path / 'inserimento_dati_test.sql'
 
     if not nome:
         nome = 'database.db'
+    elif '.' not in nome:
+        nome = nome + '.db'
 
     dbpath = configurazione.get('rootpath').path / 'database' / nome
 
@@ -109,10 +116,12 @@ def inserisci_db(nome):
 @database_utenti_cli.command("inserisci-test")
 @click.argument("nome", type=str, required=False)
 def inserisci_db_utenti(nome):
-
     sqlpath = configurazione.get('scriptsdir').path / 'inserimento_dati_utenti_test.sql'
+
     if not nome:
         nome = 'utenti.db'
+    elif '.' not in nome:
+        nome = nome + '.db'
 
     dbpath = configurazione.get('rootpath').path / 'database' / nome
 
@@ -123,3 +132,41 @@ def inserisci_db_utenti(nome):
         return
 
     print('Dati di test inseriti nel database utenti.')
+
+
+@database_cli.command("elimina")
+@click.argument("nome", type=str, required=False)
+def elimina_db(nome):
+    if not nome:
+        nome = 'database.db'
+    elif '.' not in nome:
+        nome = nome + '.db'
+
+    dbpath = configurazione.get('rootpath').path / 'database' / nome
+
+    if not dbpath.exists():
+        print('Errore: Database con questo nome non esistente.')
+        return
+
+    dbpath.unlink()
+
+    print('Database eliminato.')
+
+
+@database_utenti_cli.command("elimina")
+@click.argument("nome", type=str, required=False)
+def elimina_db_utenti(nome):
+    if not nome:
+        nome = 'utenti.db'
+    elif '.' not in nome:
+        nome = nome + '.db'
+
+    dbpath = configurazione.get('rootpath').path / 'database' / nome
+
+    if not dbpath.exists():
+        print('Errore: Database con questo nome non esistente.')
+        return
+
+    dbpath.unlink()
+
+    print('Database eliminato.')

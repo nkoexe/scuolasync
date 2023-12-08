@@ -1,9 +1,11 @@
+import logging
+
 from flask_socketio import SocketIO
 from flask_wtf.csrf import CSRFProtect
 
-from sostituzioni.logger import logger
 from sostituzioni.model.app import app
 
+logger = logging.getLogger(__name__)
 
 csrf = CSRFProtect(app)
 socketio = SocketIO(app, manage_session=False)

@@ -5,7 +5,7 @@ import requests
 from oauthlib import oauth2
 import json
 
-from sostituzioni.control.database import authdatabase, Utente
+from sostituzioni.control.database import Where, authdatabase, Utente
 from sostituzioni.model.app import app
 
 
@@ -70,7 +70,7 @@ def sso_login(request):
 
 
 def authenticate_user(email):
-    userdata = User.load(where=f'email="{email}"')
+    userdata = User.load(where=Where('email').equals(email))
 
     if not userdata:
         return False

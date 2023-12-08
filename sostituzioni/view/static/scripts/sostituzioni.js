@@ -34,6 +34,8 @@ function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizi
   if (numero_ora_predefinita == null) { ora = ora_inizio + ' - ' + ora_fine }
   else { ora = numero_ora_predefinita + 'a ora' }
   if (note == null) { note = '' }
+  if (nome_docente == null) { nome_docente = '' }
+  if (cognome_docente == null) { cognome_docente = '' }
 
   // Converte da unix timestamp a dd/mm/yyyy
   data = new Date(data * 1000).toLocaleDateString()
@@ -53,7 +55,7 @@ function duplica_sostituzione(id) {
   console.log('duplica sostituzione ' + id)
 }
 function elimina_sostituzione(id) {
-  console.log('elimina sostituzione ' + id)
+  s_elimina_sostituzione(id, true)
 }
 
 function refresh_sostituzioni() {
@@ -67,9 +69,4 @@ function refresh_sostituzioni() {
       add_sostituzione_to_ui_list(element.id, element.pubblicato, element.cancellato, element.data, element.ora_inizio, element.ora_fine, element.numero_ora_predefinita, element.numero_aula, element.nome_classe, element.nome_docente, element.cognome_docente, element.note)
     })
   }
-
-  // add_sostituzione(0, 0, 0, 'data', 1, 1, 4, 'aula', 'classe', 'ciccio', 'bombo', 'questa è una nota. che palle. persona del futuro, ciao. è il 12 novembre e sono ancora sano di mente.')
-  // for (let index = 0; index < 50; index++) {
-  //   add_sostituzione()
-  // }
 }

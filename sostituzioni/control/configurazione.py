@@ -4,12 +4,15 @@ Gestione della configurazione del sistema tramite il file configurazione.json
 
 from pathlib import Path
 from json import load, dump
+import logging
 
 from beartype._decor.decormain import beartype
 from beartype.typing import List, Dict, Any
 
-from sostituzioni.logger import logger
+import sostituzioni.control.logging
 from sostituzioni.lib.searchablelist import SearchableList
+
+logger = logging.getLogger(__name__)
 
 
 ROOT_PATH = Path(__file__).parent.parent
@@ -112,14 +115,17 @@ class Opzione:
     @beartype
     def set(self, dati: Any, force: bool = False):
 
+        logger.debug(f'Setter {self.id}: {dati}')
+
         if not force and (self.disabilitato or self.nascosto):
-            logger.debug(f'Setter {self.id} disabilitato, impossibile aggiornare l\'opzione.')
+            logger.debug('Setter disabilitato, impossibile aggiornare l\'opzione.')
             return False
 
         match self.tipo:
 
             case self.TESTO:
-                assert isinstance(dati, str)
+                if not isinstance(dati, str):
+                    raise TypeError(f'Dati non validi, fornire stringa, non {type(dati)}')
 
                 if (self.lunghezza_massima is not None) and (len(dati) > self.lunghezza_massima):
                     logger.debug(f'Setter {self.id}, valore {dati} sfora la lunghezza massima di {self.lunghezza_massima}')
@@ -129,24 +135,28 @@ class Opzione:
                 return True
 
             case self.NUMERO:
-                assert isinstance(dati, (int, float))
+                if not isinstance(dati, (int, float)):
+                    raise TypeError(f'Dati non validi, fornire int o float, non {type(dati)}')
 
                 if ((self.intervallo[0] is not None) and not (self.intervallo[0] <= dati)) or ((self.intervallo[1] is not None) and not (dati <= self.intervallo[1])):
-                    logger.debug(f'Setter {self.id}, valore {dati} sfora l\'intervallo di {self.intervallo}')
-                    raise ValueError(f'Valore {dati} sfora l\'intervallo di {self.intervallo}.')
+                    logger.error(f'Valore {dati} sfora l\'intervallo di {self.intervallo}')
+                    return False
 
                 self.valore = dati
                 return True
 
             case self.NUMERO_UNITA:
-                assert isinstance(dati, list)
-                assert len(dati) == 2
-                assert isinstance(dati[0], (int, float))
-                assert isinstance(dati[1], int)
-                assert 0 <= dati[1] < len(self.scelte_unita)
+                if not isinstance(dati, (list, tuple)) or len(dati) != 2:
+                    raise ValueError(f'Dati {dati} non validi, per numero con unità fornire (valore, index_unita)')
+                if not isinstance(dati[0], (int, float)):
+                    raise TypeError('Valore del numero deve essere di tipo int o float, non ' + str(type(dati[0])))
+                if not isinstance(dati[1], int):
+                    raise TypeError('L\'indice dell\'unità deve essere di tipo int, non ' + str(type(dati[1])))
+                if not 0 <= dati[1] < len(self.scelte_unita):
+                    raise ValueError(f'L\'indice dell\'unità {dati[1]} non è valido, deve essere compreso tra 0 e {len(self.scelte_unita) - 1}')
 
                 if ((self.intervallo[0] is not None) and not (self.intervallo[0] <= dati[0])) and ((self.intervallo[1] is not None) and not (dati[0] <= self.intervallo[1])):
-                    logger.debug(f'Setter {self.id}, valore {dati[0]} sfora l\'intervallo di {self.intervallo}')
+                    logger.warning(f'Valore {dati[0]} sfora l\'intervallo di {self.intervallo}')
                     return False
 
                 self.valore = dati[0]
@@ -154,7 +164,8 @@ class Opzione:
                 return True
 
             case self.BOOLEANO:
-                assert isinstance(dati, bool)
+                if not isinstance(dati, bool):
+                    raise TypeError('Valore deve essere di tipo bool, non ' + str(type(dati)))
 
                 self.valore = dati
                 return True
@@ -163,18 +174,26 @@ class Opzione:
                 pass
 
             case self.SELEZIONE:
-                assert isinstance(dati, int)
-                assert 0 <= dati < len(self.scelte)
+                if not isinstance(dati, int):
+                    raise TypeError('Valore deve essere di tipo int, non ' + str(type(dati)))
+                if not 0 <= dati < len(self.scelte):
+                    raise ValueError(f'Valore {dati} non valido, deve essere compreso tra 0 e {len(self.scelte) - 1}')
 
                 self.valore = dati
                 return True
 
             case self.PERCORSO:
-                assert isinstance(dati, list)
-                assert len(dati) == 2
-                assert isinstance(dati[0], int)
-                assert isinstance(dati[1], str)
-                assert 0 <= dati[0] < len(self.scelte_radice)
+                if not isinstance(dati, (list, tuple)) or len(dati) != 2:
+                    raise ValueError('Dati non validi, per percorso fornire (index_radice, percorso)')
+                if not isinstance(dati[0], int):
+                    raise TypeError('L\'indice della radice deve essere di tipo int, non ' + str(type(dati[0])))
+                if not isinstance(dati[1], (str, Path)):
+                    raise TypeError('Il percorso deve essere di tipo str o Path, non ' + str(type(dati[1])))
+                if not 0 <= dati[0] < len(self.scelte_radice):
+                    raise ValueError(f'L\'indice della radice {dati[0]} non è valido, deve essere compreso tra 0 e {len(self.scelte_radice) - 1}')
+
+                if isinstance(dati[1], Path):
+                    dati[1] = dati[1].as_posix()
 
                 self.radice = dati[0]
                 self.valore = dati[1]
