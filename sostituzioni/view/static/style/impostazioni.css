@@ -1,8 +1,8 @@
 :root {
     --color-background: #fff8f8;
-    --color-sezioni: #ff2424;
-    --color-opzioni: #ffd4c9;
-    --color-footer: #ff3535;
+    --color-sezioni: #C00F19;
+    --color-opzioni: #ebebeb;
+    --color-footer: #C00F19;
     --color-text-sezione: #fff;
     --color-text-opzione: #fff;
     --color-background-opzione: #fff;
@@ -280,7 +280,7 @@ input[type="checkbox"]:checked::before {
 .pulsante-footer {
     margin: auto;
     padding: 10px 20px;
-    background-color: white;
+    background-color: #ffffff;
     border: none;
     border-radius: 10px;
     box-shadow: 0 2px 5px #000000aa;
@@ -290,7 +290,7 @@ input[type="checkbox"]:checked::before {
 }
 
 .pulsante-footer:disabled {
-    background-color: #ffffff66;
+    background-color: #ffffff68;
     color: #00000066;
     box-shadow: none;
 }

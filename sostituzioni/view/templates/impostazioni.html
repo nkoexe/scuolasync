@@ -14,8 +14,10 @@ opzione_percorso with context %}
   <title>Impostazioni</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/header.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/impostazioni.css') }}">
   <script src="{{ url_for('static', filename='scripts/impostazioni.js') }}" defer></script>
@@ -24,9 +26,12 @@ opzione_percorso with context %}
 
 <body>
   <div id="header">
-    <img id="header-logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Gandhi">
+    <img id="header-logo" src="{{ url_for('static', filename='images/logo_white.png') }}" alt="Logo Gandhi">
     <div id="header-separator"></div>
     <h1 id="header-titolo">Impostazioni</h1>
+    <div id="header-pulsanti">
+      <a href="{{ url_for('online.index')}}"><span class="material-symbols-rounded">arrow_back</span></a>
+    </div>
   </div>
 
   <!-- {% for sezione in configurazione.sezioni %}
@@ -39,7 +44,7 @@ opzione_percorso with context %}
         <div class="sezione-header">
           <h3 class="sezione-titolo">{{sezione.titolo}}</h3>
           <p class="sezione-descrizione">{{sezione.descrizione}}</p>
-          <div class="sezione-header-icon"><span>＋</span></div>
+          <div class="sezione-header-icon"><span class="material-symbols-rounded">add</span></div>
         </div>
         <div class="opzioni-expandible">
           <div class="opzioni-container">

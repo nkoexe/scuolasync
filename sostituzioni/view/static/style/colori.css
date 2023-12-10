@@ -1,0 +1,22 @@
+:root {
+    --color-background: #F3F6F8;
+    --color-scrollbar-bg: #F3F6F8;
+    --color-scrollbar-fg: #90A4AE;
+    --color-accent: #C00F19;
+    --color-eventi-bg: #eaeaea;
+    --color-notizie-bg: #eaeaea;
+    --color-sostituzioni-bg: #eaeaea;
+    --color-sostituzioni-filtri-bg: #C00F19;
+    /* --color-sostituzioni-lista1: #ff424244; */
+    /* --color-sostituzioni-lista2: #ff424232; */
+    --color-sostituzioni-lista1: #f3f3f3;
+    --color-sostituzioni-lista2: #fdfdfd;
+    --color-shadow: #00000055;
+}
+
+/* @media (prefers-color-scheme: dark) {
+    :root {
+        --color-background: #000000
+    }
+
+} */

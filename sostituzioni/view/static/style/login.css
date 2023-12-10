@@ -57,6 +57,12 @@ body {
     border-radius: 3vh;
 }
 
+#logo {
+    height: 100px;
+    margin-top: 30px;
+    object-fit: contain;
+}
+
 #title-frame {
     text-align: center;
 }
@@ -67,7 +73,7 @@ body {
 }
 
 #button-accedi {
-    padding: 15px 30px;
+    padding: 20px 40px;
     margin: auto;
     font-size: 30px;
     background-color: #C00F19;
