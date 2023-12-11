@@ -1,6 +1,6 @@
 const ui_sostituzione_html_template = `
 <li>
-<div class="sostituzione" data-id={id}>
+<div class="sostituzione" data-id={id} tabindex="0">
   <div class="sostituzione-data">
     <span>{data}</span>
   </div>
@@ -47,14 +47,21 @@ function add_sostituzione_to_ui_list(id, pubblicato, cancellato, data, ora_inizi
   ui_sostituzioni_container.innerHTML += sostituzione_html
 }
 
-function modifica_sostituzione(id) {
+function ui_modifica_sostituzione() {
+  let id = parseInt(ui_context_menu.dataset.id)
   mostra_modifica_sostituzione(id)
+  ui_context_menu.classList.add("hidden")
 }
-function duplica_sostituzione(id) {
+function ui_duplica_sostituzione() {
+  let id = ui_context_menu.dataset.id
+
   console.log("duplica sostituzione " + id)
+  ui_context_menu.classList.add("hidden")
 }
-function elimina_sostituzione(id) {
+function ui_elimina_sostituzione() {
+  let id = ui_context_menu.dataset.id
   s_elimina_sostituzione(id, true)
+  ui_context_menu.classList.add("hidden")
 }
 
 function refresh_sostituzioni() {
@@ -75,12 +82,27 @@ function refresh_sostituzioni() {
 }
 
 function mostra_context_menu(event, sostituzione) {
+  sostituzione.focus()
   event.preventDefault()
   let id = sostituzione.dataset.id
 
   ui_context_menu.dataset.id = id
   ui_context_menu.classList.remove("hidden");
-  ui_context_menu.style.left = event.clientX + "px";
-  ui_context_menu.style.top = event.clientY + "px";
+
+  if (event.clientX + ui_context_menu.offsetWidth > window.innerWidth) {
+    ui_context_menu.style.left = (window.innerWidth - ui_context_menu.offsetWidth) + "px";
+  } else if (event.clientX < 0) {
+    ui_context_menu.style.left = "0px";
+  } else {
+    ui_context_menu.style.left = event.clientX + "px";
+  }
+  if (event.clientY + ui_context_menu.offsetHeight > window.innerHeight) {
+    ui_context_menu.style.top = (window.innerHeight - ui_context_menu.offsetHeight) + "px";
+  } else if (event.clientY < 0) {
+    ui_context_menu.style.top = "0px";
+  } else {
+    ui_context_menu.style.top = event.clientY + "px";
+  }
+
   ui_context_menu.focus()
 }

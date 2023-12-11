@@ -63,7 +63,7 @@
       "nascosto": false,
       "tipo": "booleano",
       "default": false,
-      "valore": true
+      "valore": false
     },
     "numeroebbasta": {
       "titolo": "Numero",
@@ -127,7 +127,7 @@
         "/"
       ],
       "default": "",
-      "valore": "C:\\Users\\nicco\\Programming\\sostituzioni\\sostituzioni"
+      "valore": "/home/nxco/Proj/sostituzioni/sostituzioni"
     },
     "configpath": {
       "titolo": "Percorso file di configurazione",
@@ -142,7 +142,7 @@
         "%ROOT%"
       ],
       "default": "database/configurazione.json",
-      "valore": "C:\\Users\\nicco\\Programming\\sostituzioni\\sostituzioni\\database\\configurazione.json"
+      "valore": "/home/nxco/Proj/sostituzioni/sostituzioni/database/configurazione.json"
     },
     "scriptsdir": {
       "titolo": "Directory degli script",

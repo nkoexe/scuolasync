@@ -164,9 +164,9 @@
     </div>
   </div>
   <div id="context-menu" class="hidden" tabindex="0">
-    <div><span class="material-symbols-rounded">edit</span><span>Modifica</span></div>
-    <div><span class="material-symbols-rounded">content_copy</span><span>Duplica</span></div>
-    <div><span class="material-symbols-rounded">delete</span><span>Elimina</span></div>
+    <div onclick="ui_modifica_sostituzione()"><span class="material-symbols-rounded">edit</span><span>Modifica</span></div>
+    <div onclick="ui_duplica_sostituzione()"><span class="material-symbols-rounded">content_copy</span><span>Duplica</span></div>
+    <div onclick="ui_elimina_sostituzione()"><span class="material-symbols-rounded">delete</span><span>Elimina</span></div>
   </div>
   <script>
     const messaggio_nessuna_sostituzione = "{{ configurazione.get('nosostituzionimsg') }}"

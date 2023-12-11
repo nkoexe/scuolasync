@@ -348,6 +348,11 @@ ul {
     background-color: var(--color-sostituzioni-lista1);
 }
 
+#sostituzioni-lista .sostituzione:hover,
+#sostituzioni-lista .sostituzione:active {
+    background-color: #dbdbdb;
+}
+
 #sostituzioni-lista .sostituzione div.sostituzione-data {
     display: flex;
     overflow: auto;
