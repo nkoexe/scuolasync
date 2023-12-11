@@ -349,7 +349,8 @@ ul {
 }
 
 #sostituzioni-lista .sostituzione:hover,
-#sostituzioni-lista .sostituzione:active {
+#sostituzioni-lista .sostituzione:focus-visible,
+#sostituzioni-lista .sostituzione.context-menu-active {
     background-color: #dbdbdb;
 }
 

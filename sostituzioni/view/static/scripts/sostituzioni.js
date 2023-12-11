@@ -27,7 +27,18 @@ const ui_sostituzioni_container = document.getElementById("sostituzioni-lista")
 const ui_sostituzioni_messaggio_informativo = document.getElementById("sostituzioni-messaggio-informativo")
 
 const ui_context_menu = document.getElementById("context-menu")
-ui_context_menu.onblur = () => { ui_context_menu.classList.add("hidden") }
+ui_context_menu.onblur = (event) => {
+  // if parent of event target is the context menu, do nothing
+  if (event.relatedTarget.parentNode === ui_context_menu) { return }
+  ui_context_menu.closingcallback()
+}
+for (let child of ui_context_menu.children) {
+  child.onkeydown = (event) => {
+    if (event.key === "Enter") {
+      child.onclick()
+    }
+  }
+}
 
 function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
   if (numero_ora_predefinita == null) { ora = ora_inizio + " - " + ora_fine }
@@ -50,18 +61,18 @@ function add_sostituzione_to_ui_list(id, pubblicato, cancellato, data, ora_inizi
 function ui_modifica_sostituzione() {
   let id = parseInt(ui_context_menu.dataset.id)
   mostra_modifica_sostituzione(id)
-  ui_context_menu.classList.add("hidden")
+  ui_context_menu.closingcallback()
 }
 function ui_duplica_sostituzione() {
   let id = ui_context_menu.dataset.id
 
   console.log("duplica sostituzione " + id)
-  ui_context_menu.classList.add("hidden")
+  ui_context_menu.closingcallback()
 }
 function ui_elimina_sostituzione() {
   let id = ui_context_menu.dataset.id
   s_elimina_sostituzione(id, true)
-  ui_context_menu.classList.add("hidden")
+  ui_context_menu.closingcallback()
 }
 
 function refresh_sostituzioni() {
@@ -86,6 +97,8 @@ function mostra_context_menu(event, sostituzione) {
   event.preventDefault()
   let id = sostituzione.dataset.id
 
+  sostituzione.classList.add("context-menu-active")
+
   ui_context_menu.dataset.id = id
   ui_context_menu.classList.remove("hidden");
 
@@ -105,4 +118,8 @@ function mostra_context_menu(event, sostituzione) {
   }
 
   ui_context_menu.focus()
+  ui_context_menu.closingcallback = () => {
+    ui_context_menu.classList.add("hidden")
+    sostituzione.classList.remove("context-menu-active")
+  }
 }
