@@ -31,6 +31,7 @@
 #header-titolo {
     font-weight: normal;
     margin: auto 10px;
+    text-wrap: nowrap;
 }
 
 #header-pulsanti {
@@ -39,6 +40,7 @@
     height: 100%;
     margin: auto;
     margin-right: 20px;
+    user-select: none;
 }
 
 #header-pulsanti a {

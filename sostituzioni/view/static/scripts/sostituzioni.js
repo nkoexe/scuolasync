@@ -25,7 +25,9 @@ const ui_sostituzione_html_template = `
 
 const ui_sostituzioni_container = document.getElementById("sostituzioni-lista")
 const ui_sostituzioni_messaggio_informativo = document.getElementById("sostituzioni-messaggio-informativo")
+
 const ui_context_menu = document.getElementById("context-menu")
+ui_context_menu.onblur = () => { ui_context_menu.classList.add("hidden") }
 
 function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
   if (numero_ora_predefinita == null) { ora = ora_inizio + " - " + ora_fine }
@@ -76,9 +78,9 @@ function mostra_context_menu(event, sostituzione) {
   event.preventDefault()
   let id = sostituzione.dataset.id
 
+  ui_context_menu.dataset.id = id
   ui_context_menu.classList.remove("hidden");
   ui_context_menu.style.left = event.clientX + "px";
   ui_context_menu.style.top = event.clientY + "px";
   ui_context_menu.focus()
-  ui_context_menu.onblur = () => { ui_context_menu.classList.add("hidden") }
 }
