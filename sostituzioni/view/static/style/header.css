@@ -8,6 +8,7 @@
     height: 65px;
     background-color: var(--color-header-bg);
     color: white;
+    z-index: 100;
 }
 
 #header-logo {

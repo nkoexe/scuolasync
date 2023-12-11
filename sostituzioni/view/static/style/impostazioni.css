@@ -273,6 +273,7 @@ input[type="checkbox"]:checked::before {
     width: 100%;
     height: 80px;
     background-color: var(--color-footer);
+    z-index: 100;
 }
 
 .pulsante-footer {
@@ -303,4 +304,23 @@ input[type="checkbox"]:checked::before {
 
 #pulsante-applica {
     margin-right: 30px;
+}
+
+#header-shadow {
+    position: absolute;
+    width: 100%;
+    height: 65px;
+    border-radius: 100%;
+    box-shadow: 0px 5px 15px #00000088;
+    z-index: 90;
+}
+
+#footer-shadow {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 80px;
+    border-radius: 100%;
+    box-shadow: 0px -5px 15px #00000088;
+    z-index: 90;
 }
