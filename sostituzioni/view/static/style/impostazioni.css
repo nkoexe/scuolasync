@@ -90,8 +90,6 @@ ul {
 .sezione-header .sezione-header-icon span {
     margin: auto;
     font-size: 33px;
-    width: 50px;
-    height: 50px;
     text-align: center;
     transition: scale 0.1s, rotate 0.2s;
     user-select: none;

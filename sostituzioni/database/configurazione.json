@@ -2,7 +2,7 @@
   "sezioni": {
     "sistema": {
       "titolo": "Sistema",
-      "descrizione": "Impostazioni generali di sistema, riguardanti il lato tecnico"
+      "descrizione": "Impostazioni generali di sistema, riguardanti il lato tecnico."
     },
     "visualizzazioneonline": {
       "titolo": "Visualizzazione Online",
@@ -10,7 +10,7 @@
     },
     "test": {
       "titolo": "Test",
-      "descrizione": "boh opzioni di test per testare you know il sistema"
+      "descrizione": "Impostazioni di test per la fase di sviluppo del sistema."
     },
     "percorsi": {
       "titolo": "Percorsi",

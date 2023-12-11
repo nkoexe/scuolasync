@@ -26,7 +26,8 @@ opzione_percorso with context %}
 
 <body>
   <div id="header">
-    <img id="header-logo" src="{{ url_for('static', filename='images/logo_white.png') }}" alt="Logo Gandhi">
+    <!-- <img id="header-logo" src="{{ url_for('static', filename='images/logo_white.png') }}" alt="Logo Gandhi"> -->
+    <img id="header-logo" src="https://www.psicolinea.it/wp-content/uploads/2005/01/Gandhi.png" alt="Logo Gandhi">
     <div id="header-separator"></div>
     <h1 id="header-titolo">Impostazioni</h1>
     <div id="header-pulsanti">
@@ -39,6 +40,13 @@ opzione_percorso with context %}
   {% endfor %} -->
   <div id="sezioni-container">
     <ul id="sezioni-list">
+      <li class="sezione">
+        <div class="sezione-header">
+          <h3 class="sezione-titolo">Gestione utenti</h3>
+          <p class="sezione-descrizione">Vai alla pagina della gestione degli utenti autorizzati all'accesso al sistema e alla gestione dei permessi.</p>
+          <div class="sezione-header-icon"><span class="material-symbols-rounded">open_in_new</span></div>
+        </div>
+      </li>
       {% for sezione in configurazione.sezioni %}
       <li id="{{sezione.id}}" class="sezione">
         <div class="sezione-header">

@@ -278,8 +278,8 @@ ul {
     max-height: 20rem;
     background-color: white;
     box-shadow: 1px 5px 8px 0px var(--color-shadow);
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 #sostituzioni-filtri-container .selezione-dropdown li {
@@ -402,19 +402,27 @@ ul {
 }
 
 
-#sostituzioni-lista .sostituzione-pulsanti {
+#context-menu {
     position: absolute;
-    right: 0;
+    background-color: var(--color-background);
+    box-shadow: 0px 3px 5px #00000088;
+    border-radius: 10px;
+}
+
+#context-menu div {
     display: flex;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 0.3s;
+    padding: 10px 25px 10px 15px;
+    font-size: 18px;
+    border-radius: 10px;
+
 }
 
-#sostituzioni-lista button {
+#context-menu div:hover {
+    background-color: #0000001c;
+}
+
+
+#context-menu div span:last-child {
     margin: auto;
-}
-
-#sostituzioni-lista li:hover .sostituzione-pulsanti {
-    opacity: 1;
+    margin-left: 10px;
 }

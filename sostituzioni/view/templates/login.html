@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/login.css') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
 </head>
 
 <body>
@@ -21,6 +22,7 @@
   </div>
   {% endif %}
   {% endwith %}
+  <div id="design"></div>
   <div id="login-container">
     <div id="title-frame">
       <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Gandhi">
@@ -34,7 +36,7 @@
 
     <div id="notes-frame">
       <p>L'accesso al sistema è eseguito tramite l'account Google appartenente al tuo istituto scolastico.</p>
-      <p>Assicurati di selezionare il tuo account 'gandhimerano.com'.</p>
+      <p>Assicurati di selezionare il tuo account <i>@gandhimerano.com</i></p>
       <p>Non riesci ad accedere? <a href="/fottiti">Richiedi l'accesso.</a></p>
     </div>
   </div>
