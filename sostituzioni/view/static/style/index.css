@@ -15,7 +15,6 @@ body {
 }
 
 body {
-    flex-direction: column;
     min-width: 400px;
     min-height: 500px;
     width: 100%;
@@ -78,11 +77,10 @@ ul {
 #sostituzioni-frame {
     grid-area: 1/2/3/3;
     background-color: var(--color-sostituzioni-bg);
-    overflow: auto;
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    overflow-x: auto;
     /* proporzione filtri - sostituzioni */
-    grid-template-rows: 80px 50px 1fr;
 }
 
 @media (max-width: 1000px) {
@@ -112,6 +110,8 @@ ul {
 /* HEADER SOSTITUZIONI */
 #header-sostituzioni {
     display: flex;
+    height: 80px;
+    min-height: 80px;
 }
 
 #header-sostituzioni-titolo {
@@ -151,14 +151,26 @@ ul {
     font-size: 30px;
 }
 
+#sostituzioni-main {
+    flex: 1;
+    overflow-x: auto;
+    height: calc(100% - 80px);
+    padding: 0 0.5vw;
+}
+
+#sostituzioni-container {
+    min-width: 900px;
+    height: 100%;
+    /* questo min-width è stato messo per mantenere spazio per la lettura chiara dei dati, */
+}
+
 
 /* FILTRI SOSTITUZIONI */
 #sostituzioni-filtri-container {
     display: flex;
     flex-wrap: nowrap;
-    height: 100%;
-    width: calc(100% - 0.5vw);
-    margin-left: 0.5vw;
+    height: 50px;
+    width: 100%;
     background-color: var(--color-sostituzioni-filtri-bg);
     border-top-left-radius: 1rem;
     border-top-right-radius: 1rem;
@@ -299,13 +311,11 @@ ul {
 
 
 /* SOSTITUZIONI */
-#sostituzioni-container {
-    overflow: auto;
-    height: 100%;
-    max-height: 100%;
-    min-width: 900px;
-    /* questo min-width è stato messo sia per mantenere spazio per la lettura chiara dei dati, sia perché i filtri non erano allineati con i dati
-    todo: rimuovere e cercare di rendere responsive l'area filtri */
+#sostituzioni-lista-container {
+    overflow-y: auto;
+    height: calc(100% - 50px);
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
 }
 
 #sostituzioni-messaggio-informativo {
@@ -322,9 +332,7 @@ ul {
 
 
 /* LISTA SOSTITUZIONI */
-#sostituzioni-lista {
-    margin-left: 0.5vw;
-}
+#sostituzioni-lista {}
 
 #sostituzioni-lista li {
     position: relative;

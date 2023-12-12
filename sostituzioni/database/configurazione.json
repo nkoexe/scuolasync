@@ -18,6 +18,17 @@
     }
   },
   "opzioni": {
+    "systitle": {
+      "titolo": "Nome del sistema",
+      "descrizione": "Titolo principale del sistema da mostrare nelle varie pagine",
+      "sezione": "sistema",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "testo",
+      "lunghezza_massima": 50,
+      "default": "Gestione Digitale",
+      "valore": "Calendario Eventi"
+    },
     "sysstate": {
       "titolo": "Stato del sistema",
       "descrizione": "",
@@ -63,7 +74,7 @@
       "nascosto": false,
       "tipo": "booleano",
       "default": false,
-      "valore": false
+      "valore": true
     },
     "numeroebbasta": {
       "titolo": "Numero",

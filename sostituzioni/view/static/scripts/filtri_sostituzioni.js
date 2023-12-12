@@ -128,7 +128,7 @@ function sostituzioni_ordina() {
     refresh_sostituzioni()
 }
 
-let sostituzioni_filtro_ora = new Filtro({ id: 'sostituzioni-filtro-ora', filtra_lista: prendi_ora, render: element => element + 'a ora' })
+let sostituzioni_filtro_ora = new Filtro({ id: 'sostituzioni-filtro-ora', filtra_lista: prendi_ora, render: element => element.length == 1 ? element + "a ora" : element })
 let sostituzioni_filtro_classe = new Filtro({ id: 'sostituzioni-filtro-classe', filtra_lista: prendi_nome })
 let sostituzioni_filtro_aula = new Filtro({ id: 'sostituzioni-filtro-aula', filtra_lista: prendi_numero })
 let sostituzioni_filtro_docente = new Filtro({ id: 'sostituzioni-filtro-docente', filtra_lista: prendi_nome_cognome })

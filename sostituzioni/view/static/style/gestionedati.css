@@ -28,12 +28,6 @@
     height: 100%;
 }
 
-#pulsante-applica-gestione-dati {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-}
-
 #pulsante-chiudi-gestione-dati {
     position: absolute;
     top: 0;
@@ -50,4 +44,20 @@
 #pulsante-chiudi-gestione-dati:hover {
     background-color: #ce0c0c;
     color: white;
+}
+
+.pulsante-primario-gestione-dati {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 10px 15px;
+}
+
+.pulsante-secondario-gestione-dati {
+    position: absolute;
+    bottom: 0;
+    right: 100px;
+    padding: 10px 15px;
+}
+
 }

@@ -42,7 +42,7 @@ for (let child of ui_context_menu.children) {
 
 function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
   if (numero_ora_predefinita == null) { ora = ora_inizio + " - " + ora_fine }
-  else { ora = numero_ora_predefinita + "a ora" }
+  else { ora = numero_ora_predefinita.length == 1 ? numero_ora_predefinita + "a ora" : numero_ora_predefinita }
   if (note == null) { note = "" }
   if (nome_docente == null) { nome_docente = "" }
   if (cognome_docente == null) { cognome_docente = "" }

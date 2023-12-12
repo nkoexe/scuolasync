@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gestione Digitale</title>
+  <title>{{title}}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap">
@@ -21,7 +21,7 @@
   <div id="header">
     <img id="header-logo" src="{{ url_for('static', filename='images/logo_white.png') }}" alt="Logo Gandhi">
     <div id="header-separator"></div>
-    <h1 id="header-titolo">Gestione Digitale</h1>
+    <h1 id="header-titolo">{{title}}</h1>
     <div id="header-pulsanti">
       <a href="{{ url_for('impostazioni.main')}}"><span class="material-symbols-rounded">settings</span></a>
       <a href="{{ url_for('auth.logout')}}"><span class="material-symbols-rounded">logout</span></a>
@@ -40,82 +40,87 @@
           <h2 id="header-sostituzioni-titolo">Sostituzioni</h2>
           <div id="pulsante-nuova-sostituzione" onclick="mostra_nuova_sostituzione()"><span class="material-symbols-rounded icon">add</span><span>Nuova</span></div>
         </div>
-        <div id="sostituzioni-filtri-container">
-          <div id="sostituzioni-filtro-data">
-            <span id="test">Data</span>
-          </div>
-          <div id="sostituzioni-filtro-ora">
-            <div class="sostituzioni-filtri-ricerca">
-              <input type="text" placeholder="Ora" class="selezione-input" />
-              <div class="sostituzioni-ordinamento">
-                <div class="sostituzioni-ordinamento-arrowup"></div>
-                <div class="sostituzioni-ordinamento-arrowdown"></div>
+        <div id="sostituzioni-main">
+          <div id="sostituzioni-container">
+            <div id="sostituzioni-filtri-container">
+              <div id="sostituzioni-filtro-data">
+                <span id="test">Data</span>
               </div>
-              <div class="selezione-dropdown">
-                <ul></ul>
+              <div id="sostituzioni-filtro-ora">
+                <div class="sostituzioni-filtri-ricerca">
+                  <input type="text" placeholder="Ora" class="selezione-input" />
+                  <div class="sostituzioni-ordinamento">
+                    <div class="sostituzioni-ordinamento-arrowup"></div>
+                    <div class="sostituzioni-ordinamento-arrowdown"></div>
+                  </div>
+                  <div class="selezione-dropdown">
+                    <ul></ul>
+                  </div>
+                </div>
+              </div>
+              <div id="sostituzioni-filtro-classe">
+                <div class="sostituzioni-filtri-ricerca">
+                  <input type="text" placeholder="Classe" class="selezione-input" />
+                  <div class="sostituzioni-ordinamento">
+                    <div class="sostituzioni-ordinamento-arrowup"></div>
+                    <div class="sostituzioni-ordinamento-arrowdown"></div>
+                  </div>
+                  <div class="selezione-dropdown">
+                    <ul></ul>
+                  </div>
+                </div>
+              </div>
+              <div id="sostituzioni-filtro-aula">
+                <div class="sostituzioni-filtri-ricerca">
+                  <input type="text" placeholder="Aula" class="selezione-input" />
+                  <div class="sostituzioni-ordinamento">
+                    <div class="sostituzioni-ordinamento-arrowup"></div>
+                    <div class="sostituzioni-ordinamento-arrowdown"></div>
+                  </div>
+                  <div class="selezione-dropdown">
+                    <ul></ul>
+                  </div>
+                </div>
+              </div>
+              <div id="sostituzioni-filtro-docente">
+                <div class="sostituzioni-filtri-ricerca">
+                  <input type="text" placeholder="Docente" class="selezione-input" />
+                  <div class="sostituzioni-ordinamento">
+                    <div class="sostituzioni-ordinamento-arrowup"></div>
+                    <div class="sostituzioni-ordinamento-arrowdown"></div>
+                  </div>
+                  <div class="selezione-dropdown">
+                    <ul></ul>
+                  </div>
+                </div>
+              </div>
+              <div id="sostituzioni-filtro-note">
+                <div class="sostituzioni-filtri-ricerca">
+                  <input type="text" placeholder="Note" class="selezione-input" />
+                  <div class="selezione-dropdown">
+                    <ul></ul>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div id="sostituzioni-filtro-classe">
-            <div class="sostituzioni-filtri-ricerca">
-              <input type="text" placeholder="Classe" class="selezione-input" />
-              <div class="sostituzioni-ordinamento">
-                <div class="sostituzioni-ordinamento-arrowup"></div>
-                <div class="sostituzioni-ordinamento-arrowdown"></div>
-              </div>
-              <div class="selezione-dropdown">
-                <ul></ul>
-              </div>
+            <div id="sostituzioni-lista-container">
+              <div id="sostituzioni-messaggio-informativo"><span>Caricamento...</span></div>
+              <ul id="sostituzioni-lista">
+              </ul>
             </div>
           </div>
-          <div id="sostituzioni-filtro-aula">
-            <div class="sostituzioni-filtri-ricerca">
-              <input type="text" placeholder="Aula" class="selezione-input" />
-              <div class="sostituzioni-ordinamento">
-                <div class="sostituzioni-ordinamento-arrowup"></div>
-                <div class="sostituzioni-ordinamento-arrowdown"></div>
-              </div>
-              <div class="selezione-dropdown">
-                <ul></ul>
-              </div>
-            </div>
-          </div>
-          <div id="sostituzioni-filtro-docente">
-            <div class="sostituzioni-filtri-ricerca">
-              <input type="text" placeholder="Docente" class="selezione-input" />
-              <div class="sostituzioni-ordinamento">
-                <div class="sostituzioni-ordinamento-arrowup"></div>
-                <div class="sostituzioni-ordinamento-arrowdown"></div>
-              </div>
-              <div class="selezione-dropdown">
-                <ul></ul>
-              </div>
-            </div>
-          </div>
-          <div id="sostituzioni-filtro-note">
-            <div class="sostituzioni-filtri-ricerca">
-              <input type="text" placeholder="Note" class="selezione-input" />
-              <div class="selezione-dropdown">
-                <ul></ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="sostituzioni-container">
-          <div id="sostituzioni-messaggio-informativo"><span>Caricamento...</span></div>
-          <ul id="sostituzioni-lista">
-          </ul>
         </div>
       </div>
     </div>
     <div id="gestione-dati-container" class="hidden">
       <div id="gestione-dati-frame">
+        <h1 id="gestione-dati-title">Gestione Dati</h1>
         <div id="gestione-dati-sostituzione" class="gestione-dati-element hidden">
           <div>data <input id="gestione-dati-sostituzione-data" type="date">
             ora
             <div id="gestione-dati-sostituzione-ora-predefinita">
               <div class="selezione">
-                <input type="number" class="selezione-input" />a ora
+                <input type="text" class="selezione-input" />
                 <div class="selezione-dropdown">
                   <ul></ul>
                 </div>
@@ -154,11 +159,11 @@
               </div>
             </div>
           </div>
-          <div>pubblica <input id="gestione-dati-sostituzione-pubblicato" type="checkbox"></div>
+          <button id="pulsante-applica-sostituzione" class="pulsante-secondario-gestione-dati"></button>
+          <button id="pulsante-pubblica-sostituzione" class="pulsante-primario-gestione-dati"></button>
         </div>
         <div id="gestione-dati-evento" class="gestione-dati-element hidden"></div>
         <div id="gestione-dati-notizia" class="gestione-dati-element hidden"></div>
-        <button id="pulsante-applica-gestione-dati">Applica</button>
         <div id="pulsante-chiudi-gestione-dati" onclick="nascondi_gestione_dati()"><span class="material-symbols-rounded">close</span></div>
       </div>
     </div>

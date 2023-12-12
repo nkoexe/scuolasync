@@ -1,6 +1,7 @@
 import logging
 from flask import render_template, redirect, url_for, request
 
+from sostituzioni.control.configurazione import configurazione
 from sostituzioni.model.auth import current_user, login_required, permesso, sso_login, logout_user, GOOGLE_SSO_REQ_URI
 from sostituzioni.view.auth import auth
 
@@ -23,7 +24,7 @@ def login():
     authenticate_user('niccolo.ragazzi@gandhimerano.com')
     return redirect(url_for('online.index'))
 
-    return render_template('login.html')
+    return render_template('login.html', title=configurazione.get('systitle'))
 
 
 @auth.route('/googlesso')

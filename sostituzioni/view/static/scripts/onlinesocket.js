@@ -17,7 +17,6 @@ socket.on('lista sostituzioni', (data) => {
 
 
 socket.on('lista ore predefinite', (data) => {
-    console.log(data)
     ore_predefinite = data
 
     sostituzioni_filtro_ora.aggiorna(ore_predefinite)
