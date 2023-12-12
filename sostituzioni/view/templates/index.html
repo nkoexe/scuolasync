@@ -24,21 +24,46 @@
     <h1 id="header-titolo">{{title}}</h1>
     <div id="header-pulsanti">
       <a href="{{ url_for('impostazioni.main')}}"><span class="material-symbols-rounded">settings</span></a>
-      <a href="{{ url_for('auth.logout')}}"><span class="material-symbols-rounded">logout</span></a>
+      <!-- <a href="{{ url_for('auth.logout')}}"><span class="material-symbols-rounded">logout</span></a> -->
+      <a><span class="material-symbols-rounded">logout</span></a>
+      <div id="fun"></div>
     </div>
   </div>
   <div id="main-window">
     <div id="main-container">
       <div id="eventi-frame" class="frame">
-        <h2>Eventi</h2>
+        <div id="header-eventi">
+          <h2 id="header-eventi-titolo">Eventi</h2>
+          <div id="header-eventi-pulsanti">
+            <div id="eventi-filtro-data"><span class="material-symbols-rounded">calendar_month</span></div>
+            <div id="pulsante-nuovo-evento" class="pulsante-inserimento"><span class="material-symbols-rounded">add</span></div>
+          </div>
+        </div>
+        <div id="eventi-container">
+          <div id="eventi-lista-container">
+            <ul id="eventi-lista"></ul>
+          </div>
+        </div>
       </div>
       <div id="notizie-frame" class="frame">
-        <h2>Notizie</h2>
+        <div id="header-notizie">
+          <h2 id="header-notizie-titolo">Notizie</h2>
+          <div id="pulsante-nuova-notizia" class="pulsante-inserimento"><span class="material-symbols-rounded">add</span></div>
+        </div>
+        <div id="notizie-container">
+          <div id="notizie-lista-container">
+            <ul id="notizie-lista"></ul>
+          </div>
+        </div>
       </div>
       <div id="sostituzioni-frame" class="frame">
         <div id="header-sostituzioni">
           <h2 id="header-sostituzioni-titolo">Sostituzioni</h2>
-          <div id="pulsante-nuova-sostituzione" onclick="mostra_nuova_sostituzione()"><span class="material-symbols-rounded icon">add</span><span>Nuova</span></div>
+          <div id="pulsanti-header-sostituzioni">
+            <div id="pulsante-esporta-sostituzioni"><span class="material-symbols-rounded">export_notes</span></div>
+            <div id="pulsante-refresh-sostituzioni" onclick="ui_refresh_sostituzioni()"><span class="material-symbols-rounded">sync</span></div>
+          </div>
+          <div id="pulsante-nuova-sostituzione" class="pulsante-inserimento" onclick="mostra_nuova_sostituzione()"><span class="material-symbols-rounded icon">add</span><span class="text">Nuova</span></div>
         </div>
         <div id="sostituzioni-main">
           <div id="sostituzioni-container">
@@ -188,6 +213,8 @@
   </script>
   <script src="{{url_for('static', filename='scripts/lib/fuzzyset.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/lib/selezione.js')}}"></script>
+  <script src="{{url_for('static', filename='scripts/eventi.js')}}"></script>
+  <script src="{{url_for('static', filename='scripts/notizie.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/sostituzioni.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/filtri_sostituzioni.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/ui.js')}}"></script>

@@ -29,7 +29,7 @@ const ui_sostituzioni_messaggio_informativo = document.getElementById("sostituzi
 const ui_context_menu = document.getElementById("context-menu")
 ui_context_menu.onblur = (event) => {
   // if parent of event target is the context menu, do nothing
-  if (event.relatedTarget.parentNode === ui_context_menu) { return }
+  if (event.relatedTarget && event.relatedTarget.parentNode === ui_context_menu) { return }
   ui_context_menu.closingcallback()
 }
 for (let child of ui_context_menu.children) {
@@ -93,8 +93,10 @@ function refresh_sostituzioni() {
 }
 
 function mostra_context_menu(event, sostituzione) {
-  sostituzione.focus()
   event.preventDefault()
+
+  sostituzione.focus()
+
   let id = sostituzione.dataset.id
 
   sostituzione.classList.add("context-menu-active")

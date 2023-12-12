@@ -29,21 +29,23 @@
 }
 
 #pulsante-chiudi-gestione-dati {
+    display: flex;
     position: absolute;
     top: 0;
     right: 0;
     width: 65px;
     height: 40px;
     border-top-right-radius: 1rem;
-    text-align: center;
-    padding: 7px;
-    font-weight: bold;
     cursor: pointer;
 }
 
 #pulsante-chiudi-gestione-dati:hover {
     background-color: #ce0c0c;
     color: white;
+}
+
+#pulsante-chiudi-gestione-dati span {
+    margin: auto;
 }
 
 .pulsante-primario-gestione-dati {

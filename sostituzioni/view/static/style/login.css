@@ -19,6 +19,19 @@ body {
     overflow: hidden;
 }
 
+
+@keyframes slidein {
+    from {
+        bottom: 90%;
+        left: 100%;
+    }
+
+    to {
+        bottom: -10%;
+        left: -20%;
+    }
+}
+
 #design {
     position: absolute;
     height: 200%;
@@ -28,7 +41,10 @@ body {
     background-color: white;
     border-radius: 100%;
     z-index: -1;
+
+    animation: slidein 0.5s;
 }
+
 
 #messages-container {
     margin: auto;
@@ -56,6 +72,19 @@ body {
     margin-top: 10px;
 }
 
+
+@keyframes fadein {
+
+    0%,
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
 #login-container {
     margin: auto;
     flex: 1;
@@ -69,6 +98,7 @@ body {
     box-shadow: 0 3px 5px #00000088, 0px 7px 15px #00000099;
     border-radius: 3vh;
     transition: box-shadow .3s;
+    animation: fadein 0.8s;
 }
 
 @media (max-width: 600px) {

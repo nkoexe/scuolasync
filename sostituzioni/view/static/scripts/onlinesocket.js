@@ -3,9 +3,13 @@ const socket = io();
 
 socket.on('lista eventi', (data) => {
     eventi = data
+
+    refresh_eventi()
 })
 socket.on('lista notizie', (data) => {
     notizie = data
+
+    refresh_notizie()
 })
 
 socket.on('lista sostituzioni', (data) => {

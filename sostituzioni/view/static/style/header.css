@@ -53,7 +53,20 @@
 #header-pulsanti span {
     color: white;
     font-size: 30px;
-    /* height: 100%; */
     margin: auto;
     padding: 8px;
+}
+
+
+/* fun, todo remove */
+#fun {
+    position: absolute;
+    top: -1000px;
+    right: -1000px;
+    width: 1000px;
+    height: 1000px;
+    z-index: 132456;
+    background-color: #C00F19;
+    border-radius: 100vw;
+    transition: all 0.3s;
 }
