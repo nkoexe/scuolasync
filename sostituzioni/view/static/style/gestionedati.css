@@ -13,19 +13,29 @@
 #gestione-dati-frame {
     /* pointer-events: all; */
     position: relative;
+    flex-direction: column;
     min-width: 400px;
     min-height: 500px;
-    width: 70%;
-    height: 80%;
+    width: 100vh;
+    height: 70vh;
     margin: auto;
     background-color: white;
     border-radius: 1rem;
-    box-shadow: 0 10px 25px #00000032;
+    box-shadow: 0 10px 25px var(--color-shadow), 0 0 10px var(--color-shadow);
+    display: flex;
+    padding: max(30px, 3vh);
+    gap: 30px;
 }
 
+@media (max-height: 800px) {
+    #gestione-dati-frame {
+        width: 80vw;
+    }
+}
+
+
 #gestione-dati-frame .gestione-dati-element {
-    width: 100%;
-    height: 100%;
+    flex: 1;
 }
 
 #pulsante-chiudi-gestione-dati {
@@ -48,18 +58,155 @@
     margin: auto;
 }
 
-.pulsante-primario-gestione-dati {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    padding: 10px 15px;
+#gestione-dati-titolo {}
+
+.pulsanti-gestione-dati {
+    margin: auto;
+    margin-right: 0;
+    /* padding: 20px; */
+    display: flex;
+    gap: 10px;
+}
+
+.pulsanti-gestione-dati button {
+    padding: 20px 30px;
+    font-size: 20px;
+}
+
+.pulsante-principale-gestione-dati {
+    background-color: var(--color-accent);
+    color: var(--color-accent-text);
 }
 
 .pulsante-secondario-gestione-dati {
-    position: absolute;
-    bottom: 0;
-    right: 100px;
-    padding: 10px 15px;
+    box-shadow: none;
 }
 
+.pulsante-secondario-gestione-dati:hover {
+    box-shadow: none;
+}
+
+#gestione-dati-sostituzione label {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    font-size: 18px;
+    font-style: italic;
+}
+
+#gestione-dati-sostituzione input {
+    font-size: 20px;
+    margin: 0;
+    padding: 10px 15px;
+    border: 1px solid #cacaca;
+    border-radius: 5px;
+}
+
+#gestione-dati-sostituzione .selezione {
+    font-size: 20px;
+}
+
+#gestione-dati-sostituzione {
+    display: flex;
+    flex-direction: column;
+}
+
+#gestioni-dati-sostituzione-quando {
+    margin: auto 0;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    align-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+#gestione-dati-sostituzione-data-container {
+    position: relative;
+}
+
+#gestione-dati-sostituzione-ora-container {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: auto;
+    gap: 10px;
+}
+
+#gestione-dati-sostituzione-ora-container input {
+    transition: 0.2s;
+}
+
+#gestione-dati-sostituzione-ora-container input.disabled {
+    font-size: 15px;
+    border-color: transparent;
+}
+
+#gestione-dati-sostituzione-ora-container input:hover {
+    border-color: initial;
+}
+
+#gestione-dati-sostituzione-ora-predefinita {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#gestione-dati-sostituzione-ora-predefinita input {
+    width: 200px;
+}
+
+
+#gestione-dati-sostituzione-ora-personalizzata {
+    display: flex;
+    align-items: center;
+}
+
+
+#gestione-dati-sostituzione-chi {
+    margin: auto 0;
+    display: flex;
+    flex: 1;
+    align-items: center;
+}
+
+#gestione-dati-sostituzione-docente {
+    position: relative;
+}
+
+#gestione-dati-sostituzione-dove {
+    margin: auto 0;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    align-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#gestione-dati-sostituzione-classe {
+    position: relative;
+}
+
+#gestione-dati-sostituzione-note {
+    flex: 1;
+    margin: auto 0;
+    display: flex;
+    align-items: center;
+}
+
+#gestione-dati-sostituzione-note,
+#gestione-dati-sostituzione-note .selezione,
+#gestione-dati-sostituzione-note input {
+    width: 100%;
+}
+
+#gestione-dati-notizia {
+    display: flex;
+    flex-direction: column;
+}
+
+#gestione-dati-notizia-testo-container {
+    flex: 1;
 }

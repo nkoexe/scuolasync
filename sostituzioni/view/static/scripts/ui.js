@@ -18,5 +18,5 @@ pulsante_logout.onclick = (e) => {
 
     e.preventDefault()
 
-    setTimeout(() => { location.href = pulsante_logout.href }, 150)
+    setTimeout(() => { location.href = pulsante_logout.href }, 170)
 }

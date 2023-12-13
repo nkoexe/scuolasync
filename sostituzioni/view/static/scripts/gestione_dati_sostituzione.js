@@ -7,7 +7,7 @@ const gestione_dati_sostituzione_ora_inizio = document.getElementById('gestione-
 const gestione_dati_sostituzione_ora_fine = document.getElementById('gestione-dati-sostituzione-ora-fine');
 
 
-const gestione_dati_sostituzione_ora_predefinita = new Selezione({ id: 'gestione-dati-sostituzione-ora-predefinita', filtra_lista: prendi_ora })
+const gestione_dati_sostituzione_ora_predefinita = new Selezione({ id: 'gestione-dati-sostituzione-ora-predefinita', filtra_lista: prendi_ora, render: element => element.length == 1 ? element + "a ora" : element })
 const gestione_dati_sostituzione_docente = new Selezione({ id: 'gestione-dati-sostituzione-docente', filtra_lista: prendi_nome_cognome })
 const gestione_dati_sostituzione_classe = new Selezione({ id: 'gestione-dati-sostituzione-classe', filtra_lista: prendi_nome })
 const gestione_dati_sostituzione_aula = new Selezione({ id: 'gestione-dati-sostituzione-aula', filtra_lista: prendi_numero })
@@ -29,7 +29,15 @@ function mostra_nuova_sostituzione() {
     mostra_gestione_sostituzione()
 
     gestione_dati_sostituzione_data.valueAsDate = new Date();
+    gestione_dati_sostituzione_ora_predefinita.valore = '';
+    gestione_dati_sostituzione_ora_inizio.value = '';
+    gestione_dati_sostituzione_ora_fine.value = '';
+    gestione_dati_sostituzione_docente.valore = '';
+    gestione_dati_sostituzione_classe.valore = '';
+    gestione_dati_sostituzione_aula.valore = '';
+    gestione_dati_sostituzione_note.valore = '';
 
+    ui_titolo_gestione_dati.innerHTML = 'Inserimento Nuova Sostituzione'
     ui_pulsante_secondario_sostituzione.innerHTML = 'Inserisci senza pubblicare'
     ui_pulsante_secondario_sostituzione.onclick = () => conferma_nuova_sostituzione(false)
     ui_pulsante_principale_sostituzione.innerHTML = 'Pubblica'
@@ -66,6 +74,7 @@ function mostra_modifica_sostituzione(id) {
     gestione_dati_sostituzione_note.valore = sostituzione.note
 
     mostra_gestione_sostituzione()
+    ui_titolo_gestione_dati.innerHTML = 'Modifica Sostituzione'
     ui_pulsante_secondario_sostituzione.innerHTML = 'Annulla'
     ui_pulsante_secondario_sostituzione.onclick = () => nascondi_gestione_dati()
     ui_pulsante_principale_sostituzione.innerHTML = 'Applica'

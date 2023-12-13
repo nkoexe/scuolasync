@@ -1,4 +1,5 @@
 const ui_gestione_dati = document.getElementById('gestione-dati-container');
+const ui_titolo_gestione_dati = document.getElementById('gestione-dati-titolo');
 
 const ui_gestione_dati_evento = document.getElementById('gestione-dati-evento');
 

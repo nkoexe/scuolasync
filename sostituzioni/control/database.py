@@ -710,6 +710,10 @@ class Sostituzione(ElementoDatabaseConStorico):
         if not new:
             return
 
+        # trasforma da "1a ora" a "1"
+        if new.endswith('a ora'):
+            new = new[0]
+
         self._ora_predefinita = new
 
     @property

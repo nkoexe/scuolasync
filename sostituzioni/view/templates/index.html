@@ -35,7 +35,7 @@
           <h2 id="header-eventi-titolo">Eventi</h2>
           <div id="header-eventi-pulsanti">
             <div id="eventi-filtro-data"><span class="material-symbols-rounded">calendar_month</span></div>
-            <div id="pulsante-nuovo-evento" class="pulsante-inserimento"><span class="material-symbols-rounded">add</span></div>
+            <div id="pulsante-nuovo-evento" class="pulsante pulsante-inserimento"><span class="material-symbols-rounded">add</span></div>
           </div>
         </div>
         <div id="eventi-container">
@@ -47,7 +47,7 @@
       <div id="notizie-frame" class="frame">
         <div id="header-notizie">
           <h2 id="header-notizie-titolo">Notizie</h2>
-          <div id="pulsante-nuova-notizia" class="pulsante-inserimento" onclick="mostra_nuova_notizia()"><span class="material-symbols-rounded">add</span></div>
+          <div id="pulsante-nuova-notizia" class="pulsante pulsante-inserimento" onclick="mostra_nuova_notizia()"><span class="material-symbols-rounded">add</span></div>
         </div>
         <div id="notizie-container">
           <div id="notizie-lista-container">
@@ -62,7 +62,7 @@
             <div id="pulsante-esporta-sostituzioni" class="has-tooltip"><span class="material-symbols-rounded">export_notes</span><span class="tooltip">Esportazione dei dati</span></div>
             <div id="pulsante-refresh-sostituzioni" class="has-tooltip" onclick="ui_refresh_sostituzioni()"><span class="material-symbols-rounded">sync</span><span class="tooltip">Ricarica lista di sostituzioni</span></div>
           </div>
-          <div id="pulsante-nuova-sostituzione" class="pulsante-inserimento" onclick="mostra_nuova_sostituzione()"><span class="material-symbols-rounded icon">add</span><span class="text">Nuova</span></div>
+          <div id="pulsante-nuova-sostituzione" class="pulsante pulsante-inserimento" onclick="mostra_nuova_sostituzione()"><span class="material-symbols-rounded icon">add</span><span class="text">Nuova</span></div>
         </div>
         <div id="sostituzioni-main">
           <div id="sostituzioni-container">
@@ -138,40 +138,57 @@
     </div>
     <div id="gestione-dati-container" class="hidden">
       <div id="gestione-dati-frame">
-        <h1 id="gestione-dati-title">Gestione Dati</h1>
+        <h1 id="gestione-dati-titolo">Gestione Dati</h1>
         <div id="gestione-dati-sostituzione" class="gestione-dati-element hidden">
-          <div>data <input id="gestione-dati-sostituzione-data" type="date">
-            ora
-            <div id="gestione-dati-sostituzione-ora-predefinita">
+          <div id="gestioni-dati-sostituzione-quando">
+            <div id="gestione-dati-sostituzione-data-container">
+              <label for="gestione-dati-sostituzione-data">Data</label>
+              <input id="gestione-dati-sostituzione-data" type="date">
+            </div>
+            <div id="gestione-dati-sostituzione-ora-container">
+              <div id="gestione-dati-sostituzione-ora-predefinita">
+                <label>Quando?</label>
+                <div class="selezione">
+                  <input type="text" class="selezione-input" placeholder="Ora Predefinita" />
+                  <div class="selezione-dropdown">
+                    <ul></ul>
+                  </div>
+                </div>
+              </div>
+              <div id="gestione-dati-sostituzione-ora-personalizzata">
+                <input id="gestione-dati-sostituzione-ora-inizio" class="disabled" type="time">
+                <span>-</span>
+                <input id="gestione-dati-sostituzione-ora-fine" class="disabled" type="time">
+              </div>
+            </div>
+          </div>
+          <div id="gestione-dati-sostituzione-chi">
+            <div id="gestione-dati-sostituzione-docente">
+              <label>Chi?</label>
               <div class="selezione">
-                <input type="text" class="selezione-input" />
+                <input type="text" placeholder="Docente" class="selezione-input" />
                 <div class="selezione-dropdown">
                   <ul></ul>
                 </div>
               </div>
-            </div> ora personalizzata <input id="gestione-dati-sostituzione-ora-inizio" type="time"><input id="gestione-dati-sostituzione-ora-fine" type="time">
-          </div>
-          <div id="gestione-dati-sostituzione-docente">
-            <div class="selezione">
-              <input type="text" placeholder="Docente" class="selezione-input" />
-              <div class="selezione-dropdown">
-                <ul></ul>
-              </div>
             </div>
           </div>
-          <div id="gestione-dati-sostituzione-classe">
-            <div class="selezione">
-              <input type="text" placeholder="Classe" class="selezione-input" />
-              <div class="selezione-dropdown">
-                <ul></ul>
+          <div id="gestione-dati-sostituzione-dove">
+            <div id="gestione-dati-sostituzione-classe">
+              <label>Dove?</label>
+              <div class="selezione">
+                <input type="text" placeholder="Classe" class="selezione-input" />
+                <div class="selezione-dropdown">
+                  <ul></ul>
+                </div>
               </div>
             </div>
-          </div>
-          <div id="gestione-dati-sostituzione-aula">
-            <div class="selezione">
-              <input type="text" placeholder="Aula" class="selezione-input" />
-              <div class="selezione-dropdown">
-                <ul></ul>
+            <div id="gestione-dati-sostituzione-aula">
+              <div class="selezione">
+                <input type="text" placeholder="Aula" class="selezione-input" />
+                <div class="selezione-dropdown">
+                  <ul></ul>
+                </div>
               </div>
             </div>
           </div>
@@ -183,13 +200,19 @@
               </div>
             </div>
           </div>
-          <button id="pulsante-applica-sostituzione" class="pulsante-secondario-gestione-dati"></button>
-          <button id="pulsante-pubblica-sostituzione" class="pulsante-primario-gestione-dati"></button>
+          <div class="pulsanti-gestione-dati">
+            <button id="pulsante-applica-sostituzione" class="pulsante pulsante-secondario-gestione-dati"></button>
+            <button id="pulsante-pubblica-sostituzione" class="pulsante pulsante-principale-gestione-dati"></button>
+          </div>
         </div>
         <div id="gestione-dati-evento" class="gestione-dati-element hidden"></div>
         <div id="gestione-dati-notizia" class="gestione-dati-element hidden">
-          <input type="text">
-          <button id="pulsante-principale-notizia" class="pulsante-primario-gestione-dati"></button>
+          <div id="gestione-dati-notizia-testo-container">
+            <input type="text" id="gestione-dati-notizia-testo">
+          </div>
+          <div class="pulsanti-gestione-dati">
+            <button id="pulsante-principale-notizia" class="pulsante pulsante-principale-gestione-dati"></button>
+          </div>
         </div>
         <div id="pulsante-chiudi-gestione-dati" onclick="nascondi_gestione_dati()"><span class="material-symbols-rounded">close</span></div>
       </div>

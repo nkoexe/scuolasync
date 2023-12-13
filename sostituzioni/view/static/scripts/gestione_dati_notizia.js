@@ -13,6 +13,7 @@ function mostra_gestione_notizia() {
 function mostra_nuova_notizia() {
     mostra_gestione_notizia()
 
+    ui_titolo_gestione_dati.innerHTML = 'Inserimento Nuova Notizia'
     ui_pulsante_principale_notizia.innerHTML = 'Pubblica'
     ui_pulsante_principale_notizia.onclick = () => conferma_nuova_notizia(true)
 }
@@ -32,6 +33,7 @@ function mostra_modifica_notizia(id) {
     gestione_dati_notizia_testo.value = notizia.value
 
     mostra_gestione_notizia()
+    ui_titolo_gestione_dati.innerHTML = 'Modifica Notizia'
     ui_pulsante_principale_notizia.innerHTML = 'Applica'
     ui_pulsante_principale_notizia.onclick = () => conferma_modifica_notizia(id)
 }
