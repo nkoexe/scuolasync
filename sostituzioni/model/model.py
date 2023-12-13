@@ -35,6 +35,16 @@ class Sostituzione(Sostituzione):
         self.pubblicato = pubblicato
 
 
+class Notizia(Notizia):
+    def __init__(self,
+                 id: int | None = None,
+                 testo: str | None = None,
+                 ):
+
+        self.id = id
+        self.testo = testo
+
+
 class VisualizzazioneOnline(Visualizzazione):
     def __init__(self):
         pass

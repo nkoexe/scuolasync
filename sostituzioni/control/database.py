@@ -728,6 +728,13 @@ class Evento(ElementoDatabaseConStorico):
 
     def load(): return ElementoDatabase.load(Evento)
 
+    def inserisci(self):
+        id = self.DATABASE.insert(self.TABLENAME, cancellato=False, urgente=self.urgente,
+                                  data_ora_inizio=self.data_ora_inizio, data_ora_fine=self.data_ora_fine,
+                                  testo=self.testo)
+
+        self.id = id
+
     # @beartype
     # def __init__(
     #     self,
@@ -746,12 +753,55 @@ class Evento(ElementoDatabaseConStorico):
     #     self.data_ora_fine = data_ora_fine
     #     self.urgente = urgente
 
+    @property
+    def urgente(self):
+        return self._urgente
+
+    @beartype
+    @urgente.setter
+    def urgente(self, new: bool | None):
+        self._urgente = new
+
+    @property
+    def data_ora_inizio(self):
+        return self._data_ora_inizio
+
+    @beartype
+    @data_ora_inizio.setter
+    def data_ora_inizio(self, new: int | None):
+        self._data_ora_inizio = new
+
+    @property
+    def data_ora_fine(self):
+        return self._data_ora_fine
+
+    @beartype
+    @data_ora_fine.setter
+    def data_ora_fine(self, new: int | None):
+        self._data_ora_fine = new
+
+    @property
+    def testo(self):
+        return self._testo
+
+    @beartype
+    @testo.setter
+    def testo(self, new: str | None):
+        self._testo = new
+
 
 class Notizia(ElementoDatabaseConStorico):
     TABLENAME = 'notizia'
     KEY = 'id'
 
     def load(): return ElementoDatabase.load(Notizia)
+
+    def inserisci(self):
+        id = self.DATABASE.insert(self.TABLENAME, cancellato=False,
+                                  data_ora_inizio=self.data_ora_inizio, data_ora_fine=self.data_ora_fine,
+                                  testo=self.testo)
+
+        self.id = id
 
     # @beartype
     # def __init__(
@@ -768,6 +818,33 @@ class Notizia(ElementoDatabaseConStorico):
     #     self.testo = testo
     #     self.data_ora_inizio = (data_ora_inizio,)
     #     self.data_ora_fine = data_ora_fine
+
+    @property
+    def data_ora_inizio(self):
+        return self._data_ora_inizio
+
+    @beartype
+    @data_ora_inizio.setter
+    def data_ora_inizio(self, new: int | None):
+        self._data_ora_inizio = new
+
+    @property
+    def data_ora_fine(self):
+        return self._data_ora_fine
+
+    @beartype
+    @data_ora_fine.setter
+    def data_ora_fine(self, new: int | None):
+        self._data_ora_fine = new
+
+    @property
+    def testo(self):
+        return self._testo
+
+    @beartype
+    @testo.setter
+    def testo(self, new: str | None):
+        self._testo = new
 
 
 class Visualizzazione(ElementoDatabase):

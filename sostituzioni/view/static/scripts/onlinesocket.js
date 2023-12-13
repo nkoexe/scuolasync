@@ -69,3 +69,7 @@ function s_modifica_sostituzione(id, data) {
         data: data,
     })
 }
+
+function s_nuova_notizia(data) {
+    socket.emit('nuova notizia', data)
+}

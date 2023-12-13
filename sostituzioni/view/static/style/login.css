@@ -22,7 +22,7 @@ body {
 
 @keyframes slidein {
     from {
-        bottom: 90%;
+        bottom: 70%;
         left: 100%;
     }
 

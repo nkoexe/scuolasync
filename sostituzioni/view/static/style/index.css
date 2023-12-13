@@ -57,6 +57,46 @@ ul {
     padding: 5px;
 }
 
+/* TOOLTIP */
+.has-tooltip {
+    position: relative;
+}
+
+.has-tooltip:hover .tooltip {
+    visibility: visible;
+    opacity: 1
+}
+
+.tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    translate: -50% 0;
+    opacity: 0;
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    z-index: 110;
+    font-size: 10px !important;
+    text-wrap: nowrap;
+    transition: opacity 0.2s;
+    transition-delay: 0.5s;
+}
+
+.tooltip::after {
+    content: " ";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+
+
 /* MAIN GRID  */
 #main-window {
     height: calc(100% - 65px);
@@ -91,8 +131,6 @@ ul {
     background-color: var(--color-sostituzioni-bg);
     display: flex;
     flex-direction: column;
-    overflow-x: auto;
-    /* proporzione filtri - sostituzioni */
 }
 
 @media (max-width: 1000px) {

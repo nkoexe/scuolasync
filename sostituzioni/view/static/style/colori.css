@@ -1,6 +1,5 @@
 :root {
     --color-background: #F3F6F8;
-    --color-scrollbar-bg: #F3F6F8;
     --color-scrollbar: #00000046;
     --color-scrollbar-hover: #00000059;
     --color-accent: #C00F19;
@@ -21,9 +20,26 @@
     --color-selezione-hover-delete-fg: #ffffff;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
     :root {
-        /* --color-background: #000000 */
+        --color-background: #000000;
+        --color-scrollbar: #00000046;
+        --color-scrollbar-hover: #ffffff59;
+        --color-accent: #C00F19;
+        --color-accent-text: #ffffff;
+        --color-eventi-bg: #181818;
+        --color-notizie-bg: #181818;
+        --color-sostituzioni-bg: #181818;
+        --color-sostituzioni-filtri-bg: #C00F19;
+        --color-sostituzioni-filtri-fg: #ffffff;
+        --color-sostituzioni-filtri-placeholder: #ffffff88;
+        --color-sostituzioni-lista1: #ffffff21;
+        --color-sostituzioni-lista2: #ffffff0e;
+        --color-shadow: #ffffff55;
+        --color-selezione-bg: #F3F6F8;
+        --color-selezione-fg: #0a0a0a;
+        --color-selezione-hover-bg: #0000001b;
+        --color-selezione-hover-delete-bg: #C00F19;
+        --color-selezione-hover-delete-fg: #ffffff;
     }
-
-}
+} */

@@ -58,3 +58,11 @@ def elimina_sostituzione(data: dict):
     Sostituzione(data.get('id')).elimina(data.get('mantieni_in_storico', True))  # usare default di configurazione
 
     emit('aggiornamento sostituzioni', broadcast=True)
+
+
+@socketio.on('nuova notizia')
+@login_required
+def nuova_notizia(data: dict):
+    Notizia(id=None, testo=data.get('testo')).inserisci()
+
+    emit('aggiornamento notizie', broadcast=True)
