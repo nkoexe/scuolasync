@@ -1,5 +1,5 @@
 class Selezione {
-    constructor({ id, lista, callback, filtra_lista, render }) {
+    constructor({ id, lista, callback, filtra_lista, render, select_on_exit }) {
         this.id = id.replaceAll('-', '_')
 
         this.ui_container = document.getElementById(id)
@@ -39,6 +39,12 @@ class Selezione {
         this.ui_input.onblur = (event) => {
             this.ui_dropdown.style.display = 'none'
         }
+
+        // if (select_on_exit) {
+        //     this.ui_input.onblur = (event) => {
+        //         this.seleziona(this.selected)
+        //     }
+        // }
 
         this.ui_input.oninput = (event) => {
             this.current_index = -1

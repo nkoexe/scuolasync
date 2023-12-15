@@ -8,7 +8,7 @@ from sostituzioni.model.app import app
 logger = logging.getLogger(__name__)
 
 csrf = CSRFProtect(app)
-socketio = SocketIO(app, manage_session=False)
+socketio = SocketIO(app, manage_session=True)
 
 logger.debug('Importing blueprints..')
 from sostituzioni.view.impostazioni import impostazioni as impostazioni_blueprint
