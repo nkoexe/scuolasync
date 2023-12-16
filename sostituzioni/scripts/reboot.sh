@@ -1,4 +1,5 @@
 #!/bin/bash
 
-kill -9 $1
-python -m sostituzioni &
+killall python
+sleep 5
+python -m gunicorn -k gevent -w 1 -b 0.0.0.0:80 sostituzioni.app:app

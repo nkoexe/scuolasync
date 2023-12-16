@@ -42,4 +42,4 @@ def reboot():
         os.system(f'cmd /c {configurazione.get("scriptsdir").path / "reboot.bat"} {os.getpid()}')
 
     else:
-        os.system(f'bash {configurazione.get("scriptsdir").path / "reboot.sh"} {os.getpid()}')
+        os.system(f'bash {configurazione.get("scriptsdir").path / "reboot.sh"} & disown')
