@@ -11,7 +11,7 @@ from sostituzioni.model.app import app
 
 OAUTH_CLIENT_ID = '824960094253-vlhoqf37teg8i307fkeui4041tmu2lk9.apps.googleusercontent.com'
 OAUTH_CLIENT_SECRET = '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'
-
+1
 OAUTH_CLIENT = oauth2.WebApplicationClient(OAUTH_CLIENT_ID)
 GOOGLE_SSO_REQ_URI = OAUTH_CLIENT.prepare_request_uri(
     uri='https://accounts.google.com/o/oauth2/v2/auth',
