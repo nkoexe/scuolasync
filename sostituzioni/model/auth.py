@@ -1,17 +1,20 @@
 from flask import abort, redirect, url_for, flash, session
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from functools import wraps
-import requests
 from oauthlib import oauth2
+import logging
+import requests
 import json
 
 from sostituzioni.control.database import Where, authdatabase, Utente
 from sostituzioni.model.app import app
 
+logger = logging.getLogger(__name__)
+
 
 OAUTH_CLIENT_ID = '824960094253-vlhoqf37teg8i307fkeui4041tmu2lk9.apps.googleusercontent.com'
 OAUTH_CLIENT_SECRET = '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'
-1
+
 OAUTH_CLIENT = oauth2.WebApplicationClient(OAUTH_CLIENT_ID)
 GOOGLE_SSO_REQ_URI = OAUTH_CLIENT.prepare_request_uri(
     uri='https://accounts.google.com/o/oauth2/v2/auth',
@@ -70,14 +73,20 @@ def sso_login(request):
 
 
 def authenticate_user(email):
+    logger.debug(f'Autenticazione utente {email}')
+
     userdata = User.load(where=Where('email').equals(email))
 
     if not userdata:
+        logger.info(f'Utente {email} ha cercato di effettuare l\'accesso, non autorizzato')
         return False
 
-    session.permanent = True
+    user = User(email)
 
-    login_user(User(email))
+    logger.info(f'Utente {email} ({user.ruolo}) ha eseguito l\'accesso al sistema.')
+
+    session.permanent = True
+    login_user(user)
 
     return True
 
