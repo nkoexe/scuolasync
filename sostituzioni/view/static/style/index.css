@@ -19,7 +19,6 @@ body {
     min-height: 500px;
     width: 100%;
     height: 100%;
-    overflow: hidden;
 }
 
 ul {
@@ -100,6 +99,8 @@ ul {
 /* MAIN GRID  */
 #main-window {
     height: calc(100% - 65px);
+    overflow-y: auto;
+    max-width: 100%;
 }
 
 #main-container {
@@ -107,14 +108,18 @@ ul {
     width: 100%;
     height: 100%;
     max-height: 100%;
-    padding: 1vw;
+    padding: 0.5vw;
     display: grid;
     /* usare percentuali esatte invece che 1fr per rendere statico il layout e far funzionare gli scroll */
     grid-template-columns: 20% 80%;
     grid-template-rows: 50% 50%;
-    gap: 0.5vw;
 }
 
+.frame {
+    /* border: 2px solid; */
+    border-radius: 1rem;
+    margin: 0.3vw;
+}
 
 #eventi-frame {
     grid-area: 1/1/2/2;
@@ -135,6 +140,7 @@ ul {
 
 @media (max-width: 1000px) {
     #main-container {
+        padding: 0;
         grid-template-columns: 1fr;
         grid-template-rows: 90% 50% 50%;
     }
@@ -150,12 +156,14 @@ ul {
     #sostituzioni-frame {
         grid-area: 1/1/2/2;
     }
+
+    .frame {
+        overflow-x: auto;
+        margin: 0;
+        border-radius: 0;
+    }
 }
 
-.frame {
-    /* border: 2px solid; */
-    border-radius: 1rem;
-}
 
 /* HEADER SOSTITUZIONI */
 #header-sostituzioni {
@@ -578,6 +586,7 @@ ul {
     background-color: var(--color-selezione-bg);
     box-shadow: 0px 3px 5px #00000088;
     border-radius: 10px;
+    font-size: 18px;
 }
 
 #context-menu:focus {
@@ -585,23 +594,50 @@ ul {
 }
 
 
-#context-menu div {
+#context-menu .pulsante-context-menu {
     display: flex;
+    width: 100%;
     padding: 10px 25px 10px 15px;
     font-size: 18px;
+    background-color: inherit;
     border-radius: 10px;
+    border: none;
 }
 
-#context-menu div:hover {
+#context-menu .pulsante-context-menu:hover {
     background-color: var(--color-selezione-hover-bg);
 }
 
-#context-menu div:last-child:hover {
+#context-menu .pulsante-context-menu:last-child:hover {
     color: var(--color-selezione-hover-delete-fg);
     background-color: var(--color-selezione-hover-delete-bg);
 }
 
-#context-menu div span:last-child {
+#context-menu .pulsante-context-menu span:last-child {
     margin: auto;
     margin-left: 10px;
+}
+
+#dialog-conferma-elimina {
+    display: flex;
+    flex-direction: column;
+}
+
+#dialog-conferma-elimina-titolo {
+    margin: auto;
+}
+
+#dialog-conferma-elimina-storico {
+    flex: 1;
+    margin: auto;
+    margin-bottom: 15px;
+}
+
+#dialog-conferma-elimina-pulsanti {
+    margin: auto;
+}
+
+#dialog-conferma-elimina-pulsanti button {
+    margin: 5px;
+    padding: 15px 30px;
 }

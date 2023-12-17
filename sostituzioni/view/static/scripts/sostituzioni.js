@@ -26,19 +26,6 @@ const ui_sostituzione_html_template = `
 const ui_sostituzioni_container = document.getElementById("sostituzioni-lista")
 const ui_sostituzioni_messaggio_informativo = document.getElementById("sostituzioni-messaggio-informativo")
 
-const ui_context_menu = document.getElementById("context-menu")
-ui_context_menu.onblur = (event) => {
-  // if parent of event target is the context menu, do nothing
-  if (event.relatedTarget && event.relatedTarget.parentNode === ui_context_menu) { return }
-  ui_context_menu.closingcallback()
-}
-for (let child of ui_context_menu.children) {
-  child.onkeydown = (event) => {
-    if (event.key === "Enter") {
-      child.onclick()
-    }
-  }
-}
 
 function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
   if (numero_ora_predefinita == null) { ora = ora_inizio + " - " + ora_fine }
@@ -58,23 +45,6 @@ function add_sostituzione_to_ui_list(id, pubblicato, cancellato, data, ora_inizi
   ui_sostituzioni_container.innerHTML += sostituzione_html
 }
 
-function ui_modifica_sostituzione() {
-  let id = parseInt(ui_context_menu.dataset.id)
-  mostra_modifica_sostituzione(id)
-  ui_context_menu.closingcallback()
-}
-function ui_duplica_sostituzione() {
-  let id = ui_context_menu.dataset.id
-
-  console.log("duplica sostituzione " + id)
-  ui_context_menu.closingcallback()
-}
-function ui_elimina_sostituzione() {
-  let id = ui_context_menu.dataset.id
-  s_elimina_sostituzione(id, true)
-  ui_context_menu.closingcallback()
-}
-
 function refresh_sostituzioni() {
   ui_sostituzioni_container.innerHTML = ""
   if (sostituzioni_visualizzate.length === 0) {
@@ -92,36 +62,3 @@ function refresh_sostituzioni() {
   }
 }
 
-function mostra_context_menu(event, sostituzione) {
-  event.preventDefault()
-
-  sostituzione.focus()
-
-  let id = sostituzione.dataset.id
-
-  sostituzione.classList.add("context-menu-active")
-
-  ui_context_menu.dataset.id = id
-  ui_context_menu.classList.remove("hidden");
-
-  if (event.clientX + ui_context_menu.offsetWidth > window.innerWidth) {
-    ui_context_menu.style.left = (window.innerWidth - ui_context_menu.offsetWidth) + "px";
-  } else if (event.clientX < 0) {
-    ui_context_menu.style.left = "0px";
-  } else {
-    ui_context_menu.style.left = event.clientX + "px";
-  }
-  if (event.clientY + ui_context_menu.offsetHeight > window.innerHeight) {
-    ui_context_menu.style.top = (window.innerHeight - ui_context_menu.offsetHeight) + "px";
-  } else if (event.clientY < 0) {
-    ui_context_menu.style.top = "0px";
-  } else {
-    ui_context_menu.style.top = event.clientY + "px";
-  }
-
-  ui_context_menu.focus()
-  ui_context_menu.closingcallback = () => {
-    ui_context_menu.classList.add("hidden")
-    sostituzione.classList.remove("context-menu-active")
-  }
-}

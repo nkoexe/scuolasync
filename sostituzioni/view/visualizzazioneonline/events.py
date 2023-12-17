@@ -28,7 +28,14 @@ def connect():
 @socketio.on('richiesta sostituzioni')
 @login_required
 def richiesta_sostituzioni(filtri):
-    emit('lista sostituzioni', Sostituzione.load())
+    """
+    filtri:
+    { cancellato: true }  // per mostrare anche sostituzioni cancellate
+    { data_inizio: 1702767600, data_fine: 1702854000 }  // per sostituzioni comprese in un intervallo
+    { data_inizio: 1702767600, data_fine: None }  // per sostituzioni future
+    """
+
+    emit('lista sostituzioni', Sostituzione.load_filtrato(filtri))
 
 
 @socketio.on('nuova sostituzione')

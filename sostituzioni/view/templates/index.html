@@ -224,9 +224,16 @@
     </div>
   </div>
   <div id="context-menu" class="hidden" tabindex="0">
-    <div onclick="ui_modifica_sostituzione()" tabindex="0"><span class="material-symbols-rounded">edit</span><span>Modifica</span></div>
-    <div onclick="ui_duplica_sostituzione()" tabindex="0"><span class="material-symbols-rounded">content_copy</span><span>Duplica</span></div>
-    <div onclick="ui_elimina_sostituzione()" tabindex="0"><span class="material-symbols-rounded">delete</span><span>Elimina</span></div>
+    <div id="dialog-conferma-elimina" class="hidden">
+      <div id="dialog-conferma-elimina-titolo"><span class="material-symbols-rounded icon">error</span><span class="titolo">Eliminare Sostituzione?</span></div>
+      <div id="dialog-conferma-elimina-storico"><input type="checkbox"><span>Cancella dati definitivamente</span></div>
+      <div id="dialog-conferma-elimina-pulsanti"><button onclick="ui_annulla_elimina_sostituzione()">Annulla</button><button onclick="ui_conferma_elimina_sostituzione()">Elimina</button></div>
+    </div>
+    <div id="pulsanti-context-menu">
+      <button onclick="ui_modifica_sostituzione()" class="pulsante-context-menu" tabindex="0"><span class="material-symbols-rounded">edit</span><span>Modifica</span></button>
+      <button onclick="ui_duplica_sostituzione()" class="pulsante-context-menu" tabindex="0"><span class="material-symbols-rounded">content_copy</span><span>Duplica</span></button>
+      <button onclick="ui_elimina_sostituzione()" class="pulsante-context-menu" tabindex="0"><span class="material-symbols-rounded">delete</span><span>Elimina</span></button>
+    </div>
   </div>
   <script>
     const messaggio_nessuna_sostituzione = "{{ configurazione.get('nosostituzionimsg') }}"
@@ -243,11 +250,11 @@
   </script>
   <script src="{{url_for('static', filename='scripts/lib/fuzzyset.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/lib/selezione.js')}}"></script>
+  <script src="{{url_for('static', filename='scripts/ui.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/eventi.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/notizie.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/sostituzioni.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/filtri_sostituzioni.js')}}"></script>
-  <script src="{{url_for('static', filename='scripts/ui.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/gestione_dati.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/gestione_dati_sostituzione.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/gestione_dati_notizia.js')}}"></script>

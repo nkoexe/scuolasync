@@ -2,12 +2,12 @@
 database controller
 """
 
-from beartype.typing import List, Tuple
-from beartype._decor.decormain import beartype
+from beartype import beartype
+from beartype.typing import List, Tuple, Dict
 import sqlite3
 from datetime import datetime
-import re
 import logging
+import re
 
 from sostituzioni.lib.searchablelist import SearchableList
 from sostituzioni.control.configurazione import configurazione
@@ -283,6 +283,7 @@ class ElementoDatabaseConStorico(ElementoDatabase):
 
     #     self.elimina = self.cancella = self.__del__
 
+    @beartype
     def elimina(self, mantieni_in_storico: bool = True):
         self._cancellato = True
 
@@ -465,13 +466,29 @@ class Sostituzione(ElementoDatabaseConStorico):
     TABLENAME = 'sostituzione'
     KEY = 'id'
 
-    def load(cancellato: bool = False, where: Where | None = None):
-        where_cancellato = Where('cancellato').equals(cancellato)
+    def load(where: Where | None = None):
+        return ElementoDatabase.load(Sostituzione, where=where)
 
-        if where:
-            where_cancellato.parent = where
+    @beartype
+    def load_filtrato(filtri: Dict):
+        data_inizio: int | None = filtri.get('data_inizio', int(datetime.today().timestamp()))  # default è oggi
+        data_fine: int | None = filtri.get('data_fine', None)  # default è nessuna, quindi future
 
-        return ElementoDatabase.load(Sostituzione, where=where_cancellato)
+        if data_inizio is None:
+            data_inizio = 0
+
+        where = Where('data').greaterthan(data_inizio)
+
+        if data_fine is not None:
+            where = where.AND('data').lessthan(data_fine)
+
+        # Se è specificato di caricare anche i cancellati, non impostare un where aggiuntivo
+        cancellato = filtri.get('cancellato', False)
+
+        if not cancellato:
+            where = where.AND('cancellato').equals(False)
+
+        return Sostituzione.load(where=where)
 
     def inserisci(self):
 
@@ -483,7 +500,8 @@ class Sostituzione(ElementoDatabaseConStorico):
 
         self.id = id
 
-    def modifica(self, dati):
+    @beartype
+    def modifica(self, dati: Dict):
         if not self.id:
             return False
 

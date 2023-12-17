@@ -57,8 +57,7 @@
     padding: 8px;
 }
 
-
-/* fun, todo remove */
+/* logout animation */
 #fun {
     position: absolute;
     top: -1000px;
@@ -69,4 +68,12 @@
     background-color: #C00F19;
     border-radius: 100vw;
     transition: all 0.25s;
+}
+
+@media (max-width: 600px) {
+
+    #header-titolo,
+    #header-separator {
+        display: none;
+    }
 }
