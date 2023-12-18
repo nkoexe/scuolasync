@@ -11,9 +11,9 @@ from sostituzioni.model.app import app
 
 logger = logging.getLogger(__name__)
 
-# app.wsgi_app = ProxyFix(
-#     app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
-# )
+app.wsgi_app = ProxyFix(
+    app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
+)
 
 csrf = CSRFProtect(app)
 socketio = SocketIO(app, manage_session=True)
