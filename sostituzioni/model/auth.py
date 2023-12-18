@@ -1,6 +1,5 @@
 from flask import abort, redirect, url_for, flash, session
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
-from flask_session import Session
 from functools import wraps
 from oauthlib import oauth2
 import logging
@@ -26,7 +25,6 @@ GOOGLE_SSO_REQ_URI = OAUTH_CLIENT.prepare_request_uri(
 
 
 login_manager = LoginManager(app)
-Session(app)
 
 
 class User(UserMixin, Utente):

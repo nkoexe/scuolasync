@@ -15,7 +15,6 @@ app.static_folder = configurazione.get('flaskstaticdir').path
 app.template_folder = configurazione.get('flasktemplatedir').path
 
 app.config['SECRET_KEY'] = token_hex(32),
-app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_COOKIE_SECURE'] = True,
 app.config['SESSION_COOKIE_HTTPONLY'] = True,
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
