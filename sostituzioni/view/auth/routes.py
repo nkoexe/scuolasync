@@ -20,9 +20,9 @@ def login():
         return redirect(url_for('online.index'))
 
     # 3 lines of development speedup, remove in production pls ty
-    from sostituzioni.model.auth import authenticate_user
-    authenticate_user('niccolo.ragazzi@gandhimerano.com')
-    return redirect(url_for('online.index'))
+    # from sostituzioni.model.auth import authenticate_user
+    # authenticate_user('niccolo.ragazzi@gandhimerano.com')
+    # return redirect(url_for('online.index'))
 
     return render_template('login.html', title=configurazione.get('systitle'))
 
@@ -36,9 +36,12 @@ def googlessoredirect():
 def loginredirect():
     """Richiesta di autorizzazione dopo l'autenticazione con Google"""
 
-    sso_login(request)
+    authenticated = sso_login(request)
 
-    return redirect(url_for('online.index'))
+    if authenticated:
+        return redirect(url_for('online.index'))
+    else:
+        return redirect(url_for('auth.login'))
 
 
 @auth.route('/logout')
