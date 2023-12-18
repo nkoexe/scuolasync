@@ -1,6 +1,7 @@
 const ui_evento_html_template = `
 <li>
 <div class="evento" data-id={id} tabindex="0">
+    <div class="evento-data">{data}</div>
     <div class="evento-testo">{testo}</div>
 </div>
 </li>`
@@ -9,9 +10,30 @@ const ui_evento_html_template = `
 const ui_eventi_container = document.getElementById("eventi-lista")
 // const ui_eventi_messaggio_informativo = document.getElementById("sostituzioni-messaggio-informativo")
 
+function format_date(data_ora_inizio, data_ora_fine) {
+    // format date objects to single string
+    // if the year is the same do not display it
+
+    if (data_ora_inizio == null || data_ora_fine == null) {
+        return ""
+    }
+
+    let now = new Date()
+
+    data_ora_inizio = new Date(data_ora_inizio * 1000)
+    data_ora_fine = new Date(data_ora_fine * 1000)
+
+    if (data_ora_inizio.getFullYear() == now.getFullYear() == data_ora_fine.getFullYear()) {
+        let data
+    }
+
+        return data_inizio_string + " " + data_fine_string
+}
 
 function format_evento_to_html(id, pubblicato, urgente, data_ora_inizio, data_ora_fine, testo) {
-    return ui_evento_html_template.replace("{id}", id).replace("{testo}", testo)
+    let data = format_date(data_ora_inizio, data_ora_fine)
+
+    return ui_evento_html_template.replace("{id}", id).replace("{testo}", testo).replace("{data}", data)
 }
 
 function add_evento_to_ui_list(id, pubblicato, urgente, data_ora_inizio, data_ora_fine, testo) {

@@ -38,7 +38,7 @@ def loginredirect():
 
     sso_login(request)
 
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('online.index'))
 
 
 @auth.route('/logout')
