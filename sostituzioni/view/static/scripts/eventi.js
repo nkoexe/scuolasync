@@ -1,7 +1,11 @@
 const ui_evento_html_template = `
 <li>
 <div class="evento" data-id={id} tabindex="0">
-    <div class="evento-data">{data}</div>
+    <div class="evento-data">
+        <span>{data_inizio}</span>
+        <span>-</span>
+        <span>{data_fine}</span>
+    </div>
     <div class="evento-testo">{testo}</div>
 </div>
 </li>`
@@ -14,8 +18,9 @@ function format_date(data_ora_inizio, data_ora_fine) {
     // format date objects to single string
     // if the year is the same do not display it
 
-    if (data_ora_inizio == null || data_ora_fine == null) {
-        return ""
+    if (data_ora_inizio == null || data_ora_inizio == undefined
+        || data_ora_fine == null || data_ora_fine == undefined) {
+        return ["", ""]
     }
 
     let now = new Date()
@@ -29,15 +34,13 @@ function format_date(data_ora_inizio, data_ora_fine) {
         format_options.year = undefined
     }
 
-    let data = data_ora_inizio.toLocaleString("it-IT", format_options) + " - " + data_ora_fine.toLocaleString("it-IT", format_options)
-
-    return data
+    return [data_ora_inizio.toLocaleString("it-IT", format_options), data_ora_fine.toLocaleString("it-IT", format_options)]
 }
 
 function format_evento_to_html(id, pubblicato, urgente, data_ora_inizio, data_ora_fine, testo) {
-    let data = format_date(data_ora_inizio, data_ora_fine)
+    [data_ora_inizio, data_ora_fine] = format_date(data_ora_inizio, data_ora_fine)
 
-    return ui_evento_html_template.replace("{id}", id).replace("{testo}", testo).replace("{data}", data)
+    return ui_evento_html_template.replace("{id}", id).replace("{testo}", testo).replace("{data_inizio}", data_ora_inizio).replace("{data_fine}", data_ora_fine)
 }
 
 function add_evento_to_ui_list(id, pubblicato, urgente, data_ora_inizio, data_ora_fine, testo) {

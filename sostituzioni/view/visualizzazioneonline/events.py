@@ -35,7 +35,7 @@ def richiesta_sostituzioni(filtri):
     { data_inizio: 1702767600, data_fine: None }  // per sostituzioni future
     """
 
-    emit('lista sostituzioni', Sostituzione.load_filtrato(filtri))
+    emit('lista sostituzioni', Sostituzione.load(filtri))
 
 
 @socketio.on('nuova sostituzione')

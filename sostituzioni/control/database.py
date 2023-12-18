@@ -466,11 +466,13 @@ class Sostituzione(ElementoDatabaseConStorico):
     TABLENAME = 'sostituzione'
     KEY = 'id'
 
-    def load(where: Where | None = None):
-        return ElementoDatabase.load(Sostituzione, where=where)
+    def load(filtri: Where | Dict | None = None):
+        if filtri is None:
+            return ElementoDatabase.load(Sostituzione)
 
-    @beartype
-    def load_filtrato(filtri: Dict):
+        if isinstance(filtri, Where):
+            return ElementoDatabase.load(Sostituzione, where=filtri)
+
         data_inizio: int | None = filtri.get('data_inizio', int(datetime.today().timestamp()))  # default è oggi
         data_fine: int | None = filtri.get('data_fine', None)  # default è nessuna, quindi future
 
