@@ -35,7 +35,7 @@
           <h2 id="header-eventi-titolo">Eventi</h2>
           <div id="header-eventi-pulsanti">
             <div id="eventi-filtro-data"><span class="material-symbols-rounded">calendar_month</span></div>
-            <div id="pulsante-nuovo-evento" class="pulsante pulsante-inserimento"><span class="material-symbols-rounded">add</span></div>
+            <div id="pulsante-nuovo-evento" class="pulsante pulsante-inserimento" onclick="mostra_nuovo_evento()"><span class="material-symbols-rounded">add</span></div>
           </div>
         </div>
         <div id="eventi-container">
@@ -73,7 +73,27 @@
                   <div class="sostituzioni-ordinamento-arrowup"></div>
                   <div class="sostituzioni-ordinamento-arrowdown"></div>
                 </div>
-                <div id="sostituzioni-filtro-data-expandible">Oggi, Domani, Future, Data, Mese, Tutte</div>
+                <div id="sostituzioni-filtro-data-expandible">
+                  <button class="sostituzioni-filtro-data-opzione">Oggi</button>
+                  <button class="sostituzioni-filtro-data-opzione">Domani</button>
+                  <button class="sostituzioni-filtro-data-opzione selected">Future</button>
+                  <input type="date" class="sostituzioni-filtro-data-opzione">
+                  <select class="sostituzioni-filtro-data-opzione">
+                    <option value="0">Gennaio</option>
+                    <option value="1">Febbraio</option>
+                    <option value="2">Marzo</option>
+                    <option value="3">Aprile</option>
+                    <option value="4">Maggio</option>
+                    <option value="5">Giugno</option>
+                    <option value="6">Luglio</option>
+                    <option value="7">Agosto</option>
+                    <option value="8">Settembre</option>
+                    <option value="9">Ottobre</option>
+                    <option value="10">Novembre</option>
+                    <option value="11">Dicembre</option>
+                  </select>
+                  <button class="sostituzioni-filtro-data-opzione">Tutte</button>
+                </div>
               </div>
               <div id="sostituzioni-filtro-ora">
                 <div class="sostituzioni-filtri-ricerca">
@@ -218,7 +238,6 @@
             <button id="pulsante-principale-evento" class="pulsante pulsante-principale-gestione-dati"></button>
           </div>
         </div>
-        </div>
         <div id="gestione-dati-notizia" class="gestione-dati-element hidden">
           <div id="gestione-dati-notizia-testo-container">
             <input type="text" id="gestione-dati-notizia-testo">
@@ -265,6 +284,7 @@
   <script src="{{url_for('static', filename='scripts/filtri_sostituzioni.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/gestione_dati.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/gestione_dati_sostituzione.js')}}"></script>
+  <script src="{{url_for('static', filename='scripts/gestione_dati_evento.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/gestione_dati_notizia.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/onlinesocket.js')}}"></script>
 </body>
