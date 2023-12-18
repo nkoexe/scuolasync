@@ -18,7 +18,7 @@ OAUTH_CLIENT_SECRET = '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'
 OAUTH_CLIENT = oauth2.WebApplicationClient(OAUTH_CLIENT_ID)
 GOOGLE_SSO_REQ_URI = OAUTH_CLIENT.prepare_request_uri(
     uri='https://accounts.google.com/o/oauth2/v2/auth',
-    redirect_uri='http://gandhi-merano.fuss.bz.it/loginredirect',
+    redirect_uri='https://gandhi-merano.fuss.bz.it/loginredirect',
     scope='https://www.googleapis.com/auth/userinfo.email',
     prompt='consent'
 )
