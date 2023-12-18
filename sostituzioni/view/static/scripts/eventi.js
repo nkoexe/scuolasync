@@ -23,11 +23,15 @@ function format_date(data_ora_inizio, data_ora_fine) {
     data_ora_inizio = new Date(data_ora_inizio * 1000)
     data_ora_fine = new Date(data_ora_fine * 1000)
 
-    if (data_ora_inizio.getFullYear() == now.getFullYear() == data_ora_fine.getFullYear()) {
-        let data
+    format_options = { day: "numeric", month: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }
+
+    if (data_ora_inizio.getFullYear() == now.getFullYear() && now.getFullYear() == data_ora_fine.getFullYear()) {
+        format_options.year = undefined
     }
 
-        return data_inizio_string + " " + data_fine_string
+    let data = data_ora_inizio.toLocaleString("it-IT", format_options) + " - " + data_ora_fine.toLocaleString("it-IT", format_options)
+
+    return data
 }
 
 function format_evento_to_html(id, pubblicato, urgente, data_ora_inizio, data_ora_fine, testo) {
