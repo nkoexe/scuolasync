@@ -3,15 +3,17 @@ import logging
 from flask_socketio import SocketIO
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.middleware.proxy_fix import ProxyFix
+from gevent import monkey
+
+monkey.patch_all()
 
 from sostituzioni.model.app import app
 
 logger = logging.getLogger(__name__)
 
-
-app.wsgi_app = ProxyFix(
-    app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
-)
+# app.wsgi_app = ProxyFix(
+#     app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
+# )
 
 csrf = CSRFProtect(app)
 socketio = SocketIO(app, manage_session=True)
