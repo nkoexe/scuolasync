@@ -8,14 +8,11 @@ from sostituzioni.view import socketio
 logger = logging.getLogger(__name__)
 
 
-@socketio.on('test')
-def evento(data):
-    logger.debug(f'ricevuto: {data}')
-
-
 @socketio.on('connect')
 @login_required
 def connect():
+    logger.debug('Nuovo client connesso, invio dei dati iniziali.')
+
     emit('lista sostituzioni', Sostituzione.load())
     emit('lista eventi', Evento.load())
     emit('lista notizie', Notizia.load())
@@ -35,12 +32,16 @@ def richiesta_sostituzioni(filtri):
     { data_inizio: 1702767600, data_fine: None }  // per sostituzioni future
     """
 
+    logger.debug(f'Ricevuto segnale richiesta sostituzioni con filtri: {filtri}')
+
     emit('lista sostituzioni', Sostituzione.load(filtri))
 
 
 @socketio.on('nuova sostituzione')
 @login_required
 def nuova_sostituzione(data):
+    logger.debug(f'Ricevuto dati per inserimento nuova sostituzione: {data}')
+
     sostituzione = Sostituzione(id=None, aula=data.get('aula'), classe=data.get('classe'),
                                 docente=data.get('docente'), data=data.get('data'),
                                 ora_inizio=data.get('ora_inizio'), ora_fine=data.get('ora_fine'),
@@ -54,6 +55,8 @@ def nuova_sostituzione(data):
 @socketio.on('modifica sostituzione')
 @login_required
 def modifica_sostituzione(data):
+    logger.debug(f'Ricevuto dati modifica sostituzione: {data}')
+
     Sostituzione(id=data.get('id')).modifica(data.get('data'))
 
     emit('aggiornamento sostituzioni', broadcast=True)
@@ -61,7 +64,9 @@ def modifica_sostituzione(data):
 
 @socketio.on('elimina sostituzione')
 @login_required
-def elimina_sostituzione(data: dict):
+def elimina_sostituzione(data):
+    logger.debug(f'Ricevuto segnale eliminazione sostituzione: {data}')
+
     Sostituzione(data.get('id')).elimina(data.get('mantieni_in_storico', True))  # usare default di configurazione
 
     emit('aggiornamento sostituzioni', broadcast=True)
@@ -70,6 +75,18 @@ def elimina_sostituzione(data: dict):
 @socketio.on('nuova notizia')
 @login_required
 def nuova_notizia(data: dict):
-    Notizia(id=None, testo=data.get('testo')).inserisci()
+    logger.debug(f'Ricevuto dati per inserimento nuova notizia: {data}')
+
+    Notizia(data_ora_inizio=data.get('data_ora_inizio'), data_ora_fine=data.get('data_ora_fine'), testo=data.get('testo')).inserisci()
 
     emit('aggiornamento notizie', broadcast=True)
+
+
+@socketio.on('nuovo evento')
+@login_required
+def nuovo_evento(data):
+    logger.debug(f'Ricevuto dati per inserimento nuovo evento: {data}')
+
+    Evento(urgente=data.get('urgente', False), data_ora_inizio=data.get('data_ora_inizio'), data_ora_fine=data.get('data_ora_fine'), testo=data.get('testo')).inserisci()
+
+    emit('aggiornamento eventi', broadcast=True)

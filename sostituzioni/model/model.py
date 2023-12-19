@@ -35,13 +35,33 @@ class Sostituzione(Sostituzione):
         self.pubblicato = pubblicato
 
 
-class Notizia(Notizia):
+class Evento(Evento):
     def __init__(self,
                  id: int | None = None,
-                 testo: str | None = None,
+                 urgente: bool | None = None,
+                 data_ora_inizio: int | None = None,
+                 data_ora_fine: int | None = None,
+                 testo: str | None = None
                  ):
 
         self.id = id
+        self.urgente = urgente
+        self.data_ora_inizio = data_ora_inizio
+        self.data_ora_fine = data_ora_fine
+        self.testo = testo
+
+
+class Notizia(Notizia):
+    def __init__(self,
+                 id: int | None = None,
+                 data_ora_inizio: int | None = None,
+                 data_ora_fine: int | None = None,
+                 testo: str | None = None
+                 ):
+
+        self.id = id
+        self.data_ora_inizio = data_ora_inizio
+        self.data_ora_fine = data_ora_fine
         self.testo = testo
 
 

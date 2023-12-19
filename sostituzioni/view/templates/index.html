@@ -231,16 +231,28 @@
           </div>
         </div>
         <div id="gestione-dati-evento" class="gestione-dati-element hidden">
-          <div id="gestione-dati-evento-testo-container">
-            <input type="text" id="gestione-dati-evento-testo">
+          <div id="gestione-dati-evento-data-inizio-container" class="campo-gestioni-dati">
+            <label for="gestione-dati-evento-data-inizio">Data e ora di inizio</label><br>
+            <input id="gestione-dati-evento-data-inizio" type="datetime-local">
+          </div>
+          <div id="gestione-dati-evento-data-fine-container" class="campo-gestioni-dati">
+            <label for="gestione-dati-evento-data-fine">Data e ora di fine</label><br>
+            <input id="gestione-dati-evento-data-fine" type="datetime-local">
+          </div>
+          <div id="gestione-dati-evento-testo-container" class="campo-gestioni-dati">
+            <textarea id="gestione-dati-evento-testo" placeholder="Testo.."></textarea>
           </div>
           <div class="pulsanti-gestione-dati">
+            <div class="has-tooltip">
+              <input type="checkbox" id="gestione-dati-evento-urgente" class="material-symbols-rounded">
+              <span class="tooltip">Contrassegna l'evento come urgente (questo pulsante non fa ancora nulla)</span>
+            </div>
             <button id="pulsante-principale-evento" class="pulsante pulsante-principale-gestione-dati"></button>
           </div>
         </div>
         <div id="gestione-dati-notizia" class="gestione-dati-element hidden">
-          <div id="gestione-dati-notizia-testo-container">
-            <input type="text" id="gestione-dati-notizia-testo">
+          <div id="gestione-dati-notizia-testo-container" class="campo-gestioni-dati">
+            <textarea id="gestione-dati-notizia-testo"></textarea>
           </div>
           <div class="pulsanti-gestione-dati">
             <button id="pulsante-principale-notizia" class="pulsante pulsante-principale-gestione-dati"></button>

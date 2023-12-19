@@ -3,7 +3,7 @@ const ui_evento_html_template = `
 <div class="evento" data-id={id} tabindex="0">
     <div class="evento-data">
         <span>{data_inizio}</span>
-        <span>-</span>
+        <span class="separator">-</span>
         <span>{data_fine}</span>
     </div>
     <div class="evento-testo">{testo}</div>
@@ -33,8 +33,7 @@ function format_date(data_ora_inizio, data_ora_fine) {
     if (data_ora_inizio.getFullYear() == now.getFullYear() && now.getFullYear() == data_ora_fine.getFullYear()) {
         format_options.year = undefined
     }
-
-    return [data_ora_inizio.toLocaleString("it-IT", format_options), data_ora_fine.toLocaleString("it-IT", format_options)]
+    return [data_ora_inizio.toLocaleString(Intl.NumberFormat().resolvedOptions().locale, format_options), data_ora_fine.toLocaleString(Intl.NumberFormat().resolvedOptions().locale, format_options)]
 }
 
 function format_evento_to_html(id, pubblicato, urgente, data_ora_inizio, data_ora_fine, testo) {
