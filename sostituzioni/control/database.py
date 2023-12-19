@@ -490,7 +490,7 @@ class Sostituzione(ElementoDatabaseConStorico):
         if not cancellato:
             where = where.AND('cancellato').equals(False)
 
-        return Sostituzione.load(where=where)
+        return ElementoDatabase.load(Sostituzione, where=where)
 
     def inserisci(self):
 

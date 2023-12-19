@@ -1,10 +1,15 @@
 const pulsante_logout = document.getElementById('pulsante-logout')
 
-// pulsante refresh richiesto dall'utente
-function ui_refresh_sostituzioni() {
+
+function ui_loading_sostituzioni() {
     ui_sostituzioni_container.innerHTML = ""
     ui_sostituzioni_messaggio_informativo.innerHTML = "<span>Caricamento...</span>"
     ui_sostituzioni_messaggio_informativo.style.display = "flex"
+}
+
+// pulsante refresh richiesto dall'utente
+function ui_refresh_sostituzioni() {
+    ui_loading_sostituzioni()
 
     s_richiedi_sostituzioni()
 }
@@ -94,4 +99,113 @@ function mostra_context_menu(event, sostituzione) {
         ui_conferma_elimina.classList.add("hidden")
         sostituzione.classList.remove("context-menu-active")
     }
+}
+
+
+const ui_sostituzioni_filtro_data = document.getElementById("sostituzioni-filtro-data")
+const ui_sostituzioni_filtro_data_expandible = document.getElementById("sostituzioni-filtro-data-expandible")
+const ui_sostituzioni_filtro_data_oggi = document.getElementById("sostituzioni-filtro-data-oggi")
+const ui_sostituzioni_filtro_data_domani = document.getElementById("sostituzioni-filtro-data-domani")
+const ui_sostituzioni_filtro_data_future = document.getElementById("sostituzioni-filtro-data-future")
+const ui_sostituzioni_filtro_data_data = document.getElementById("sostituzioni-filtro-data-data")
+const ui_sostituzioni_filtro_data_mese = document.getElementById("sostituzioni-filtro-data-mese")
+const ui_sostituzioni_filtro_data_tutte = document.getElementById("sostituzioni-filtro-data-tutte")
+
+ui_sostituzioni_filtro_data.onfocus = (e) => {
+    ui_sostituzioni_filtro_data_expandible.classList.add("active")
+}
+
+ui_sostituzioni_filtro_data.onblur = (e) => {
+    if (e.relatedTarget && e.relatedTarget.closest("#sostituzioni-filtro-data-expandible")) {
+        ui_sostituzioni_filtro_data.focus()
+        e.preventDefault()
+        e.stopPropagation()
+        return
+    }
+
+    ui_sostituzioni_filtro_data_expandible.classList.remove("active")
+}
+
+
+ui_sostituzioni_filtro_data_oggi.onclick = (e) => {
+    ui_loading_sostituzioni()
+
+    data_inizio = new Date()
+    data_inizio.setHours(0, 0, 0, 0)
+    data_fine = new Date()
+    data_fine.setHours(23, 59, 59, 0)
+
+    filtri = {
+        data_inizio: data_inizio.getTime() / 1000,
+        data_fine: data_fine.getTime() / 1000
+    }
+
+    s_richiedi_sostituzioni(filtri)
+}
+
+ui_sostituzioni_filtro_data_domani.onclick = (e) => {
+    ui_loading_sostituzioni()
+
+    data_inizio = new Date()
+    data_inizio.setDate(data_inizio.getDate() + 1)
+    data_inizio.setHours(0, 0, 0, 0)
+    data_fine = new Date()
+    data_fine.setDate(data_inizio.getDate())
+    data_fine.setHours(23, 59, 59, 0)
+
+    filtri = {
+        data_inizio: data_inizio.getTime() / 1000,
+        data_fine: data_fine.getTime() / 1000
+    }
+
+    s_richiedi_sostituzioni(filtri)
+}
+
+ui_sostituzioni_filtro_data_future.onclick = (e) => {
+    ui_loading_sostituzioni()
+
+    data_inizio = new Date()
+    data_inizio.setHours(0, 0, 0, 0)
+
+    filtri = {
+        data_inizio: data_inizio.getTime() / 1000,
+        data_fine: null
+    }
+
+    s_richiedi_sostituzioni(filtri)
+}
+
+ui_sostituzioni_filtro_data_data.onchange = (e) => {
+    data_inizio = ui_sostituzioni_filtro_data_data.valueAsDate
+
+    if (data_inizio == null || data_inizio == undefined) {
+        return
+    }
+
+    data_inizio.setHours(0, 0, 0, 0)
+    data_fine = new Date()
+    data_fine.setDate(data_inizio.getDate())
+    data_fine.setHours(23, 59, 59, 0)
+
+    filtri = {
+        data_inizio: data_inizio / 1000,
+        data_fine: data_fine / 1000
+    }
+
+    s_richiedi_sostituzioni(filtri)
+}
+
+ui_sostituzioni_filtro_data_mese.onchange = (e) => {
+    ui_sostituzioni_filtro_data_mese.value
+}
+
+ui_sostituzioni_filtro_data_tutte.onclick = (e) => {
+    ui_loading_sostituzioni()
+
+    filtri = {
+        data_inizio: null
+    }
+
+    
+    s_richiedi_sostituzioni(filtri)
 }

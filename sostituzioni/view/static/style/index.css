@@ -295,10 +295,6 @@ ul {
     display: flex;
 }
 
-#sostituzioni-filtro-data:focus #sostituzioni-filtro-data-expandible {
-    max-height: 100px;
-}
-
 #sostituzione-filtro-data-testo {
     margin: auto;
     margin-left: 10px;
@@ -319,6 +315,11 @@ ul {
     overflow: hidden;
     transition: 0.3s;
 }
+
+#sostituzioni-filtro-data-expandible.active {
+    max-height: 100px;
+}
+
 
 .sostituzioni-filtro-data-opzione {
     margin: 5px 0;

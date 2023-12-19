@@ -210,3 +210,13 @@
 #gestione-dati-notizia-testo-container {
     flex: 1;
 }
+
+
+#gestione-dati-evento {
+    display: flex;
+    flex-direction: column;
+}
+
+#gestione-dati-evento-testo-container {
+    flex: 1;
+}

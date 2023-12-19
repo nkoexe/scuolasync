@@ -51,6 +51,7 @@ socket.on("aggiornamento sostituzioni", () => { s_richiedi_sostituzioni() })
 // ----------------
 
 function s_richiedi_sostituzioni(filtri) {
+    console.log(filtri)
     socket.emit("richiesta sostituzioni", filtri)
 }
 
