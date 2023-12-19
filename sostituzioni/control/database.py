@@ -27,6 +27,9 @@ class Where:
             case None:
                 value = 'null'
 
+            case list():
+                value = '(' + ', '.join(str(v) for v in self.value) + ')'
+
             case bool():
                 value = str(int(self.value))
 
@@ -54,13 +57,47 @@ class Where:
         self.value = value
         return self
 
+    def notequals(self, value):
+        self.operator = '!='
+        self.value = value
+        return self
+
     def lessthan(self, value):
         self.operator = '<'
         self.value = value
         return self
 
+    def lessthanorequal(self, value):
+        self.operator = '<='
+        self.value = value
+        return self
+
     def greaterthan(self, value):
         self.operator = '>'
+        self.value = value
+        return self
+
+    def greaterthanorequal(self, value):
+        self.operator = '>='
+        self.value = value
+        return self
+
+    def LIKE(self, value):
+        self.operator = ' LIKE '
+        self.value = value
+        return self
+
+    def NOTLIKE(self, value):
+        self.operator = ' NOT LIKE '
+        self.value = value
+
+    def IN(self, value):
+        self.operator = ' IN '
+        self.value = value
+        return self
+
+    def NOTIN(self, value):
+        self.operator = ' NOT IN '
         self.value = value
         return self
 
@@ -479,10 +516,10 @@ class Sostituzione(ElementoDatabaseConStorico):
         if data_inizio is None:
             data_inizio = 0
 
-        where = Where('data').greaterthan(data_inizio)
+        where = Where('data').greaterthanorequal(data_inizio)
 
         if data_fine is not None:
-            where = where.AND('data').lessthan(data_fine)
+            where = where.AND('data').lessthanorequal(data_fine)
 
         # Se è specificato di caricare anche i cancellati, non impostare un where aggiuntivo
         cancellato = filtri.get('cancellato', False)

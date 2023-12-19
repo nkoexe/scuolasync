@@ -126,6 +126,15 @@ ui_sostituzioni_filtro_data.onblur = (e) => {
     ui_sostituzioni_filtro_data_expandible.classList.remove("active")
 }
 
+function ui_sostituzioni_filtro_data_rimuovi_selected() {
+    ui_sostituzioni_filtro_data_oggi.classList.remove("selected")
+    ui_sostituzioni_filtro_data_domani.classList.remove("selected")
+    ui_sostituzioni_filtro_data_future.classList.remove("selected")
+    ui_sostituzioni_filtro_data_data.classList.remove("selected")
+    ui_sostituzioni_filtro_data_mese.classList.remove("selected")
+    ui_sostituzioni_filtro_data_tutte.classList.remove("selected")
+}
+
 
 ui_sostituzioni_filtro_data_oggi.onclick = (e) => {
     ui_loading_sostituzioni()
@@ -141,6 +150,9 @@ ui_sostituzioni_filtro_data_oggi.onclick = (e) => {
     }
 
     s_richiedi_sostituzioni(filtri)
+
+    ui_sostituzioni_filtro_data_rimuovi_selected()
+    ui_sostituzioni_filtro_data_oggi.classList.add("selected")
 }
 
 ui_sostituzioni_filtro_data_domani.onclick = (e) => {
@@ -159,6 +171,9 @@ ui_sostituzioni_filtro_data_domani.onclick = (e) => {
     }
 
     s_richiedi_sostituzioni(filtri)
+
+    ui_sostituzioni_filtro_data_rimuovi_selected()
+    ui_sostituzioni_filtro_data_domani.classList.add("selected")
 }
 
 ui_sostituzioni_filtro_data_future.onclick = (e) => {
@@ -173,6 +188,9 @@ ui_sostituzioni_filtro_data_future.onclick = (e) => {
     }
 
     s_richiedi_sostituzioni(filtri)
+
+    ui_sostituzioni_filtro_data_rimuovi_selected()
+    ui_sostituzioni_filtro_data_future.classList.add("selected")
 }
 
 ui_sostituzioni_filtro_data_data.onchange = (e) => {
@@ -193,10 +211,16 @@ ui_sostituzioni_filtro_data_data.onchange = (e) => {
     }
 
     s_richiedi_sostituzioni(filtri)
+
+    ui_sostituzioni_filtro_data_rimuovi_selected()
+    ui_sostituzioni_filtro_data_data.classList.add("selected")
 }
 
 ui_sostituzioni_filtro_data_mese.onchange = (e) => {
     ui_sostituzioni_filtro_data_mese.value
+
+    ui_sostituzioni_filtro_data_rimuovi_selected()
+    ui_sostituzioni_filtro_data_mese.classList.add("selected")
 }
 
 ui_sostituzioni_filtro_data_tutte.onclick = (e) => {
@@ -206,6 +230,8 @@ ui_sostituzioni_filtro_data_tutte.onclick = (e) => {
         data_inizio: null
     }
 
-    
     s_richiedi_sostituzioni(filtri)
+
+    ui_sostituzioni_filtro_data_rimuovi_selected()
+    ui_sostituzioni_filtro_data_tutte.classList.add("selected")
 }
