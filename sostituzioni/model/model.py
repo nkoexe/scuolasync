@@ -54,14 +54,14 @@ class Evento(Evento):
 class Notizia(Notizia):
     def __init__(self,
                  id: int | None = None,
-                 data_ora_inizio: int | None = None,
-                 data_ora_fine: int | None = None,
+                 data_inizio: int | None = None,
+                 data_fine: int | None = None,
                  testo: str | None = None
                  ):
 
         self.id = id
-        self.data_ora_inizio = data_ora_inizio
-        self.data_ora_fine = data_ora_fine
+        self.data_inizio = data_inizio
+        self.data_fine = data_fine
         self.testo = testo
 
 

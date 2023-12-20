@@ -24,7 +24,7 @@ function conferma_nuova_notizia() {
     data_inizio = gestione_dati_evento_data_inizio.valueAsNumber / 1000;
     data_fine = gestione_dati_evento_data_fine.valueAsNumber / 1000;
 
-    if (data_ora_inizio > data_ora_fine) {
+    if (data_inizio > data_fine) {
         return
     }
 
