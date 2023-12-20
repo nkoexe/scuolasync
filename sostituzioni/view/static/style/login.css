@@ -15,6 +15,7 @@ body {
     max-width: 100%;
     height: 100%;
     max-height: 100%;
+    overflow: hidden;
     background-color: #C00F19;
 }
 
@@ -49,7 +50,7 @@ body {
     left: -20%;
     background-color: white;
     border-radius: 100%;
-    z-index: -1;
+    z-index: 10;
 
     animation: slidein 0.5s;
 }
@@ -60,6 +61,7 @@ body {
     margin-bottom: 10px;
     width: 60vh;
     max-width: 90%;
+    z-index: 30;
 }
 
 #messages-container div {
@@ -108,6 +110,7 @@ body {
     border-radius: 3vh;
     transition: box-shadow .3s;
     animation: fadein 0.8s;
+    z-index: 20;
 }
 
 @media (max-width: 600px) {
