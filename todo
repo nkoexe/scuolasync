@@ -1,1 +1,6 @@
-mostrare visivamente quando un filtro è applicato (bordo all'input, font bold idk)
+mostrare visivamente quando un filtro è applicato (bordo all'input, font bold idk), far capire invece quando c'è scritto qualcosa ma il filtro non è ancora applicato
+
+inserimento di evento, utilizzare input separati per data e ora oppure fix per la questione timezone porca di quella troia
+
+evento urgente
+

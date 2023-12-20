@@ -45,7 +45,10 @@ socket.on("lista docenti", (data) => {
 })
 
 // todo mostrare messaggio informativo che invita a ricaricare la pagina
-socket.on("aggiornamento sostituzioni", () => { s_richiedi_sostituzioni() })
+socket.on("aggiornamento sostituzioni", () => {
+    filtri = sostituzioni_filtra_data()
+    s_richiedi_sostituzioni(filtri)
+})
 
 
 // ----------------

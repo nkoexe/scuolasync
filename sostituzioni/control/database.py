@@ -152,7 +152,7 @@ class Database:
     #     return [dict(row) for row in self.cursor.fetchall()]
 
     @beartype
-    def get(self, table: str, columns: str | Tuple = '*', where: Where | None = None, limit: int | None = None, load_lists: bool = True) -> SearchableList:
+    def get(self, table: str, columns: str | Tuple = '*', where: Where | None = None, order_by: str | None = None, limit: int | None = None, load_lists: bool = True) -> SearchableList:
         """
         Esempi:
         database.get('aula', 'numero')
@@ -170,6 +170,9 @@ class Database:
 
             query += f' WHERE {where}'
 
+        if order_by is not None:
+            query += f' ORDER BY {order_by}'
+
         if limit is not None:
             query += f' LIMIT {limit}'
 
@@ -186,7 +189,7 @@ class Database:
         return rows
 
     def get_one(self, table: str, columns: str | Tuple = '*', where: Where | None = None, load_lists: bool = True) -> SearchableList:
-        return self.get(table, columns, where, 1, load_lists)[0]
+        return self.get(table, columns, where, None, 1, load_lists)[0]
 
     def load_lists(self, table_name: str, rows: SearchableList):
         """
@@ -307,8 +310,8 @@ class ElementoDatabase:
 
     #     return data
 
-    def load(item, columns: str | Tuple = '*', where: Where | None = None, limit: int | None = None):
-        data = item.DATABASE.get(item.TABLENAME, columns, where, limit)
+    def load(item, columns: str | Tuple = '*', where: Where | None = None, order_by: str | None = None, limit: int | None = None):
+        data = item.DATABASE.get(item.TABLENAME, columns, where, order_by, limit)
         data.key = item.KEY
 
         return data
@@ -505,10 +508,19 @@ class Sostituzione(ElementoDatabaseConStorico):
 
     def load(filtri: Where | Dict | None = None):
         if filtri is None:
-            return ElementoDatabase.load(Sostituzione)
+            # default sono le sostituzioni future
+
+            # get todays timestamp at midnight
+            today = datetime.today()
+            today = today.replace(hour=0, minute=0, second=0, microsecond=0)
+            today = int(today.timestamp())
+
+            where = Where('data').greaterthanorequal(today)
+
+            return ElementoDatabase.load(Sostituzione, where=where, order_by='data')
 
         if isinstance(filtri, Where):
-            return ElementoDatabase.load(Sostituzione, where=filtri)
+            return ElementoDatabase.load(Sostituzione, where=filtri, order_by='data')
 
         data_inizio: int | None = filtri.get('data_inizio', int(datetime.today().timestamp()))  # default è oggi
         data_fine: int | None = filtri.get('data_fine', None)  # default è nessuna, quindi future
@@ -527,7 +539,7 @@ class Sostituzione(ElementoDatabaseConStorico):
         if not cancellato:
             where = where.AND('cancellato').equals(False)
 
-        return ElementoDatabase.load(Sostituzione, where=where)
+        return ElementoDatabase.load(Sostituzione, where=where, order_by='data')
 
     def inserisci(self):
 

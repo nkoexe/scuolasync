@@ -104,7 +104,7 @@ class Selezione {
 
     seleziona(data) {
         if ((typeof data === 'string' || data instanceof String) && data.length !== 0) {
-            this.ui_input.value = data
+            this.ui_input.value = this.render(data)
             this.selected = data
         } else {
             this.ui_input.value = ''
@@ -126,7 +126,7 @@ class Selezione {
     render_lista() {
         this.ui_lista.innerHTML = ''
         for (let index = 0; index < this.lista_visualizzati.length; index++) {
-            this.ui_lista.innerHTML += '<li id="lista_' + this.id + index + '" onmousedown="' + this.id + '.seleziona(\'' + this.render(this.lista_visualizzati[index]) + '\')"><span>' + this.render(this.lista_visualizzati[index]) + '</span></li>'
+            this.ui_lista.innerHTML += '<li id="lista_' + this.id + index + '" onmousedown="' + this.id + '.seleziona(\'' + this.lista_visualizzati[index] + '\')"><span>' + this.render(this.lista_visualizzati[index]) + '</span></li>'
         }
     }
 

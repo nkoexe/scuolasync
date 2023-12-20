@@ -3,9 +3,9 @@ class Filtro extends Selezione {
         super({ id: id, callback: sostituzioni_applica_filtri, filtra_lista: filtra_lista, render: render })
 
         this.ordinamento = ordinamento
-        this.ordinamento = (typeof this.ordinamento === 'undefined') ? true : this.ordinamento
+        this.ordinamento = (typeof this.ordinamento === "undefined") ? true : this.ordinamento
         if (this.ordinamento) {
-            this.ui_ordinamento = this.ui_container.getElementsByClassName('sostituzioni-ordinamento')[0]
+            this.ui_ordinamento = this.ui_container.getElementsByClassName("sostituzioni-ordinamento")[0]
             this.ui_ordinamento_frecciasu = this.ui_ordinamento.children[0]
             this.ui_ordinamento_frecciagiu = this.ui_ordinamento.children[1]
         }
@@ -18,11 +18,11 @@ class Filtro extends Selezione {
                 this.verso_ordinamento *= -1
 
                 if (this.verso_ordinamento === 1) {
-                    this.ui_ordinamento_frecciasu.classList.add('selected')
-                    this.ui_ordinamento_frecciagiu.classList.remove('selected')
+                    this.ui_ordinamento_frecciasu.classList.add("selected")
+                    this.ui_ordinamento_frecciagiu.classList.remove("selected")
                 } else {
-                    this.ui_ordinamento_frecciasu.classList.remove('selected')
-                    this.ui_ordinamento_frecciagiu.classList.add('selected')
+                    this.ui_ordinamento_frecciasu.classList.remove("selected")
+                    this.ui_ordinamento_frecciagiu.classList.add("selected")
                 }
 
                 this.ordina = true
@@ -33,15 +33,15 @@ class Filtro extends Selezione {
     }
 
     rimuovi_ordinamento() {
-        this.ui_ordinamento_frecciasu.classList.remove('selected')
-        this.ui_ordinamento_frecciagiu.classList.remove('selected')
+        this.ui_ordinamento_frecciasu.classList.remove("selected")
+        this.ui_ordinamento_frecciagiu.classList.remove("selected")
     }
 }
 
 function sostituzioni_applica_filtri() {
     sostituzioni_visualizzate = sostituzioni
     if (sostituzioni_filtro_ora.selected !== null) {
-        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.numero_ora_predefinita === sostituzioni_filtro_ora.selected)
+        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.numero_ora_predefinita === (sostituzioni_filtro_ora.selected))
     }
     if (sostituzioni_filtro_classe.selected !== null) {
         sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.nome_classe === sostituzioni_filtro_classe.selected)
@@ -50,7 +50,7 @@ function sostituzioni_applica_filtri() {
         sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.numero_aula === sostituzioni_filtro_aula.selected)
     }
     if (sostituzioni_filtro_docente.selected !== null) {
-        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.nome_docente + ' ' + element.cognome_docente === sostituzioni_filtro_docente.selected)
+        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.nome_docente + " " + element.cognome_docente === sostituzioni_filtro_docente.selected)
     }
     if (sostituzioni_filtro_note.selected !== null) {
         // todo: implement fuzzy search
@@ -82,7 +82,6 @@ function sostituzioni_ordina() {
         if (sostituzioni_filtro_ora.verso_ordinamento === 1) {
             sostituzioni_visualizzate.sort((a, b) => {
                 if (a.numero_ora_predefinita === null && b.numero_ora_predefinita === null) {
-                    console.log('wow')
                     return b.ora_inizio.localeCompare(a.ora_inizio)
                 } else if (a.numero_ora_predefinita === null) {
                     return 1
@@ -128,8 +127,109 @@ function sostituzioni_ordina() {
     refresh_sostituzioni()
 }
 
-let sostituzioni_filtro_ora = new Filtro({ id: 'sostituzioni-filtro-ora', filtra_lista: prendi_ora, render: element => element.length == 1 ? element + "a ora" : element })
-let sostituzioni_filtro_classe = new Filtro({ id: 'sostituzioni-filtro-classe', filtra_lista: prendi_nome })
-let sostituzioni_filtro_aula = new Filtro({ id: 'sostituzioni-filtro-aula', filtra_lista: prendi_numero })
-let sostituzioni_filtro_docente = new Filtro({ id: 'sostituzioni-filtro-docente', filtra_lista: prendi_nome_cognome })
-let sostituzioni_filtro_note = new Filtro({ id: 'sostituzioni-filtro-note', ordinamento: false })
+let sostituzioni_filtro_ora = new Filtro({ id: "sostituzioni-filtro-ora", filtra_lista: prendi_ora, render: element => element.length == 1 ? element + "a ora" : element })
+let sostituzioni_filtro_classe = new Filtro({ id: "sostituzioni-filtro-classe", filtra_lista: prendi_nome })
+let sostituzioni_filtro_aula = new Filtro({ id: "sostituzioni-filtro-aula", filtra_lista: prendi_numero })
+let sostituzioni_filtro_docente = new Filtro({ id: "sostituzioni-filtro-docente", filtra_lista: prendi_nome_cognome })
+let sostituzioni_filtro_note = new Filtro({ id: "sostituzioni-filtro-note", ordinamento: false })
+
+
+// ---------------------
+
+function sostituzioni_filtra_data() {
+    // funzione per generare i filtri con i quali caricare le sostituzioni
+
+    ui_sostituzioni_filtro_data_rimuovi_selected()
+
+    switch (sostituzioni_filtro_data_attivo) {
+        case "oggi":
+            data_inizio = new Date()
+            data_inizio.setHours(0, 0, 0, 0)
+            data_fine = new Date()
+            data_fine.setHours(23, 59, 59, 0)
+
+            filtri = {
+                data_inizio: data_inizio.getTime() / 1000,
+                data_fine: data_fine.getTime() / 1000
+            }
+
+            ui_sostituzioni_filtro_data_oggi.classList.add("selected")
+            break
+
+        case "domani":
+            data_inizio = new Date()
+            data_inizio.setDate(data_inizio.getDate() + 1)
+            data_inizio.setHours(0, 0, 0, 0)
+            data_fine = new Date()
+            data_fine.setDate(data_inizio.getDate())
+            data_fine.setHours(23, 59, 59, 0)
+
+            filtri = {
+                data_inizio: data_inizio.getTime() / 1000,
+                data_fine: data_fine.getTime() / 1000
+            }
+
+            ui_sostituzioni_filtro_data_domani.classList.add("selected")
+            break
+
+        case "future":
+            data_inizio = new Date()
+            data_inizio.setHours(0, 0, 0, 0)
+
+            filtri = {
+                data_inizio: data_inizio.getTime() / 1000,
+                data_fine: null
+            }
+
+            ui_sostituzioni_filtro_data_future.classList.add("selected")
+            break
+
+        case "data":
+            data_inizio = ui_sostituzioni_filtro_data_data.valueAsDate
+
+            if (data_inizio == null || data_inizio == undefined) {
+                return
+            }
+
+            data_inizio.setHours(0, 0, 0, 0)
+            data_fine = new Date()
+            data_fine.setDate(data_inizio.getDate())
+            data_fine.setHours(23, 59, 59, 0)
+
+            filtri = {
+                data_inizio: data_inizio / 1000,
+                data_fine: data_fine / 1000
+            }
+
+            ui_sostituzioni_filtro_data_data.classList.add("selected")
+            break
+
+        case "mese":
+            //todo complete      
+            ui_sostituzioni_filtro_data_mese.value
+
+            ui_sostituzioni_filtro_data_mese.classList.add("selected")
+            break
+
+        case "tutte":
+            filtri = {
+                data_inizio: 0
+            }
+
+            ui_sostituzioni_filtro_data_tutte.classList.add("selected")
+            break
+
+        default:
+            data_inizio = new Date()
+            data_inizio.setHours(0, 0, 0, 0)
+
+            filtri = {
+                data_inizio: data_inizio.getTime() / 1000,
+                data_fine: null
+            }
+
+            ui_sostituzioni_filtro_data_future.classList.add("selected")
+    }
+
+    return filtri
+}
