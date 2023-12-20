@@ -13,31 +13,33 @@
 </head>
 
 <body background="#C00F19">
-  {% with messages = get_flashed_messages() %}
-  {% if messages %}
-  <div id="messages-container">
-    {% for message in messages %}
-    <div><span class="icon">!</span>{{message}}</div>
-    {% endfor %}
-  </div>
-  {% endif %}
-  {% endwith %}
-  <div id="design"></div>
-  <div id="login-container">
-    <div id="title-frame">
-      <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Gandhi">
-      <!-- <div>I.I.S.S "Gandhi" - Merano</div> -->
-      <!-- <h1>Gestione digitale</h1> -->
-      <!-- <h1>Benvenuto</h1> -->
+  <div id="main-container">
+    <div id="design"></div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div id="messages-container">
+      {% for message in messages %}
+      <div><span class="icon">!</span>{{message}}</div>
+      {% endfor %}
     </div>
-    <div id="loginbutton-frame">
-      <a href="/googlesso" id="button-accedi">Accedi</a>
-    </div>
+    {% endif %}
+    {% endwith %}
+    <div id="login-container">
+      <div id="title-frame">
+        <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Gandhi">
+        <!-- <div>I.I.S.S "Gandhi" - Merano</div> -->
+        <!-- <h1>Gestione digitale</h1> -->
+        <!-- <h1>Benvenuto</h1> -->
+      </div>
+      <div id="loginbutton-frame">
+        <a href="/googlesso" id="button-accedi">Accedi</a>
+      </div>
 
-    <div id="notes-frame">
-      <p>L'accesso al sistema è eseguito tramite l'account Google appartenente al tuo istituto scolastico.</p>
-      <p>Assicurati di selezionare il tuo account <i>@gandhimerano.com</i></p>
-      <p>Non riesci ad accedere? <a href="/fottiti">Richiedi l'accesso.</a></p>
+      <div id="notes-frame">
+        <p>L'accesso al sistema è eseguito tramite l'account Google appartenente al tuo istituto scolastico.</p>
+        <p>Assicurati di selezionare il tuo account <i>@gandhimerano.com</i></p>
+        <p>Non riesci ad accedere? <a href="/fottiti">Richiedi l'accesso.</a></p>
+      </div>
     </div>
   </div>
 </body>
