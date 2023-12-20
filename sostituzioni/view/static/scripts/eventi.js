@@ -71,6 +71,6 @@ function refresh_eventi() {
     })
 
     for (let i = 0; i < 20; i++) {
-        add_evento_to_ui_list(i, true, false, null, null, `testo evento ${i}`)
+        add_evento_to_ui_list(i, true, false, 1703066400, 1703067400, `testo evento ${i}`)
     }
 }

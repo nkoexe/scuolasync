@@ -248,11 +248,15 @@
     border: 1px solid #a8a8a8;
 }
 
+#gestione-dati-evento-urgente:checked {
+    background-color: #d46520;
+}
+
 #gestione-dati-evento-urgente::before {
     content: "priority_high";
     color: #a8a8a8;
 }
 
 #gestione-dati-evento-urgente:checked::before {
-    color: black;
+    color: white;
 }

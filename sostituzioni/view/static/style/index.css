@@ -50,10 +50,16 @@ ul {
 }
 
 
+
 /* ICONS */
 .material-symbols-rounded {
     user-select: none;
     padding: 5px;
+}
+
+/* calendar icon */
+.selected::-webkit-calendar-picker-indicator {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" viewBox="0 0 24 24"><path fill="%23fff" d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>');
 }
 
 /* TOOLTIP */
@@ -71,6 +77,8 @@ ul {
     bottom: 100%;
     left: 50%;
     translate: -50% 0;
+    width: max-content;
+    max-width: 300px;
     opacity: 0;
     visibility: hidden;
     background-color: black;
@@ -79,9 +87,14 @@ ul {
     border-radius: 5px;
     z-index: 110;
     font-size: 14px !important;
-    text-wrap: nowrap;
+    text-align: center;
     transition: opacity 0.2s;
     transition-delay: 0.5s;
+}
+
+.tooltip-bottom {
+    bottom: unset;
+    top: 100%;
 }
 
 .tooltip::after {
@@ -93,6 +106,12 @@ ul {
     border-width: 5px;
     border-style: solid;
     border-color: black transparent transparent transparent;
+}
+
+.tooltip-bottom::after {
+    top: unset;
+    bottom: 100%;
+    border-color: transparent transparent black transparent;
 }
 
 
@@ -493,7 +512,7 @@ ul {
 }
 
 #header-eventi-titolo {
-    margin: auto 20px;
+    margin: auto 25px;
 }
 
 #header-eventi-pulsanti {
@@ -556,7 +575,7 @@ ul {
 }
 
 #header-notizie-titolo {
-    margin: auto 20px;
+    margin: auto 25px;
 }
 
 #pulsante-nuova-notizia {

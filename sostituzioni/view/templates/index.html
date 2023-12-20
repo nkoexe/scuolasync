@@ -34,7 +34,7 @@
         <div id="header-eventi">
           <h2 id="header-eventi-titolo">Eventi</h2>
           <div id="header-eventi-pulsanti">
-            <div id="eventi-filtro-data"><span class="material-symbols-rounded">calendar_month</span></div>
+            <div id="eventi-filtro-data" class="has-tooltip"><span class="material-symbols-rounded">calendar_month</span><span class="tooltip tooltip-bottom">Filtro degli eventi per data (non ancora implementato)</span></div>
             <div id="pulsante-nuovo-evento" class="pulsante pulsante-inserimento" onclick="mostra_nuovo_evento()"><span class="material-symbols-rounded">add</span></div>
           </div>
         </div>
@@ -240,7 +240,7 @@
             <input id="gestione-dati-evento-data-fine" type="datetime-local">
           </div>
           <div id="gestione-dati-evento-testo-container" class="campo-gestioni-dati">
-            <textarea id="gestione-dati-evento-testo" placeholder="Testo.."></textarea>
+            <textarea id="gestione-dati-evento-testo" placeholder="Testo dell'evento"></textarea>
           </div>
           <div class="pulsanti-gestione-dati">
             <div class="has-tooltip">
@@ -251,8 +251,16 @@
           </div>
         </div>
         <div id="gestione-dati-notizia" class="gestione-dati-element hidden">
+          <div id="gestione-dati-notizia-data-inizio-container" class="campo-gestioni-dati">
+            <label for="gestione-dati-notizia-data-inizio">Data di inizio visualizzazione</label><br>
+            <input id="gestione-dati-notizia-data-inizio" type="date">
+          </div>
+          <div id="gestione-dati-notizia-data-fine-container" class="campo-gestioni-dati">
+            <label for="gestione-dati-notizia-data-fine">Data di fine visualizzazione</label><br>
+            <input id="gestione-dati-notizia-data-fine" type="date">
+          </div>
           <div id="gestione-dati-notizia-testo-container" class="campo-gestioni-dati">
-            <textarea id="gestione-dati-notizia-testo"></textarea>
+            <textarea id="gestione-dati-notizia-testo" placeholder="Testo della notizia"></textarea>
           </div>
           <div class="pulsanti-gestione-dati">
             <button id="pulsante-principale-notizia" class="pulsante pulsante-principale-gestione-dati"></button>

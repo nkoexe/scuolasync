@@ -77,7 +77,7 @@ def elimina_sostituzione(data):
 def nuova_notizia(data: dict):
     logger.debug(f'Ricevuto dati per inserimento nuova notizia: {data}')
 
-    Notizia(data_ora_inizio=data.get('data_ora_inizio'), data_ora_fine=data.get('data_ora_fine'), testo=data.get('testo')).inserisci()
+    Notizia(data_inizio=data.get('data_inizio'), data_fine=data.get('data_fine'), testo=data.get('testo')).inserisci()
 
     emit('aggiornamento notizie', broadcast=True)
 
