@@ -859,7 +859,7 @@ class Notizia(ElementoDatabaseConStorico):
 
     def inserisci(self):
         id = self.DATABASE.insert(self.TABLENAME, cancellato=False,
-                                  data_ora_inizio=self.data_ora_inizio, data_ora_fine=self.data_ora_fine,
+                                  data_ora_inizio=self.data_inizio, data_ora_fine=self.data_fine,
                                   testo=self.testo)
 
         self.id = id
@@ -881,22 +881,22 @@ class Notizia(ElementoDatabaseConStorico):
     #     self.data_ora_fine = data_ora_fine
 
     @property
-    def data_ora_inizio(self):
-        return self._data_ora_inizio
+    def data_inizio(self):
+        return self._data_inizio
 
     @beartype
-    @data_ora_inizio.setter
-    def data_ora_inizio(self, new: int | None):
-        self._data_ora_inizio = new
+    @data_inizio.setter
+    def data_inizio(self, new: int | None):
+        self._data_inizio = new
 
     @property
-    def data_ora_fine(self):
-        return self._data_ora_fine
+    def data_fine(self):
+        return self._data_fine
 
     @beartype
-    @data_ora_fine.setter
-    def data_ora_fine(self, new: int | None):
-        self._data_ora_fine = new
+    @data_fine.setter
+    def data_fine(self, new: int | None):
+        self._data_fine = new
 
     @property
     def testo(self):
