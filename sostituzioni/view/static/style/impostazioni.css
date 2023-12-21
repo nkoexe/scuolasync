@@ -148,6 +148,25 @@ ul {
     display: none;
 }
 
+.pulsante {
+    margin: auto;
+    padding: 15px 30px;
+    background-color: var(--color-background-opzione);
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px var(--color-shadow);
+    font-size: large;
+    transition: all 0.1s;
+}
+
+.pulsante:not(:disabled):hover {
+    box-shadow: 0 5px 10px #000000aa;
+}
+
+.pulsante:not(:disabled):active {
+    scale: 0.95;
+}
+
 input[type="text"],
 input[type="number"],
 select {
@@ -221,6 +240,31 @@ input[type="checkbox"]:checked::before {
     opacity: 1;
 }
 
+input[type="file"] {
+    display: none;
+}
+
+input[type="file"]+label {
+    padding: 15px;
+    margin-left: 15px;
+    color: var(--color-text-opzione);
+    background-color: var(--color-background-opzione);
+    border: var(--border-opzione);
+    border-radius: 5px;
+    font-size: 25px;
+    cursor: pointer;
+    box-shadow: none;
+}
+
+input[type="file"]+label:hover {
+    background-color: #ececec;
+    box-shadow: none !important;
+}
+
+#import-docenti-selected-file-label {
+    margin: auto 10px;
+}
+
 
 /* SELEZIONE */
 .container-selezione {
@@ -255,7 +299,8 @@ input[type="checkbox"]:checked::before {
 }
 
 .opzione-numero-unita,
-.opzione-percorso {
+.opzione-percorso,
+.opzione-file {
     display: flex;
     gap: 10px;
 }
@@ -268,6 +313,10 @@ input[type="checkbox"]:checked::before {
     width: 150px;
 }
 
+.opzione-file .pulsante {
+    margin: auto 10px;
+}
+
 #footer {
     display: flex;
     width: 100%;
@@ -277,12 +326,8 @@ input[type="checkbox"]:checked::before {
 }
 
 .pulsante-footer {
-    margin: auto;
-    padding: 10px 20px;
+    padding: 15px 30px;
     background-color: #ffffff;
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px #000000aa;
     font-size: larger;
     font-weight: bold;
     transition: all 0.1s;
@@ -292,14 +337,6 @@ input[type="checkbox"]:checked::before {
     background-color: #ffffff68;
     color: #00000066;
     box-shadow: none;
-}
-
-.pulsante-footer:not(:disabled):hover {
-    box-shadow: 0 5px 10px #000000aa;
-}
-
-.pulsante-footer:not(:disabled):active {
-    scale: 0.95;
 }
 
 #pulsante-applica {

@@ -28,11 +28,18 @@ const ui_sostituzioni_messaggio_informativo = document.getElementById("sostituzi
 
 
 function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
-  if (numero_ora_predefinita == null) { ora = ora_inizio + " - " + ora_fine }
+  if (numero_ora_predefinita == null) {
+    if (ora_inizio == null) { ora = "" }
+    else {
+      ora = ora_inizio + " - " + ora_fine
+    }
+  }
   else { ora = numero_ora_predefinita.length == 1 ? numero_ora_predefinita + "a ora" : numero_ora_predefinita }
   if (note == null) { note = "" }
   if (nome_docente == null) { nome_docente = "" }
   if (cognome_docente == null) { cognome_docente = "" }
+  if (nome_classe == null) { nome_classe = "" }
+  if (numero_aula == null) { numero_aula = "" }
 
   // Converte da unix timestamp a dd/mm/yyyy
   data = new Date(data * 1000).toLocaleDateString()

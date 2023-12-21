@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS ora_predefinita (
 CREATE TABLE IF NOT EXISTS docente (
     nome VARCHAR(50) NOT NULL,
     cognome VARCHAR(50) NOT NULL,
-    cancellato BOOLEAN NOT NULL,
+    cancellato BOOLEAN NOT NULL DEFAULT 0,
 
     PRIMARY KEY (nome, cognome)
 );
@@ -50,18 +50,18 @@ CREATE TABLE IF NOT EXISTS docente (
 CREATE TABLE IF NOT EXISTS aula (
     numero VARCHAR(20) PRIMARY KEY,
     piano VARCHAR(20) NOT NULL,
-    cancellato BOOLEAN NOT NULL
+    cancellato BOOLEAN NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS classe (
     nome VARCHAR(20) PRIMARY KEY,
-    cancellato BOOLEAN NOT NULL
+    cancellato BOOLEAN NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS aula_ospita_classe (
     numero_aula VARCHAR(20) NOT NULL REFERENCES aula(numero) ON UPDATE CASCADE,
     nome_classe VARCHAR(20) NOT NULL REFERENCES classe(nome) ON UPDATE CASCADE,
-    predefinito BOOLEAN NOT NULL,
+    predefinito BOOLEAN NOT NULL DEFAULT 0,
 
     PRIMARY KEY (numero_aula, nome_classe)
 );
@@ -72,15 +72,15 @@ CREATE TABLE IF NOT EXISTS visualizzazione (
 
 CREATE TABLE IF NOT EXISTS sostituzione (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    pubblicato BOOLEAN NOT NULL,
-    cancellato BOOLEAN NOT NULL,
+    pubblicato BOOLEAN NOT NULL DEFAULT 0,
+    cancellato BOOLEAN NOT NULL DEFAULT 0,
     data INTEGER,
     note VARCHAR,
     ora_inizio VARCHAR(5),
     ora_fine VARCHAR(5),
     numero_ora_predefinita VARCHAR(20) REFERENCES ora_predefinita(numero) ON UPDATE SET NULL,
-    numero_aula VARCHAR(20) NOT NULL REFERENCES aula(numero) ON UPDATE CASCADE,
-    nome_classe VARCHAR(20) NOT NULL REFERENCES classe(nome) ON UPDATE CASCADE,
+    numero_aula VARCHAR(20) REFERENCES aula(numero) ON UPDATE CASCADE,
+    nome_classe VARCHAR(20) REFERENCES classe(nome) ON UPDATE CASCADE,
     nome_docente VARCHAR(50),
     cognome_docente VARCHAR(50),
 
@@ -96,8 +96,8 @@ CREATE TABLE IF NOT EXISTS visualizzazione_mostra_sostituzione (
 
 CREATE TABLE IF NOT EXISTS evento (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    urgente BOOLEAN NOT NULL,
-    cancellato BOOLEAN NOT NULL,
+    urgente BOOLEAN NOT NULL DEFAULT 0,
+    cancellato BOOLEAN NOT NULL DEFAULT 0,
     testo VARCHAR,
     data_ora_inizio INTEGER,
     data_ora_fine INTEGER
@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS visualizzazione_mostra_evento (
 
 CREATE TABLE IF NOT EXISTS notizia (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    cancellato BOOLEAN NOT NULL,
+    cancellato BOOLEAN NOT NULL DEFAULT 0,
     testo VARCHAR,
     data_inizio INTEGER,
     data_fine INTEGER

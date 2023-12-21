@@ -1,5 +1,9 @@
 {
   "sezioni": {
+    "docenti": {
+      "titolo": "Gestione Docenti",
+      "descrizione": "Nomi e cognomi dei docenti sostituti. Ancora in fase di sviluppo, per modifiche contattare nico."
+    },
     "sistema": {
       "titolo": "Sistema",
       "descrizione": "Impostazioni generali di sistema, riguardanti il lato tecnico."
