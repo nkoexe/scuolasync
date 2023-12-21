@@ -724,10 +724,17 @@ input[type="checkbox"]:checked::before {
 #dialog-conferma-elimina-titolo-container {
     display: flex;
     margin-bottom: 15px;
+    font-size: 20px;
 }
+
+#dialog-conferma-elimina-titolo-container .icon {
+    /* color: var(--color-accent); */
+}
+
 
 #dialog-conferma-elimina-titolo {
     margin: auto;
+    margin-left: 10px;
 }
 
 
@@ -736,7 +743,7 @@ input[type="checkbox"]:checked::before {
     margin: auto;
     margin-bottom: 15px;
     display: flex;
-    gap: 15px
+    gap: 10px
 }
 
 #dialog-conferma-elimina-pulsanti {
