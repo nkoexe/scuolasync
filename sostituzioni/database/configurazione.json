@@ -183,7 +183,7 @@
         "%ROOT%"
       ],
       "default": "database/database.db",
-      "valore": "database/test.db"
+      "valore": "database/database.db"
     },
     "authdatabasepath": {
       "titolo": "Posizione database gestione utenti",
