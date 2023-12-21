@@ -43,9 +43,23 @@ opzione_percorso with context %}
     <ul id="sezioni-list">
       <li class="sezione">
         <div class="sezione-header">
-          <h3 class="sezione-titolo">Gestione utenti</h3>
-          <p class="sezione-descrizione">Vai alla pagina della gestione degli utenti autorizzati all'accesso al sistema e alla gestione dei permessi.</p>
+          <h3 class="sezione-titolo">Gestione Utenti</h3>
+          <p class="sezione-descrizione">Vai alla pagina della gestione degli utenti autorizzati all'accesso al sistema e alla gestione dei permessi. Questa parte del sito è ancora incompleta e in fase di sviluppo, non è accessibile. Per modifiche, contattare niccolo.ragazzi@gandhimerano.com</p>
           <div class="sezione-header-icon"><span class="material-symbols-rounded">open_in_new</span></div>
+        </div>
+      </li>
+      <li class="sezione">
+        <div class="sezione-header">
+          <h3 class="sezione-titolo">Gestione Docenti</h3>
+          <p class="sezione-descrizione">Nomi e cognomi dei docenti sostituti. Ancora in fase di sviluppo, per modifiche contattare nico.</p>
+          <div class="sezione-header-icon"><span class="material-symbols-rounded">add</span></div>
+        </div>
+        <div class="opzioni-expandible">
+          <div class="opzioni-container">
+            <label for="import-docenti-filepicker">Importa docenti da file: </label>
+            <input type="file" id="import-docenti-filepicker">
+            <button onclick="importa_docenti()">Importa</button>
+          </div>
         </div>
       </li>
       {% for sezione in configurazione.sezioni %}

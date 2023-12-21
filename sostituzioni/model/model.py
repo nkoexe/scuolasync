@@ -9,6 +9,19 @@ from sostituzioni.control.database import (database, ElementoDatabase,
                                            Visualizzazione, Utente)
 
 
+class Docente(Docente):
+    def __init__(self,
+                 nome: str | None = None,
+                 cognome: str | None = None,
+                 cancellato: bool = False,
+                 ):
+
+        self.nome = nome
+        self.nome = nome
+        self.cognome = cognome
+        self.cancellato = cancellato
+
+
 class Sostituzione(Sostituzione):
     def __init__(self,
                  id: int | None = None,

@@ -1,5 +1,6 @@
 const socket = io("/impostazioni");
 
+const docenti_filepicker = document.getElementById("import-docenti-filepicker")
 const pulsante_applica = document.getElementById('pulsante-applica');
 
 let modifiche = []
@@ -18,6 +19,27 @@ for (let index = 0; index < sezioni.length; index++) {
         }
     });
 }
+
+
+//////////////////////////////
+
+
+function importa_docenti() {
+    if (docenti_filepicker.files.length == 0) {
+        alert("Seleziona un file");
+    }
+
+    let file = docenti_filepicker.files[0]
+    let reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+    reader.onload = () => {
+        socket.emit("importa docenti", reader.result);
+    }
+}
+
+
+//////////////////////////////
+
 
 function modificato(id) {
     if (!modifiche.includes(id)) {

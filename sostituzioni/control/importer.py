@@ -2,6 +2,8 @@ from pathlib import Path
 import pandas as pd
 import magic
 
+from sostituzioni.model.model import Docente
+
 
 class Docenti:
     def from_file(filepath: Path | str):
@@ -29,7 +31,7 @@ class Docenti:
 
         for index, row in data.iterrows():
             nome, cognome, sure = Docenti.parse_nome_cognome(row['Member Name'])
-            print(f'{nome} | {cognome} | {sure}')
+            Docente(nome, cognome).inserisci()
 
     def parse_nome_cognome(nome_cognome: str) -> tuple[str, str, bool]:
         """

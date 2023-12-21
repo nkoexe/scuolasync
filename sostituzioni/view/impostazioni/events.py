@@ -2,9 +2,10 @@ import logging
 from flask_socketio import emit
 
 from sostituzioni.control.configurazione import configurazione
+from sostituzioni.control.importer import Docenti
 from sostituzioni.model.auth import login_required
 from sostituzioni.view import socketio
-from sostituzioni.view.impostazioni.shell import RedirectedStdout
+
 
 logger = logging.getLogger(__name__)
 
@@ -22,17 +23,6 @@ def applica(dati):
     emit('applica impostazioni successo')
 
 
-@socketio.on('shell', namespace='/shell')
-@login_required
-def shell(dati):
-    with RedirectedStdout() as out:
-        try:
-            exec(dati)
-        except Exception as e:
-            print(e)
-        emit('shell', str(out))
-
-
 @socketio.on('server reboot', namespace='/impostazioni')
 @login_required
 def reboot():
@@ -43,3 +33,9 @@ def reboot():
 
     else:
         os.system(f'bash {configurazione.get("scriptsdir").path / "reboot.sh"} & disown')
+
+
+@socketio.on('importa docenti', namespace='/impostazioni')
+@login_required
+def importa_docenti(file_bytearray):
+    Docenti.from_buffer(file_bytearray)

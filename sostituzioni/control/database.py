@@ -440,6 +440,9 @@ class Docente(ElementoDatabaseConStorico):
 
     def load(): return ElementoDatabase.load(Docente)
 
+    def inserisci(self):
+        return self.DATABASE.insert(self.TABLENAME, nome=self.nome, cognome=self.cognome, cancellato=self.cancellato)
+
     def trova(nome_cognome):
         return database.get_one('docente', ('nome', 'cognome'), where=Where('(nome || " " || cognome)').equals(nome_cognome))
 
