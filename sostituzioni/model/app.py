@@ -1,13 +1,12 @@
+import logging
+logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(asctime)s - %(name)s - %(message)s')
+
 from flask import Flask
 from secrets import token_hex
-import logging
-from datetime import timedelta
 
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.control.cli import database_cli
 
-
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 app = Flask(__name__)
 
@@ -22,8 +21,6 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 # app.config['PERMANENT_SESSION_LIFETIME '] = timedelta(seconds=5)
 # app.config['SESSION_REFRESH_EACH_REQUEST '] = True
 
-app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.config['FLASK_ENV'] = 'development'
 
 app.cli.add_command(database_cli)
 

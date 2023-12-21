@@ -3,9 +3,6 @@ import logging
 from flask_socketio import SocketIO
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.middleware.proxy_fix import ProxyFix
-from gevent import monkey
-
-monkey.patch_all()
 
 from sostituzioni.model.app import app
 

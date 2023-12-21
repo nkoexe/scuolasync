@@ -9,6 +9,20 @@ const ui_conferma_elimina_storico = document.getElementById("dialog-conferma-eli
 const ui_conferma_elimina_per_reale = document.getElementById("dialog-conferma-elimina-per-reale")
 
 
+// ----------------------------------
+
+
+function fix_date_to_input(date) {
+    return date.getTime() - date.getTimezoneOffset() * 60 * 1000
+}
+
+function fix_date_from_input(value) {
+    return value + new Date().getTimezoneOffset() * 60 * 1000
+}
+
+
+// ----------------------------------
+
 
 function ui_loading_sostituzioni() {
     ui_sostituzioni_container.innerHTML = ""
