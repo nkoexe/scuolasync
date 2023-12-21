@@ -272,14 +272,11 @@
   </div>
   <div id="context-menu" class="hidden" tabindex="0">
     <div id="dialog-conferma-elimina" class="hidden">
-      <div id="dialog-conferma-elimina-titolo"><span class="material-symbols-rounded icon">error</span><span class="titolo">Eliminare Sostituzione?</span></div>
-      <div id="dialog-conferma-elimina-storico"><input type="checkbox"><span>Cancella dati definitivamente</span></div>
-      <div id="dialog-conferma-elimina-pulsanti"><button onclick="ui_annulla_elimina_sostituzione()">Annulla</button><button onclick="ui_conferma_elimina_sostituzione()">Elimina</button></div>
+      <div><span class="material-symbols-rounded icon">error</span><span id="dialog-conferma-elimina-titolo" class="titolo"></span></div>
+      <div id="dialog-conferma-elimina-storico-container"><input id="dialog-conferma-elimina-storico" type="checkbox"><span>Cancella dati definitivamente</span></div>
+      <div id="dialog-conferma-elimina-pulsanti"><button onclick="ui_annulla_elimina()">Annulla</button><button id="dialog-conferma-elimina-per-reale">Elimina</button></div>
     </div>
     <div id="pulsanti-context-menu">
-      <button onclick="ui_modifica_sostituzione()" class="pulsante-context-menu" tabindex="0"><span class="material-symbols-rounded">edit</span><span>Modifica</span></button>
-      <button onclick="ui_duplica_sostituzione()" class="pulsante-context-menu" tabindex="0"><span class="material-symbols-rounded">content_copy</span><span>Duplica</span></button>
-      <button onclick="ui_elimina_sostituzione()" class="pulsante-context-menu" tabindex="0"><span class="material-symbols-rounded">delete</span><span>Elimina</span></button>
     </div>
   </div>
   <script>

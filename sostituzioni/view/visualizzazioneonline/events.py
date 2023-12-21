@@ -72,6 +72,36 @@ def elimina_sostituzione(data):
     emit('aggiornamento sostituzioni', broadcast=True)
 
 
+@socketio.on('nuovo evento')
+@login_required
+def nuovo_evento(data):
+    logger.debug(f'Ricevuto dati per inserimento nuovo evento: {data}')
+
+    Evento(urgente=data.get('urgente', False), data_ora_inizio=data.get('data_ora_inizio'), data_ora_fine=data.get('data_ora_fine'), testo=data.get('testo')).inserisci()
+
+    emit('aggiornamento eventi', broadcast=True)
+
+
+@socketio.on('modifica evento')
+@login_required
+def modifica_evento(data):
+    logger.debug(f'Ricevuto dati modifica evento: {data}')
+
+    Evento(id=data.get('id')).modifica(data.get('data'))
+
+    emit('aggiornamento eventi', broadcast=True)
+
+
+@socketio.on('elimina evento')
+@login_required
+def elimina_evento(data):
+    logger.debug(f'Ricevuto segnale eliminazione evento: {data}')
+
+    Evento(data.get('id')).elimina()
+
+    emit('aggiornamento eventi', broadcast=True)
+
+
 @socketio.on('nuova notizia')
 @login_required
 def nuova_notizia(data: dict):
@@ -82,11 +112,21 @@ def nuova_notizia(data: dict):
     emit('aggiornamento notizie', broadcast=True)
 
 
-@socketio.on('nuovo evento')
+@socketio.on('modifica notizia')
 @login_required
-def nuovo_evento(data):
-    logger.debug(f'Ricevuto dati per inserimento nuovo evento: {data}')
+def modifica_notizia(data):
+    logger.debug(f'Ricevuto dati modifica notizia: {data}')
 
-    Evento(urgente=data.get('urgente', False), data_ora_inizio=data.get('data_ora_inizio'), data_ora_fine=data.get('data_ora_fine'), testo=data.get('testo')).inserisci()
+    Notizia(id=data.get('id')).modifica(data.get('data'))
 
-    emit('aggiornamento eventi', broadcast=True)
+    emit('aggiornamento notizie', broadcast=True)
+
+
+@socketio.on('elimina notizia')
+@login_required
+def elimina_notizia(data):
+    logger.debug(f'Ricevuto segnale eliminazione notizia: {data}')
+
+    Notizia(data.get('id')).elimina()
+
+    emit('aggiornamento notizie', broadcast=True)

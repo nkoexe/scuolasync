@@ -28,7 +28,7 @@ function format_date(data_ora_inizio, data_ora_fine) {
     data_ora_inizio = new Date(data_ora_inizio * 1000)
     data_ora_fine = new Date(data_ora_fine * 1000)
 
-    format_options = { day: "numeric", month: "numeric", year: "numeric", hour: "numeric", minute: "numeric" }
+    format_options = { day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "numeric" }
 
     if (data_ora_inizio.getFullYear() == now.getFullYear() && now.getFullYear() == data_ora_fine.getFullYear()) {
         format_options.year = undefined
@@ -47,20 +47,9 @@ function add_evento_to_ui_list(id, pubblicato, urgente, data_ora_inizio, data_or
     ui_eventi_container.innerHTML += evento_html
 }
 
-function ui_modifica_evento() { // incomplete
+function ui_modifica_evento() {
     let id = parseInt(ui_context_menu.dataset.id)
-    mostra_modifica_sostituzione(id)
-    ui_context_menu.closingcallback()
-}
-function ui_duplica_evento() {
-    let id = ui_context_menu.dataset.id
-
-    console.log("duplica sostituzione " + id)
-    ui_context_menu.closingcallback()
-}
-function ui_elimina_evento() {
-    let id = ui_context_menu.dataset.id
-    s_elimina_sostituzione(id, true)
+    mostra_modifica_evento(id)
     ui_context_menu.closingcallback()
 }
 
@@ -70,7 +59,7 @@ function refresh_eventi() {
         add_evento_to_ui_list(element.id, element.pubblicato, element.urgente, element.data_ora_inizio, element.data_ora_fine, element.testo)
     })
 
-    for (let i = 0; i < 20; i++) {
-        add_evento_to_ui_list(i, true, false, 1703066400, 1703067400, `testo evento ${i}`)
+    for (const evento of document.getElementsByClassName("evento")) {
+        evento.oncontextmenu = (e) => { mostra_context_menu_evento(e, evento) }
     }
 }

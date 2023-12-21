@@ -114,8 +114,8 @@ CREATE TABLE IF NOT EXISTS notizia (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     cancellato BOOLEAN NOT NULL,
     testo VARCHAR,
-    data_ora_inizio INTEGER,
-    data_ora_fine INTEGER
+    data_inizio INTEGER,
+    data_fine INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS visualizzazione_mostra_notizia (

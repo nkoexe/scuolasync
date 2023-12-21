@@ -58,7 +58,9 @@ function conferma_nuovo_evento() {
 function mostra_modifica_evento(id) {
     let evento = eventi.find(element => element.id === id)
 
-    gestione_dati_evento_testo.value = evento.value
+    gestione_dati_evento_data_inizio.value = new Date(evento.data_ora_inizio * 1000).toISOString().slice(0, 16)
+    gestione_dati_evento_data_fine.value = new Date(evento.data_ora_fine * 1000).toISOString().slice(0, 16)
+    gestione_dati_evento_testo.value = evento.testo
 
     mostra_gestione_evento()
     ui_titolo_gestione_dati.innerHTML = "Modifica Evento"

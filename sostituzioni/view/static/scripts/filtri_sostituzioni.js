@@ -136,6 +136,18 @@ let sostituzioni_filtro_note = new Filtro({ id: "sostituzioni-filtro-note", ordi
 
 // ---------------------
 
+
+let sostituzioni_filtro_data_attivo = 'future'
+const ui_sostituzioni_filtro_data = document.getElementById("sostituzioni-filtro-data")
+const ui_sostituzioni_filtro_data_expandible = document.getElementById("sostituzioni-filtro-data-expandible")
+const ui_sostituzioni_filtro_data_oggi = document.getElementById("sostituzioni-filtro-data-oggi")
+const ui_sostituzioni_filtro_data_domani = document.getElementById("sostituzioni-filtro-data-domani")
+const ui_sostituzioni_filtro_data_future = document.getElementById("sostituzioni-filtro-data-future")
+const ui_sostituzioni_filtro_data_data = document.getElementById("sostituzioni-filtro-data-data")
+const ui_sostituzioni_filtro_data_mese = document.getElementById("sostituzioni-filtro-data-mese")
+const ui_sostituzioni_filtro_data_tutte = document.getElementById("sostituzioni-filtro-data-tutte")
+
+
 function sostituzioni_filtra_data() {
     // funzione per generare i filtri con i quali caricare le sostituzioni
 
@@ -232,4 +244,66 @@ function sostituzioni_filtra_data() {
     }
 
     return filtri
+}
+
+
+
+ui_sostituzioni_filtro_data.onfocus = (e) => {
+    ui_sostituzioni_filtro_data_expandible.classList.add("active")
+}
+
+ui_sostituzioni_filtro_data.onblur = (e) => {
+    if (e.relatedTarget && e.relatedTarget.closest("#sostituzioni-filtro-data-expandible")) {
+        ui_sostituzioni_filtro_data.focus()
+        e.preventDefault()
+        e.stopPropagation()
+        return
+    }
+
+    ui_sostituzioni_filtro_data_expandible.classList.remove("active")
+}
+
+function ui_sostituzioni_filtra_data() {
+    ui_loading_sostituzioni()
+    filtri = sostituzioni_filtra_data()
+    s_richiedi_sostituzioni(filtri)
+}
+
+function ui_sostituzioni_filtro_data_rimuovi_selected() {
+    ui_sostituzioni_filtro_data_oggi.classList.remove("selected")
+    ui_sostituzioni_filtro_data_domani.classList.remove("selected")
+    ui_sostituzioni_filtro_data_future.classList.remove("selected")
+    ui_sostituzioni_filtro_data_data.classList.remove("selected")
+    ui_sostituzioni_filtro_data_mese.classList.remove("selected")
+    ui_sostituzioni_filtro_data_tutte.classList.remove("selected")
+}
+
+ui_sostituzioni_filtro_data_oggi.onclick = (e) => {
+    sostituzioni_filtro_data_attivo = 'oggi'
+    ui_sostituzioni_filtra_data()
+}
+
+ui_sostituzioni_filtro_data_domani.onclick = (e) => {
+    sostituzioni_filtro_data_attivo = 'domani'
+    ui_sostituzioni_filtra_data()
+}
+
+ui_sostituzioni_filtro_data_future.onclick = (e) => {
+    sostituzioni_filtro_data_attivo = 'future'
+    ui_sostituzioni_filtra_data()
+}
+
+ui_sostituzioni_filtro_data_data.onchange = (e) => {
+    sostituzioni_filtro_data_attivo = 'data'
+    ui_sostituzioni_filtra_data()
+}
+
+ui_sostituzioni_filtro_data_mese.onchange = (e) => {
+    sostituzioni_filtro_data_attivo = 'mese'
+    ui_sostituzioni_filtra_data()
+}
+
+ui_sostituzioni_filtro_data_tutte.onclick = (e) => {
+    sostituzioni_filtro_data_attivo = 'tutte'
+    ui_sostituzioni_filtra_data()
 }

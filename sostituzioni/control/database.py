@@ -325,7 +325,16 @@ class ElementoDatabaseConStorico(ElementoDatabase):
 
     @beartype
     def elimina(self, mantieni_in_storico: bool = True):
-        self._cancellato = True
+        self.cancellato = True
+
+        if not self.id:
+            return False
+
+        if mantieni_in_storico:
+            return self.DATABASE.update(self.TABLENAME, Where('id').equals(self.id), cancellato=True)
+
+        else:
+            self.DATABASE.delete(self.TABLENAME, Where('id').equals(self.id))
 
     @property
     def cancellato(self):
@@ -594,17 +603,31 @@ class Sostituzione(ElementoDatabaseConStorico):
                                     numero_ora_predefinita=self.ora_predefinita, ora_inizio=self.ora_inizio,
                                     ora_fine=self.ora_fine, note=self.note)
 
-    def elimina(self, mantieni_in_storico: bool):
-        self.cancellato = True
+    # def elimina(self, mantieni_in_storico: bool):
+    #     self.cancellato = True
 
-        if not self.id:
-            return False
+    #     if not self.id:
+    #         return False
 
-        if mantieni_in_storico:
-            return self.DATABASE.update(self.TABLENAME, Where('id').equals(self.id), cancellato=True)
+    #     if mantieni_in_storico:
+    #         return self.DATABASE.update(self.TABLENAME, Where('id').equals(self.id), cancellato=True)
 
-        else:
-            self.DATABASE.delete(self.TABLENAME, Where('id').equals(self.id))
+    #     else:
+    #         self.DATABASE.delete(self.TABLENAME, Where('id').equals(self.id))
+
+    @property
+    def id(self):
+        return self._id
+
+    @beartype
+    @id.setter
+    def id(self, new: int | str | None):
+        self._id = None
+
+        if isinstance(new, int):
+            self._id = new
+        elif isinstance(new, str) and new.isdecimal():
+            self._id = int(new)
 
     @property
     def pubblicato(self):
@@ -808,6 +831,33 @@ class Evento(ElementoDatabaseConStorico):
 
         self.id = id
 
+    @beartype
+    def modifica(self, dati: Dict):
+        if not self.id:
+            return
+
+        if 'urgente' in dati:
+            self.urgente = dati['urgente']
+
+        if 'data_ora_inizio' in dati:
+            self.data_ora_inizio = dati['data_ora_inizio']
+
+        if 'data_ora_fine' in dati:
+            self.data_ora_fine = dati['data_ora_fine']
+
+        if 'testo' in dati:
+            self.testo = dati['testo']
+
+        return self.aggiorna()
+
+    def aggiorna(self):
+        if not self.id:
+            return
+
+        return self.DATABASE.update(self.TABLENAME, Where('id').equals(self.id),
+                                    urgente=self.urgente, data_ora_inizio=self.data_ora_inizio,
+                                    data_ora_fine=self.data_ora_fine, testo=self.testo)
+
     # @beartype
     # def __init__(
     #     self,
@@ -825,6 +875,20 @@ class Evento(ElementoDatabaseConStorico):
     #     self.data_ora_inizio = data_ora_inizio
     #     self.data_ora_fine = data_ora_fine
     #     self.urgente = urgente
+
+    @property
+    def id(self):
+        return self._id
+
+    @beartype
+    @id.setter
+    def id(self, new: int | str | None):
+        self._id = None
+
+        if isinstance(new, int):
+            self._id = new
+        elif isinstance(new, str) and new.isdecimal():
+            self._id = int(new)
 
     @property
     def urgente(self):
@@ -876,6 +940,29 @@ class Notizia(ElementoDatabaseConStorico):
 
         self.id = id
 
+    def modifica(self, dati: Dict):
+        if not self.id:
+            return
+
+        if 'data_inizio' in dati:
+            self.data_inizio = dati['data_inizio']
+
+        if 'data_fine' in dati:
+            self.data_fine = dati['data_fine']
+
+        if 'testo' in dati:
+            self.testo = dati['testo']
+
+        return self.aggiorna()
+
+    def aggiorna(self):
+        if not self.id:
+            return
+
+        return self.DATABASE.update(self.TABLENAME, Where('id').equals(self.id),
+                                    data_ora_inizio=self.data_inizio, data_ora_fine=self.data_fine,
+                                    testo=self.testo)
+
     # @beartype
     # def __init__(
     #     self,
@@ -889,8 +976,22 @@ class Notizia(ElementoDatabaseConStorico):
 
     #     self._id = id
     #     self.testo = testo
-    #     self.data_ora_inizio = (data_ora_inizio,)
-    #     self.data_ora_fine = data_ora_fine
+    #     self.data_inizio = (data_inizio,)
+    #     self.data_fine = data_fine
+
+    @property
+    def id(self):
+        return self._id
+
+    @beartype
+    @id.setter
+    def id(self, new: int | str | None):
+        self._id = None
+
+        if isinstance(new, int):
+            self._id = new
+        elif isinstance(new, str) and new.isdecimal():
+            self._id = int(new)
 
     @property
     def data_inizio(self):

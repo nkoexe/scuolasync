@@ -19,20 +19,9 @@ function add_notizia_to_ui_list(id, pubblicato, data_ora_inizio, data_ora_fine, 
     ui_notizie_container.innerHTML += notizia_html
 }
 
-function ui_modifica_notizia() { // incomplete
+function ui_modifica_notizia() {
     let id = parseInt(ui_context_menu.dataset.id)
-    mostra_modifica_sostituzione(id)
-    ui_context_menu.closingcallback()
-}
-function ui_duplica_notizia() {
-    let id = ui_context_menu.dataset.id
-
-    console.log("duplica sostituzione " + id)
-    ui_context_menu.closingcallback()
-}
-function ui_elimina_notizia() {
-    let id = ui_context_menu.dataset.id
-    s_elimina_sostituzione(id, true)
+    mostra_modifica_notizia(id)
     ui_context_menu.closingcallback()
 }
 
@@ -42,7 +31,7 @@ function refresh_notizie() {
         add_notizia_to_ui_list(element.id, element.pubblicato, element.data_ora_inizio, element.data_ora_fine, element.testo)
     })
 
-    // for (let i = 0; i < 10; i++) {
-    //     add_notizia_to_ui_list(i, true, null, null, `Questa è una notizia di test: notizia numero ${i}.`)
-    // }
+    for (const notizia of document.getElementsByClassName("notizia")) {
+        notizia.oncontextmenu = (e) => { mostra_context_menu_notizia(e, notizia) }
+    }
 }

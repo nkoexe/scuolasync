@@ -58,7 +58,6 @@ function refresh_sostituzioni() {
   }
 
   for (const sostituzione of document.getElementsByClassName("sostituzione")) {
-    sostituzione.oncontextmenu = (e) => { mostra_context_menu(e, sostituzione) }
+    sostituzione.oncontextmenu = (e) => { mostra_context_menu_sostituzione(e, sostituzione) }
   }
 }
-

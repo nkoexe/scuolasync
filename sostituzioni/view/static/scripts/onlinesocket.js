@@ -61,7 +61,6 @@ function s_nuova_sostituzione(data) {
     socket.emit("nuova sostituzione", data)
 }
 
-
 function s_elimina_sostituzione(id, mantieni_in_storico) {
     socket.emit("elimina sostituzione", { id: id, mantieni_in_storico: mantieni_in_storico })
 }
@@ -73,10 +72,34 @@ function s_modifica_sostituzione(id, data) {
     })
 }
 
+
+function s_nuovo_evento(data) {
+    socket.emit("nuovo evento", data)
+}
+
+function s_elimina_evento(id) {
+    socket.emit("elimina evento", { id: id })
+}
+
+function s_modifica_evento(id, data) {
+    socket.emit("modifica evento", {
+        id: id,
+        data: data,
+    })
+}
+
+
 function s_nuova_notizia(data) {
     socket.emit("nuova notizia", data)
 }
 
-function s_nuovo_evento(data) {
-    socket.emit("nuovo evento", data)
+function s_elimina_notizia(id) {
+    socket.emit("elimina notizia", { id: id })
+}
+
+function s_modifica_notizia(id, data) {
+    socket.emit("modifica notizia", {
+        id: id,
+        data: data,
+    })
 }
