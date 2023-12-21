@@ -1,11 +1,13 @@
 class Selezione {
-    constructor({ id, lista, callback, filtra_lista, render, select_on_exit }) {
+    constructor({ id, lista, callback, filtra_lista, render, select_on_exit, autocomplete }) {
         this.id = id.replaceAll('-', '_')
 
         this.ui_container = document.getElementById(id)
         this.ui_input = this.ui_container.getElementsByClassName('selezione-input')[0]
         this.ui_dropdown = this.ui_container.getElementsByClassName('selezione-dropdown')[0]
         this.ui_lista = this.ui_dropdown.children[0]
+        this.select_on_exit = select_on_exit == undefined ? true : select_on_exit
+        this.autocomplete = autocomplete == undefined ? false : autocomplete
 
         this.lista_elementi  // fuzzyset obj
         this.lista_visualizzati
@@ -32,11 +34,21 @@ class Selezione {
 
         this.ui_input.onfocus = (event) => {
             this.current_index = -1
+            this.ui_input.select()
             this.ui_dropdown.style.display = 'block'
             this.genera_dropdown()
         }
 
         this.ui_input.onblur = (event) => {
+            if (this.autocomplete) {
+                if (this.lista_visualizzati == this.lista_elementi.values() || this.lista_visualizzati.length == 0 || this.ui_input.value == '') {
+                    this.seleziona(null)
+                } else {
+                    this.seleziona(this.lista_visualizzati[0])
+                }
+            } else if (this.select_on_exit) {
+                this.seleziona(this.ui_input.value)
+            }
             this.ui_dropdown.style.display = 'none'
         }
 
@@ -89,7 +101,7 @@ class Selezione {
                     break
                 case 27: // escape
                     this.ui_input.blur()
-                    this.seleziona()
+                    this.seleziona(null)
             }
         }
     }
