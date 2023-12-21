@@ -30,25 +30,24 @@ ul {
 input[type="checkbox"] {
     appearance: none;
     position: relative;
-    margin-left: 10px;
     width: 20px;
     height: 20px;
-    color: var(--color-text-opzione);
-    background-color: var(--color-background-opzione);
-    border: var(--border-opzione);
+    color: black;
+    background-color: inherit;
+    border: 1px solid black;
     border-radius: 5px;
     cursor: pointer;
-    transition: background 0.15s;
+    transition: all 0.15s;
 }
 
 input[type="checkbox"]::before {
     position: absolute;
     content: '';
     display: block;
-    top: 2px;
+    top: 3px;
     left: 6px;
-    width: 8px;
-    height: 14px;
+    width: 4px;
+    height: 7px;
     border-width: 0 3px 3px 0;
     border-style: solid;
     border-color: var(--color-background-opzione);
@@ -57,9 +56,9 @@ input[type="checkbox"]::before {
 }
 
 input[type="checkbox"]:checked {
-    color: var(--color-background-opzione);
-    border-color: var(--color-checkbox-checked);
-    background-color: var(--color-checkbox-checked);
+    color: var(--color-accent-text);
+    border-color: var(--color-accent);
+    background-color: var(--color-accent);
 }
 
 input[type="checkbox"]:checked::before {
@@ -719,26 +718,44 @@ input[type="checkbox"]:checked::before {
 #dialog-conferma-elimina {
     display: flex;
     flex-direction: column;
+    padding: 10px;
+}
+
+#dialog-conferma-elimina-titolo-container {
+    display: flex;
+    margin-bottom: 15px;
 }
 
 #dialog-conferma-elimina-titolo {
     margin: auto;
 }
 
-#dialog-conferma-elimina-storico {
+
+#dialog-conferma-elimina-storico-container {
     flex: 1;
     margin: auto;
     margin-bottom: 15px;
+    display: flex;
+    gap: 15px
 }
 
 #dialog-conferma-elimina-pulsanti {
     margin: auto;
-    padding: 10px;
+    /* padding: 10px; */
 }
 
 #dialog-conferma-elimina-pulsanti button {
     margin: 5px;
     border-radius: 5px;
+    border: 1px solid black;
     padding: 15px 30px;
+    font-size: 15px;
     box-shadow: none;
+    transition: all 0.1s;
+}
+
+#dialog-conferma-elimina-per-reale:hover {
+    border-color: var(--color-selezione-hover-delete-bg);
+    background-color: var(--color-selezione-hover-delete-bg);
+    color: var(--color-selezione-hover-delete-fg);
 }
