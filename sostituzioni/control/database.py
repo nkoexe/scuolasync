@@ -524,7 +524,7 @@ class Sostituzione(ElementoDatabaseConStorico):
             today = today.replace(hour=0, minute=0, second=0, microsecond=0)
             today = int(today.timestamp())
 
-            where = Where('data').greaterthanorequal(today)
+            where = Where('data').greaterthanorequal(today).AND('cancellato').equals(False)
 
             return ElementoDatabase.load(Sostituzione, where=where, order_by='data')
 
@@ -822,7 +822,40 @@ class Evento(ElementoDatabaseConStorico):
     TABLENAME = 'evento'
     KEY = 'id'
 
-    def load(): return ElementoDatabase.load(Evento)
+    def load(filtri: Where | Dict | None = None):
+        if filtri is None:
+            # carica gli eventi futuri non cancellati
+
+            # get todays timestamp at midnight
+            today = datetime.today()
+            today = today.replace(hour=0, minute=0, second=0, microsecond=0)
+            today = int(today.timestamp())
+
+            where = Where('data_ora_fine').greaterthanorequal(today).AND('cancellato').equals(False)
+
+            return ElementoDatabase.load(Evento, where=where, order_by='data_ora_inizio')
+
+        if isinstance(filtri, Where):
+            return ElementoDatabase.load(Evento, where=filtri, order_by='data_ora_inizio')
+
+        data_ora_inizio: int | None = filtri.get('data_ora_inizio', int(datetime.today().timestamp()))  # default è oggi
+        data_ora_fine: int | None = filtri.get('data_fine', None)  # default è nessuna, quindi future
+
+        if data_ora_inizio is None:
+            data_ora_inizio = 0
+
+        where = Where('data').greaterthanorequal(data_ora_inizio)
+
+        if data_ora_fine is not None:
+            where = where.AND('data').lessthanorequal(data_ora_fine)
+
+        # Se è specificato di caricare anche i cancellati, non impostare un where aggiuntivo
+        cancellato = filtri.get('cancellato', False)
+
+        if not cancellato:
+            where = where.AND('cancellato').equals(False)
+
+        return ElementoDatabase.load(Evento, where=where, order_by='data')
 
     def inserisci(self):
         id = self.DATABASE.insert(self.TABLENAME, cancellato=False, urgente=self.urgente,
@@ -931,11 +964,28 @@ class Notizia(ElementoDatabaseConStorico):
     TABLENAME = 'notizia'
     KEY = 'id'
 
-    def load(): return ElementoDatabase.load(Notizia)
+    @beartype
+    def load(filtri: Where | Dict | None = None):
+        if filtri is None:
+            # carica le notizie non cancellate comprese nell'intervallo di data
+
+            # get todays timestamp
+            today = int(datetime.today().timestamp())
+
+            where = Where('data_inizio').lessthanorequal(today).AND('data_fine').greaterthanorequal(today).AND('cancellato').equals(False)
+
+            return ElementoDatabase.load(Notizia, where=where, order_by='data_inizio')
+
+        if isinstance(filtri, Where):
+            return ElementoDatabase.load(Notizia, where=filtri, order_by='data_inizio')
+
+        # todo completare, decidere come far filtrare notizie, se per data o aggiungere un pulsante "tutte" boh
+        logger.warning('Notizia.load(filtri) non ancora implementato, questo non sarebbe dovuto succedere')
+        return ElementoDatabase.load(Notizia, order_by='data_inizio')
 
     def inserisci(self):
         id = self.DATABASE.insert(self.TABLENAME, cancellato=False,
-                                  data_ora_inizio=self.data_inizio, data_ora_fine=self.data_fine,
+                                  data_inizio=self.data_inizio, data_fine=self.data_fine,
                                   testo=self.testo)
 
         self.id = id
@@ -960,7 +1010,7 @@ class Notizia(ElementoDatabaseConStorico):
             return
 
         return self.DATABASE.update(self.TABLENAME, Where('id').equals(self.id),
-                                    data_ora_inizio=self.data_inizio, data_ora_fine=self.data_fine,
+                                    data_inizio=self.data_inizio, data_fine=self.data_fine,
                                     testo=self.testo)
 
     # @beartype

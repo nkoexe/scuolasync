@@ -246,17 +246,21 @@
     place-content: center;
     border-radius: 1rem;
     border: 1px solid #a8a8a8;
+    transition: all 0.1s;
 }
 
 #gestione-dati-evento-urgente:checked {
     background-color: #d46520;
+    border: none;
 }
 
 #gestione-dati-evento-urgente::before {
     content: "priority_high";
     color: #a8a8a8;
+    transition: all 0.1s;
 }
 
 #gestione-dati-evento-urgente:checked::before {
     color: white;
+    scale: 1.2;
 }

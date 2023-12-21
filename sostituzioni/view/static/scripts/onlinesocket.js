@@ -50,11 +50,26 @@ socket.on("aggiornamento sostituzioni", () => {
     s_richiedi_sostituzioni(filtri)
 })
 
+socket.on("aggiornamento eventi", () => {
+    s_richiedi_eventi()
+})
+
+socket.on("aggiornamento notizie", () => {
+    s_richiedi_notizie()
+})
 
 // ----------------
 
 function s_richiedi_sostituzioni(filtri) {
     socket.emit("richiesta sostituzioni", filtri)
+}
+
+function s_richiedi_eventi(filtri) {
+    socket.emit("richiesta eventi", filtri)
+}
+
+function s_richiedi_notizie(filtri) {
+    socket.emit("richiesta notizie", filtri)
 }
 
 function s_nuova_sostituzione(data) {

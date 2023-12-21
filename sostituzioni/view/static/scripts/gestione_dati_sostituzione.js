@@ -1,6 +1,7 @@
 const ui_gestione_dati_sostituzione = document.getElementById('gestione-dati-sostituzione');
-const ui_pulsante_secondario_sostituzione = document.getElementById('pulsante-applica-sostituzione');
-const ui_pulsante_principale_sostituzione = document.getElementById('pulsante-pubblica-sostituzione');
+const ui_pulsante_terziario_sostituzione = document.getElementById('pulsante-terziario-sostituzione');
+const ui_pulsante_secondario_sostituzione = document.getElementById('pulsante-secondario-sostituzione');
+const ui_pulsante_principale_sostituzione = document.getElementById('pulsante-primario-sostituzione');
 
 const gestione_dati_sostituzione_data = document.getElementById('gestione-dati-sostituzione-data');
 const gestione_dati_sostituzione_ora_inizio = document.getElementById('gestione-dati-sostituzione-ora-inizio');
@@ -38,6 +39,9 @@ function mostra_nuova_sostituzione() {
     gestione_dati_sostituzione_note.valore = '';
 
     ui_titolo_gestione_dati.innerHTML = 'Inserimento Nuova Sostituzione'
+    ui_pulsante_terziario_sostituzione.classList.remove('hidden')
+    ui_pulsante_terziario_sostituzione.innerHTML = 'Annulla'
+    ui_pulsante_terziario_sostituzione.onclick = nascondi_gestione_dati
     ui_pulsante_secondario_sostituzione.innerHTML = 'Inserisci senza pubblicare'
     ui_pulsante_secondario_sostituzione.onclick = () => conferma_nuova_sostituzione(false)
     ui_pulsante_principale_sostituzione.innerHTML = 'Pubblica'
@@ -75,6 +79,7 @@ function mostra_modifica_sostituzione(id) {
 
     mostra_gestione_sostituzione()
     ui_titolo_gestione_dati.innerHTML = 'Modifica Sostituzione'
+    ui_pulsante_terziario_sostituzione.classList.add('hidden')
     ui_pulsante_secondario_sostituzione.innerHTML = 'Annulla'
     ui_pulsante_secondario_sostituzione.onclick = () => nascondi_gestione_dati()
     ui_pulsante_principale_sostituzione.innerHTML = 'Applica'
@@ -95,4 +100,27 @@ function conferma_modifica_sostituzione(id) {
     })
 
     nascondi_gestione_dati()
+}
+
+function mostra_duplica_sostituzione(id) {
+    let sostituzione = sostituzioni.find(element => element.id === id)
+
+    gestione_dati_sostituzione_data.valueAsDate = new Date(sostituzione.data * 1000)
+    gestione_dati_sostituzione_ora_predefinita.valore = sostituzione.numero_ora_predefinita
+    gestione_dati_sostituzione_ora_inizio.value = sostituzione.ora_inizio
+    gestione_dati_sostituzione_ora_fine.value = sostituzione.ora_fine
+    gestione_dati_sostituzione_docente.valore = sostituzione.nome_docente + ' ' + sostituzione.cognome_docente
+    gestione_dati_sostituzione_classe.valore = sostituzione.nome_classe
+    gestione_dati_sostituzione_aula.valore = sostituzione.numero_aula
+    gestione_dati_sostituzione_note.valore = sostituzione.note
+
+    mostra_gestione_sostituzione()
+    ui_titolo_gestione_dati.innerHTML = 'Modifica Sostituzione Duplicata'
+    ui_pulsante_terziario_sostituzione.classList.remove('hidden')
+    ui_pulsante_terziario_sostituzione.innerHTML = 'Annulla'
+    ui_pulsante_terziario_sostituzione.onclick = nascondi_gestione_dati
+    ui_pulsante_secondario_sostituzione.innerHTML = 'Inserisci senza pubblicare'
+    ui_pulsante_secondario_sostituzione.onclick = () => conferma_nuova_sostituzione(false)
+    ui_pulsante_principale_sostituzione.innerHTML = 'Pubblica'
+    ui_pulsante_principale_sostituzione.onclick = () => conferma_nuova_sostituzione(true)
 }

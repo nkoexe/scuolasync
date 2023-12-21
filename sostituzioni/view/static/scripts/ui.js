@@ -56,9 +56,9 @@ function ui_modifica_sostituzione() {
     ui_context_menu.closingcallback()
 }
 function ui_duplica_sostituzione() {
-    id = ui_context_menu.dataset.id
+    id = parseInt(ui_context_menu.dataset.id)
 
-    //todo wowoow
+    mostra_duplica_sostituzione(id)
 
     ui_context_menu.closingcallback()
 }

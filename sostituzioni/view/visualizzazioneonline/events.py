@@ -37,6 +37,36 @@ def richiesta_sostituzioni(filtri):
     emit('lista sostituzioni', Sostituzione.load(filtri))
 
 
+@socketio.on('richiesta eventi')
+@login_required
+def richiesta_eventi(filtri):
+    """
+    filtri:
+    { cancellato: true }  // per mostrare anche eventi cancellati
+    { data_inizio: 1702767600, data_fine: 1702854000 }  // per eventi compresi in un intervallo
+    { data_inizio: 1702767600, data_fine: None }  // per eventi futuri
+    """
+
+    logger.debug(f'Ricevuto segnale richiesta eventi con filtri: {filtri}')
+
+    emit('lista eventi', Evento.load(filtri))
+
+
+@socketio.on('richiesta notizie')
+@login_required
+def richiesta_notizie(filtri):
+    """
+    Todo:
+    decidere come far filtrare notizie, se per data o se aggiungere pulsante 'tutte' idk
+    """
+
+    logger.debug(f'Ricevuto segnale richiesta notizie con filtri: {filtri}')
+    emit('lista notizie', Notizia.load(filtri))
+
+
+# ////////////////////////////////////
+
+
 @socketio.on('nuova sostituzione')
 @login_required
 def nuova_sostituzione(data):

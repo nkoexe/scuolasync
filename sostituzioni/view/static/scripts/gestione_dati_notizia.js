@@ -21,10 +21,10 @@ function mostra_nuova_notizia() {
 }
 
 function conferma_nuova_notizia() {
-    data_inizio = gestione_dati_evento_data_inizio.valueAsNumber / 1000;
-    data_fine = gestione_dati_evento_data_fine.valueAsNumber / 1000;
+    data_inizio = gestione_dati_notizia_data_inizio.valueAsNumber / 1000;
+    data_fine = gestione_dati_notizia_data_fine.valueAsNumber / 1000;
 
-    if (data_inizio > data_fine) {
+    if (data_inizio >= data_fine) {
         return
     }
 
