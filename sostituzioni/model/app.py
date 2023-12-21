@@ -1,6 +1,3 @@
-import logging
-logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(asctime)s - %(name)s - %(message)s')
-
 from flask import Flask
 from secrets import token_hex
 

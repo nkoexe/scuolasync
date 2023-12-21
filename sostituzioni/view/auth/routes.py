@@ -9,9 +9,9 @@ from sostituzioni.view.auth import auth
 logger = logging.getLogger(__name__)
 
 
-@auth.route('/fottiti')
+@auth.route('/richiedi-accesso')
 def fottiti():
-    return "vai a fotterti"
+    return "Inserire qui il form per richiedere l'accesso al sistema, con opportune minacce"
 
 
 @auth.route('/login')
@@ -20,9 +20,9 @@ def login():
         return redirect(url_for('online.index'))
 
     # 3 lines of development speedup, remove in production pls ty
-    # from sostituzioni.model.auth import authenticate_user
-    # authenticate_user('niccolo.ragazzi@gandhimerano.com')
-    # return redirect(url_for('online.index'))
+    from sostituzioni.model.auth import authenticate_user
+    authenticate_user('niccolo.ragazzi@gandhimerano.com')
+    return redirect(url_for('online.index'))
 
     return render_template('login.html', title=configurazione.get('systitle'))
 

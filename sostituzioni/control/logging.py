@@ -1,5 +1,5 @@
 import logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.DEBUG, format='%(levelname)s - %(asctime)s - %(name)s - %(message)s')
 
 
 # logging.getLogger('geventwebsocket.handler').setLevel(logging.ERROR)

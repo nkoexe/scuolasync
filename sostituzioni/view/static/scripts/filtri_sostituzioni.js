@@ -204,13 +204,12 @@ function sostituzioni_filtra_data() {
             }
 
             data_inizio.setHours(0, 0, 0, 0)
-            data_fine = new Date()
-            data_fine.setDate(data_inizio.getDate())
+            data_fine = new Date(data_inizio.getTime())
             data_fine.setHours(23, 59, 59, 0)
 
             filtri = {
-                data_inizio: data_inizio / 1000,
-                data_fine: data_fine / 1000
+                data_inizio: data_inizio.getTime() / 1000,
+                data_fine: data_fine.getTime() / 1000
             }
 
             ui_sostituzioni_filtro_data_data.classList.add("selected")

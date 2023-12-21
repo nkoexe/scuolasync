@@ -27,6 +27,45 @@ ul {
     padding: 0;
 }
 
+input[type="checkbox"] {
+    appearance: none;
+    position: relative;
+    margin-left: 10px;
+    width: 20px;
+    height: 20px;
+    color: var(--color-text-opzione);
+    background-color: var(--color-background-opzione);
+    border: var(--border-opzione);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+input[type="checkbox"]::before {
+    position: absolute;
+    content: '';
+    display: block;
+    top: 2px;
+    left: 6px;
+    width: 8px;
+    height: 14px;
+    border-width: 0 3px 3px 0;
+    border-style: solid;
+    border-color: var(--color-background-opzione);
+    transform: rotate(45deg);
+    opacity: 0;
+}
+
+input[type="checkbox"]:checked {
+    color: var(--color-background-opzione);
+    border-color: var(--color-checkbox-checked);
+    background-color: var(--color-checkbox-checked);
+}
+
+input[type="checkbox"]:checked::before {
+    opacity: 1;
+}
+
 /* SCROLLBAR */
 * {
     scrollbar-width: 8px;
@@ -694,9 +733,12 @@ ul {
 
 #dialog-conferma-elimina-pulsanti {
     margin: auto;
+    padding: 10px;
 }
 
 #dialog-conferma-elimina-pulsanti button {
     margin: 5px;
+    border-radius: 5px;
     padding: 15px 30px;
+    box-shadow: none;
 }
