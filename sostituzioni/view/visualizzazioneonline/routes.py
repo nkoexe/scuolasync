@@ -13,6 +13,8 @@ def test():
     if request.args.get('code') == code:
         return 'infopoint!!!! wowow!!!'
 
+    return 'no'
+
 
 @online.route('/')
 @login_required
