@@ -24,10 +24,12 @@ class Docenti:
             case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
                 data = pd.read_excel(buffer)
             case _:
-                raise ValueError(f'File type {magic.from_buffer(buffer, mime=True)} not supported')
-
-        if data is None:
-            raise ValueError('File is empty.')
+                # tenta comunque di aprirlo yolo
+                data = pd.read_excel(buffer)
+                if data is None:
+                    data = pd.read_csv(buffer)
+                if data is None:
+                    raise ValueError(f'File di tipo {magic.from_buffer(buffer, mime=True)} non supportato')
 
         for index, row in data.iterrows():
             nome, cognome, sure = Docenti.parse_nome_cognome(row['Member Name'])
