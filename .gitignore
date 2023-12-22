@@ -1,4 +1,4 @@
 __pycache__/
 .vscode/
 
-database.db
+sostituzioni/database/database.db

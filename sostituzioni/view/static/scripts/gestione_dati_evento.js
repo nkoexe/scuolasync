@@ -25,19 +25,10 @@ function mostra_nuovo_evento() {
 
     ui_titolo_gestione_dati.innerHTML = "Inserimento Nuovo Evento";
     ui_pulsante_principale_evento.innerHTML = "Pubblica";
-    ui_pulsante_principale_evento.onclick = () => conferma_nuovo_evento(true);
+    ui_pulsante_principale_evento.onclick = conferma_nuovo_evento;
 }
 
 function conferma_nuovo_evento() {
-    // adjust for timezone
-    // data_ora_inizio = new Date(gestione_dati_evento_data_inizio.value)
-    // data_ora_inizio.setMinutes(data_ora_inizio.getMinutes() - data_ora_inizio.getTimezoneOffset());
-    // data_ora_inizio = data_ora_inizio.getTime() / 1000;
-
-    // data_ora_fine = new Date(gestione_dati_evento_data_fine.value)
-    // data_ora_fine.setMinutes(data_ora_fine.getMinutes() - data_ora_fine.getTimezoneOffset());
-    // data_ora_fine = data_ora_fine.getTime() / 1000;
-
     data_ora_inizio = fix_date_from_input(gestione_dati_evento_data_inizio.valueAsNumber) / 1000;
     data_ora_fine = fix_date_from_input(gestione_dati_evento_data_fine.valueAsNumber) / 1000;
 
@@ -87,4 +78,19 @@ function conferma_modifica_evento(id) {
     });
 
     nascondi_gestione_dati();
+}
+
+
+function mostra_duplica_evento(id) {
+    let evento = eventi.find(element => element.id === id);
+
+    gestione_dati_evento_data_inizio.valueAsNumber = fix_date_to_input(new Date(evento.data_ora_inizio * 1000));
+    gestione_dati_evento_data_fine.valueAsNumber = fix_date_to_input(new Date(evento.data_ora_fine * 1000));
+    gestione_dati_evento_testo.value = evento.testo;
+    gestione_dati_evento_urgente.checked = evento.urgente;
+
+    mostra_gestione_evento()
+    ui_titolo_gestione_dati.innerHTML = "Modifica Evento Duplicato";
+    ui_pulsante_principale_evento.innerHTML = "Pubblica";
+    ui_pulsante_principale_evento.onclick = conferma_nuovo_evento;
 }
