@@ -9,7 +9,6 @@ code = 'my85nyh5724025g740389ny91cf6ntynm5ynm89346y86y30h6yn0g6ny832yn7fkuy84532
 
 
 @online.route('/infopoint/frontend')
-@login_required
 def test():
     if request.args.get('code') == code:
         return 'infopoint!!!! wowow!!!'
