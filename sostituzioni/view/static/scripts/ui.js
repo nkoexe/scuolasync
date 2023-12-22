@@ -71,36 +71,37 @@ function ui_modifica_sostituzione() {
 }
 function ui_duplica_sostituzione() {
     id = parseInt(ui_context_menu.dataset.id)
-
     mostra_duplica_sostituzione(id)
-
     ui_context_menu.closingcallback()
 }
 function ui_conferma_elimina_sostituzione() {
-    id = ui_context_menu.dataset.id
-
+    id = parseInt(ui_context_menu.dataset.id)
     s_elimina_sostituzione(id, false)
     ui_context_menu.closingcallback()
 }
 function ui_modifica_evento() {
-    id = ui_context_menu.dataset.id
+    id = parseInt(ui_context_menu.dataset.id)
     mostra_modifica_evento(id)
     ui_context_menu.closingcallback()
 }
+function ui_duplica_evento() {
+    id = parseInt(ui_context_menu.dataset.id)
+    console.log("Duplica evento: " + id)
+    mostra_duplica_evento(id)
+    ui_context_menu.closingcallback()
+}
 function ui_conferma_elimina_evento() {
-    id = ui_context_menu.dataset.id
-
+    id = parseInt(ui_context_menu.dataset.id)
     s_elimina_evento(id)
     ui_context_menu.closingcallback()
 }
 function ui_modifica_notizia() {
-    id = ui_context_menu.dataset.id
+    id = parseInt(ui_context_menu.dataset.id)
     mostra_modifica_notizia(id)
     ui_context_menu.closingcallback()
 }
 function ui_conferma_elimina_notizia() {
-    id = ui_context_menu.dataset.id
-
+    id = parseInt(ui_context_menu.dataset.id)
     s_elimina_notizia(id)
     ui_context_menu.closingcallback()
 }
@@ -143,6 +144,7 @@ function mostra_context_menu_evento(event, evento) {
 
     ui_pulsanti_context_menu.innerHTML =
         pulsante("ui_modifica_evento", "edit", "Modifica")
+        + pulsante("ui_duplica_evento", "content_copy", "Duplica")
         + pulsante("ui_elimina", "delete", "Elimina")
 
     mostra_context_menu(evento)
