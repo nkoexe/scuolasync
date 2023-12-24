@@ -1,4 +1,5 @@
 import logging
+import subprocess
 import os
 from flask_socketio import emit
 
@@ -27,11 +28,11 @@ def applica(dati):
 @socketio.on('server reboot', namespace='/impostazioni')
 @login_required
 def reboot():
-    if os.name == 'nt':
-        os.system(f'cmd /c {configurazione.get("scriptsdir").path / "reboot.bat"} {os.getpid()}')
 
+    if os.name == 'nt':
+        subprocess.check_call(['cmd', '/c', configurazione.get('scriptsdir').path / 'reboot.bat', os.getpid()])
     else:
-        os.system(f'bash {configurazione.get("scriptsdir").path / "reboot.sh"} & disown')
+        subprocess.check_call(['bash', '/c', configurazione.get('scriptsdir').path / 'reboot.sh', '&', 'disown'])
 
 
 @socketio.on('server update', namespace='/impostazioni')
@@ -43,7 +44,7 @@ def update():
     repopath = rootpath.parent
 
     os.chdir(repopath)
-    os.system('git pull')
+    subprocess.check_call(['git', 'pull'])
     os.chdir(rootpath)
     reboot()
 
