@@ -30,9 +30,9 @@ def applica(dati):
 def reboot():
 
     if os.name == 'nt':
-        subprocess.check_call(['cmd', '/c', str(configurazione.get('scriptsdir').path) / 'reboot.bat', os.getpid()])
+        subprocess.check_call(['cmd', '/c', str(configurazione.get('scriptsdir').path / 'reboot.bat'), os.getpid()])
     else:
-        subprocess.check_call(['/bin/bash', str(configurazione.get('scriptsdir').path) / 'reboot.sh', '&', 'disown'])
+        subprocess.check_call(['/bin/bash', str(configurazione.get('scriptsdir').path / 'reboot.sh'), '&', 'disown'])
 
 
 @socketio.on('server update', namespace='/impostazioni')
