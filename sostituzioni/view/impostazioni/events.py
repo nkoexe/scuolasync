@@ -32,7 +32,7 @@ def reboot():
     if os.name == 'nt':
         subprocess.check_call(['cmd', '/c', configurazione.get('scriptsdir').path / 'reboot.bat', os.getpid()])
     else:
-        subprocess.check_call(['bash', '/c', configurazione.get('scriptsdir').path / 'reboot.sh', '&', 'disown'])
+        subprocess.check_call(['/bin/bash', '/c', configurazione.get('scriptsdir').path / 'reboot.sh', '&', 'disown'])
 
 
 @socketio.on('server update', namespace='/impostazioni')
@@ -44,7 +44,7 @@ def update():
     repopath = rootpath.parent
 
     os.chdir(repopath)
-    subprocess.check_call(['git', 'pull'])
+    subprocess.check_call(['/usr/bin/git', 'pull'])
     os.chdir(rootpath)
     reboot()
 
