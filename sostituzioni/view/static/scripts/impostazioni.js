@@ -119,11 +119,11 @@ function applica() {
 
 function server_update() {
     socket.emit("server update")
-    setTimeout(() => { location.reload() }, 1000)
+    setTimeout(() => { location.reload() }, 2000)
 }
 function server_reboot() {
     socket.emit("server reboot")
-    setTimeout(() => { location.reload() }, 1000)
+    setTimeout(() => { location.reload() }, 1500)
 }
 
 socket.on("applica impostazioni errore", (errore) => {
