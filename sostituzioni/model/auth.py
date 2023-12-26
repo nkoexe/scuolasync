@@ -6,7 +6,7 @@ import logging
 import requests
 import json
 
-from sostituzioni.control.database import Where, authdatabase, Utente
+from sostituzioni.control.database import Where, Utente, utenti
 from sostituzioni.model.app import app
 
 logger = logging.getLogger(__name__)
@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 OAUTH_CLIENT_ID = '824960094253-vlhoqf37teg8i307fkeui4041tmu2lk9.apps.googleusercontent.com'
 OAUTH_CLIENT_SECRET = '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'
-1
+
 OAUTH_CLIENT = oauth2.WebApplicationClient(OAUTH_CLIENT_ID)
 GOOGLE_SSO_REQ_URI = OAUTH_CLIENT.prepare_request_uri(
     uri='https://accounts.google.com/o/oauth2/v2/auth',
@@ -29,9 +29,11 @@ login_manager = LoginManager(app)
 
 class User(UserMixin, Utente):
     def __init__(self, id):
+        self = utenti.get(id)
         self.id = id
-        self.ruolo = ''
-        self.permessi = []
+
+        class has(self.permessi):
+            pass
 
     @property
     def is_authenticated(self):
@@ -40,6 +42,17 @@ class User(UserMixin, Utente):
     @property
     def is_active(self):
         return True
+
+
+def has_role(role):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            if role:
+                return func(*args, **kwargs)
+            return abort(403)
+        return wrapper
+    return decorator
 
 
 def sso_login(request):

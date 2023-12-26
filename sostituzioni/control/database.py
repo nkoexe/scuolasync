@@ -1087,6 +1087,38 @@ class Visualizzazione(ElementoDatabase):
 
 # --------------------
 
+class Ruolo(ElementoDatabase):
+    DATABASE = authdatabase
+    TABLENAME = 'ruolo'
+    KEY = 'nome'
+
+    def load(*args, **kwargs): return ElementoDatabase.load(Ruolo, *args, **kwargs)
+
+    class permessi:
+        class notizie:
+            view = False
+            write = False
+
+        class eventi:
+            view = False
+            write = False
+
+        class sostituzioni:
+            view = False
+            write = False
+
+        class impostazioni:
+            write = False
+
+    def __init__(self, nome: str):
+        self.nome = nome
+
+        for relazione in self.DATABASE.get('permesso_per_ruolo'):
+            if relazione['nome_ruolo'] == self.nome:
+                # il permesso ha questa sintassi: permesso.read - permesso.write
+                categoria, livello = relazione['permesso_ruolo'].split('.')
+                setattr(getattr(self.permessi, categoria), livello, True)
+
 
 class Utente(ElementoDatabase):
     DATABASE = authdatabase
@@ -1096,7 +1128,13 @@ class Utente(ElementoDatabase):
     def load(*args, **kwargs): return ElementoDatabase.load(Utente, *args, **kwargs)
 
     @beartype
-    def __init__(self, email: str, ):
+    def __init__(self, email: str, ruolo: str):
         super(Utente, self).__init__()
 
         self.email = email
+        self.ruolo = ruolo
+
+
+# For efficiency purposes, handle users in memory
+ruoli = SearchableList('nome', [Ruolo(r['nome']) for r in Ruolo.load()])
+utenti = SearchableList('email', [Utente(u['email'], ruoli.get(u['ruolo'])) for u in Utente.load()])
