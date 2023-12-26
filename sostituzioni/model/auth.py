@@ -29,11 +29,11 @@ login_manager = LoginManager(app)
 
 class User(UserMixin, Utente):
     def __init__(self, id):
-        self = utenti.get(id)
-        self.id = id
+        utente = utenti.get(id)
 
-        class has(self.permessi):
-            pass
+        self.id = id
+        self.ruolo = utente.ruolo
+        self.permessi = utente.ruolo.permessi
 
     @property
     def is_authenticated(self):
@@ -44,11 +44,11 @@ class User(UserMixin, Utente):
         return True
 
 
-def has_role(role):
+def role_required(role):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            if role:
+            if role in current_user.permessi:
                 return func(*args, **kwargs)
             return abort(403)
         return wrapper

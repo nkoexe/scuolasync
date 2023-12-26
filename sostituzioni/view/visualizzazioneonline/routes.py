@@ -1,7 +1,7 @@
 from flask import render_template, request
 
 from sostituzioni.control.configurazione import configurazione
-from sostituzioni.model.auth import login_required, has_role, current_user
+from sostituzioni.model.auth import login_required, role_required
 from sostituzioni.view.visualizzazioneonline import online
 
 

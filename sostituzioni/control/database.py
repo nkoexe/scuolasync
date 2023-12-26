@@ -1094,30 +1094,13 @@ class Ruolo(ElementoDatabase):
 
     def load(*args, **kwargs): return ElementoDatabase.load(Ruolo, *args, **kwargs)
 
-    class permessi:
-        class notizie:
-            view = False
-            write = False
-
-        class eventi:
-            view = False
-            write = False
-
-        class sostituzioni:
-            view = False
-            write = False
-
-        class impostazioni:
-            write = False
-
     def __init__(self, nome: str):
         self.nome = nome
+        self.permessi = []
 
         for relazione in self.DATABASE.get('permesso_per_ruolo'):
             if relazione['nome_ruolo'] == self.nome:
-                # il permesso ha questa sintassi: permesso.read - permesso.write
-                categoria, livello = relazione['permesso_ruolo'].split('.')
-                setattr(getattr(self.permessi, categoria), livello, True)
+                self.permessi.append(relazione['permesso_ruolo'])
 
 
 class Utente(ElementoDatabase):
@@ -1128,7 +1111,7 @@ class Utente(ElementoDatabase):
     def load(*args, **kwargs): return ElementoDatabase.load(Utente, *args, **kwargs)
 
     @beartype
-    def __init__(self, email: str, ruolo: str):
+    def __init__(self, email: str, ruolo: Ruolo):
         super(Utente, self).__init__()
 
         self.email = email
