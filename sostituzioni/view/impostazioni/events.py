@@ -1,4 +1,6 @@
 import logging
+import subprocess
+import os
 from flask_socketio import emit
 
 from sostituzioni.control.configurazione import configurazione
@@ -26,13 +28,25 @@ def applica(dati):
 @socketio.on('server reboot', namespace='/impostazioni')
 @login_required
 def reboot():
-    import os
 
     if os.name == 'nt':
-        os.system(f'cmd /c {configurazione.get("scriptsdir").path / "reboot.bat"} {os.getpid()}')
-
+        subprocess.check_call(['cmd', '/c', str(configurazione.get('scriptsdir').path / 'reboot.bat'), os.getpid()])
     else:
-        os.system(f'bash {configurazione.get("scriptsdir").path / "reboot.sh"} & disown')
+        subprocess.check_call(['/bin/bash', str(configurazione.get('scriptsdir').path / 'reboot.sh'), '&', 'disown'])
+
+
+@socketio.on('server update', namespace='/impostazioni')
+@login_required
+def update():
+    rootpath = configurazione.get('rootpath').path
+    # "/sostituzioni/sostituzioni", git è un livello più alto
+
+    repopath = rootpath.parent
+
+    os.chdir(repopath)
+    subprocess.check_call(['/usr/bin/git', 'pull'])
+    os.chdir(rootpath)
+    reboot()
 
 
 @socketio.on('importa docenti', namespace='/impostazioni')

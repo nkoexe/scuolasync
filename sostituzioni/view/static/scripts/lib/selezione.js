@@ -44,7 +44,11 @@ class Selezione {
                 if (this.lista_visualizzati == this.lista_elementi.values() || this.lista_visualizzati.length == 0 || this.ui_input.value == '') {
                     this.seleziona(null)
                 } else {
-                    this.seleziona(this.lista_visualizzati[0])
+                    if (this.selected == null) {
+                        this.seleziona(this.lista_visualizzati[0])
+                    } else {
+                        this.seleziona(this.selected)
+                    }
                 }
             } else if (this.select_on_exit) {
                 this.seleziona(this.ui_input.value)
@@ -52,15 +56,11 @@ class Selezione {
             this.ui_dropdown.style.display = 'none'
         }
 
-        // if (select_on_exit) {
-        //     this.ui_input.onblur = (event) => {
-        //         this.seleziona(this.selected)
-        //     }
-        // }
-
         this.ui_input.oninput = (event) => {
             this.current_index = -1
             this.genera_dropdown()
+            this.ui_lista.scrollTop = 0
+            this.selected = null
         }
 
         let ui_element
