@@ -14,11 +14,11 @@ socket.on("lista notizie", (data) => {
 
 socket.on("lista sostituzioni", (data) => {
     sostituzioni = data
-    
+
     for (const sostituzione of sostituzioni) {
-      sostituzione.cognome_docente = sostituzione.cognome_docente.toUpperCase();  
+        sostituzione.cognome_docente = sostituzione.cognome_docente.toUpperCase();
     }
-    
+
     sostituzioni_visualizzate = sostituzioni
 
     refresh_sostituzioni()
@@ -47,11 +47,11 @@ socket.on("lista docenti", (data) => {
     docenti = data
 
     for (const docente of docenti) {
-       docente.cognome = docente.cognome.toUpperCase(); 
-    } 
+        docente.cognome = docente.cognome.toUpperCase();
+    }
 
     docenti.sort((a, b) => a.cognome.localeCompare(b.cognome) || a.nome.localeCompare(b.nome));
-    
+
     sostituzioni_filtro_docente.aggiorna(docenti)
 })
 

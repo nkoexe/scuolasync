@@ -11,7 +11,7 @@ class Docenti:
             filepath = Path(filepath)
 
         if not filepath.is_file():
-            raise FileNotFoundError(f'File {filepath} not found')
+            raise FileNotFoundError(f"File {filepath} not found")
 
         return Docenti.from_buffer(filepath.read_bytes())
 
@@ -19,9 +19,9 @@ class Docenti:
         data = None
 
         match magic.from_buffer(buffer, mime=True):
-            case 'text/csv':
+            case "text/csv":
                 data = pd.read_csv(buffer)
-            case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+            case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
                 data = pd.read_excel(buffer)
             case _:
                 # tenta comunque di aprirlo yolo
@@ -29,10 +29,12 @@ class Docenti:
                 if data is None:
                     data = pd.read_csv(buffer)
                 if data is None:
-                    raise ValueError(f'File di tipo {magic.from_buffer(buffer, mime=True)} non supportato')
+                    raise ValueError(
+                        f"File di tipo {magic.from_buffer(buffer, mime=True)} non supportato"
+                    )
 
         for index, row in data.iterrows():
-            nome, cognome, sure = Docenti.parse_nome_cognome(row['Member Name'])
+            nome, cognome, sure = Docenti.parse_nome_cognome(row["Member Name"])
             Docente(nome, cognome).inserisci()
 
     def parse_nome_cognome(nome_cognome: str) -> tuple[str, str, bool]:
@@ -44,10 +46,10 @@ class Docenti:
         all'utente la segnalazione di queste incertezze e la possibilità di modificarle prima dell'inserimento.
         """
 
-        parti = nome_cognome.split(' ')
+        parti = nome_cognome.split(" ")
 
         if len(parti) == 1:
-            nome = ''
+            nome = ""
             cognome = parti[0]
             return nome, cognome, True
 
@@ -56,19 +58,42 @@ class Docenti:
             cognome = parti[1]
             return nome, cognome, True
 
-        if parti[-2].lower() in ['di', 'da', 'dal', 'dalla', 'dallo', 'dagli', 'dalle', 'dai', 'de', 'del', 'delle', 'dello', 'dei', 'degli', 'van', 'von']:
-            nome = ' '.join(parti[:-2])
-            cognome = ' '.join(parti[-2:])
+        if parti[-2].lower() in [
+            "di",
+            "da",
+            "dal",
+            "dalla",
+            "dallo",
+            "dagli",
+            "dalle",
+            "dai",
+            "de",
+            "del",
+            "delle",
+            "dello",
+            "dei",
+            "degli",
+            "van",
+            "von",
+        ]:
+            nome = " ".join(parti[:-2])
+            cognome = " ".join(parti[-2:])
             return nome, cognome, False
 
-        if len(parti) >= 4 and (parti[-3] + ' ' + parti[-2]).lower() in ['van der', 'von der', 'van den', 'von den']:
-            nome = ' '.join(parti[:-3])
-            cognome = ' '.join(parti[-3:])
+        if len(parti) >= 4 and (parti[-3] + " " + parti[-2]).lower() in [
+            "van der",
+            "von der",
+            "van den",
+            "von den",
+        ]:
+            nome = " ".join(parti[:-3])
+            cognome = " ".join(parti[-3:])
             return nome, cognome, False
 
-        nome = ' '.join(parti[:-1])
+        nome = " ".join(parti[:-1])
         cognome = parti[-1]
         return nome, cognome, False
+
 
 class Utenti:
     def from_file(filepath: Path | str):
@@ -76,7 +101,7 @@ class Utenti:
             filepath = Path(filepath)
 
         if not filepath.is_file():
-            raise FileNotFoundError(f'File {filepath} not found')
+            raise FileNotFoundError(f"File {filepath} not found")
 
         return Utenti.from_buffer(filepath.read_bytes())
 
@@ -84,9 +109,9 @@ class Utenti:
         data = None
 
         match magic.from_buffer(buffer, mime=True):
-            case 'text/csv':
+            case "text/csv":
                 data = pd.read_csv(buffer)
-            case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+            case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
                 data = pd.read_excel(buffer)
             case _:
                 # tenta comunque di aprirlo yolo
@@ -94,10 +119,15 @@ class Utenti:
                 if data is None:
                     data = pd.read_csv(buffer)
                 if data is None:
-                    raise ValueError(f'File di tipo {magic.from_buffer(buffer, mime=True)} non supportato')
+                    raise ValueError(
+                        f"File di tipo {magic.from_buffer(buffer, mime=True)} non supportato"
+                    )
 
         for index, row in data.iterrows():
-            print(row['Member Email'])
+            print(row["Member Email"])
 
-if __name__ == '__main__':
-    Utenti.from_file(r'/home/nxco/Downloads/Members_02jxsxqh2kqp4nx_11122023_163509.csv.xlsx')
+
+if __name__ == "__main__":
+    Utenti.from_file(
+        r"/home/nxco/Downloads/Members_02jxsxqh2kqp4nx_11122023_163509.csv.xlsx"
+    )

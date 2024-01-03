@@ -5,8 +5,8 @@ from sostituzioni.model.auth import login_required, role_required
 from sostituzioni.view.impostazioni import impostazioni
 
 
-@impostazioni.route('/impostazioni')
+@impostazioni.route("/impostazioni")
 @login_required
-@role_required('impostazioni.write')
+@role_required("impostazioni.write")
 def main():
-    return render_template('impostazioni.html', configurazione=configurazione)
+    return render_template("impostazioni.html", configurazione=configurazione)

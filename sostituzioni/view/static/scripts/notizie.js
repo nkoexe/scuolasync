@@ -32,8 +32,8 @@ function refresh_notizie() {
     })
 
     if (notizie_write) {
-      for (const notizia of document.getElementsByClassName("notizia")) {
-        notizia.oncontextmenu = (e) => { mostra_context_menu_notizia(e, notizia) }
-      }
-    }   
+        for (const notizia of document.getElementsByClassName("notizia")) {
+            notizia.oncontextmenu = (e) => { mostra_context_menu_notizia(e, notizia) }
+        }
+    }
 }

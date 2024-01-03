@@ -60,8 +60,8 @@ function refresh_eventi() {
     })
 
     if (eventi_write) {
-      for (const evento of document.getElementsByClassName("evento")) {
-        evento.oncontextmenu = (e) => { mostra_context_menu_evento(e, evento) }
-      }
+        for (const evento of document.getElementsByClassName("evento")) {
+            evento.oncontextmenu = (e) => { mostra_context_menu_evento(e, evento) }
+        }
     }
 }

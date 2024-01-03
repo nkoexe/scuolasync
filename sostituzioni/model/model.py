@@ -3,19 +3,28 @@ descr
 """
 from beartype._decor.decormain import beartype
 
-from sostituzioni.control.database import (database, ElementoDatabase,
-                                           Aula, Classe, Docente, OraPredefinita,
-                                           Sostituzione, Evento, Notizia,
-                                           Visualizzazione, Utente)
+from sostituzioni.control.database import (
+    database,
+    ElementoDatabase,
+    Aula,
+    Classe,
+    Docente,
+    OraPredefinita,
+    Sostituzione,
+    Evento,
+    Notizia,
+    Visualizzazione,
+    Utente,
+)
 
 
 class Docente(Docente):
-    def __init__(self,
-                 nome: str | None = None,
-                 cognome: str | None = None,
-                 cancellato: bool = False,
-                 ):
-
+    def __init__(
+        self,
+        nome: str | None = None,
+        cognome: str | None = None,
+        cancellato: bool = False,
+    ):
         self.nome = nome
         self.nome = nome
         self.cognome = cognome
@@ -23,19 +32,19 @@ class Docente(Docente):
 
 
 class Sostituzione(Sostituzione):
-    def __init__(self,
-                 id: int | None = None,
-                 aula: Aula | None = None,
-                 classe: Classe | None = None,
-                 docente: Docente | None = None,
-                 data: int | None = None,
-                 ora_inizio: str | None = None,
-                 ora_fine: str | None = None,
-                 ora_predefinita: OraPredefinita | None = None,
-                 note: str | None = None,
-                 pubblicato: bool = False
-                 ):
-
+    def __init__(
+        self,
+        id: int | None = None,
+        aula: Aula | None = None,
+        classe: Classe | None = None,
+        docente: Docente | None = None,
+        data: int | None = None,
+        ora_inizio: str | None = None,
+        ora_fine: str | None = None,
+        ora_predefinita: OraPredefinita | None = None,
+        note: str | None = None,
+        pubblicato: bool = False,
+    ):
         self.id = id
         self.aula = aula
         self.classe = classe
@@ -49,14 +58,14 @@ class Sostituzione(Sostituzione):
 
 
 class Evento(Evento):
-    def __init__(self,
-                 id: int | None = None,
-                 urgente: bool | None = None,
-                 data_ora_inizio: int | None = None,
-                 data_ora_fine: int | None = None,
-                 testo: str | None = None
-                 ):
-
+    def __init__(
+        self,
+        id: int | None = None,
+        urgente: bool | None = None,
+        data_ora_inizio: int | None = None,
+        data_ora_fine: int | None = None,
+        testo: str | None = None,
+    ):
         self.id = id
         self.urgente = urgente
         self.data_ora_inizio = data_ora_inizio
@@ -65,13 +74,13 @@ class Evento(Evento):
 
 
 class Notizia(Notizia):
-    def __init__(self,
-                 id: int | None = None,
-                 data_inizio: int | None = None,
-                 data_fine: int | None = None,
-                 testo: str | None = None
-                 ):
-
+    def __init__(
+        self,
+        id: int | None = None,
+        data_inizio: int | None = None,
+        data_fine: int | None = None,
+        testo: str | None = None,
+    ):
         self.id = id
         self.data_inizio = data_inizio
         self.data_fine = data_fine

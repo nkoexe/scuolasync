@@ -7,18 +7,18 @@ from sostituzioni.control.cli import database_cli, importer_cli
 
 app = Flask(__name__)
 
-app.static_folder = configurazione.get('flaskstaticdir').path
-app.template_folder = configurazione.get('flasktemplatedir').path
+app.static_folder = configurazione.get("flaskstaticdir").path
+app.template_folder = configurazione.get("flasktemplatedir").path
 
-app.config['SECRET_KEY'] = token_hex(32),
-app.config['SESSION_COOKIE_SECURE'] = True,
-app.config['SESSION_COOKIE_HTTPONLY'] = True,
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config["SECRET_KEY"] = token_hex(32)
+app.config["SESSION_COOKIE_SECURE"] = True
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
 # app.config['PERMANENT_SESSION_LIFETIME '] = timedelta(seconds=5)
 # app.config['SESSION_REFRESH_EACH_REQUEST '] = True
 
-app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 
 app.cli.add_command(database_cli)

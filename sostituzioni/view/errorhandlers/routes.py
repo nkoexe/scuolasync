@@ -9,7 +9,8 @@ def not_found(e):
     if current_user.is_authenticated:
         return "Non trovato", 404
 
-    return redirect(url_for('auth.login'))
+    return redirect(url_for("auth.login"))
+
 
 # @app.errorhandler(500)
 # def internal_error(e):
@@ -19,6 +20,9 @@ def not_found(e):
 @app.errorhandler(401)
 def unauthorized(e):
     if current_user.is_authenticated:
-        return f'Non hai accesso a questa pagina. Hai fatto il login con l\'account {current_user.id}, prova con un altro account.', 401
+        return (
+            f"Non hai accesso a questa pagina. Hai fatto il login con l'account {current_user.id}, prova con un altro account.",
+            401,
+        )
     else:
-        return redirect(url_for('auth.login'))
+        return redirect(url_for("auth.login"))

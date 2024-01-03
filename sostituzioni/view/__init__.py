@@ -8,25 +8,27 @@ from sostituzioni.model.app import app
 
 logger = logging.getLogger(__name__)
 
-app.wsgi_app = ProxyFix(
-    app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
-)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
 csrf = CSRFProtect(app)
 socketio = SocketIO(app, manage_session=True)
 
 from sostituzioni.view.errorhandlers import routes
 
-logger.debug('Importing blueprints..')
+logger.debug("Importing blueprints..")
 from sostituzioni.view.impostazioni import impostazioni as impostazioni_blueprint
 from sostituzioni.view.auth import auth as auth_blueprint
-from sostituzioni.view.visualizzazionefisica import fisica as visualizzazionefisica_blueprint
-from sostituzioni.view.visualizzazioneonline import online as visualizzazioneonline_blueprint
+from sostituzioni.view.visualizzazionefisica import (
+    fisica as visualizzazionefisica_blueprint,
+)
+from sostituzioni.view.visualizzazioneonline import (
+    online as visualizzazioneonline_blueprint,
+)
 
 app.register_blueprint(impostazioni_blueprint)
 app.register_blueprint(auth_blueprint)
 app.register_blueprint(visualizzazionefisica_blueprint)
 app.register_blueprint(visualizzazioneonline_blueprint)
 
-logger.debug('All blueprints registered')
-logger.info('System ready')
+logger.debug("All blueprints registered")
+logger.info("System ready")

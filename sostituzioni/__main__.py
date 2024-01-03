@@ -5,5 +5,5 @@ from sostituzioni.app import app
 from sostituzioni.view import socketio
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     socketio.run(app, use_reloader=True)
