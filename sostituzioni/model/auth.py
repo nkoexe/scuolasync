@@ -45,12 +45,22 @@ class User(UserMixin, Utente):
 
 
 def role_required(role):
+    """
+    Usage:
+    ```
+    @login_requided
+    @role_required('sostituzioni.write')
+    def protected():
+        ...
+    ```
+    """
+
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            if role in current_user.permessi:
+            if role in current_user.ruolo.nomi_permesso:
                 return func(*args, **kwargs)
-            return abort(403)
+            return abort(401)
         return wrapper
     return decorator
 
@@ -97,7 +107,7 @@ def authenticate_user(email):
 
     user = User(email)
 
-    logger.info(f'Utente {email} ({user.ruolo}) ha eseguito l\'accesso al sistema.')
+    logger.info(f'Utente {email} ({user.ruolo.nome}) ha eseguito l\'accesso al sistema.')
 
     session.permanent = True
     login_user(user)

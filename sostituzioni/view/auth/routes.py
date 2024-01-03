@@ -2,7 +2,7 @@ import logging
 from flask import render_template, redirect, url_for, request
 
 from sostituzioni.control.configurazione import configurazione
-from sostituzioni.model.auth import current_user, login_required, permesso, sso_login, logout_user, GOOGLE_SSO_REQ_URI
+from sostituzioni.model.auth import current_user, login_manager, login_required, permesso, sso_login, logout_user, GOOGLE_SSO_REQ_URI
 from sostituzioni.view.auth import auth
 
 
@@ -21,7 +21,7 @@ def login():
 
     # 3 lines of development speedup, remove in production pls ty
     from sostituzioni.model.auth import authenticate_user
-    authenticate_user('niccolo.ragazzi@gandhimerano.com')
+    authenticate_user('testa')
     return redirect(url_for('online.index'))
 
     return render_template('login.html', title=configurazione.get('systitle'))

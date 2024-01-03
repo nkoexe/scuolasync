@@ -443,8 +443,8 @@ class Docente(ElementoDatabaseConStorico):
     def inserisci(self):
         return self.DATABASE.insert(self.TABLENAME, nome=self.nome, cognome=self.cognome, cancellato=self.cancellato)
 
-    def trova(nome_cognome):
-        return database.get_one('docente', ('nome', 'cognome'), where=Where('(nome || " " || cognome)').equals(nome_cognome))
+    def trova(cognome_nome):
+        return database.get_one('docente', ('cognome', 'nome'), where=Where('(cognome || " " || nome)').LIKE(cognome_nome))
 
     # @beartype
     # def __init__(self, nome: str, cognome: str, cancellato: bool):
@@ -1096,11 +1096,32 @@ class Ruolo(ElementoDatabase):
 
     def __init__(self, nome: str):
         self.nome = nome
-        self.permessi = []
+        self.nomi_permesso = []
+
+        class permessi:
+            class notizie:
+                read = False
+                write = False
+
+            class eventi:
+                read = False
+                write = False
+
+            class sostituzioni:
+                read = False
+                write = False
+
+            class impostazioni:
+                write = False
+
+        self.permessi = permessi()
 
         for relazione in self.DATABASE.get('permesso_per_ruolo'):
             if relazione['nome_ruolo'] == self.nome:
-                self.permessi.append(relazione['permesso_ruolo'])
+                self.nomi_permesso.append(relazione['permesso_ruolo'])
+
+                permesso, livello = relazione['permesso_ruolo'].split('.')
+                setattr(getattr(self.permessi, permesso), livello, True)
 
 
 class Utente(ElementoDatabase):

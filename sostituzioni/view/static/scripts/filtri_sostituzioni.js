@@ -50,7 +50,7 @@ function sostituzioni_applica_filtri() {
         sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.numero_aula === sostituzioni_filtro_aula.selected)
     }
     if (sostituzioni_filtro_docente.selected !== null) {
-        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.nome_docente + " " + element.cognome_docente === sostituzioni_filtro_docente.selected)
+        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.cognome_docente + " " + element.nome_docente === sostituzioni_filtro_docente.selected)
     }
     if (sostituzioni_filtro_note.selected !== null) {
         // todo: implement fuzzy search
@@ -119,9 +119,9 @@ function sostituzioni_ordina() {
     }
     if (sostituzioni_filtro_docente.ordina) {
         if (sostituzioni_filtro_docente.verso_ordinamento === 1)
-            sostituzioni_visualizzate.sort((a, b) => b.nome_docente.localeCompare(a.nome_docente) || b.cognome_docente.localeCompare(a.cognome_docente))
+            sostituzioni_visualizzate.sort((a, b) => b.cognome_docente.localeCompare(a.cognome_docente) || b.nome_docente.localeCompare(a.nome_docente))
         else
-            sostituzioni_visualizzate.sort((a, b) => a.nome_docente.localeCompare(b.nome_docente) || a.cognome_docente.localeCompare(b.cognome_docente))
+            sostituzioni_visualizzate.sort((a, b) => a.cognome_docente.localeCompare(b.cognome_docente) || a.nome_docente.localeCompare(b.nome_docente))
     }
 
     refresh_sostituzioni()
@@ -130,7 +130,7 @@ function sostituzioni_ordina() {
 let sostituzioni_filtro_ora = new Filtro({ id: "sostituzioni-filtro-ora", filtra_lista: prendi_ora, render: element => element.length == 1 ? element + "a ora" : element })
 let sostituzioni_filtro_classe = new Filtro({ id: "sostituzioni-filtro-classe", filtra_lista: prendi_nome })
 let sostituzioni_filtro_aula = new Filtro({ id: "sostituzioni-filtro-aula", filtra_lista: prendi_numero })
-let sostituzioni_filtro_docente = new Filtro({ id: "sostituzioni-filtro-docente", filtra_lista: prendi_nome_cognome })
+let sostituzioni_filtro_docente = new Filtro({ id: "sostituzioni-filtro-docente", filtra_lista: prendi_cognome_nome })
 let sostituzioni_filtro_note = new Filtro({ id: "sostituzioni-filtro-note", ordinamento: false })
 
 

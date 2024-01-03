@@ -2,7 +2,7 @@ import logging
 from flask_socketio import emit
 
 from sostituzioni.model.model import Aula, Classe, Docente, OraPredefinita, Sostituzione, Evento, Notizia
-from sostituzioni.model.auth import login_required
+from sostituzioni.model.auth import login_required, role_required, current_user
 from sostituzioni.view import socketio
 
 logger = logging.getLogger(__name__)
@@ -69,6 +69,7 @@ def richiesta_notizie(filtri):
 
 @socketio.on('nuova sostituzione')
 @login_required
+@role_required('sostituzioni.write')
 def nuova_sostituzione(data):
     logger.debug(f'Ricevuto dati per inserimento nuova sostituzione: {data}')
 
@@ -84,6 +85,7 @@ def nuova_sostituzione(data):
 
 @socketio.on('modifica sostituzione')
 @login_required
+@role_required('sostituzioni.write')
 def modifica_sostituzione(data):
     logger.debug(f'Ricevuto dati modifica sostituzione: {data}')
 
@@ -94,6 +96,7 @@ def modifica_sostituzione(data):
 
 @socketio.on('elimina sostituzione')
 @login_required
+@role_required('sostituzioni.write')
 def elimina_sostituzione(data):
     logger.debug(f'Ricevuto segnale eliminazione sostituzione: {data}')
 
@@ -104,6 +107,7 @@ def elimina_sostituzione(data):
 
 @socketio.on('nuovo evento')
 @login_required
+@role_required('eventi.write')
 def nuovo_evento(data):
     logger.debug(f'Ricevuto dati per inserimento nuovo evento: {data}')
 
@@ -114,6 +118,7 @@ def nuovo_evento(data):
 
 @socketio.on('modifica evento')
 @login_required
+@role_required('eventi.write')
 def modifica_evento(data):
     logger.debug(f'Ricevuto dati modifica evento: {data}')
 
@@ -124,6 +129,7 @@ def modifica_evento(data):
 
 @socketio.on('elimina evento')
 @login_required
+@role_required('eventi.write')
 def elimina_evento(data):
     logger.debug(f'Ricevuto segnale eliminazione evento: {data}')
 
@@ -134,6 +140,7 @@ def elimina_evento(data):
 
 @socketio.on('nuova notizia')
 @login_required
+@role_required('notizie.write')
 def nuova_notizia(data: dict):
     logger.debug(f'Ricevuto dati per inserimento nuova notizia: {data}')
 
@@ -144,6 +151,7 @@ def nuova_notizia(data: dict):
 
 @socketio.on('modifica notizia')
 @login_required
+@role_required('notizie.write')
 def modifica_notizia(data):
     logger.debug(f'Ricevuto dati modifica notizia: {data}')
 
@@ -154,6 +162,7 @@ def modifica_notizia(data):
 
 @socketio.on('elimina notizia')
 @login_required
+@role_required('notizie.write')
 def elimina_notizia(data):
     logger.debug(f'Ricevuto segnale eliminazione notizia: {data}')
 

@@ -1,7 +1,7 @@
 from flask import render_template, request
 
 from sostituzioni.control.configurazione import configurazione
-from sostituzioni.model.auth import login_required, role_required
+from sostituzioni.model.auth import login_required, role_required, current_user
 from sostituzioni.view.visualizzazioneonline import online
 
 
@@ -19,7 +19,7 @@ def test():
 @online.route('/')
 @login_required
 def index():
-    return render_template('index.html', title=configurazione.get('systitle'), configurazione=configurazione)
+    return render_template('index.html', title=configurazione.get('systitle'), configurazione=configurazione, utente=current_user)
 
 
 @online.route('/testone')

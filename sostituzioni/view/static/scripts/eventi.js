@@ -59,7 +59,9 @@ function refresh_eventi() {
         add_evento_to_ui_list(element.id, element.pubblicato, element.urgente, element.data_ora_inizio, element.data_ora_fine, element.testo)
     })
 
-    for (const evento of document.getElementsByClassName("evento")) {
+    if (eventi_write) {
+      for (const evento of document.getElementsByClassName("evento")) {
         evento.oncontextmenu = (e) => { mostra_context_menu_evento(e, evento) }
+      }
     }
 }

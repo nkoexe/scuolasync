@@ -5,7 +5,7 @@ from flask_socketio import emit
 
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.control.importer import Docenti
-from sostituzioni.model.auth import login_required
+from sostituzioni.model.auth import login_required, role_required
 from sostituzioni.view import socketio
 
 
@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 @socketio.on('applica impostazioni', namespace='/impostazioni')
 @login_required
+@role_required('impostazioni.write')
 def applica(dati):
     logger.debug(f'ricevuto: {dati}')
 
@@ -27,6 +28,7 @@ def applica(dati):
 
 @socketio.on('server reboot', namespace='/impostazioni')
 @login_required
+@role_required('impostazioni.write')
 def reboot():
 
     if os.name == 'nt':
@@ -37,10 +39,11 @@ def reboot():
 
 @socketio.on('server update', namespace='/impostazioni')
 @login_required
+@role_required('impostazioni.write')
 def update():
     rootpath = configurazione.get('rootpath').path
-    # "/sostituzioni/sostituzioni", git è un livello più alto
 
+    # "/sostituzioni/sostituzioni", git è un livello più alto
     repopath = rootpath.parent
 
     os.chdir(repopath)
@@ -51,5 +54,6 @@ def update():
 
 @socketio.on('importa docenti', namespace='/impostazioni')
 @login_required
+@role_required('impostazioni.write')
 def importa_docenti(file_bytearray):
     Docenti.from_buffer(file_bytearray)

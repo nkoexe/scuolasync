@@ -3,12 +3,15 @@ from flask.cli import AppGroup
 from os import system
 
 from sostituzioni.control.configurazione import configurazione
+from sostituzioni.control.importer import Docenti, Utenti 
 
 
 database_cli = AppGroup('database')
 
 database_utenti_cli = AppGroup('utenti')
 database_cli.add_command(database_utenti_cli)
+
+importer_cli = AppGroup('importa')
 
 
 @database_cli.command('crea')
@@ -170,3 +173,15 @@ def elimina_db_utenti(nome):
     dbpath.unlink()
 
     print('Database eliminato.')
+
+
+@importer_cli.command('docenti')
+@click.argument('file', type=click.File('rb'))
+def importa_docenti(file):
+    Docenti.from_buffer(file.read())
+
+
+@importer_cli.command('utenti')
+@click.argument('file', type=click.File('rb'))
+def importa_utenti(file):
+    Utenti.from_buffer(file.read())

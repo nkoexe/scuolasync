@@ -15,6 +15,8 @@ app.wsgi_app = ProxyFix(
 csrf = CSRFProtect(app)
 socketio = SocketIO(app, manage_session=True)
 
+from sostituzioni.view.errorhandlers import routes
+
 logger.debug('Importing blueprints..')
 from sostituzioni.view.impostazioni import impostazioni as impostazioni_blueprint
 from sostituzioni.view.auth import auth as auth_blueprint

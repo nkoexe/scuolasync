@@ -23,7 +23,9 @@
     <div id="header-separator"></div>
     <h1 id="header-titolo">{{title}}</h1>
     <div id="header-pulsanti">
+      {% if utente.permessi.impostazioni.write %}
       <a href="{{ url_for('impostazioni.main')}}"><span class="material-symbols-rounded">settings</span></a>
+      {% endif %}
       <a id="pulsante-logout" href="{{ url_for('auth.logout')}}"><span class="material-symbols-rounded">logout</span></a>
       <div id="fun"></div>
     </div>
@@ -35,7 +37,9 @@
           <h2 id="header-eventi-titolo">Eventi</h2>
           <div id="header-eventi-pulsanti">
             <div id="eventi-filtro-data" class="has-tooltip"><span class="material-symbols-rounded">calendar_month</span><span class="tooltip tooltip-bottom">Filtro degli eventi per data (non ancora implementato)</span></div>
+            {% if utente.permessi.eventi.write %}
             <div id="pulsante-nuovo-evento" class="pulsante pulsante-inserimento" onclick="mostra_nuovo_evento()"><span class="material-symbols-rounded">add</span></div>
+            {% endif %}
           </div>
         </div>
         <div id="eventi-container">
@@ -47,7 +51,9 @@
       <div id="notizie-frame" class="frame">
         <div id="header-notizie">
           <h2 id="header-notizie-titolo">Notizie</h2>
+          {% if utente.permessi.notizie.write %}
           <div id="pulsante-nuova-notizia" class="pulsante pulsante-inserimento" onclick="mostra_nuova_notizia()"><span class="material-symbols-rounded">add</span></div>
+          {% endif %}
         </div>
         <div id="notizie-container">
           <div id="notizie-lista-container">
@@ -59,10 +65,14 @@
         <div id="header-sostituzioni">
           <h2 id="header-sostituzioni-titolo">Sostituzioni</h2>
           <div id="pulsanti-header-sostituzioni">
+            {% if utente.permessi.sostituzioni.write %}
             <div id="pulsante-esporta-sostituzioni" class="has-tooltip"><span class="material-symbols-rounded">export_notes</span><span class="tooltip">Esportazione dei dati</span></div>
+            {% endif %}
             <div id="pulsante-refresh-sostituzioni" class="has-tooltip" onclick="ui_refresh_sostituzioni()"><span class="material-symbols-rounded">sync</span><span class="tooltip">Ricarica lista di sostituzioni</span></div>
           </div>
+          {% if utente.permessi.sostituzioni.write %}
           <div id="pulsante-nuova-sostituzione" class="pulsante pulsante-inserimento" onclick="mostra_nuova_sostituzione()"><span class="material-symbols-rounded icon">add</span><span class="text">Nuova</span></div>
+          {% endif %}
         </div>
         <div id="sostituzioni-main">
           <div id="sostituzioni-container">
@@ -70,7 +80,7 @@
               <div id="sostituzioni-filtro-data" tabindex="0">
                 <span id="sostituzione-filtro-data-testo">Data</span>
                 <div class="sostituzioni-ordinamento has-tooltip">
-                  <span class="tooltip tooltip-bottom">Ordinamento per data non ancora implementato, grazie per la pazienza :)</span>
+                  <span class="tooltip tooltip-bottom">Ordinamento per data, non ancora implementato</span>
                   <div class="sostituzioni-ordinamento-arrowup"></div>
                   <div class="sostituzioni-ordinamento-arrowdown"></div>
                 </div>
@@ -162,6 +172,7 @@
         </div>
       </div>
     </div>
+    {% if utente.ruolo.nome != 'visualizzatore' %}
     <div id="gestione-dati-container" class="hidden">
       <div id="gestione-dati-frame">
         <h1 id="gestione-dati-titolo">Gestione Dati</h1>
@@ -271,7 +282,9 @@
         <div id="pulsante-chiudi-gestione-dati" onclick="nascondi_gestione_dati()"><span class="material-symbols-rounded">close</span></div>
       </div>
     </div>
+    {% endif %}
   </div>
+  {% if current_user.ruolo != 'visualizzatore' %}
   <div id="context-menu" class="hidden" tabindex="0">
     <div id="dialog-conferma-elimina" class="hidden">
       <div id="dialog-conferma-elimina-titolo-container"><span class="material-symbols-rounded icon">error</span><span id="dialog-conferma-elimina-titolo" class="titolo"></span></div>
@@ -284,8 +297,13 @@
     <div id="pulsanti-context-menu">
     </div>
   </div>
+  {% endif %}
   <script>
     const messaggio_nessuna_sostituzione = "{{ configurazione.get('nosostituzionimsg') }}"
+
+    const notizie_write = {{ utente.permessi.notizie.write | tojson }}
+    const eventi_write = {{ utente.permessi.eventi.write | tojson }}
+    const sostituzioni_write = {{ utente.permessi.sostituzioni.write | tojson }}
 
     let eventi = []
     let notizie = []
@@ -304,10 +322,12 @@
   <script src="{{url_for('static', filename='scripts/notizie.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/sostituzioni.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/filtri_sostituzioni.js')}}"></script>
+  {% if utente.ruolo.nome != 'visualizzatore' %}
   <script src="{{url_for('static', filename='scripts/gestione_dati.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/gestione_dati_sostituzione.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/gestione_dati_evento.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/gestione_dati_notizia.js')}}"></script>
+  {% endif %}
   <script src="{{url_for('static', filename='scripts/onlinesocket.js')}}"></script>
 </body>
 

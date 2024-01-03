@@ -2,7 +2,7 @@ from flask import Flask
 from secrets import token_hex
 
 from sostituzioni.control.configurazione import configurazione
-from sostituzioni.control.cli import database_cli
+from sostituzioni.control.cli import database_cli, importer_cli
 
 
 app = Flask(__name__)
@@ -22,7 +22,7 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 
 app.cli.add_command(database_cli)
-
+app.cli.add_command(importer_cli)
 
 # @app.before_request
 # def before_request():

@@ -197,3 +197,13 @@ function mostra_context_menu(elemento) {
         elemento.classList.remove("context-menu-active")
     }
 }
+
+
+for (const element of document.getElementsByClassName("tooltip")) {
+    let rect = element.getBoundingClientRect();
+
+    if (rect.right > window.innerWidth) {
+        // move the tooltip to the left but leave the after element in its place
+        element.style.translate = "-" + (rect.width / 2 + (rect.right - window.innerWidth)) + "px" + " 0";
+    }
+}

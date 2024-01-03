@@ -14,7 +14,7 @@ const ui_sostituzione_html_template = `
     <span>{numero_aula}</span>
   </div>
   <div class="sostituzione-data sostituzione-docente">
-    <span>{nome_docente} {cognome_docente}</span>
+    <span>{cognome_docente} {nome_docente}</span>
   </div>
   <div class="sostituzione-data sostituzione-note">
     <span>{note}</span>
@@ -64,7 +64,9 @@ function refresh_sostituzioni() {
     })
   }
 
-  for (const sostituzione of document.getElementsByClassName("sostituzione")) {
-    sostituzione.oncontextmenu = (e) => { mostra_context_menu_sostituzione(e, sostituzione) }
+  if (sostituzioni_write) {
+    for (const sostituzione of document.getElementsByClassName("sostituzione")) {
+      sostituzione.oncontextmenu = (e) => { mostra_context_menu_sostituzione(e, sostituzione) }
+    }
   }
 }

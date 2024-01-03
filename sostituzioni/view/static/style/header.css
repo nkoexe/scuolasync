@@ -67,7 +67,7 @@
     z-index: 132456;
     background-color: #C00F19;
     border-radius: 100vw;
-    transition: all 0.25s;
+    transition: all 0.35s;
 }
 
 @media (max-width: 600px) {

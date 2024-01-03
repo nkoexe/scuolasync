@@ -31,7 +31,9 @@ function refresh_notizie() {
         add_notizia_to_ui_list(element.id, element.pubblicato, element.data_ora_inizio, element.data_ora_fine, element.testo)
     })
 
-    for (const notizia of document.getElementsByClassName("notizia")) {
+    if (notizie_write) {
+      for (const notizia of document.getElementsByClassName("notizia")) {
         notizia.oncontextmenu = (e) => { mostra_context_menu_notizia(e, notizia) }
-    }
+      }
+    }   
 }

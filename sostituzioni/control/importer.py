@@ -70,6 +70,34 @@ class Docenti:
         cognome = parti[-1]
         return nome, cognome, False
 
+class Utenti:
+    def from_file(filepath: Path | str):
+        if isinstance(filepath, str):
+            filepath = Path(filepath)
+
+        if not filepath.is_file():
+            raise FileNotFoundError(f'File {filepath} not found')
+
+        return Utenti.from_buffer(filepath.read_bytes())
+
+    def from_buffer(buffer: bytes):
+        data = None
+
+        match magic.from_buffer(buffer, mime=True):
+            case 'text/csv':
+                data = pd.read_csv(buffer)
+            case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                data = pd.read_excel(buffer)
+            case _:
+                # tenta comunque di aprirlo yolo
+                data = pd.read_excel(buffer)
+                if data is None:
+                    data = pd.read_csv(buffer)
+                if data is None:
+                    raise ValueError(f'File di tipo {magic.from_buffer(buffer, mime=True)} non supportato')
+
+        for index, row in data.iterrows():
+            print(row['Member Email'])
 
 if __name__ == '__main__':
-    Docenti.from_file(r"C:\Users\nicco\Downloads\Members_02jxsxqh2kqp4nx_11122023_163509.csv.xlsx")
+    Utenti.from_file(r'/home/nxco/Downloads/Members_02jxsxqh2kqp4nx_11122023_163509.csv.xlsx')

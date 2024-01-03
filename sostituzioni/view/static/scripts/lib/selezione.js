@@ -160,4 +160,4 @@ class Selezione {
 function prendi_ora(ore_predefinite) { return Array.from(ore_predefinite, (ora) => ora.numero) }
 function prendi_nome(classi) { return Array.from(classi, (classe) => classe.nome) }
 function prendi_numero(aule) { return Array.from(aule, (aula) => aula.numero) }
-function prendi_nome_cognome(docenti) { return Array.from(docenti, (docente) => docente.nome + ' ' + docente.cognome) }
+function prendi_cognome_nome(docenti) { return Array.from(docenti, (docente) => docente.cognome + ' ' + docente.nome) }
