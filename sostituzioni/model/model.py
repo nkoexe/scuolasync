@@ -15,6 +15,7 @@ from sostituzioni.control.database import (
     Notizia,
     Visualizzazione,
     Utente,
+    Ruolo,
 )
 
 

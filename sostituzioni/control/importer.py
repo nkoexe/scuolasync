@@ -2,7 +2,7 @@ from pathlib import Path
 import pandas as pd
 import magic
 
-from sostituzioni.model.model import Docente
+from sostituzioni.model.model import Docente, Utente, Ruolo
 
 
 class Docenti:
@@ -113,6 +113,8 @@ class Utenti:
                 data = pd.read_csv(buffer)
             case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
                 data = pd.read_excel(buffer)
+            case "application/vnd.ms-excel":
+                data = pd.read_excel(buffer)
             case _:
                 # tenta comunque di aprirlo yolo
                 data = pd.read_excel(buffer)
@@ -123,11 +125,7 @@ class Utenti:
                         f"File di tipo {magic.from_buffer(buffer, mime=True)} non supportato"
                     )
 
+        ruolo_default = Ruolo("visualizzatore")
+
         for index, row in data.iterrows():
-            print(row["Member Email"])
-
-
-if __name__ == "__main__":
-    Utenti.from_file(
-        r"/home/nxco/Downloads/Members_02jxsxqh2kqp4nx_11122023_163509.csv.xlsx"
-    )
+            Utente(row["Member Email"], ruolo_default).inserisci()

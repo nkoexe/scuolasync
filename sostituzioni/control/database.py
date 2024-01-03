@@ -265,7 +265,7 @@ class Database:
         columns = ", ".join(data.keys())
         values = ", ".join("?" for i in data)
 
-        query = f"INSERT INTO {table} ({columns}) VALUES({values});"
+        query = f"INSERT {'OR IGNORE ' if or_ignore else ''}INTO {table} ({columns}) VALUES({values});"
 
         self.connect()
         self.execute(query, data.values())
@@ -1248,14 +1248,17 @@ class Utente(ElementoDatabase):
 
     def inserisci(self):
         id = self.DATABASE.insert(
-            self.TABLENAME, email=self.email, ruolo=self.ruolo.nome
+            self.TABLENAME, email=self.email, ruolo=self.ruolo.nome, or_ignore=True
         )
 
         self.id = id
 
     @beartype
-    def __init__(self, email: str, ruolo: Ruolo):
+    def __init__(self, email: str, ruolo: Ruolo | str):
         super(Utente, self).__init__()
+
+        if isinstance(ruolo, str):
+            ruolo = Ruolo(ruolo)
 
         self.email = email
         self.ruolo = ruolo
