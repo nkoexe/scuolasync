@@ -16,7 +16,8 @@ socket.on("lista sostituzioni", (data) => {
     sostituzioni = data
 
     for (const sostituzione of sostituzioni) {
-        sostituzione.cognome_docente = sostituzione.cognome_docente.toUpperCase();
+        if (sostituzione.cognome_docente)
+            sostituzione.cognome_docente = sostituzione.cognome_docente.toUpperCase();
     }
 
     sostituzioni_visualizzate = sostituzioni
@@ -47,7 +48,8 @@ socket.on("lista docenti", (data) => {
     docenti = data
 
     for (const docente of docenti) {
-        docente.cognome = docente.cognome.toUpperCase();
+        if (docente.cognome)
+            docente.cognome = docente.cognome.toUpperCase();
     }
 
     docenti.sort((a, b) => a.cognome.localeCompare(b.cognome) || a.nome.localeCompare(b.nome));

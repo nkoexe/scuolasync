@@ -74,10 +74,14 @@ function mostra_modifica_sostituzione(id) {
     gestione_dati_sostituzione_ora_predefinita.valore = sostituzione.numero_ora_predefinita;
     gestione_dati_sostituzione_ora_inizio.value = sostituzione.ora_inizio;
     gestione_dati_sostituzione_ora_fine.value = sostituzione.ora_fine;
-    gestione_dati_sostituzione_docente.valore = sostituzione.nome_docente + ' ' + sostituzione.cognome_docente;
     gestione_dati_sostituzione_classe.valore = sostituzione.nome_classe;
     gestione_dati_sostituzione_aula.valore = sostituzione.numero_aula;
     gestione_dati_sostituzione_note.valore = sostituzione.note;
+    if (sostituzione.cognome_docente) {
+        gestione_dati_sostituzione_docente.valore = sostituzione.cognome_docente + ' ' + sostituzione.nome_docente;
+    } else {
+        gestione_dati_sostituzione_docente.valore = ''
+    }
 
     mostra_gestione_sostituzione();
     ui_titolo_gestione_dati.innerHTML = 'Modifica Sostituzione';
@@ -113,10 +117,14 @@ function mostra_duplica_sostituzione(id) {
     gestione_dati_sostituzione_ora_predefinita.valore = sostituzione.numero_ora_predefinita;
     gestione_dati_sostituzione_ora_inizio.value = sostituzione.ora_inizio;
     gestione_dati_sostituzione_ora_fine.value = sostituzione.ora_fine;
-    gestione_dati_sostituzione_docente.valore = sostituzione.nome_docente + ' ' + sostituzione.cognome_docente;
     gestione_dati_sostituzione_classe.valore = sostituzione.nome_classe;
     gestione_dati_sostituzione_aula.valore = sostituzione.numero_aula;
     gestione_dati_sostituzione_note.valore = sostituzione.note;
+    if (sostituzione.cognome_docente) {
+        gestione_dati_sostituzione_docente.valore = sostituzione.cognome_docente + ' ' + sostituzione.nome_docente;
+    } else {
+        gestione_dati_sostituzione_docente.valore = ''
+    }
 
     mostra_gestione_sostituzione();
     ui_titolo_gestione_dati.innerHTML = 'Modifica Sostituzione Duplicata';

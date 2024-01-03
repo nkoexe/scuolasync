@@ -10,7 +10,7 @@ from sostituzioni.model.model import (
     Evento,
     Notizia,
 )
-from sostituzioni.model.auth import login_required, role_required, current_user
+from sostituzioni.model.auth import login_required, role_required, logout_user
 from sostituzioni.view import socketio
 
 logger = logging.getLogger(__name__)
@@ -28,6 +28,12 @@ def connect():
     emit("lista classi", Classe.load())
     emit("lista docenti", Docente.load())
     emit("lista ore predefinite", OraPredefinita.load())
+
+
+@socketio.on("disconnect")
+def disconnect():
+    #! does not work at the moment
+    logout_user()
 
 
 @socketio.on("richiesta sostituzioni")

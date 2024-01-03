@@ -140,15 +140,3 @@ def load_user(user_id):
 @login_manager.unauthorized_handler
 def unauthorized():
     return redirect(url_for("auth.login"))
-
-
-class permesso:
-    def visualizza_notizie(func):
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            if not current_user.ruoli:
-                abort(403)
-
-            return func(*args, **kwargs)
-
-        return wrapper

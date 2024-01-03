@@ -203,7 +203,11 @@ class Database:
         where: Where | None = None,
         load_lists: bool = True,
     ) -> SearchableList:
-        return self.get(table, columns, where, None, 1, load_lists)[0]
+        data = self.get(table, columns, where, None, 1, load_lists)
+
+        if len(data) > 0:
+            return data[0]
+        return None
 
     def load_lists(self, table_name: str, rows: SearchableList):
         """
@@ -798,8 +802,12 @@ class Sostituzione(ElementoDatabaseConStorico):
             self._cognome_docente = new.cognome
         elif isinstance(new, str):
             docente = Docente.trova(new)
-            self._nome_docente = docente["nome"]
-            self._cognome_docente = docente["cognome"]
+            if docente:
+                self._nome_docente = docente["nome"]
+                self._cognome_docente = docente["cognome"]
+            else:
+                self._nome_docente = None
+                self._cognome_docente = None
 
     @property
     def data(self):
@@ -1269,8 +1277,6 @@ class Utente(ElementoDatabase):
     @ruolo.setter
     def ruolo(self, new: Ruolo):
         self._ruolo = new
-        self.permessi = new.permessi
-        self.nomi_permesso = new.nomi_permesso
 
 
 # For efficiency purposes, handle users in memory
