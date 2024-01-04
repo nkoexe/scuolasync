@@ -1,6 +1,6 @@
 class Filtro extends Selezione {
-    constructor({ id, ordinamento, filtra_lista, render }) {
-        super({ id: id, callback: sostituzioni_applica_filtri, filtra_lista: filtra_lista, render: render })
+    constructor({ id, ordinamento, filtra_lista, render, select_on_keydown }) {
+        super({ id: id, callback: sostituzioni_applica_filtri, filtra_lista: filtra_lista, render: render, select_on_keydown: select_on_keydown })
 
         this.ordinamento = ordinamento
         this.ordinamento = (typeof this.ordinamento === "undefined") ? true : this.ordinamento
@@ -26,13 +26,13 @@ class Filtro extends Selezione {
                 }
 
                 this.ordina = true
-                sostituzioni_ordina()
+                refresh_sostituzioni()
                 this.ordina = false
             }
         }
     }
 
-    rimuovi_ordinamento() {
+    ui_rimuovi_ordinamento() {
         this.ui_ordinamento_frecciasu.classList.remove("selected")
         this.ui_ordinamento_frecciagiu.classList.remove("selected")
     }
@@ -54,74 +54,7 @@ function sostituzioni_applica_filtri() {
     }
     if (sostituzioni_filtro_note.selected !== null) {
         // todo: implement fuzzy search
-        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.note === sostituzioni_filtro_note.selected)
-    }
-
-    sostituzioni_ordina()
-}
-
-function sostituzioni_ordina() {
-    if (!sostituzioni_filtro_ora.ordina) {
-        sostituzioni_filtro_ora.rimuovi_ordinamento()
-        sostituzioni_filtro_ora.verso_ordinamento = 1
-    }
-    if (!sostituzioni_filtro_classe.ordina) {
-        sostituzioni_filtro_classe.rimuovi_ordinamento()
-        sostituzioni_filtro_classe.verso_ordinamento = 1
-    }
-    if (!sostituzioni_filtro_aula.ordina) {
-        sostituzioni_filtro_aula.rimuovi_ordinamento()
-        sostituzioni_filtro_aula.verso_ordinamento = 1
-    }
-    if (!sostituzioni_filtro_docente.ordina) {
-        sostituzioni_filtro_docente.rimuovi_ordinamento()
-        sostituzioni_filtro_docente.verso_ordinamento = 1
-    }
-
-    if (sostituzioni_filtro_ora.ordina) {
-        if (sostituzioni_filtro_ora.verso_ordinamento === 1) {
-            sostituzioni_visualizzate.sort((a, b) => {
-                if (a.numero_ora_predefinita === null && b.numero_ora_predefinita === null) {
-                    return b.ora_inizio.localeCompare(a.ora_inizio)
-                } else if (a.numero_ora_predefinita === null) {
-                    return 1
-                } else if (b.numero_ora_predefinita === null) {
-                    return -1
-                } else {
-                    return b.numero_ora_predefinita - a.numero_ora_predefinita
-                }
-            })
-        } else {
-            sostituzioni_visualizzate.sort((a, b) => {
-                if (a.numero_ora_predefinita === null && b.numero_ora_predefinita === null) {
-                    return a.ora_inizio.localeCompare(b.ora_inizio)
-                } else if (a.numero_ora_predefinita === null) {
-                    return 1
-                } else if (b.numero_ora_predefinita === null) {
-                    return -1
-                } else {
-                    return a.numero_ora_predefinita - b.numero_ora_predefinita
-                }
-            })
-        }
-    }
-    if (sostituzioni_filtro_classe.ordina) {
-        if (sostituzioni_filtro_classe.verso_ordinamento === 1)
-            sostituzioni_visualizzate.sort((a, b) => b.nome_classe.localeCompare(a.nome_classe))
-        else
-            sostituzioni_visualizzate.sort((a, b) => a.nome_classe.localeCompare(b.nome_classe))
-    }
-    if (sostituzioni_filtro_aula.ordina) {
-        if (sostituzioni_filtro_aula.verso_ordinamento === 1)
-            sostituzioni_visualizzate.sort((a, b) => b.numero_aula.localeCompare(a.numero_aula))
-        else
-            sostituzioni_visualizzate.sort((a, b) => a.numero_aula.localeCompare(b.numero_aula))
-    }
-    if (sostituzioni_filtro_docente.ordina) {
-        if (sostituzioni_filtro_docente.verso_ordinamento === 1)
-            sostituzioni_visualizzate.sort((a, b) => b.cognome_docente.localeCompare(a.cognome_docente) || b.nome_docente.localeCompare(a.nome_docente))
-        else
-            sostituzioni_visualizzate.sort((a, b) => a.cognome_docente.localeCompare(b.cognome_docente) || a.nome_docente.localeCompare(b.nome_docente))
+        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.note.toLowerCase().includes(sostituzioni_filtro_note.selected.toLowerCase()))
     }
 
     refresh_sostituzioni()
@@ -131,7 +64,7 @@ let sostituzioni_filtro_ora = new Filtro({ id: "sostituzioni-filtro-ora", filtra
 let sostituzioni_filtro_classe = new Filtro({ id: "sostituzioni-filtro-classe", filtra_lista: prendi_nome })
 let sostituzioni_filtro_aula = new Filtro({ id: "sostituzioni-filtro-aula", filtra_lista: prendi_numero })
 let sostituzioni_filtro_docente = new Filtro({ id: "sostituzioni-filtro-docente", filtra_lista: prendi_cognome_nome })
-let sostituzioni_filtro_note = new Filtro({ id: "sostituzioni-filtro-note", ordinamento: false })
+let sostituzioni_filtro_note = new Filtro({ id: "sostituzioni-filtro-note", ordinamento: false, select_on_keydown: true })
 
 
 // ---------------------

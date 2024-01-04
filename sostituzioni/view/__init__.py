@@ -14,6 +14,7 @@ csrf = CSRFProtect(app)
 socketio = SocketIO(app, manage_session=True)
 
 from sostituzioni.view.errorhandlers import routes
+import sostituzioni.view.legal
 
 logger.debug("Importing blueprints..")
 from sostituzioni.view.impostazioni import impostazioni as impostazioni_blueprint

@@ -106,7 +106,7 @@ body {
     max-height: 70vh;
     width: 60vh;
     max-width: 90%;
-    box-shadow: 0 3px 5px #00000088, 0px 7px 15px #00000099;
+    box-shadow: 0 3px 5px #00000069, 0px 5px 15px #0000007c;
     border-radius: 3vh;
     transition: box-shadow .3s;
     animation: fadein 0.8s;
@@ -148,7 +148,7 @@ body {
 }
 
 #button-accedi:hover {
-    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 7px 14px #00000040, 0 5px 5px #00000038;
 }
 
 
@@ -158,4 +158,24 @@ body {
 
 #notes-frame p {
     font-size: 16px;
+}
+
+#pulsanti-legali {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 15px;
+    z-index: 15;
+}
+
+#pulsanti-legali a {
+    color: #555555;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    transition: all 0.1s;
+}
+
+#pulsanti-legali a:hover {
+    background-color: #0000001f;
 }

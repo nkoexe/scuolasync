@@ -1,7 +1,3 @@
-mostrare visivamente quando un filtro è applicato (bordo all'input, font bold idk), far capire invece quando c'è scritto qualcosa ma il filtro non è ancora applicato
-
-evento urgente
-
 ordinamento data
 
 eliminazione ui
@@ -11,3 +7,5 @@ note standard
 aule collegate
 
 orario collegato a ora predefinita
+
+backup

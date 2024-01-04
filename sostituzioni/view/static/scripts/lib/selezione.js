@@ -1,5 +1,5 @@
 class Selezione {
-    constructor({ id, lista, callback, filtra_lista, render, select_on_exit, autocomplete }) {
+    constructor({ id, lista, callback, filtra_lista, render, select_on_exit, select_on_keydown, autocomplete }) {
         this.id = id.replaceAll('-', '_')
 
         this.ui_container = document.getElementById(id)
@@ -7,6 +7,7 @@ class Selezione {
         this.ui_dropdown = this.ui_container.getElementsByClassName('selezione-dropdown')[0]
         this.ui_lista = this.ui_dropdown.children[0]
         this.select_on_exit = select_on_exit == undefined ? true : select_on_exit
+        this.select_on_keydown = select_on_keydown == undefined ? false : select_on_keydown
         this.autocomplete = autocomplete == undefined ? false : autocomplete
 
         this.lista_elementi  // fuzzyset obj
@@ -57,10 +58,14 @@ class Selezione {
         }
 
         this.ui_input.oninput = (event) => {
-            this.current_index = -1
-            this.genera_dropdown()
-            this.ui_lista.scrollTop = 0
-            this.selected = null
+            if (this.select_on_keydown) {
+                this.seleziona(this.ui_input.value)
+            } else {
+                this.current_index = -1
+                this.genera_dropdown()
+                this.ui_lista.scrollTop = 0
+                this.selected = null
+            }
         }
 
         let ui_element
