@@ -47,6 +47,13 @@ opzione_percorso with context %}
           <p class="sezione-descrizione">Vai alla pagina della gestione degli utenti autorizzati all'accesso al sistema e alla gestione dei permessi. Questa parte del sito è ancora incompleta e in fase di sviluppo, non è accessibile. Per modifiche, contattare niccolo.ragazzi@gandhimerano.com</p>
           <div class="sezione-header-icon"><span class="material-symbols-rounded">open_in_new</span></div>
         </div>
+        <div class="opzioni-expandible">
+          <ul>
+            {% for utente in utenti %}
+            <li>{{utente.email}} | {{utente.ruolo.nome}}</li>
+            {% endfor %}
+          </ul>
+        </div>
       </li>
       {% for sezione in configurazione.sezioni %}
       <li id="{{sezione.id}}" class="sezione">

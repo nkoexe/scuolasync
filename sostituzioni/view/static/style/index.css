@@ -27,7 +27,7 @@ ul {
     padding: 0;
 }
 
-input[type="checkbox"] {
+.checkbox {
     appearance: none;
     position: relative;
     width: 20px;
@@ -40,7 +40,7 @@ input[type="checkbox"] {
     transition: all 0.15s;
 }
 
-input[type="checkbox"]::before {
+.checkbox::before {
     position: absolute;
     content: '';
     display: block;
@@ -55,13 +55,13 @@ input[type="checkbox"]::before {
     opacity: 0;
 }
 
-input[type="checkbox"]:checked {
+.checkbox:checked {
     color: var(--color-accent-text);
     border-color: var(--color-accent);
     background-color: var(--color-accent);
 }
 
-input[type="checkbox"]:checked::before {
+.checkbox:checked::before {
     opacity: 1;
 }
 
