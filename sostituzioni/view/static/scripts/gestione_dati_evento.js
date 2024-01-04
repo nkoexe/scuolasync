@@ -22,6 +22,7 @@ function mostra_nuovo_evento() {
     gestione_dati_evento_data_inizio.valueAsNumber = today;
     gestione_dati_evento_data_fine.valueAsNumber = today;
     gestione_dati_evento_testo.value = "";
+    gestione_dati_evento_urgente.checked = false;
 
     ui_titolo_gestione_dati.innerHTML = "Inserimento Nuovo Evento";
     ui_pulsante_principale_evento.innerHTML = "Pubblica";

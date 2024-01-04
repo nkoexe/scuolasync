@@ -1,6 +1,6 @@
 const ui_evento_html_template = `
 <li>
-<div class="evento" data-id={id} tabindex="0">
+<div class="evento {urgente}" data-id={id} tabindex="0">
     <div class="evento-data">
         <span>{data_inizio}</span>
         <span class="separator">-</span>
@@ -39,7 +39,9 @@ function format_date(data_ora_inizio, data_ora_fine) {
 function format_evento_to_html(id, pubblicato, urgente, data_ora_inizio, data_ora_fine, testo) {
     [data_ora_inizio, data_ora_fine] = format_date(data_ora_inizio, data_ora_fine)
 
-    return ui_evento_html_template.replace("{id}", id).replace("{testo}", testo).replace("{data_inizio}", data_ora_inizio).replace("{data_fine}", data_ora_fine)
+    urgente = urgente ? "urgente" : ""
+
+    return ui_evento_html_template.replace("{id}", id).replace("{urgente}", urgente).replace("{testo}", testo).replace("{data_inizio}", data_ora_inizio).replace("{data_fine}", data_ora_fine)
 }
 
 function add_evento_to_ui_list(id, pubblicato, urgente, data_ora_inizio, data_ora_fine, testo) {
@@ -54,6 +56,8 @@ function ui_modifica_evento() {
 }
 
 function refresh_eventi() {
+    ordina_eventi()
+
     ui_eventi_container.innerHTML = ""
     eventi.forEach(element => {
         add_evento_to_ui_list(element.id, element.pubblicato, element.urgente, element.data_ora_inizio, element.data_ora_fine, element.testo)
@@ -64,4 +68,13 @@ function refresh_eventi() {
             evento.oncontextmenu = (e) => { mostra_context_menu_evento(e, evento) }
         }
     }
+}
+
+function ordina_eventi() {
+    eventi.sort((a, b) => {
+        if (a.urgente && !b.urgente) return -1
+        if (!a.urgente && b.urgente) return 1
+        if (a.urgente && b.urgente) return a.data_ora_inizio - b.data_ora_inizio
+        if (!a.urgente && !b.urgente) return a.data_ora_inizio - b.data_ora_inizio
+    })
 }

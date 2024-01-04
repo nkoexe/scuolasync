@@ -590,6 +590,13 @@ ul {
     border-radius: 1rem;
 }
 
+.evento.urgente {
+    padding: 15px 15px;
+    background-color: #f0c0bc;
+    border-radius: 0.5rem;
+}
+
+
 .evento-data {
     display: flex;
     justify-content: center;
