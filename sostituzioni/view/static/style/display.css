@@ -308,9 +308,10 @@ ul {
 #header-eventi-titolo {
     margin: auto 8%;
     padding-top: 3%;
-    font-size: 1.8vw;
-    /* font-weight: normal; */
+    font-size: 1.6vw;
+    font-weight: normal;
     font-style: italic;
+    color: #353535;
 }
 
 
