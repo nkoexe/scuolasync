@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 @auth.route("/richiedi-accesso")
 def fottiti():
-    return "Inserire qui il form per richiedere l'accesso al sistema, con opportune minacce"
+    return 'Qui ci sarà il form per richiedere l\'accesso al sistema, con opportune minacce. Per il momento, in caso di problemi di accesso, scrivere a <a href="mailto:niccolo.ragazzi@gandhimerano.com">niccolo.ragazzi@gandhimerano.com</a>'
 
 
 @auth.route("/login")
