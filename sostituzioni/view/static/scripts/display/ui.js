@@ -21,11 +21,14 @@ function Marquee(selector, speed) {
 
 setTimeout(() => { Marquee('.marquee', 1) }, 2000)
 
+options_ora = { 'hour': '2-digit', 'minute': '2-digit', 'second': '2-digit' }
+options_giorno = { 'day': '2-digit' }
+options_data = { 'month': 'long', 'year': 'numeric' }
 
 setInterval(() => {
-    now = dayjs()
-    ui_ora.innerText = now.format('HH:mm:ss')
-    ui_giorno.innerText = now.format('DD')
-    ui_data.innerText = now.format('MMMM YYYY')
+    now = new Date()
+    ui_ora.innerText = now.toLocaleTimeString('it-IT', options_ora)
+    ui_giorno.innerText = now.toLocaleDateString('it-IT', options_giorno)
+    ui_data.innerText = now.toLocaleDateString('it-IT', options_data)
 
 }, 1000);

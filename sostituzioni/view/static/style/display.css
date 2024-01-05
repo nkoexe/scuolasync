@@ -127,7 +127,7 @@ ul {
 #data-container {
     display: flex;
     font-size: 1.8vw;
-    gap: 0.3vw;
+    gap: 0.5vw;
 }
 
 #giorno {
@@ -164,9 +164,9 @@ ul {
 #sostituzioni-didascalie-container {
     display: flex;
     flex-wrap: nowrap;
-    height: 2vw;
+    height: 2.5vw;
     width: 100%;
-    font-size: 1vw;
+    font-size: 1.25vw;
     font-style: italic;
     background-color: var(--color-sostituzioni-filtri-bg);
     border-top-left-radius: 1rem;
@@ -259,7 +259,7 @@ ul {
     width: 100%;
     min-height: 5vh;
     max-height: 8vh;
-    font-size: 1.1vw;
+    font-size: 1.2vw;
     background-color: var(--color-sostituzioni-lista2);
     border-radius: 0;
 }
@@ -368,9 +368,9 @@ ul {
 #notizie-lista {
     height: 100%;
     display: flex;
-    gap: 20px;
+    gap: 40px;
+    padding-right: 40px;
     font-size: 1.7vw;
-    padding-right: 20px;
 }
 
 .notizia {
