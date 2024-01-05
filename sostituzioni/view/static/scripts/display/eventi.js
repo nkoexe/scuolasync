@@ -1,6 +1,6 @@
 const ui_evento_html_template = `
 <li>
-<div class="evento {urgente}" data-id={id} tabindex="0">
+<div class="evento {urgente}">
     <div class="evento-data">
         <span>{data_inizio}</span>
         <span class="separator">-</span>
@@ -41,7 +41,7 @@ function format_evento_to_html(id, pubblicato, urgente, data_ora_inizio, data_or
 
     urgente = urgente ? "urgente" : ""
 
-    return ui_evento_html_template.replace("{id}", id).replace("{urgente}", urgente).replace("{testo}", testo).replace("{data_inizio}", data_ora_inizio).replace("{data_fine}", data_ora_fine)
+    return ui_evento_html_template.replace("{urgente}", urgente).replace("{testo}", testo).replace("{data_inizio}", data_ora_inizio).replace("{data_fine}", data_ora_fine)
 }
 
 function add_evento_to_ui_list(id, pubblicato, urgente, data_ora_inizio, data_ora_fine, testo) {

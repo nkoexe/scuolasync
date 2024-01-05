@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/display.css') }}">
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
@@ -19,7 +20,13 @@
   <div id="main-window">
     <div id="main-container">
       <div id="ora-frame" class="frame">
-        Sono le ore di ieri a quest'ora
+        <div id="ora-container">
+          <span id="ora"></span>
+          <div id="data-container">
+            <span id="giorno"></span>
+            <span id="data"></span>
+          </div>
+        </div>
       </div>
       <div id="eventi-frame" class="frame">
         <div id="header-eventi">
@@ -32,10 +39,8 @@
         </div>
       </div>
       <div id="notizie-frame" class="frame">
-        <div id="notizie-container">
-          <div id="notizie-lista-container">
-            <ul id="notizie-lista"></ul>
-          </div>
+        <div id="notizie-container" class="marquee">
+          <div id="notizie-lista"></div>
         </div>
       </div>
       <div id="sostituzioni-frame" class="frame">
@@ -87,6 +92,7 @@
     let classi = []
     let docenti = []
   </script>
+  <script src="{{url_for('static', filename='scripts/display/ui.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/display/eventi.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/display/notizie.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/display/sostituzioni.js')}}"></script>

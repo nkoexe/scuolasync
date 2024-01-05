@@ -1,14 +1,7 @@
-const ui_notizia_html_template = `
-<li>
-<div class="notizia" data-id={id} tabindex="0">
-    <div class="notizia-testo">{testo}</div>
-</div>
-</li>`
+const ui_notizia_html_template = `<span class="notizia">{testo}</span>`
 
 
 const ui_notizie_container = document.getElementById("notizie-lista")
-// const ui_notizie_messaggio_informativo = document.getElementById("sostituzioni-messaggio-informativo")
-
 
 function format_notizia_to_html(id, pubblicato, data_ora_inizio, data_ora_fine, testo) {
     return ui_notizia_html_template.replace("{id}", id).replace("{testo}", testo)

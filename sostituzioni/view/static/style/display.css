@@ -44,14 +44,20 @@ ul {
     border-radius: 5px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background-color: var(--color-scrollbar-hover);
-}
-
 
 /* ICONS */
 .material-symbols-rounded {
     padding: 5px;
+}
+
+/* MARQUEE */
+.marquee {
+    overflow: hidden;
+    display: flex;
+}
+
+.marquee span {
+    white-space: nowrap;
 }
 
 /* MAIN GRID  */
@@ -81,11 +87,10 @@ ul {
 }
 
 #ora-frame {
+    display: flex;
     grid-area: 1/1/2/2;
     background-color: var(--color-accent);
     color: var(--color-accent-text);
-    text-align: center;
-    padding-top: 20%;
 }
 
 #eventi-frame {
@@ -104,6 +109,32 @@ ul {
     display: flex;
     flex-direction: column;
 }
+
+/* DATA E ORA */
+#ora-container {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#ora {
+    margin: auto;
+    margin-left: 0.9vw;
+    font-size: 3vw;
+    font-weight: bold;
+}
+
+#data-container {
+    display: flex;
+    font-size: 1.8vw;
+    gap: 0.3vw;
+}
+
+#giorno {
+    font-weight: bold;
+}
+
+#data {}
 
 /* HEADER SOSTITUZIONI */
 #header-sostituzioni {
@@ -133,8 +164,10 @@ ul {
 #sostituzioni-didascalie-container {
     display: flex;
     flex-wrap: nowrap;
-    height: 30px;
+    height: 2vw;
     width: 100%;
+    font-size: 1vw;
+    font-style: italic;
     background-color: var(--color-sostituzioni-filtri-bg);
     border-top-left-radius: 1rem;
     border-top-right-radius: 1rem;
@@ -147,27 +180,27 @@ ul {
 /* larghezza dei riquadri dei filtri, da matchare con i riquadri delle sostituzioni */
 #sostituzioni-didascalia-data,
 #sostituzioni-lista .sostituzione-data {
-    width: 7rem;
+    width: 8vw;
 }
 
 #sostituzioni-didascalia-ora,
 #sostituzioni-lista .sostituzione-ora {
-    width: 8rem;
+    width: 10vw;
 }
 
 #sostituzioni-didascalia-docente,
 #sostituzioni-lista .sostituzione-docente {
-    width: 15rem;
+    width: 15vw;
 }
 
 #sostituzioni-didascalia-aula,
 #sostituzioni-lista .sostituzione-aula {
-    width: 8rem;
+    width: 10vw;
 }
 
 #sostituzioni-didascalia-classe,
 #sostituzioni-lista .sostituzione-classe {
-    width: 8rem;
+    width: 10vw;
 }
 
 #sostituzioni-didascalia-note,
@@ -224,8 +257,9 @@ ul {
     flex-wrap: nowrap;
     align-items: stretch;
     width: 100%;
-    min-height: 2rem;
-    max-height: 4rem;
+    min-height: 5vh;
+    max-height: 8vh;
+    font-size: 1.1vw;
     background-color: var(--color-sostituzioni-lista2);
     border-radius: 0;
 }
@@ -233,12 +267,6 @@ ul {
 /* colori alternati */
 #sostituzioni-lista :nth-child(odd) .sostituzione {
     background-color: var(--color-sostituzioni-lista1);
-}
-
-#sostituzioni-lista .sostituzione:hover,
-#sostituzioni-lista .sostituzione:focus-visible,
-#sostituzioni-lista .sostituzione.context-menu-active {
-    background-color: #dbdbdb;
 }
 
 #sostituzioni-lista .sostituzione div.sostituzione-data {
@@ -278,16 +306,17 @@ ul {
 }
 
 #header-eventi-titolo {
-    margin: auto 10%;
+    margin: auto 8%;
     padding-top: 3%;
-    font-size: 20px;
+    font-size: 1.8vw;
+    /* font-weight: normal; */
     font-style: italic;
 }
 
 
 /* LISTA EVENTI */
 #eventi-container {
-    height: calc(100% - 70px);
+    height: 90%;
     margin: 0 10px;
     overflow: auto;
 }
@@ -314,7 +343,8 @@ ul {
 .evento-data {
     display: flex;
     justify-content: center;
-    font-size: 12px;
+    text-align: center;
+    font-size: 1vw;
     /* font-style: italic; */
     color: #535353;
 }
@@ -325,32 +355,24 @@ ul {
 }
 
 .evento-testo {
-    flex: 1
-}
-
-
-/* HEADER NOTIZIE */
-#header-notizie {
-    display: flex;
-    height: 70px;
-}
-
-#header-notizie-titolo {
-    margin: auto 25px;
+    flex: 1;
+    font-size: 1.5vw;
 }
 
 /* LISTA NOTIZIE */
 #notizie-container {
-    height: calc(100% - 70px);
+    height: 100%;
     padding: 0 10px;
-    overflow: auto;
 }
 
-#notizie-lista-container {}
+#notizie-lista {
+    height: 100%;
+    display: flex;
+    gap: 20px;
+    font-size: 1.7vw;
+    padding-right: 20px;
+}
 
 .notizia {
-    margin: 5px 0;
-    padding: 10px 15px;
-    background-color: #f3f3f3;
-    border-radius: 1rem;
+    margin: auto;
 }
