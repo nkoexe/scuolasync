@@ -123,6 +123,8 @@ body {
     height: 18vh;
     margin-top: 4vh;
     object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 #title-frame {
