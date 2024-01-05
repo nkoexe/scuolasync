@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Display Aula Docenti</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/display.css') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
+</head>
+
+<body>
+  <div id="main-window">
+    <div id="main-container">
+      <div id="ora-frame" class="frame">
+        Sono le ore di ieri a quest'ora
+      </div>
+      <div id="eventi-frame" class="frame">
+        <div id="header-eventi">
+          <h2 id="header-eventi-titolo">Prossimamente...</h2>
+        </div>
+        <div id="eventi-container">
+          <div id="eventi-lista-container">
+            <ul id="eventi-lista"></ul>
+          </div>
+        </div>
+      </div>
+      <div id="notizie-frame" class="frame">
+        <div id="notizie-container">
+          <div id="notizie-lista-container">
+            <ul id="notizie-lista"></ul>
+          </div>
+        </div>
+      </div>
+      <div id="sostituzioni-frame" class="frame">
+        <!-- <div id="header-sostituzioni">
+          <h2 id="header-sostituzioni-titolo">Sostituzioni</h2>
+        </div> -->
+        <div id="sostituzioni-main">
+          <div id="sostituzioni-container">
+            <div id="sostituzioni-didascalie-container">
+              <div id="sostituzioni-didascalia-data" class="sostituzioni-didascalia">
+                <span>Data</span>
+              </div>
+              <div id="sostituzioni-didascalia-ora" class="sostituzioni-didascalia">
+                <span>Ora</span>
+              </div>
+              <div id="sostituzioni-didascalia-docente" class="sostituzioni-didascalia">
+                <span>Docente</span>
+              </div>
+              <div id="sostituzioni-didascalia-classe" class="sostituzioni-didascalia">
+                <span>Classe</span>
+              </div>
+              <div id="sostituzioni-didascalia-aula" class="sostituzioni-didascalia">
+                <span>Aula</span>
+              </div>
+              <div id="sostituzioni-didascalia-note" class="sostituzioni-didascalia">
+                <span>Note</span>
+              </div>
+            </div>
+            <div id="sostituzioni-lista-container">
+              <div id="sostituzioni-messaggio-informativo"><span>Caricamento...</span></div>
+              <ul id="sostituzioni-lista">
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const messaggio_nessuna_sostituzione = "{{ configurazione.get('nosostituzionimsg') }}"
+
+    let eventi = []
+    let notizie = []
+    let sostituzioni = []
+    let sostituzioni_visualizzate = []
+
+    let ore_predefinite = []
+    let aule = []
+    let classi = []
+    let docenti = []
+  </script>
+  <script src="{{url_for('static', filename='scripts/display/eventi.js')}}"></script>
+  <script src="{{url_for('static', filename='scripts/display/notizie.js')}}"></script>
+  <script src="{{url_for('static', filename='scripts/display/sostituzioni.js')}}"></script>
+  <script src="{{url_for('static', filename='scripts/display/displaysocket.js')}}"></script>
+</body>
+
+</html>
