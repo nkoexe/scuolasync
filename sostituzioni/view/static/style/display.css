@@ -316,8 +316,6 @@ ul {
     overflow: auto;
 }
 
-#eventi-lista-container {}
-
 .evento {
     display: flex;
     flex-direction: column;

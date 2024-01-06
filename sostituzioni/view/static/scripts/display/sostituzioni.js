@@ -68,6 +68,7 @@ function refresh_sostituzioni() {
 
 	altezza_container_sostituzioni = ui_sostituzioni_container.offsetHeight
 	altezza_lista_sostituzioni = ui_sostituzioni_lista.offsetHeight
+	current_scroll_sostituzioni = 10 ** 10
 }
 
 function ordina_sostituzioni() {
