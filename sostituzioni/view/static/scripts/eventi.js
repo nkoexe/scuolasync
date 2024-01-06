@@ -2,9 +2,7 @@ const ui_evento_html_template = `
 <li>
 <div class="evento {urgente}" data-id={id} tabindex="0">
     <div class="evento-data">
-        <span>{data_inizio}</span>
-        <span class="separator">-</span>
-        <span>{data_fine}</span>
+        <span>{data}</span>
     </div>
     <div class="evento-testo">{testo}</div>
 </div>
@@ -20,7 +18,7 @@ function format_date(data_ora_inizio, data_ora_fine) {
 
     if (data_ora_inizio == null || data_ora_inizio == undefined
         || data_ora_fine == null || data_ora_fine == undefined) {
-        return ["", ""]
+        return ""
     }
 
     let now = new Date()
@@ -28,20 +26,27 @@ function format_date(data_ora_inizio, data_ora_fine) {
     data_ora_inizio = new Date(data_ora_inizio * 1000)
     data_ora_fine = new Date(data_ora_fine * 1000)
 
-    format_options = { day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "numeric" }
+    format_options_inizio = { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }
+    format_options_fine = { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }
 
     if (data_ora_inizio.getFullYear() == now.getFullYear() && now.getFullYear() == data_ora_fine.getFullYear()) {
-        format_options.year = undefined
+        format_options_inizio.year = undefined
+        format_options_fine.year = undefined
     }
-    return [data_ora_inizio.toLocaleString(Intl.NumberFormat().resolvedOptions().locale, format_options), data_ora_fine.toLocaleString(Intl.NumberFormat().resolvedOptions().locale, format_options)]
+    if (data_ora_inizio.getMonth() == data_ora_fine.getMonth() && data_ora_inizio.getDay() == data_ora_fine.getDay()) {
+        format_options_fine.day = undefined
+        format_options_fine.month = undefined
+    }
+
+    return data_ora_inizio.toLocaleString(Intl.NumberFormat().resolvedOptions().locale, format_options_inizio) + " - " + data_ora_fine.toLocaleString(Intl.NumberFormat().resolvedOptions().locale, format_options_fine)
 }
 
 function format_evento_to_html(id, pubblicato, urgente, data_ora_inizio, data_ora_fine, testo) {
-    [data_ora_inizio, data_ora_fine] = format_date(data_ora_inizio, data_ora_fine)
+    data = format_date(data_ora_inizio, data_ora_fine)
 
     urgente = urgente ? "urgente" : ""
 
-    return ui_evento_html_template.replace("{id}", id).replace("{urgente}", urgente).replace("{testo}", testo).replace("{data_inizio}", data_ora_inizio).replace("{data_fine}", data_ora_fine)
+    return ui_evento_html_template.replace("{id}", id).replace("{urgente}", urgente).replace("{testo}", testo).replace("{data}", data)
 }
 
 function add_evento_to_ui_list(id, pubblicato, urgente, data_ora_inizio, data_ora_fine, testo) {

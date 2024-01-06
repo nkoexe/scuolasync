@@ -352,14 +352,9 @@ ul {
     color: #535353;
 }
 
-.evento-data .separator {
-    width: 20px;
-    text-align: center;
-}
-
 .evento-testo {
     flex: 1;
-    font-size: 1.5vw;
+    font-size: 1.2vw;
 }
 
 /* LISTA NOTIZIE */
