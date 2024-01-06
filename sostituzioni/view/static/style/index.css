@@ -117,7 +117,7 @@ ul {
     left: 50%;
     translate: -50% 0;
     width: max-content;
-    max-width: 300px;
+    max-width: 250px;
     opacity: 0;
     visibility: hidden;
     background-color: black;
@@ -355,10 +355,19 @@ ul {
 }
 
 #sostituzione-filtro-data-testo {
+    display: flex;
+    align-items: center;
     margin: auto;
     margin-left: 10px;
     color: var(--color-sostituzioni-filtri-placeholder);
 }
+
+#sostituzione-filtro-data-testo .icon {
+    /* quick layout fixes */
+    margin-left: -2px;
+    margin-top: 2px;
+}
+
 
 #sostituzioni-filtro-data-expandible {
     position: absolute;
