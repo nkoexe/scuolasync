@@ -17,3 +17,36 @@ def main():
         utenti=utenti,
         docenti=Docente.load(),
     )
+
+
+@impostazioni.route("/update")
+def update():
+    rootpath = configurazione.get("rootpath").path
+
+    # "/sostituzioni/sostituzioni", git è un livello più alto
+    repopath = rootpath.parent
+
+    import os, subprocess
+
+    os.chdir(repopath)
+    subprocess.check_call(["/usr/bin/git", "pull"])
+    os.chdir(rootpath)
+
+    if os.name == "nt":
+        subprocess.check_call(
+            [
+                "cmd",
+                "/c",
+                str(configurazione.get("scriptsdir").path / "reboot.bat"),
+                os.getpid(),
+            ]
+        )
+    else:
+        subprocess.check_call(
+            [
+                "/bin/bash",
+                str(configurazione.get("scriptsdir").path / "reboot.sh"),
+                "&",
+                "disown",
+            ]
+        )
