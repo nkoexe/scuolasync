@@ -104,96 +104,23 @@ function ordina_sostituzioni() {
 	}
 
 	if (sostituzioni_filtro_ora.ordina) {
-		if (sostituzioni_filtro_ora.verso_ordinamento === 1) {
-			sostituzioni_visualizzate.sort((a, b) => {
-				if (a.numero_ora_predefinita === null && b.numero_ora_predefinita === null) {
-					return b.ora_inizio.localeCompare(a.ora_inizio)
-				} else if (a.numero_ora_predefinita === null) {
-					return 1
-				} else if (b.numero_ora_predefinita === null) {
-					return -1
-				} else if (typeof a.numero_ora_predefinita === "string" || typeof b.numero_ora_predefinita === "string") {
-					return b.numero_ora_predefinita.localeCompare(a.numero_ora_predefinita)
-				} else {
-					return b.numero_ora_predefinita - a.numero_ora_predefinita
-				}
-			})
-		} else {
-			sostituzioni_visualizzate.sort((a, b) => {
-				if (a.numero_ora_predefinita === null && b.numero_ora_predefinita === null) {
-					return a.ora_inizio.localeCompare(b.ora_inizio)
-				} else if (a.numero_ora_predefinita === null) {
-					return 1
-				} else if (b.numero_ora_predefinita === null) {
-					return -1
-				} else if (typeof a.numero_ora_predefinita === "string" || typeof b.numero_ora_predefinita === "string") {
-					return a.numero_ora_predefinita.localeCompare(b.numero_ora_predefinita)
-				} else {
-					return a.numero_ora_predefinita - b.numero_ora_predefinita;
-				}
-			})
-		}
+		sostituzioni_visualizzate.sort((a, b) => {
+			return compara_ora_predefinita(a, b) * sostituzioni_filtro_ora.verso_ordinamento
+		})
 	}
 	if (sostituzioni_filtro_classe.ordina) {
-		if (sostituzioni_filtro_classe.verso_ordinamento === 1) {
-			sostituzioni_visualizzate.sort((a, b) => {
-				if (a.nome_classe === null && b.nome_classe === null) {
-					return 0
-				} else if (a.nome_classe === null) {
-					return 1
-				} else if (b.nome_classe === null) {
-					return -1
-				} else {
-					return b.nome_classe.localeCompare(a.nome_classe)
-				}
-			})
-		}
-		else {
-			sostituzioni_visualizzate.sort((a, b) => {
-				if (a.nome_classe === null && b.nome_classe === null) {
-					return 0
-				} else if (a.nome_classe === null) {
-					return 1
-				} else if (b.nome_classe === null) {
-					return -1
-				} else {
-					return a.nome_classe.localeCompare(b.nome_classe)
-				}
-			})
-		}
+		sostituzioni_visualizzate.sort((a, b) => {
+			return compara_classe(a, b) * sostituzioni_filtro_classe.verso_ordinamento
+		})
 	}
 	if (sostituzioni_filtro_aula.ordina) {
-		if (sostituzioni_filtro_aula.verso_ordinamento === 1) {
-			sostituzioni_visualizzate.sort((a, b) => {
-				if (a.numero_aula === null && b.numero_aula === null) {
-					return 0
-				} else if (a.numero_aula === null) {
-					return 1
-				} else if (b.numero_aula === null) {
-					return -1
-				} else {
-					return b.numero_aula.localeCompare(a.numero_aula)
-				}
-			})
-		}
-		else {
-			sostituzioni_visualizzate.sort((a, b) => {
-				if (a.numero_aula === null && b.numero_aula === null) {
-					return 0
-				} else if (a.numero_aula === null) {
-					return 1
-				} else if (b.numero_aula === null) {
-					return -1
-				} else {
-					return a.numero_aula.localeCompare(b.numero_aula)
-				}
-			})
-		}
+		sostituzioni_visualizzate.sort((a, b) => {
+			return compara_aula(a, b) * sostituzioni_filtro_aula.verso_ordinamento
+		})
 	}
 	if (sostituzioni_filtro_docente.ordina) {
-		if (sostituzioni_filtro_docente.verso_ordinamento === 1)
-			sostituzioni_visualizzate.sort((a, b) => b.cognome_docente.localeCompare(a.cognome_docente) || b.nome_docente.localeCompare(a.nome_docente))
-		else
-			sostituzioni_visualizzate.sort((a, b) => a.cognome_docente.localeCompare(b.cognome_docente) || a.nome_docente.localeCompare(b.nome_docente))
+		sostituzioni_visualizzate.sort((a, b) => {
+			return compara_docente(a, b) * sostituzioni_filtro_docente.verso_ordinamento
+		})
 	}
 }

@@ -27,22 +27,14 @@ ul {
 
 /* SCROLLBAR */
 * {
-    scrollbar-width: 8px;
-    scrollbar-color: var(--color-scrollbar) transparent;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 ::-webkit-scrollbar {
-    width: 8px;
+    display: none;
 }
 
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: var(--color-scrollbar);
-    border-radius: 5px;
-}
 
 
 /* ICONS */

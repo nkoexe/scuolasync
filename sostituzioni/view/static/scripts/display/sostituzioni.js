@@ -1,14 +1,14 @@
 const ui_sostituzione_html_template = `
 <li>
 <div class="sostituzione" data-id={id} tabindex="0">
+  <div class="sostituzione-data sostituzione-docente">
+    <span>{cognome_docente} {nome_docente}</span>
+  </div>
   <div class="sostituzione-data">
     <span>{data}</span>
   </div>
   <div class="sostituzione-data sostituzione-ora">
     <span>{ora}</span>
-  </div>
-  <div class="sostituzione-data sostituzione-docente">
-    <span>{cognome_docente} {nome_docente}</span>
   </div>
   <div class="sostituzione-data sostituzione-classe">
     <span>{nome_classe}</span>
@@ -70,6 +70,10 @@ function refresh_sostituzioni() {
 
 function ordina_sostituzioni() {
 	sostituzioni_visualizzate.sort((a, b) => {
-		return a.data - b.data
+		res = compara_docente(b, a)
+		if (res == 0) { res = compara_data(a, b) }
+		if (res == 0) { res = compara_classe(a, b) }
+		if (res == 0) { res = compara_aula(a, b) }
+		return res
 	})
 }

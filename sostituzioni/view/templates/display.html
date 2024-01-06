@@ -49,14 +49,14 @@
         <div id="sostituzioni-main">
           <div id="sostituzioni-container">
             <div id="sostituzioni-didascalie-container">
+              <div id="sostituzioni-didascalia-docente" class="sostituzioni-didascalia">
+                <span>Docente</span>
+              </div>
               <div id="sostituzioni-didascalia-data" class="sostituzioni-didascalia">
                 <span>Data</span>
               </div>
               <div id="sostituzioni-didascalia-ora" class="sostituzioni-didascalia">
                 <span>Ora</span>
-              </div>
-              <div id="sostituzioni-didascalia-docente" class="sostituzioni-didascalia">
-                <span>Docente</span>
               </div>
               <div id="sostituzioni-didascalia-classe" class="sostituzioni-didascalia">
                 <span>Classe</span>
@@ -91,6 +91,7 @@
     let classi = []
     let docenti = []
   </script>
+  <script src="{{url_for('static', filename='scripts/lib/compare.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/display/ui.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/display/eventi.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/display/notizie.js')}}"></script>
