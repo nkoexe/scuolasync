@@ -23,16 +23,15 @@ const ui_sostituzione_html_template = `
 </li>`
 
 
-const ui_sostituzioni_container = document.getElementById("sostituzioni-lista")
+const ui_sostituzioni_container = document.getElementById("sostituzioni-lista-container")
+const ui_sostituzioni_lista = document.getElementById("sostituzioni-lista")
 const ui_sostituzioni_messaggio_informativo = document.getElementById("sostituzioni-messaggio-informativo")
 
 
 function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, piano_aula, nome_classe, nome_docente, cognome_docente, note) {
 	if (numero_ora_predefinita == null) {
 		if (ora_inizio == null) { ora = "" }
-		else {
-			ora = ora_inizio + " - " + ora_fine
-		}
+		else { ora = ora_inizio + " - " + ora_fine }
 	}
 	else { ora = numero_ora_predefinita.length == 1 ? numero_ora_predefinita + "a ora" : numero_ora_predefinita }
 	if (note == null) { note = "" }
@@ -50,13 +49,13 @@ function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizi
 
 function add_sostituzione_to_ui_list(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, piano_aula, nome_classe, nome_docente, cognome_docente, note) {
 	let sostituzione_html = format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, piano_aula, nome_classe, nome_docente, cognome_docente, note)
-	ui_sostituzioni_container.innerHTML += sostituzione_html
+	ui_sostituzioni_lista.innerHTML += sostituzione_html
 }
 
 function refresh_sostituzioni() {
 	ordina_sostituzioni()
 
-	ui_sostituzioni_container.innerHTML = ""
+	ui_sostituzioni_lista.innerHTML = ""
 	if (sostituzioni_visualizzate.length === 0) {
 		ui_sostituzioni_messaggio_informativo.innerHTML = "<span>" + messaggio_nessuna_sostituzione + "</span>"
 		ui_sostituzioni_messaggio_informativo.style.display = "flex"
@@ -66,6 +65,9 @@ function refresh_sostituzioni() {
 			add_sostituzione_to_ui_list(element.id, element.pubblicato, element.cancellato, element.data, element.ora_inizio, element.ora_fine, element.numero_ora_predefinita, element.numero_aula, 'piano', element.nome_classe, element.nome_docente, element.cognome_docente, element.note)
 		})
 	}
+
+	altezza_container_sostituzioni = ui_sostituzioni_container.offsetHeight
+	altezza_lista_sostituzioni = ui_sostituzioni_lista.offsetHeight
 }
 
 function ordina_sostituzioni() {

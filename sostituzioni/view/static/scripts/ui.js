@@ -25,7 +25,7 @@ function fix_date_from_input(value) {
 
 
 function ui_loading_sostituzioni() {
-    ui_sostituzioni_container.innerHTML = ""
+    ui_sostituzioni_lista.innerHTML = ""
     ui_sostituzioni_messaggio_informativo.innerHTML = "<span>Caricamento...</span>"
     ui_sostituzioni_messaggio_informativo.style.display = "flex"
 }

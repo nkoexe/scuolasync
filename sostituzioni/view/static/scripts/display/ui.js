@@ -2,6 +2,11 @@ const ui_ora = document.getElementById("ora")
 const ui_giorno = document.getElementById("giorno")
 const ui_data = document.getElementById("data")
 
+let altezza_container_sostituzioni = 0
+let altezza_lista_sostituzioni = 0
+let current_scroll_sostituzioni = 0
+
+
 // https://codepen.io/pprakash/pen/oNxNeQE
 function Marquee(selector, speed) {
     const parentSelector = document.querySelector(selector);
@@ -32,3 +37,10 @@ setInterval(() => {
     ui_data.innerText = now.toLocaleDateString('it-IT', options_data)
 
 }, 1000);
+
+
+setInterval(() => {
+    current_scroll_sostituzioni += altezza_container_sostituzioni
+    if (current_scroll_sostituzioni > altezza_lista_sostituzioni) { current_scroll_sostituzioni = 0 }
+    ui_sostituzioni_container.scroll({ top: current_scroll_sostituzioni, behavior: "smooth" })
+}, 10000)

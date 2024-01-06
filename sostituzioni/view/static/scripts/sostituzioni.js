@@ -23,7 +23,7 @@ const ui_sostituzione_html_template = `
 </li>`
 
 
-const ui_sostituzioni_container = document.getElementById("sostituzioni-lista")
+const ui_sostituzioni_lista = document.getElementById("sostituzioni-lista")
 const ui_sostituzioni_messaggio_informativo = document.getElementById("sostituzioni-messaggio-informativo")
 
 let sostituzioni_data_verso_ordinamento = 1
@@ -51,13 +51,13 @@ function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizi
 
 function add_sostituzione_to_ui_list(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
 	let sostituzione_html = format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note)
-	ui_sostituzioni_container.innerHTML += sostituzione_html
+	ui_sostituzioni_lista.innerHTML += sostituzione_html
 }
 
 function refresh_sostituzioni() {
 	ordina_sostituzioni()
 
-	ui_sostituzioni_container.innerHTML = ""
+	ui_sostituzioni_lista.innerHTML = ""
 	if (sostituzioni_visualizzate.length === 0) {
 		ui_sostituzioni_messaggio_informativo.innerHTML = "<span>" + messaggio_nessuna_sostituzione + "</span>"
 		ui_sostituzioni_messaggio_informativo.style.display = "flex"
