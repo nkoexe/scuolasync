@@ -112,6 +112,7 @@ ul {
 
 /* DATA E ORA */
 #ora-container {
+    width: 100%;
     margin: auto;
     display: flex;
     flex-direction: column;
@@ -119,12 +120,13 @@ ul {
 
 #ora {
     margin: auto;
-    margin-left: 0.9vw;
-    font-size: 3vw;
+    margin-left: 3.4vw;
+    font-size: 3.3vw;
     font-weight: bold;
 }
 
 #data-container {
+    margin: auto;
     display: flex;
     font-size: 1.8vw;
     gap: 0.5vw;
@@ -306,8 +308,8 @@ ul {
 }
 
 #header-eventi-titolo {
-    margin: auto 8%;
-    padding-top: 3%;
+    margin: auto 7%;
+    padding-top: 2%;
     font-size: 1.6vw;
     font-weight: normal;
     font-style: italic;

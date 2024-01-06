@@ -102,6 +102,7 @@ def nuova_sostituzione(data):
     sostituzione.inserisci()
 
     emit("aggiornamento sostituzioni", broadcast=True)
+    emit("aggiornamento sostituzioni", broadcast=True, namespace="/display")
 
 
 @socketio.on("modifica sostituzione")
@@ -113,6 +114,7 @@ def modifica_sostituzione(data):
     Sostituzione(id=data.get("id")).modifica(data.get("data"))
 
     emit("aggiornamento sostituzioni", broadcast=True)
+    emit("aggiornamento sostituzioni", broadcast=True, namespace="/display")
 
 
 @socketio.on("elimina sostituzione")
@@ -126,6 +128,7 @@ def elimina_sostituzione(data):
     )  # usare default di configurazione
 
     emit("aggiornamento sostituzioni", broadcast=True)
+    emit("aggiornamento sostituzioni", broadcast=True, namespace="/display")
 
 
 @socketio.on("nuovo evento")
@@ -142,6 +145,7 @@ def nuovo_evento(data):
     ).inserisci()
 
     emit("aggiornamento eventi", broadcast=True)
+    emit("aggiornamento eventi", broadcast=True, namespace="/display")
 
 
 @socketio.on("modifica evento")
@@ -153,6 +157,7 @@ def modifica_evento(data):
     Evento(id=data.get("id")).modifica(data.get("data"))
 
     emit("aggiornamento eventi", broadcast=True)
+    emit("aggiornamento eventi", broadcast=True, namespace="/display")
 
 
 @socketio.on("elimina evento")
@@ -164,6 +169,7 @@ def elimina_evento(data):
     Evento(data.get("id")).elimina()
 
     emit("aggiornamento eventi", broadcast=True)
+    emit("aggiornamento eventi", broadcast=True, namespace="/display")
 
 
 @socketio.on("nuova notizia")
@@ -179,6 +185,7 @@ def nuova_notizia(data: dict):
     ).inserisci()
 
     emit("aggiornamento notizie", broadcast=True)
+    emit("aggiornamento notizie", broadcast=True, namespace="/display")
 
 
 @socketio.on("modifica notizia")
@@ -190,6 +197,7 @@ def modifica_notizia(data):
     Notizia(id=data.get("id")).modifica(data.get("data"))
 
     emit("aggiornamento notizie", broadcast=True)
+    emit("aggiornamento notizie", broadcast=True, namespace="/display")
 
 
 @socketio.on("elimina notizia")
@@ -201,3 +209,4 @@ def elimina_notizia(data):
     Notizia(data.get("id")).elimina()
 
     emit("aggiornamento notizie", broadcast=True)
+    emit("aggiornamento notizie", broadcast=True, namespace="/display")

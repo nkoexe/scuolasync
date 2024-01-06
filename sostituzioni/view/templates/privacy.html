@@ -2,38 +2,71 @@
 <html lang="it">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap">
 
-    <title>Privacy</title>
+  <title>Privacy & Cookies</title>
 </head>
 
 <body>
-    <div id="main-container">
-        <h1>Privacy e Cookie</h1>
-        <hr>
-        <p>Questo sistema utilizza soltanto cookie strettamente necessari al funzionamento.</p>
-        <p>Informativa: <a href="https://gdpr.eu/cookies#:~:text=Purpose-,Strictly%20necessary%20cookies%20%E2%80%94%20These,explained%20to%20the%20user">gdpr.eu/cookies</a></p>
-        <br>
-        <p>Il sistema fa parte dell'I.I.S.S "Gandhi" Merano, e ne segue l'informativa per la privacy.</p>
-        <p>Informativa: <a href="https://www.iiss-gandhi-merano.it/privacy">iiss-gandhi-merano.it/privacy</a></p>
-        <p>Mmm mi piacciono i biscotti.</p>
-    </div>
-    <style>
-        #main-container {
-            font-family: 'Gabarito', sans-serif;
-            margin: 0 200px;
-        }
+  <div id="main-container">
+    <h1>Informativa Privacy e Cookie</h1>
+    <hr>
+    <p>Questo sistema utilizza soltanto cookie strettamente necessari al suo funzionamento.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Nome Cookie</th>
+          <th>Descrizione</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>session</td>
+          <td>Contiene l'identificativo della sessione generato casualmente per permettere l'accesso al sistema, bloccando richieste non autorizzate. Durata: 2 ore.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Seguendo le direttive europee, il consenso esplicito all'utilizzo in questo caso non è necessario.</p>
+    <p>Maggiori informazioni qui: <a href="https://gdpr.eu/cookies#:~:text=Purpose-,Strictly%20necessary%20cookies%20%E2%80%94%20These,explained%20to%20the%20user">gdpr.eu/cookies</a></p>
+    <br>
+    <p>Il sistema fa parte dell'I.I.S.S "Gandhi" Merano, e ne segue l'informativa per la privacy.</p>
+    <p>Informativa: <a href="https://www.iiss-gandhi-merano.it/privacy">iiss-gandhi-merano.it/privacy</a></p>
+    <p>Mmm mi piacciono i biscotti.</p>
+  </div>
+  <style>
+    #main-container {
+      font-family: 'Gabarito', sans-serif;
+      margin: 0 200px;
+    }
 
-        @media (max-width: 1000px) {
-            #main-container {
-                margin: 0;
-            }
-        }
-    </style>
+    @media (max-width: 1000px) {
+      #main-container {
+        margin: 0;
+      }
+    }
+
+    table,
+    td {
+      border: 1px solid #333;
+      border-spacing: 0;
+    }
+
+    thead {
+      text-wrap: nowrap;
+      background-color: #333;
+      color: #fff;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 10px 30px 10px 10px;
+    }
+  </style>
 </body>
 
 </html>
