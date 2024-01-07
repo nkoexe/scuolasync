@@ -20,6 +20,8 @@ def main():
 
 
 @impostazioni.route("/update")
+@login_required
+@role_required("impostazioni.write")
 def update():
     rootpath = configurazione.get("rootpath").path
 
@@ -50,3 +52,12 @@ def update():
                 "disown",
             ]
         )
+
+
+@impostazioni.route("/log")
+@login_required
+@role_required("impostazioni.write")
+def log():
+    import subprocess
+
+    return subprocess.check_output(["/usr/bin/journalctl", "sostituzioni.service"])

@@ -356,8 +356,8 @@ ul {
 #notizie-lista {
     height: 100%;
     display: flex;
-    gap: 40px;
-    padding-right: 40px;
+    gap: 80px;
+    padding-right: 48px;
     font-size: 1.7vw;
 }
 
