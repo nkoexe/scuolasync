@@ -61,5 +61,5 @@ def log():
     import subprocess
 
     return subprocess.check_output(
-        ["/usr/bin/journalctl", "-u sostituzioni.service", "-n 1000", "--no-pager"]
+        ["/usr/bin/journalctl", "-u sostituzioni", "-n 1000", "--no-pager"]
     )
