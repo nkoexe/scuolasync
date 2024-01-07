@@ -14,7 +14,10 @@ const ui_sostituzione_html_template = `
     <span>{nome_classe}</span>
   </div>
   <div class="sostituzione-data sostituzione-aula">
-    <span>{numero_aula} - {piano_aula}</span>
+    <span>{numero_aula}</span>
+  </div>
+  <div class="sostituzione-data sostituzione-piano">
+    <span>{piano_aula}</span>
   </div>
   <div class="sostituzione-data sostituzione-note">
     <span>{note}</span>
@@ -42,18 +45,18 @@ function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizi
 	else {
 		piano_aula = aule.find(aula => aula.numero === numero_aula).piano
 		if (piano_aula == null) { piano_aula = "" }
-		else if (piano_aula == "-1") { piano_aula = "seminterrato" }
-		else if (piano_aula == "0") { piano_aula = "piano terra" }
-		else if (piano_aula == "1") { piano_aula = "primo piano" }
-		else if (piano_aula == "2") { piano_aula = "secondo piano" }
-		else if (piano_aula == "3") { piano_aula = "terzo piano" }
-		else { piano_aula = "piano " + piano_aula }
+		else if (piano_aula == "-1") { piano_aula = "Seminterrato" }
+		else if (piano_aula == "0") { piano_aula = "Terra" }
+		else if (piano_aula == "1") { piano_aula = "Primo" }
+		else if (piano_aula == "2") { piano_aula = "Secondo" }
+		else if (piano_aula == "3") { piano_aula = "Terzo" }
 	}
 
 	// Converte da unix timestamp a dd/mm/yyyy
 	data = new Date(data * 1000)
 	oggi = data.getDay() === oggi_day
-	data = data.toLocaleDateString()
+	opzioni_data = { day: '2-digit', month: '2-digit', year: 'numeric' }
+	data = data.toLocaleDateString('it-IT', opzioni_data)
 
 	return ui_sostituzione_html_template.replaceAll("{oggi}", oggi ? "oggi" : "").replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{piano_aula}", piano_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note)
 }

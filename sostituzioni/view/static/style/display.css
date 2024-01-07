@@ -186,6 +186,7 @@ ul {
 #sostituzioni-lista .sostituzione-docente {
     width: 15vw;
 }
+
 #sostituzioni-didascalia-classe,
 #sostituzioni-lista .sostituzione-classe {
     width: 10vw;
@@ -193,9 +194,13 @@ ul {
 
 #sostituzioni-didascalia-aula,
 #sostituzioni-lista .sostituzione-aula {
-    width: 15vw;
+    width: 10vw;
 }
 
+#sostituzioni-didascalia-piano,
+#sostituzioni-lista .sostituzione-piano {
+    width: 8vw;
+}
 
 #sostituzioni-didascalia-note,
 #sostituzioni-lista .sostituzione-note {
@@ -280,6 +285,7 @@ ul {
 
 #sostituzioni-lista .sostituzione.oggi {
     background-color: #f0c0bc;
+    margin: 2px 0;
 }
 
 #sostituzioni-lista .sostituzione.oggi div.sostituzione-data {
