@@ -48,7 +48,7 @@ function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizi
 }
 
 function add_sostituzione_to_ui_list(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, piano_aula, nome_classe, nome_docente, cognome_docente, note) {
-	if (cancellato || !pubblicato) { return }
+	// if (cancellato || !pubblicato) { return }
 
 	let sostituzione_html = format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, piano_aula, nome_classe, nome_docente, cognome_docente, note)
 	ui_sostituzioni_lista.innerHTML += sostituzione_html
