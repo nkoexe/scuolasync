@@ -42,8 +42,12 @@ function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizi
 	else {
 		piano_aula = aule.find(aula => aula.numero === numero_aula).piano
 		if (piano_aula == null) { piano_aula = "" }
-		else if (piano_aula == "0") { piano_aula = "Piano Terra" }
-		else { piano_aula = piano_aula + "° piano" }
+		else if (piano_aula == "-1") { piano_aula = "seminterrato" }
+		else if (piano_aula == "0") { piano_aula = "piano terra" }
+		else if (piano_aula == "1") { piano_aula = "primo piano" }
+		else if (piano_aula == "2") { piano_aula = "secondo piano" }
+		else if (piano_aula == "3") { piano_aula = "terzo piano" }
+		else { piano_aula = "piano " + piano_aula }
 	}
 
 	// Converte da unix timestamp a dd/mm/yyyy
