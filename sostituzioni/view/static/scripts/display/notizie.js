@@ -25,5 +25,5 @@ function refresh_notizie() {
         add_notizia_to_ui_list(element.id, element.pubblicato, element.data_ora_inizio, element.data_ora_fine, element.testo)
     })
 
-   ui_notizie_container.insertAdjacentHTML('beforeend',ui_notizie_container.innerHTML);
+    ui_notizie_container.insertAdjacentHTML('beforeend', ui_notizie_container.innerHTML);
 }

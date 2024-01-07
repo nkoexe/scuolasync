@@ -60,4 +60,6 @@ def update():
 def log():
     import subprocess
 
-    return subprocess.check_output(["/usr/bin/journalctl", "sostituzioni.service"])
+    return subprocess.check_output(
+        ["/usr/bin/journalctl", "-u sostituzioni.service", "-n 1000", "--no-pager"]
+    )

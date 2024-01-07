@@ -23,34 +23,38 @@ class Where:
         self.parent = parent
 
     def resolve(self):
-        match self.value:
-            case None:
-                value = "null"
+        # match self.value:
+        #     case None:
+        #         value = "null"
 
-            case list():
-                value = "(" + ", ".join(str(v) for v in self.value) + ")"
+        #     case list():
+        #         value = "(" + ", ".join(str(v) for v in self.value) + ")"
 
-            case bool():
-                value = str(int(self.value))
+        #     case bool():
+        #         value = str(int(self.value))
 
-            case int():
-                value = str(self.value)
+        #     case int():
+        #         value = str(self.value)
 
-            case float():
-                value = str(self.value)
+        #     case float():
+        #         value = str(self.value)
 
-            case str():
-                value = '"' + self.value + '"'
+        #     case str():
+        #         value = '"' + self.value + '"'
 
-            case _:
-                value = '"' + str(self.value) + '"'
+        #     case _:
+        #         value = '"' + str(self.value) + '"'
 
-        resolved = str(self.attribute) + self.operator + value
+        resolved = str(self.attribute) + self.operator + "?"
 
         if isinstance(self.parent, Where):
-            resolved = self.parent.resolve() + " AND " + resolved
+            where, values = self.parent.resolve()
+            resolved = where + " AND " + resolved
+            values.append(self.value)
+        else:
+            values = [self.value]
 
-        return resolved
+        return resolved, values
 
     def equals(self, value):
         self.operator = "="
@@ -135,7 +139,7 @@ class Database:
         logger.debug("Connection to database closed successfully")
 
     def execute(self, query: str, values: List | None = None):
-        logger.debug("Executing query " + query)
+        logger.debug("Executing query " + query + " - " + str(values))
         try:
             if values is not None:
                 self.cursor.execute(query, list(values))
@@ -145,11 +149,6 @@ class Database:
         except sqlite3.Error as e:
             logger.error(e)
             self.connection.rollback()
-
-    # def get_all_from(self, table: str) -> List[Dict]:
-    #     self.execute('SELECT * FROM ' + table)
-
-    #     return [dict(row) for row in self.cursor.fetchall()]
 
     @beartype
     def get(
@@ -168,15 +167,18 @@ class Database:
         database.get('utente', where=Where('email').equals('esempio@gandhimerano.com'), limit=1)
         """
 
+        values = []
+
         if isinstance(columns, tuple):
             columns = ", ".join(columns)
 
         query = f"SELECT {columns} from {table}"
 
         if where is not None:
-            where = where.resolve()
+            where, where_values = where.resolve()
 
             query += f" WHERE {where}"
+            values.extend(where_values)
 
         if order_by is not None:
             query += f" ORDER BY {order_by}"
@@ -185,7 +187,7 @@ class Database:
             query += f" LIMIT {limit}"
 
         self.connect()
-        self.execute(query)
+        self.execute(query, values)
 
         rows = SearchableList(values=[dict(row) for row in self.cursor.fetchall()])
 
@@ -283,26 +285,28 @@ class Database:
 
         # query = f'UPDATE {table} SET {", ".join([f"{column}={value}" for (column, value) in values.items()])}'
         query = f'UPDATE {table} SET {", ".join([f"{column}=?" for column in values.keys()])}'
+        values = list(values.values())
 
         if where is not None:
-            where = where.resolve()
+            where, where_values = where.resolve()
 
             query += f" WHERE {where}"
+            values.extend(where_values)
 
         self.connect()
-        self.execute(query, values.values())
+        self.execute(query, values)
         self.close()
 
         return True
 
     @beartype
     def delete(self, table: str, where: Where):
-        where = where.resolve()
+        where, values = where.resolve()
 
         query = f"DELETE FROM {table} WHERE {where}"
 
         self.connect()
-        self.execute(query)
+        self.execute(query, values)
         self.close()
 
 
