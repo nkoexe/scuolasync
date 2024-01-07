@@ -22,7 +22,8 @@ socket.on("lista sostituzioni", (data) => {
 
     sostituzioni_visualizzate = sostituzioni
 
-    refresh_sostituzioni()
+    // ugly ass fix perché vado a prendere il piano dell'aula dalla lista di aule che non ha ancora finito di caricare
+    setTimeout(refresh_sostituzioni, 200);
 })
 
 

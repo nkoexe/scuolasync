@@ -186,16 +186,16 @@ ul {
 #sostituzioni-lista .sostituzione-docente {
     width: 15vw;
 }
-
-#sostituzioni-didascalia-aula,
-#sostituzioni-lista .sostituzione-aula {
-    width: 10vw;
-}
-
 #sostituzioni-didascalia-classe,
 #sostituzioni-lista .sostituzione-classe {
     width: 10vw;
 }
+
+#sostituzioni-didascalia-aula,
+#sostituzioni-lista .sostituzione-aula {
+    width: 15vw;
+}
+
 
 #sostituzioni-didascalia-note,
 #sostituzioni-lista .sostituzione-note {
