@@ -53,6 +53,8 @@ def update():
             ]
         )
 
+    return "Updating////////"
+
 
 @impostazioni.route("/log")
 @login_required
