@@ -278,6 +278,13 @@ ul {
     margin-left: 10px;
 }
 
+#sostituzioni-lista .sostituzione.oggi {
+    background-color: #f0c0bc;
+}
+
+#sostituzioni-lista .sostituzione.oggi div.sostituzione-data {
+    border-right-color: #e5aeae;
+}
 
 /* fix radius del primo elemento a sinistra */
 #sostituzioni-lista .sostituzione div.sostituzione-data:first-of-type {

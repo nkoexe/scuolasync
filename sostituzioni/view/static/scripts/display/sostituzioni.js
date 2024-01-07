@@ -1,6 +1,6 @@
 const ui_sostituzione_html_template = `
 <li>
-<div class="sostituzione" data-id={id} tabindex="0">
+<div class="sostituzione {oggi}">
   <div class="sostituzione-data sostituzione-docente">
     <span>{cognome_docente} {nome_docente}</span>
   </div>
@@ -42,9 +42,11 @@ function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizi
 	else { piano_aula = "" }
 
 	// Converte da unix timestamp a dd/mm/yyyy
-	data = new Date(data * 1000).toLocaleDateString()
+	data = new Date(data * 1000)
+	oggi = data.getDay() === oggi_day
+	data = data.toLocaleDateString()
 
-	return ui_sostituzione_html_template.replaceAll("{id}", id).replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{piano_aula}", piano_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note)
+	return ui_sostituzione_html_template.replaceAll("{oggi}", oggi ? "oggi" : "").replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{piano_aula}", piano_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note)
 }
 
 function add_sostituzione_to_ui_list(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, piano_aula, nome_classe, nome_docente, cognome_docente, note) {
@@ -63,14 +65,11 @@ function refresh_sostituzioni() {
 		ui_sostituzioni_messaggio_informativo.style.display = "flex"
 	} else {
 		ui_sostituzioni_messaggio_informativo.style.display = "none"
+		oggi_day = new Date().getDay()
 		sostituzioni_visualizzate.forEach(element => {
 			add_sostituzione_to_ui_list(element.id, element.pubblicato, element.cancellato, element.data, element.ora_inizio, element.ora_fine, element.numero_ora_predefinita, element.numero_aula, 'piano', element.nome_classe, element.nome_docente, element.cognome_docente, element.note)
 		})
 	}
-
-	altezza_container_sostituzioni = ui_sostituzioni_container.offsetHeight
-	altezza_lista_sostituzioni = ui_sostituzioni_lista.offsetHeight
-	current_scroll_sostituzioni = 10 ** 10
 }
 
 function ordina_sostituzioni() {

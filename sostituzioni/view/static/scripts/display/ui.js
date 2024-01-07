@@ -2,10 +2,6 @@ const ui_ora = document.getElementById("ora")
 const ui_giorno = document.getElementById("giorno")
 const ui_data = document.getElementById("data")
 
-let altezza_container_sostituzioni = 0
-let altezza_lista_sostituzioni = 0
-let current_scroll_sostituzioni = 0
-
 let altezza_container_eventi = 0
 let altezza_lista_eventi = 0
 let current_scroll_eventi = 0
@@ -26,14 +22,15 @@ setInterval(() => {
 
 
 setInterval(() => {
-    current_scroll_sostituzioni += altezza_container_sostituzioni
-    if (current_scroll_sostituzioni > altezza_lista_sostituzioni) { current_scroll_sostituzioni = 0 }
-    ui_sostituzioni_container.scroll({ top: current_scroll_sostituzioni, behavior: "smooth" })
+    containerscroll = ui_sostituzioni_container.scrollTop
+    containerscroll += ui_sostituzioni_container.offsetHeight
+    if (containerscroll >= ui_sostituzioni_lista.offsetHeight) { containerscroll = 0 }
+    ui_sostituzioni_container.scroll({ top: containerscroll, behavior: "smooth" })
 }, 10000)
 
 setInterval(() => {
     current_scroll_eventi += altezza_container_eventi
-    if (current_scroll_eventi > altezza_lista_eventi) { current_scroll_eventi = 0 }
+    if (current_scroll_eventi >= altezza_lista_eventi) { current_scroll_eventi = 0 }
     ui_eventi_container.scroll({ top: current_scroll_eventi, behavior: "smooth" })
 }, 10000)
 
