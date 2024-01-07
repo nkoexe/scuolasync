@@ -1,7 +1,6 @@
 import logging
 from flask_socketio import emit
 
-
 from sostituzioni.model.model import (
     Aula,
     Classe,
@@ -31,19 +30,19 @@ def connect():
 
 @socketio.on("richiesta sostituzioni", namespace="/display")
 def richiesta_sostituzioni():
-    logger.debug(f"Ricevuto segnale da visualizzazione fisica richiesta sostituzioni")
+    logger.debug("Ricevuto segnale da visualizzazione fisica: richiesta sostituzioni")
 
     emit("lista sostituzioni", Sostituzione.load())
 
 
 @socketio.on("richiesta eventi", namespace="/display")
 def richiesta_eventi():
-    logger.debug(f"Ricevuto segnale da visualizzazione fisica richiesta eventi")
+    logger.debug("Ricevuto segnale da visualizzazione fisica: richiesta eventi")
 
     emit("lista eventi", Evento.load())
 
 
 @socketio.on("richiesta notizie", namespace="/display")
 def richiesta_notizie():
-    logger.debug(f"Ricevuto segnale da visualizzazione fisica richiesta notizie")
+    logger.debug("Ricevuto segnale da visualizzazione fisica: richiesta notizie")
     emit("lista notizie", Notizia.load())

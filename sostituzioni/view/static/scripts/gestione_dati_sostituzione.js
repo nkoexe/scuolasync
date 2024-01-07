@@ -136,3 +136,12 @@ function mostra_duplica_sostituzione(id) {
     ui_pulsante_principale_sostituzione.innerHTML = 'Pubblica';
     ui_pulsante_principale_sostituzione.onclick = () => conferma_nuova_sostituzione(true);
 }
+
+function pubblica_sostituzione(id, pubblica) {
+    pubblica = pubblica === undefined ? true : pubblica;
+
+    s_modifica_sostituzione(
+        id, {
+        pubblicato: pubblica
+    });
+}

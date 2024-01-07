@@ -1,6 +1,6 @@
 const ui_sostituzione_html_template = `
 <li>
-<div class="sostituzione" data-id={id} tabindex="0">
+<div class="sostituzione {pubblicato}" data-id={id} tabindex="0">
   <div class="sostituzione-data">
     <span>{data}</span>
   </div>
@@ -19,6 +19,7 @@ const ui_sostituzione_html_template = `
   <div class="sostituzione-data sostituzione-note">
     <span>{note}</span>
   </div>
+  {icona_pubblicato}
 </div>
 </li>`
 
@@ -42,11 +43,18 @@ function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizi
 	if (cognome_docente == null) { cognome_docente = "" }
 	if (nome_classe == null) { nome_classe = "" }
 	if (numero_aula == null) { numero_aula = "" }
+	if (pubblicato) {
+		pubblicato = ""
+		icona_pubblicato = ""
+	} else {
+		pubblicato = "non-pubblicato"
+		icona_pubblicato = '<span class="material-symbols-rounded icon">visibility_off</span>'
+	}
 
 	// Converte da unix timestamp a dd/mm/yyyy
 	data = new Date(data * 1000).toLocaleDateString()
 
-	return ui_sostituzione_html_template.replaceAll("{id}", id).replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note)
+	return ui_sostituzione_html_template.replaceAll("{id}", id).replace('{pubblicato}', pubblicato).replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note).replace("{icona_pubblicato}", icona_pubblicato)
 }
 
 function add_sostituzione_to_ui_list(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {

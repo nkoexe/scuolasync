@@ -46,16 +46,18 @@ class Sostituzione(Sostituzione):
         note: str | None = None,
         pubblicato: bool = False,
     ):
-        self.id = id
-        self.aula = aula
-        self.classe = classe
-        self.docente = docente
-        self.data = data
-        self.ora_inizio = ora_inizio
-        self.ora_fine = ora_fine
-        self.ora_predefinita = ora_predefinita
-        self.note = note
-        self.pubblicato = pubblicato
+        if id is not None:
+            super().__init__(id)
+        else:
+            self.aula = aula
+            self.classe = classe
+            self.docente = docente
+            self.data = data
+            self.ora_inizio = ora_inizio
+            self.ora_fine = ora_fine
+            self.ora_predefinita = ora_predefinita
+            self.note = note
+            self.pubblicato = pubblicato
 
 
 class Evento(Evento):

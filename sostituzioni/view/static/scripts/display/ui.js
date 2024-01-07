@@ -6,7 +6,7 @@ let altezza_container_eventi = 0
 let altezza_lista_eventi = 0
 let current_scroll_eventi = 0
 
-const notizie_scroll_speed = 0.7;
+const notizie_scroll_speed = 0.5;
 let notizie_marginleft = 0;
 
 options_ora = { 'hour': '2-digit', 'minute': '2-digit', 'second': '2-digit' }
@@ -26,7 +26,7 @@ setInterval(() => {
     containerscroll += ui_sostituzioni_container.offsetHeight
     if (containerscroll >= ui_sostituzioni_lista.offsetHeight) { containerscroll = 0 }
     ui_sostituzioni_container.scroll({ top: containerscroll, behavior: "smooth" })
-}, 10000)
+}, 15000)
 
 setInterval(() => {
     current_scroll_eventi += altezza_container_eventi
@@ -40,4 +40,4 @@ setInterval(() => {
         notizie_marginleft = 0;
     }
     notizie_marginleft += notizie_scroll_speed;
-}, 20)
+}, 15)

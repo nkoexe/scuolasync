@@ -143,7 +143,14 @@ class Selezione {
     render_lista() {
         this.ui_lista.innerHTML = ''
         for (let index = 0; index < this.lista_visualizzati.length; index++) {
-            this.ui_lista.innerHTML += '<li id="lista_' + this.id + index + '" onmousedown="' + this.id + '.seleziona(\'' + this.lista_visualizzati[index] + '\')"><span>' + this.render(this.lista_visualizzati[index]) + '</span></li>'
+            let elem = document.createElement("li");
+            elem.id = 'lista_' + this.id + index
+            elem.innerHTML = `<span>${this.render(this.lista_visualizzati[index])}</span>`
+            elem.onmousedown = () => { this.seleziona(this.lista_visualizzati[index]) }
+            this.ui_lista.appendChild(elem)
+
+            // Benvenuto. Questo abominio di codice riposerà in pace qui, in memoria della Grande battaglia combattuta nel nome di D'Incà.
+            // this.ui_lista.innerHTML += '<li id="lista_' + this.id + index + '" onmousedown="' + this.id + '.seleziona(\'' + this.lista_visualizzati[index] + '\')"><span>' + this.render(this.lista_visualizzati[index]) + '</span></li>'
         }
     }
 
