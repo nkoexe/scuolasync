@@ -29,12 +29,10 @@
       </div>
       <div id="eventi-frame" class="frame">
         <div id="header-eventi">
-          <h2 id="header-eventi-titolo">Prossimamente...</h2>
+          <h2 id="header-eventi-titolo">Prossimi Eventi</h2>
         </div>
         <div id="eventi-container">
-          <div id="eventi-lista-container">
-            <ul id="eventi-lista"></ul>
-          </div>
+          <ul id="eventi-lista"></ul>
         </div>
       </div>
       <div id="notizie-frame" class="frame">
@@ -49,20 +47,23 @@
         <div id="sostituzioni-main">
           <div id="sostituzioni-container">
             <div id="sostituzioni-didascalie-container">
+              <div id="sostituzioni-didascalia-docente" class="sostituzioni-didascalia">
+                <span>Docente</span>
+              </div>
               <div id="sostituzioni-didascalia-data" class="sostituzioni-didascalia">
                 <span>Data</span>
               </div>
               <div id="sostituzioni-didascalia-ora" class="sostituzioni-didascalia">
                 <span>Ora</span>
               </div>
-              <div id="sostituzioni-didascalia-docente" class="sostituzioni-didascalia">
-                <span>Docente</span>
-              </div>
               <div id="sostituzioni-didascalia-classe" class="sostituzioni-didascalia">
                 <span>Classe</span>
               </div>
               <div id="sostituzioni-didascalia-aula" class="sostituzioni-didascalia">
                 <span>Aula</span>
+              </div>
+              <div id="sostituzioni-didascalia-piano" class="sostituzioni-didascalia">
+                <span>Piano</span>
               </div>
               <div id="sostituzioni-didascalia-note" class="sostituzioni-didascalia">
                 <span>Note</span>
@@ -91,6 +92,7 @@
     let classi = []
     let docenti = []
   </script>
+  <script src="{{url_for('static', filename='scripts/lib/compare.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/display/ui.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/display/eventi.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/display/notizie.js')}}"></script>

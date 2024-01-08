@@ -325,17 +325,17 @@ ul {
 
 #sostituzioni-filtro-ora,
 #sostituzioni-lista .sostituzione-ora {
-    width: 8rem;
-}
-
-#sostituzioni-filtro-aula,
-#sostituzioni-lista .sostituzione-aula {
-    width: 8rem;
+    width: 9rem;
 }
 
 #sostituzioni-filtro-classe,
 #sostituzioni-lista .sostituzione-classe {
-    width: 8rem;
+    width: 9rem;
+}
+
+#sostituzioni-filtro-aula,
+#sostituzioni-lista .sostituzione-aula {
+    width: 9rem;
 }
 
 #sostituzioni-filtro-docente,
@@ -551,6 +551,17 @@ ul {
     border-top-right-radius: inherit;
     border-bottom-right-radius: inherit;
     border-right: none;
+}
+
+#sostituzioni-lista .sostituzione .icon {
+    margin: auto;
+    margin-right: 5px;
+}
+
+#sostituzioni-lista .sostituzione.non-pubblicato {
+    color: #00000099;
+    font-style: italic;
+    font-size: 16px;
 }
 
 

@@ -25,7 +25,7 @@ function fix_date_from_input(value) {
 
 
 function ui_loading_sostituzioni() {
-    ui_sostituzioni_container.innerHTML = ""
+    ui_sostituzioni_lista.innerHTML = ""
     ui_sostituzioni_messaggio_informativo.innerHTML = "<span>Caricamento...</span>"
     ui_sostituzioni_messaggio_informativo.style.display = "flex"
 }
@@ -63,7 +63,16 @@ ui_context_menu.onblur = (event) => {
     }
     ui_context_menu.closingcallback()
 }
-
+function ui_nascondi_sostituzione() {
+    id = parseInt(ui_context_menu.dataset.id)
+    pubblica_sostituzione(id, false)
+    ui_context_menu.closingcallback()
+}
+function ui_pubblica_sostituzione() {
+    id = parseInt(ui_context_menu.dataset.id)
+    pubblica_sostituzione(id, true)
+    ui_context_menu.closingcallback()
+}
 function ui_modifica_sostituzione() {
     id = parseInt(ui_context_menu.dataset.id)
     mostra_modifica_sostituzione(id)
@@ -130,6 +139,7 @@ function mostra_context_menu_sostituzione(event, sostituzione) {
     ui_pulsanti_context_menu.innerHTML =
         pulsante("ui_modifica_sostituzione", "edit", "Modifica")
         + pulsante("ui_duplica_sostituzione", "content_copy", "Duplica")
+        + (sostituzione.classList.contains("non-pubblicato") ? pulsante("ui_pubblica_sostituzione", "visibility", "Pubblica") : pulsante("ui_nascondi_sostituzione", "visibility_off", "Nascondi"))
         + pulsante("ui_elimina", "delete", "Elimina")
 
     mostra_context_menu(sostituzione)

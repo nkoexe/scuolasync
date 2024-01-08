@@ -2,24 +2,12 @@ const ui_ora = document.getElementById("ora")
 const ui_giorno = document.getElementById("giorno")
 const ui_data = document.getElementById("data")
 
-// https://codepen.io/pprakash/pen/oNxNeQE
-function Marquee(selector, speed) {
-    const parentSelector = document.querySelector(selector);
-    const clone = parentSelector.innerHTML;
-    const firstElement = parentSelector.children[0];
-    let i = 0;
-    parentSelector.insertAdjacentHTML('beforeend', clone);
+let altezza_container_eventi = 0
+let altezza_lista_eventi = 0
+let current_scroll_eventi = 0
 
-    setInterval(function () {
-        firstElement.style.marginLeft = `-${i}px`;
-        if (i > firstElement.clientWidth) {
-            i = 0;
-        }
-        i = i + speed;
-    }, 20);
-}
-
-setTimeout(() => { Marquee('.marquee', 1) }, 2000)
+const notizie_scroll_speed = 0.5;
+let notizie_marginleft = 0;
 
 options_ora = { 'hour': '2-digit', 'minute': '2-digit', 'second': '2-digit' }
 options_giorno = { 'day': '2-digit' }
@@ -30,5 +18,26 @@ setInterval(() => {
     ui_ora.innerText = now.toLocaleTimeString('it-IT', options_ora)
     ui_giorno.innerText = now.toLocaleDateString('it-IT', options_giorno)
     ui_data.innerText = now.toLocaleDateString('it-IT', options_data)
-
 }, 1000);
+
+
+setInterval(() => {
+    containerscroll = ui_sostituzioni_container.scrollTop
+    containerscroll += ui_sostituzioni_container.offsetHeight
+    if (containerscroll >= ui_sostituzioni_lista.offsetHeight) { containerscroll = 0 }
+    ui_sostituzioni_container.scroll({ top: containerscroll, behavior: "smooth" })
+}, 15000)
+
+setInterval(() => {
+    current_scroll_eventi += altezza_container_eventi
+    if (current_scroll_eventi >= altezza_lista_eventi) { current_scroll_eventi = 0 }
+    ui_eventi_container.scroll({ top: current_scroll_eventi, behavior: "smooth" })
+}, 10000)
+
+setInterval(() => {
+    ui_notizie_lista.style.marginLeft = `-${notizie_marginleft}px`;
+    if (notizie_marginleft > ui_notizie_lista.clientWidth) {
+        notizie_marginleft = 0;
+    }
+    notizie_marginleft += notizie_scroll_speed;
+}, 15)

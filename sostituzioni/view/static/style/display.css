@@ -27,22 +27,14 @@ ul {
 
 /* SCROLLBAR */
 * {
-    scrollbar-width: 8px;
-    scrollbar-color: var(--color-scrollbar) transparent;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 ::-webkit-scrollbar {
-    width: 8px;
+    display: none;
 }
 
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: var(--color-scrollbar);
-    border-radius: 5px;
-}
 
 
 /* ICONS */
@@ -112,6 +104,7 @@ ul {
 
 /* DATA E ORA */
 #ora-container {
+    width: 100%;
     margin: auto;
     display: flex;
     flex-direction: column;
@@ -119,12 +112,13 @@ ul {
 
 #ora {
     margin: auto;
-    margin-left: 0.9vw;
-    font-size: 3vw;
+    margin-left: 3.4vw;
+    font-size: 3.3vw;
     font-weight: bold;
 }
 
 #data-container {
+    margin: auto;
     display: flex;
     font-size: 1.8vw;
     gap: 0.5vw;
@@ -193,14 +187,19 @@ ul {
     width: 15vw;
 }
 
+#sostituzioni-didascalia-classe,
+#sostituzioni-lista .sostituzione-classe {
+    width: 10vw;
+}
+
 #sostituzioni-didascalia-aula,
 #sostituzioni-lista .sostituzione-aula {
     width: 10vw;
 }
 
-#sostituzioni-didascalia-classe,
-#sostituzioni-lista .sostituzione-classe {
-    width: 10vw;
+#sostituzioni-didascalia-piano,
+#sostituzioni-lista .sostituzione-piano {
+    width: 8vw;
 }
 
 #sostituzioni-didascalia-note,
@@ -284,6 +283,14 @@ ul {
     margin-left: 10px;
 }
 
+#sostituzioni-lista .sostituzione.oggi {
+    background-color: #f0c0bc;
+    margin: 2px 0;
+}
+
+#sostituzioni-lista .sostituzione.oggi div.sostituzione-data {
+    border-right-color: #e5aeae;
+}
 
 /* fix radius del primo elemento a sinistra */
 #sostituzioni-lista .sostituzione div.sostituzione-data:first-of-type {
@@ -306,8 +313,8 @@ ul {
 }
 
 #header-eventi-titolo {
-    margin: auto 8%;
-    padding-top: 3%;
+    margin: auto 7%;
+    padding-top: 2%;
     font-size: 1.6vw;
     font-weight: normal;
     font-style: italic;
@@ -321,8 +328,6 @@ ul {
     margin: 0 10px;
     overflow: auto;
 }
-
-#eventi-lista-container {}
 
 .evento {
     display: flex;
@@ -364,8 +369,8 @@ ul {
 #notizie-lista {
     height: 100%;
     display: flex;
-    gap: 40px;
-    padding-right: 40px;
+    gap: 80px;
+    padding-right: 80px;
     font-size: 1.7vw;
 }
 

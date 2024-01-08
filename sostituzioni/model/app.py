@@ -16,7 +16,5 @@ app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
 
-app.config["TEMPLATES_AUTO_RELOAD"] = True
-
 app.cli.add_command(database_cli)
 app.cli.add_command(importer_cli)

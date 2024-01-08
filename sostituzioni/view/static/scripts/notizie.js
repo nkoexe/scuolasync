@@ -6,9 +6,8 @@ const ui_notizia_html_template = `
 </li>`
 
 
-const ui_notizie_container = document.getElementById("notizie-lista")
-// const ui_notizie_messaggio_informativo = document.getElementById("sostituzioni-messaggio-informativo")
-
+const ui_notizie_container = document.getElementById("notizie-container")
+const ui_notizie_lista = document.getElementById("notizie-lista")
 
 function format_notizia_to_html(id, pubblicato, data_ora_inizio, data_ora_fine, testo) {
     return ui_notizia_html_template.replace("{id}", id).replace("{testo}", testo)
@@ -16,7 +15,7 @@ function format_notizia_to_html(id, pubblicato, data_ora_inizio, data_ora_fine, 
 
 function add_notizia_to_ui_list(id, pubblicato, data_ora_inizio, data_ora_fine, testo) {
     let notizia_html = format_notizia_to_html(id, pubblicato, data_ora_inizio, data_ora_fine, testo)
-    ui_notizie_container.innerHTML += notizia_html
+    ui_notizie_lista.innerHTML += notizia_html
 }
 
 function ui_modifica_notizia() {
@@ -26,7 +25,7 @@ function ui_modifica_notizia() {
 }
 
 function refresh_notizie() {
-    ui_notizie_container.innerHTML = ""
+    ui_notizie_lista.innerHTML = ""
     notizie.forEach(element => {
         add_notizia_to_ui_list(element.id, element.pubblicato, element.data_ora_inizio, element.data_ora_fine, element.testo)
     })

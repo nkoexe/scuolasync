@@ -23,34 +23,38 @@ class Where:
         self.parent = parent
 
     def resolve(self):
-        match self.value:
-            case None:
-                value = "null"
+        # match self.value:
+        #     case None:
+        #         value = "null"
 
-            case list():
-                value = "(" + ", ".join(str(v) for v in self.value) + ")"
+        #     case list():
+        #         value = "(" + ", ".join(str(v) for v in self.value) + ")"
 
-            case bool():
-                value = str(int(self.value))
+        #     case bool():
+        #         value = str(int(self.value))
 
-            case int():
-                value = str(self.value)
+        #     case int():
+        #         value = str(self.value)
 
-            case float():
-                value = str(self.value)
+        #     case float():
+        #         value = str(self.value)
 
-            case str():
-                value = '"' + self.value + '"'
+        #     case str():
+        #         value = '"' + self.value + '"'
 
-            case _:
-                value = '"' + str(self.value) + '"'
+        #     case _:
+        #         value = '"' + str(self.value) + '"'
 
-        resolved = str(self.attribute) + self.operator + value
+        resolved = str(self.attribute) + self.operator + "?"
 
         if isinstance(self.parent, Where):
-            resolved = self.parent.resolve() + " AND " + resolved
+            where, values = self.parent.resolve()
+            resolved = where + " AND " + resolved
+            values.append(self.value)
+        else:
+            values = [self.value]
 
-        return resolved
+        return resolved, values
 
     def equals(self, value):
         self.operator = "="
@@ -112,30 +116,30 @@ class Database:
 
     def connect(self):
         if not self.connection:
-            logger.debug("Trying to open database connection...")
+            # logger.debug("Trying to open database connection...")
             try:
                 self.connection = sqlite3.connect(self.path)
-                logger.debug("Database connection established.")
+                # logger.debug("Database connection established.")
                 self.connection.execute("PRAGMA foreign_keys = 1")
                 self.connection.row_factory = sqlite3.Row
 
                 self.cursor = self.connection.cursor()
-                logger.debug("Database cursor created.")
+                # logger.debug("Database cursor created.")
             except sqlite3.Error as e:
                 logger.error(e)
                 exit()
 
     def close(self):
-        logger.debug("Closing connection to database...")
+        # logger.debug("Closing connection to database...")
         if self.connection:
             self.connection.commit()
             self.cursor.close()
             self.connection.close()
             self.connection = None
-        logger.debug("Connection to database closed successfully")
+        # logger.debug("Connection to database closed successfully")
 
     def execute(self, query: str, values: List | None = None):
-        logger.debug("Executing query " + query)
+        logger.debug("Executing query " + query + " - " + str(values))
         try:
             if values is not None:
                 self.cursor.execute(query, list(values))
@@ -145,11 +149,6 @@ class Database:
         except sqlite3.Error as e:
             logger.error(e)
             self.connection.rollback()
-
-    # def get_all_from(self, table: str) -> List[Dict]:
-    #     self.execute('SELECT * FROM ' + table)
-
-    #     return [dict(row) for row in self.cursor.fetchall()]
 
     @beartype
     def get(
@@ -168,15 +167,18 @@ class Database:
         database.get('utente', where=Where('email').equals('esempio@gandhimerano.com'), limit=1)
         """
 
+        values = []
+
         if isinstance(columns, tuple):
             columns = ", ".join(columns)
 
         query = f"SELECT {columns} from {table}"
 
         if where is not None:
-            where = where.resolve()
+            where, where_values = where.resolve()
 
             query += f" WHERE {where}"
+            values.extend(where_values)
 
         if order_by is not None:
             query += f" ORDER BY {order_by}"
@@ -185,7 +187,7 @@ class Database:
             query += f" LIMIT {limit}"
 
         self.connect()
-        self.execute(query)
+        self.execute(query, values)
 
         rows = SearchableList(values=[dict(row) for row in self.cursor.fetchall()])
 
@@ -283,26 +285,28 @@ class Database:
 
         # query = f'UPDATE {table} SET {", ".join([f"{column}={value}" for (column, value) in values.items()])}'
         query = f'UPDATE {table} SET {", ".join([f"{column}=?" for column in values.keys()])}'
+        values = list(values.values())
 
         if where is not None:
-            where = where.resolve()
+            where, where_values = where.resolve()
 
             query += f" WHERE {where}"
+            values.extend(where_values)
 
         self.connect()
-        self.execute(query, values.values())
+        self.execute(query, values)
         self.close()
 
         return True
 
     @beartype
     def delete(self, table: str, where: Where):
-        where = where.resolve()
+        where, values = where.resolve()
 
         query = f"DELETE FROM {table} WHERE {where}"
 
         self.connect()
-        self.execute(query)
+        self.execute(query, values)
         self.close()
 
 
@@ -368,8 +372,10 @@ class ElementoDatabaseConStorico(ElementoDatabase):
 
     @beartype
     @cancellato.setter
-    def cancellato(self, new: bool | None):
-        self._cancellato = new
+    def cancellato(self, new: bool | int | None):
+        self._cancellato = None
+        if new is not None:
+            self._cancellato = bool(new)
 
 
 # -----------------------------------------------
@@ -561,6 +567,26 @@ class Sostituzione(ElementoDatabaseConStorico):
     TABLENAME = "sostituzione"
     KEY = "id"
 
+    def __init__(self, id: int):
+        # Load data from database
+        data = self.DATABASE.get_one(self.TABLENAME, "*", where=Where("id").equals(id))
+
+        if data is None:
+            raise ValueError(f"Sostituzione con id {id} non trovata")
+
+        self.id = id
+        self.cancellato = data["cancellato"]
+        self.pubblicato = data["pubblicato"]
+        self.numero_aula = data["numero_aula"]
+        self.nome_classe = data["nome_classe"]
+        self.nome_docente = data["nome_docente"]
+        self.cognome_docente = data["cognome_docente"]
+        self.data = data["data"]
+        self.ora_predefinita = data["numero_ora_predefinita"]
+        self.ora_inizio = data["ora_inizio"]
+        self.ora_fine = data["ora_fine"]
+        self.note = data["note"]
+
     def load(filtri: Where | Dict | None = None):
         if filtri is None:
             # default sono le sostituzioni future
@@ -571,7 +597,12 @@ class Sostituzione(ElementoDatabaseConStorico):
             today = int(today.timestamp())
 
             where = (
-                Where("data").greaterthanorequal(today).AND("cancellato").equals(False)
+                Where("data")
+                .greaterthanorequal(today)
+                .AND("cancellato")
+                .equals(False)
+                .AND("pubblicato")
+                .equals(True)
             )
 
             return ElementoDatabase.load(Sostituzione, where=where, order_by="data")
@@ -579,8 +610,13 @@ class Sostituzione(ElementoDatabaseConStorico):
         if isinstance(filtri, Where):
             return ElementoDatabase.load(Sostituzione, where=filtri, order_by="data")
 
-        data_inizio: int | None = filtri.get(
-            "data_inizio", int(datetime.today().timestamp())
+        data_inizio: int = filtri.get(
+            "data_inizio",
+            int(
+                datetime.today()
+                .replace(hour=0, minute=0, second=0, microsecond=0)
+                .timestamp()
+            ),
         )  # default è oggi
         data_fine: int | None = filtri.get(
             "data_fine", None
@@ -595,10 +631,15 @@ class Sostituzione(ElementoDatabaseConStorico):
             where = where.AND("data").lessthanorequal(data_fine)
 
         # Se è specificato di caricare anche i cancellati, non impostare un where aggiuntivo
+        # Mostrare solo i cancellati non è possibile, le opzioni sono tutti o non cancellati
         cancellato = filtri.get("cancellato", False)
-
         if not cancellato:
             where = where.AND("cancellato").equals(False)
+
+        # Lo stesso vale per i pubblicati, o tutti o solo pubblicati
+        pubblicato = filtri.get("pubblicato", True)
+        if pubblicato:
+            where = where.AND("pubblicato").equals(True)
 
         return ElementoDatabase.load(Sostituzione, where=where, order_by="data")
 
@@ -703,7 +744,7 @@ class Sostituzione(ElementoDatabaseConStorico):
 
     @beartype
     @pubblicato.setter
-    def pubblicato(self, new: bool | None):
+    def pubblicato(self, new: bool | int | None):
         self._pubblicato = new
 
     @property

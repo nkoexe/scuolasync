@@ -10,7 +10,12 @@ from sostituzioni.model.model import (
     Evento,
     Notizia,
 )
-from sostituzioni.model.auth import login_required, role_required, logout_user
+from sostituzioni.model.auth import (
+    login_required,
+    role_required,
+    logout_user,
+    current_user,
+)
 from sostituzioni.view import socketio
 
 logger = logging.getLogger(__name__)
@@ -21,13 +26,13 @@ logger = logging.getLogger(__name__)
 def connect():
     logger.debug("Nuovo client connesso, invio dei dati iniziali.")
 
-    emit("lista sostituzioni", Sostituzione.load())
-    emit("lista eventi", Evento.load())
-    emit("lista notizie", Notizia.load())
     emit("lista aule", Aula.load())
     emit("lista classi", Classe.load())
     emit("lista docenti", Docente.load())
     emit("lista ore predefinite", OraPredefinita.load())
+    richiesta_notizie()
+    richiesta_eventi()
+    richiesta_sostituzioni({"pubblicato": False})
 
 
 @socketio.on("disconnect")
@@ -38,22 +43,29 @@ def disconnect():
 
 @socketio.on("richiesta sostituzioni")
 @login_required
-def richiesta_sostituzioni(filtri):
+def richiesta_sostituzioni(filtri: dict | None = None):
     """
     filtri:
     { cancellato: true }  // per mostrare anche sostituzioni cancellate
+    { pubblicato: false }  // per mostrare anche sostituzioni non pubblicate
     { data_inizio: 1702767600, data_fine: 1702854000 }  // per sostituzioni comprese in un intervallo
     { data_inizio: 1702767600, data_fine: None }  // per sostituzioni future
     """
 
     logger.debug(f"Ricevuto segnale richiesta sostituzioni con filtri: {filtri}")
 
+    # check if user has necessary permissions for non default view
+    if "cancellato" in filtri and not current_user.permessi.sostituzioni.write:
+        filtri.pop("cancellato")
+    if "pubblicato" in filtri and not current_user.permessi.sostituzioni.write:
+        filtri.pop("pubblicato")
+
     emit("lista sostituzioni", Sostituzione.load(filtri))
 
 
 @socketio.on("richiesta eventi")
 @login_required
-def richiesta_eventi(filtri):
+def richiesta_eventi(filtri: dict | None = None):
     """
     filtri:
     { cancellato: true }  // per mostrare anche eventi cancellati
@@ -68,7 +80,7 @@ def richiesta_eventi(filtri):
 
 @socketio.on("richiesta notizie")
 @login_required
-def richiesta_notizie(filtri):
+def richiesta_notizie(filtri: dict | None = None):
     """
     Todo:
     decidere come far filtrare notizie, se per data o se aggiungere pulsante 'tutte' idk
@@ -102,6 +114,7 @@ def nuova_sostituzione(data):
     sostituzione.inserisci()
 
     emit("aggiornamento sostituzioni", broadcast=True)
+    emit("aggiornamento sostituzioni", broadcast=True, namespace="/display")
 
 
 @socketio.on("modifica sostituzione")
@@ -113,6 +126,7 @@ def modifica_sostituzione(data):
     Sostituzione(id=data.get("id")).modifica(data.get("data"))
 
     emit("aggiornamento sostituzioni", broadcast=True)
+    emit("aggiornamento sostituzioni", broadcast=True, namespace="/display")
 
 
 @socketio.on("elimina sostituzione")
@@ -126,6 +140,7 @@ def elimina_sostituzione(data):
     )  # usare default di configurazione
 
     emit("aggiornamento sostituzioni", broadcast=True)
+    emit("aggiornamento sostituzioni", broadcast=True, namespace="/display")
 
 
 @socketio.on("nuovo evento")
@@ -142,6 +157,7 @@ def nuovo_evento(data):
     ).inserisci()
 
     emit("aggiornamento eventi", broadcast=True)
+    emit("aggiornamento eventi", broadcast=True, namespace="/display")
 
 
 @socketio.on("modifica evento")
@@ -153,6 +169,7 @@ def modifica_evento(data):
     Evento(id=data.get("id")).modifica(data.get("data"))
 
     emit("aggiornamento eventi", broadcast=True)
+    emit("aggiornamento eventi", broadcast=True, namespace="/display")
 
 
 @socketio.on("elimina evento")
@@ -164,6 +181,7 @@ def elimina_evento(data):
     Evento(data.get("id")).elimina()
 
     emit("aggiornamento eventi", broadcast=True)
+    emit("aggiornamento eventi", broadcast=True, namespace="/display")
 
 
 @socketio.on("nuova notizia")
@@ -179,6 +197,7 @@ def nuova_notizia(data: dict):
     ).inserisci()
 
     emit("aggiornamento notizie", broadcast=True)
+    emit("aggiornamento notizie", broadcast=True, namespace="/display")
 
 
 @socketio.on("modifica notizia")
@@ -190,6 +209,7 @@ def modifica_notizia(data):
     Notizia(id=data.get("id")).modifica(data.get("data"))
 
     emit("aggiornamento notizie", broadcast=True)
+    emit("aggiornamento notizie", broadcast=True, namespace="/display")
 
 
 @socketio.on("elimina notizia")
@@ -201,3 +221,4 @@ def elimina_notizia(data):
     Notizia(data.get("id")).elimina()
 
     emit("aggiornamento notizie", broadcast=True)
+    emit("aggiornamento notizie", broadcast=True, namespace="/display")

@@ -90,18 +90,16 @@
                   <button id="sostituzioni-filtro-data-future" class="sostituzioni-filtro-data-opzione selected">Future</button>
                   <input type="date" id="sostituzioni-filtro-data-data" class="sostituzioni-filtro-data-opzione">
                   <select id="sostituzioni-filtro-data-mese" class="sostituzioni-filtro-data-opzione">
+                    <option value="8">Settembre</option>
+                    <option value="9">Ottobre</option>
+                    <option value="10">Novembre</option>
+                    <option value="11">Dicembre</option>
                     <option value="0">Gennaio</option>
                     <option value="1">Febbraio</option>
                     <option value="2">Marzo</option>
                     <option value="3">Aprile</option>
                     <option value="4">Maggio</option>
                     <option value="5">Giugno</option>
-                    <option value="6">Luglio</option>
-                    <option value="7">Agosto</option>
-                    <option value="8">Settembre</option>
-                    <option value="9">Ottobre</option>
-                    <option value="10">Novembre</option>
-                    <option value="11">Dicembre</option>
                   </select>
                   <button id="sostituzioni-filtro-data-tutte" class="sostituzioni-filtro-data-opzione">Tutte</button>
                 </div>
@@ -316,6 +314,7 @@
     let docenti = []
   </script>
   <script src="{{url_for('static', filename='scripts/lib/fuzzyset.js')}}"></script>
+  <script src="{{url_for('static', filename='scripts/lib/compare.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/lib/selezione.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/ui.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/eventi.js')}}"></script>

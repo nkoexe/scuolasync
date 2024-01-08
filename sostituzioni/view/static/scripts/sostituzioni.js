@@ -1,6 +1,6 @@
 const ui_sostituzione_html_template = `
 <li>
-<div class="sostituzione" data-id={id} tabindex="0">
+<div class="sostituzione {pubblicato}" data-id={id} tabindex="0">
   <div class="sostituzione-data">
     <span>{data}</span>
   </div>
@@ -19,11 +19,12 @@ const ui_sostituzione_html_template = `
   <div class="sostituzione-data sostituzione-note">
     <span>{note}</span>
   </div>
+  {icona_pubblicato}
 </div>
 </li>`
 
 
-const ui_sostituzioni_container = document.getElementById("sostituzioni-lista")
+const ui_sostituzioni_lista = document.getElementById("sostituzioni-lista")
 const ui_sostituzioni_messaggio_informativo = document.getElementById("sostituzioni-messaggio-informativo")
 
 let sostituzioni_data_verso_ordinamento = 1
@@ -42,22 +43,29 @@ function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizi
 	if (cognome_docente == null) { cognome_docente = "" }
 	if (nome_classe == null) { nome_classe = "" }
 	if (numero_aula == null) { numero_aula = "" }
+	if (pubblicato) {
+		pubblicato = ""
+		icona_pubblicato = ""
+	} else {
+		pubblicato = "non-pubblicato"
+		icona_pubblicato = '<span class="material-symbols-rounded icon">visibility_off</span>'
+	}
 
 	// Converte da unix timestamp a dd/mm/yyyy
 	data = new Date(data * 1000).toLocaleDateString()
 
-	return ui_sostituzione_html_template.replaceAll("{id}", id).replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note)
+	return ui_sostituzione_html_template.replaceAll("{id}", id).replace('{pubblicato}', pubblicato).replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note).replace("{icona_pubblicato}", icona_pubblicato)
 }
 
 function add_sostituzione_to_ui_list(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
 	let sostituzione_html = format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note)
-	ui_sostituzioni_container.innerHTML += sostituzione_html
+	ui_sostituzioni_lista.innerHTML += sostituzione_html
 }
 
 function refresh_sostituzioni() {
 	ordina_sostituzioni()
 
-	ui_sostituzioni_container.innerHTML = ""
+	ui_sostituzioni_lista.innerHTML = ""
 	if (sostituzioni_visualizzate.length === 0) {
 		ui_sostituzioni_messaggio_informativo.innerHTML = "<span>" + messaggio_nessuna_sostituzione + "</span>"
 		ui_sostituzioni_messaggio_informativo.style.display = "flex"
@@ -104,96 +112,23 @@ function ordina_sostituzioni() {
 	}
 
 	if (sostituzioni_filtro_ora.ordina) {
-		if (sostituzioni_filtro_ora.verso_ordinamento === 1) {
-			sostituzioni_visualizzate.sort((a, b) => {
-				if (a.numero_ora_predefinita === null && b.numero_ora_predefinita === null) {
-					return b.ora_inizio.localeCompare(a.ora_inizio)
-				} else if (a.numero_ora_predefinita === null) {
-					return 1
-				} else if (b.numero_ora_predefinita === null) {
-					return -1
-				} else if (typeof a.numero_ora_predefinita === "string" || typeof b.numero_ora_predefinita === "string") {
-					return b.numero_ora_predefinita.localeCompare(a.numero_ora_predefinita)
-				} else {
-					return b.numero_ora_predefinita - a.numero_ora_predefinita
-				}
-			})
-		} else {
-			sostituzioni_visualizzate.sort((a, b) => {
-				if (a.numero_ora_predefinita === null && b.numero_ora_predefinita === null) {
-					return a.ora_inizio.localeCompare(b.ora_inizio)
-				} else if (a.numero_ora_predefinita === null) {
-					return 1
-				} else if (b.numero_ora_predefinita === null) {
-					return -1
-				} else if (typeof a.numero_ora_predefinita === "string" || typeof b.numero_ora_predefinita === "string") {
-					return a.numero_ora_predefinita.localeCompare(b.numero_ora_predefinita)
-				} else {
-					return a.numero_ora_predefinita - b.numero_ora_predefinita;
-				}
-			})
-		}
+		sostituzioni_visualizzate.sort((a, b) => {
+			return compara_ora_predefinita(a, b) * sostituzioni_filtro_ora.verso_ordinamento
+		})
 	}
 	if (sostituzioni_filtro_classe.ordina) {
-		if (sostituzioni_filtro_classe.verso_ordinamento === 1) {
-			sostituzioni_visualizzate.sort((a, b) => {
-				if (a.nome_classe === null && b.nome_classe === null) {
-					return 0
-				} else if (a.nome_classe === null) {
-					return 1
-				} else if (b.nome_classe === null) {
-					return -1
-				} else {
-					return b.nome_classe.localeCompare(a.nome_classe)
-				}
-			})
-		}
-		else {
-			sostituzioni_visualizzate.sort((a, b) => {
-				if (a.nome_classe === null && b.nome_classe === null) {
-					return 0
-				} else if (a.nome_classe === null) {
-					return 1
-				} else if (b.nome_classe === null) {
-					return -1
-				} else {
-					return a.nome_classe.localeCompare(b.nome_classe)
-				}
-			})
-		}
+		sostituzioni_visualizzate.sort((a, b) => {
+			return compara_classe(a, b) * sostituzioni_filtro_classe.verso_ordinamento
+		})
 	}
 	if (sostituzioni_filtro_aula.ordina) {
-		if (sostituzioni_filtro_aula.verso_ordinamento === 1) {
-			sostituzioni_visualizzate.sort((a, b) => {
-				if (a.numero_aula === null && b.numero_aula === null) {
-					return 0
-				} else if (a.numero_aula === null) {
-					return 1
-				} else if (b.numero_aula === null) {
-					return -1
-				} else {
-					return b.numero_aula.localeCompare(a.numero_aula)
-				}
-			})
-		}
-		else {
-			sostituzioni_visualizzate.sort((a, b) => {
-				if (a.numero_aula === null && b.numero_aula === null) {
-					return 0
-				} else if (a.numero_aula === null) {
-					return 1
-				} else if (b.numero_aula === null) {
-					return -1
-				} else {
-					return a.numero_aula.localeCompare(b.numero_aula)
-				}
-			})
-		}
+		sostituzioni_visualizzate.sort((a, b) => {
+			return compara_aula(a, b) * sostituzioni_filtro_aula.verso_ordinamento
+		})
 	}
 	if (sostituzioni_filtro_docente.ordina) {
-		if (sostituzioni_filtro_docente.verso_ordinamento === 1)
-			sostituzioni_visualizzate.sort((a, b) => b.cognome_docente.localeCompare(a.cognome_docente) || b.nome_docente.localeCompare(a.nome_docente))
-		else
-			sostituzioni_visualizzate.sort((a, b) => a.cognome_docente.localeCompare(b.cognome_docente) || a.nome_docente.localeCompare(b.nome_docente))
+		sostituzioni_visualizzate.sort((a, b) => {
+			return compara_docente(a, b) * sostituzioni_filtro_docente.verso_ordinamento
+		})
 	}
 }
