@@ -112,8 +112,8 @@ ul {
 
 #ora {
     margin: auto;
-    margin-left: 3.4vw;
-    font-size: 3.3vw;
+    margin-left: 3.2vw;
+    font-size: 3.5vw;
     font-weight: bold;
 }
 
@@ -174,32 +174,32 @@ ul {
 /* larghezza dei riquadri dei filtri, da matchare con i riquadri delle sostituzioni */
 #sostituzioni-didascalia-data,
 #sostituzioni-lista .sostituzione-data {
-    width: 8vw;
+    width: 6vw;
 }
 
 #sostituzioni-didascalia-ora,
 #sostituzioni-lista .sostituzione-ora {
-    width: 10vw;
+    width: 11.2vw;
 }
 
 #sostituzioni-didascalia-docente,
 #sostituzioni-lista .sostituzione-docente {
-    width: 15vw;
+    width: 20vw;
 }
 
 #sostituzioni-didascalia-classe,
 #sostituzioni-lista .sostituzione-classe {
-    width: 10vw;
+    width: 8vw;
 }
 
 #sostituzioni-didascalia-aula,
 #sostituzioni-lista .sostituzione-aula {
-    width: 10vw;
+    width: 12.5vw;
 }
 
 #sostituzioni-didascalia-piano,
 #sostituzioni-lista .sostituzione-piano {
-    width: 8vw;
+    width: 9.5vw;
 }
 
 #sostituzioni-didascalia-note,
@@ -258,7 +258,7 @@ ul {
     width: 100%;
     min-height: 5vh;
     max-height: 8vh;
-    font-size: 1.2vw;
+    font-size: 1.5vw;
     background-color: var(--color-sostituzioni-lista2);
     border-radius: 0;
 }
@@ -315,7 +315,7 @@ ul {
 #header-eventi-titolo {
     margin: auto 7%;
     padding-top: 2%;
-    font-size: 1.6vw;
+    font-size: 1.8vw;
     font-weight: normal;
     font-style: italic;
     color: #353535;
@@ -357,7 +357,7 @@ ul {
 
 .evento-testo {
     flex: 1;
-    font-size: 1.2vw;
+    font-size: 1.5vw;
 }
 
 /* LISTA NOTIZIE */

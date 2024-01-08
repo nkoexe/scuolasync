@@ -55,7 +55,7 @@ function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizi
 	// Converte da unix timestamp a dd/mm/yyyy
 	data = new Date(data * 1000)
 	oggi = data.getDay() === oggi_day
-	opzioni_data = { day: '2-digit', month: '2-digit', year: 'numeric' }
+	opzioni_data = { day: '2-digit', month: '2-digit' }
 	data = data.toLocaleDateString('it-IT', opzioni_data)
 
 	return ui_sostituzione_html_template.replaceAll("{oggi}", oggi ? "oggi" : "").replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{piano_aula}", piano_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note)
