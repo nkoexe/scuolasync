@@ -62,3 +62,25 @@ socket.on("aggiornamento notizie", () => {
     socket.emit("richiesta notizie")
     s_richiedi_notizie()
 })
+
+
+// ----------------
+
+socket.on('connect_error', reconnect)
+socket.on('connect_failed', reconnect)
+socket.on('disconnect', reconnect)
+
+function reconnect() {
+    console.log('Reconnecting...')
+    fetch('/')
+        .then((response) => {
+            if (response.ok) {
+                console.log('Reloading...')
+                location.reload()
+            }
+        })
+        .catch(() => { })
+        .finally(() => {
+            setTimeout(reconnect, 10000)
+        })
+}
