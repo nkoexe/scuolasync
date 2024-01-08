@@ -84,15 +84,12 @@ function refresh_sostituzioni() {
 }
 
 function ordina_sostituzioni() {
-	if (sostituzioni_data_verso_ordinamento === 1) {
-		sostituzioni_visualizzate.sort((a, b) => {
-			return a.data - b.data
-		})
-	} else {
-		sostituzioni_visualizzate.sort((a, b) => {
-			return b.data - a.data
-		})
-	}
+	sostituzioni_visualizzate.sort((a, b) => {
+		res = compara_data(a, b) * sostituzioni_data_verso_ordinamento
+		if (res == 0) { res = compara_ora_predefinita(b, a) }
+		if (res == 0) { res = compara_docente(b, a) }
+		return res
+	})
 
 	if (!sostituzioni_filtro_ora.ordina) {
 		sostituzioni_filtro_ora.ui_rimuovi_ordinamento()

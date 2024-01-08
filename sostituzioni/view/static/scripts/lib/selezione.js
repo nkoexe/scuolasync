@@ -52,19 +52,21 @@ class Selezione {
                     }
                 }
             } else if (this.select_on_exit) {
-                this.seleziona(this.ui_input.value)
+                if (!this.selected) {
+                    this.seleziona(this.ui_input.value)
+                }
             }
             this.ui_dropdown.style.display = 'none'
         }
 
         this.ui_input.oninput = (event) => {
+            this.selected = null
             if (this.select_on_keydown) {
                 this.seleziona(this.ui_input.value)
             } else {
                 this.current_index = -1
                 this.genera_dropdown()
                 this.ui_lista.scrollTop = 0
-                this.selected = null
             }
         }
 
@@ -128,6 +130,7 @@ class Selezione {
             this.selected = null
         }
 
+        console.log(this.selected)
         if (this.callback) { this.callback(this.selected) }
     }
 

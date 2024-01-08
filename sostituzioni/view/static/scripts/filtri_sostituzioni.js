@@ -44,13 +44,23 @@ function sostituzioni_applica_filtri() {
         sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.numero_ora_predefinita === (sostituzioni_filtro_ora.selected))
     }
     if (sostituzioni_filtro_classe.selected !== null) {
-        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.nome_classe === sostituzioni_filtro_classe.selected)
+        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => {
+            if (element.nome_classe === null) return false
+            // to lowercase and remove spaces
+            return element.nome_classe.toLowerCase().replace(/ /g, "") === sostituzioni_filtro_classe.selected.toLowerCase().replace(/ /g, "")
+        })
     }
     if (sostituzioni_filtro_aula.selected !== null) {
-        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.numero_aula === sostituzioni_filtro_aula.selected)
+        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => {
+            if (element.numero_aula === null) return false
+            return element.numero_aula.toLowerCase() === sostituzioni_filtro_aula.selected.toLowerCase()
+        })
     }
     if (sostituzioni_filtro_docente.selected !== null) {
-        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.cognome_docente + " " + element.nome_docente === sostituzioni_filtro_docente.selected)
+        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => {
+            if (element.cognome_docente === null) return false
+            return (element.cognome_docente + " " + element.nome_docente).toLowerCase().includes(sostituzioni_filtro_docente.selected.toLowerCase())
+        })
     }
     if (sostituzioni_filtro_note.selected !== null) {
         // todo: implement fuzzy search
