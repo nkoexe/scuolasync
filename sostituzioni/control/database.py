@@ -487,11 +487,12 @@ class Docente(ElementoDatabaseConStorico):
             cancellato=self.cancellato,
         )
 
-    def trova(cognome_nome):
+    @beartype
+    def trova(cognome_nome: str):
         return database.get_one(
             "docente",
             ("cognome", "nome"),
-            where=Where('(cognome || " " || nome)').LIKE(cognome_nome),
+            where=Where("(cognome || ' ' || nome)").LIKE(cognome_nome.lower()),
         )
 
     # @beartype
