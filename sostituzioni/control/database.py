@@ -1109,7 +1109,7 @@ class Notizia(ElementoDatabaseConStorico):
             # carica le notizie non cancellate comprese nell'intervallo di data
 
             # get todays timestamp
-            today = int(datetime.today().timestamp())
+            today = int(datetime.today().replace(hour=0, minute=0, second=0, microsecond=0).timestamp())
 
             where = (
                 Where("data_inizio")

@@ -366,7 +366,8 @@ ul {
     padding: 0 10px;
 }
 
-#notizie-lista {
+/* classe perché la lista viene clonata per farla scorrere */
+.notizie-lista {
     height: 100%;
     display: flex;
     gap: 80px;

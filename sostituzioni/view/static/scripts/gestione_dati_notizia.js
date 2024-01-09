@@ -32,7 +32,7 @@ function conferma_nuova_notizia() {
     data_inizio = fix_date_from_input(gestione_dati_notizia_data_inizio.valueAsNumber) / 1000;
     data_fine = fix_date_from_input(gestione_dati_notizia_data_fine.valueAsNumber) / 1000;
 
-    if (data_inizio >= data_fine) {
+    if (data_inizio > data_fine) {
         return
     };
 
@@ -63,7 +63,7 @@ function conferma_modifica_notizia(id) {
     data_inizio = fix_date_from_input(gestione_dati_notizia_data_inizio.valueAsNumber) / 1000;
     data_fine = fix_date_from_input(gestione_dati_notizia_data_fine.valueAsNumber) / 1000;
 
-    if (data_inizio >= data_fine) {
+    if (data_inizio > data_fine) {
         return
     };
 

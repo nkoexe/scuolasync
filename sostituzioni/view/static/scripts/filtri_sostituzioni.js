@@ -235,17 +235,22 @@ ui_sostituzioni_filtro_data_future.onclick = (e) => {
     ui_sostituzioni_filtra_data()
 }
 
-ui_sostituzioni_filtro_data_data.onchange = (e) => {
-    sostituzioni_filtro_data_attivo = 'data'
-    ui_sostituzioni_filtra_data()
-}
+ui_sostituzioni_filtro_data_data.onclick =
+    ui_sostituzioni_filtro_data_data.onchange = (e) => {
+        sostituzioni_filtro_data_attivo = 'data'
+        ui_sostituzioni_filtra_data()
+    }
 
-ui_sostituzioni_filtro_data_mese.onchange = (e) => {
-    sostituzioni_filtro_data_attivo = 'mese'
-    ui_sostituzioni_filtra_data()
-}
+ui_sostituzioni_filtro_data_mese.onclick =
+    ui_sostituzioni_filtro_data_mese.onchange = (e) => {
+        sostituzioni_filtro_data_attivo = 'mese'
+        ui_sostituzioni_filtra_data()
+    }
 
 ui_sostituzioni_filtro_data_tutte.onclick = (e) => {
     sostituzioni_filtro_data_attivo = 'tutte'
     ui_sostituzioni_filtra_data()
 }
+
+
+ui_sostituzioni_filtro_data_data.valueAsDate = new Date()

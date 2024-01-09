@@ -60,7 +60,6 @@ socket.on("aggiornamento eventi", () => {
 
 socket.on("aggiornamento notizie", () => {
     socket.emit("richiesta notizie")
-    s_richiedi_notizie()
 })
 
 

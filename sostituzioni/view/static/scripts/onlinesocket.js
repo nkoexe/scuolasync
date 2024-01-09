@@ -74,7 +74,8 @@ socket.on("aggiornamento notizie", () => {
 // ----------------
 
 function s_richiedi_sostituzioni(filtri) {
-    filtri['pubblicato'] = false
+    if (filtri)
+        filtri.pubblicato = false
     socket.emit("richiesta sostituzioni", filtri)
 }
 

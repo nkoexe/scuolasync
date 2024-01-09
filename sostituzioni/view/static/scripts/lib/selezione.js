@@ -162,11 +162,23 @@ class Selezione {
             this.ui_dropdown.style.display = 'none'
             return
         }
-        let search = this.ui_input.value
+        let search = this.ui_input.value.toLowerCase()
         if (search.length == 0) {
             this.lista_visualizzati = this.lista_elementi.values()
         } else {
-            this.lista_visualizzati = this.lista_elementi.get(search, [], .15).map(obj => obj[1])
+            // firstly, check if string is contained in any of the values
+            this.lista_visualizzati = this.lista_elementi.values().filter(value => value.toLowerCase().includes(search))
+
+            if (this.lista_visualizzati.length > 0) {
+                // if there are values found, order them by their distance to the search string
+                this.lista_visualizzati = this.lista_visualizzati.sort((a, b) => {
+                    return a.toLowerCase().indexOf(search) - b.toLowerCase().indexOf(search)
+                })
+
+            } else {
+                // if there aren't any values, do a fuzzy search
+                this.lista_visualizzati = this.lista_elementi.get(search, [], .15).map(obj => obj[1])
+            }
         }
         this.render_lista()
     }
