@@ -113,12 +113,6 @@ body {
     z-index: 20;
 }
 
-@media (max-width: 600px) {
-    #login-container {
-        box-shadow: none;
-    }
-}
-
 #logo {
     height: 18vh;
     margin-top: 4vh;
@@ -164,6 +158,7 @@ body {
 
 #pulsanti-legali {
     position: absolute;
+    display: flex;
     bottom: 0;
     right: 0;
     margin: 15px;
@@ -180,4 +175,31 @@ body {
 
 #pulsanti-legali a:hover {
     background-color: #0000001f;
+}
+
+#pulsanti-legali .separator {
+    margin: auto;
+}
+
+@media (max-width: 600px) {
+    #login-container {
+        box-shadow: none;
+    }
+
+    #logo {
+        margin-top: 0;
+    }
+
+    #pulsanti-legali {
+        flex-direction: column;
+    }
+
+    #pulsanti-legali a {
+        margin: auto;
+        margin-right: 0;
+    }
+
+    #pulsanti-legali .separator {
+        display: none;
+    }
 }

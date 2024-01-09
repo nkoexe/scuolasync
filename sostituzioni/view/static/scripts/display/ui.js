@@ -24,7 +24,7 @@ setInterval(() => {
     containerscroll += ui_sostituzioni_container.offsetHeight
     if (containerscroll >= ui_sostituzioni_lista.offsetHeight) { containerscroll = 0 }
     ui_sostituzioni_container.scroll({ top: containerscroll, behavior: "smooth" })
-}, 15000)
+}, 13000)
 
 setInterval(() => {
     current_scroll_eventi += altezza_container_eventi

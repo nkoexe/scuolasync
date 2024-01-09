@@ -1,5 +1,5 @@
 import logging
-from flask import render_template, redirect, url_for, request
+from flask import render_template, redirect, url_for, request, flash
 
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.model.auth import (
@@ -31,6 +31,8 @@ def login():
 
     # authenticate_user("testa")
     # return redirect(url_for("online.index"))
+
+    # flash("Questo account non è autorizzato all'accesso al sistema.")
 
     return render_template("login.html", title=configurazione.get("systitle"))
 
