@@ -10,6 +10,7 @@ from sostituzioni.control.database import (
     Classe,
     Docente,
     OraPredefinita,
+    NotaStandard,
     Sostituzione,
     Evento,
     Notizia,

@@ -10,17 +10,18 @@ orario collegato a ora predefinita
 
 backup
 
-cosa deve fare sierotovisz se lunedì display non funziona
-
-sostituzioni di oggi con sfondo diverso
-
-futuro sostituzioni della prossima ora
+futuro: sostituzioni della prossima ora display
 
 lista sostituzioni senza cutoff
 
-distanziare notizie
-
-licenza contenuti copyright istituto gandhi
 mio copyright referente
 
 fra flaim diventa editor tra una settimana
+
+attributo booleano fuzzy nella selezione per rendere più comodo l'inserimento di notizie
+
+pulsante feedback
+
+libreria tooltip
+
+display non mostrare sostituzioni delle ore passate

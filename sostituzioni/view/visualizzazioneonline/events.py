@@ -6,6 +6,7 @@ from sostituzioni.model.model import (
     Classe,
     Docente,
     OraPredefinita,
+    NotaStandard,
     Sostituzione,
     Evento,
     Notizia,
@@ -26,10 +27,11 @@ logger = logging.getLogger(__name__)
 def connect():
     logger.debug("Nuovo client connesso, invio dei dati iniziali.")
 
+    emit("lista ore predefinite", OraPredefinita.load())
+    emit("lista note standard", NotaStandard.load())
     emit("lista aule", Aula.load())
     emit("lista classi", Classe.load())
     emit("lista docenti", Docente.load())
-    emit("lista ore predefinite", OraPredefinita.load())
     richiesta_notizie()
     richiesta_eventi()
     richiesta_sostituzioni({"pubblicato": False})

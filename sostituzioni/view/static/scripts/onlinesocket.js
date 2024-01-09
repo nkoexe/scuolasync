@@ -32,6 +32,10 @@ socket.on("lista ore predefinite", (data) => {
     sostituzioni_filtro_ora.aggiorna(ore_predefinite)
 })
 
+socket.on("lista note standard", (data) => {
+    note_standard = data
+})
+
 socket.on("lista classi", (data) => {
     classi = data
 

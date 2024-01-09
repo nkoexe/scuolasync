@@ -12,12 +12,13 @@ const gestione_dati_sostituzione_ora_predefinita = new Selezione({ id: 'gestione
 const gestione_dati_sostituzione_docente = new Selezione({ id: 'gestione-dati-sostituzione-docente', filtra_lista: prendi_cognome_nome, autocomplete: true });
 const gestione_dati_sostituzione_classe = new Selezione({ id: 'gestione-dati-sostituzione-classe', filtra_lista: prendi_nome, autocomplete: true });
 const gestione_dati_sostituzione_aula = new Selezione({ id: 'gestione-dati-sostituzione-aula', filtra_lista: prendi_numero, autocomplete: true });
-const gestione_dati_sostituzione_note = new Selezione({ id: 'gestione-dati-sostituzione-note' });
+const gestione_dati_sostituzione_note = new Selezione({ id: 'gestione-dati-sostituzione-note', filtra_lista: prendi_testo });
 
 
 
 function mostra_gestione_sostituzione() {
     gestione_dati_sostituzione_ora_predefinita.aggiorna(ore_predefinite);
+    gestione_dati_sostituzione_note.aggiorna(note_standard)
     gestione_dati_sostituzione_docente.aggiorna(docenti);
     gestione_dati_sostituzione_classe.aggiorna(classi);
     gestione_dati_sostituzione_aula.aggiorna(aule);

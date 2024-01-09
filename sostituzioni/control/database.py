@@ -344,6 +344,21 @@ class ElementoDatabase:
 
         return data
 
+    def trova(item, value: any = None, where: Where | None = None):
+        """
+        Funzione usata nell'inserimento di dati per verificare che
+        l'elemento esiste nella relativa tabella, caricandone la chiave.
+        Esempio di uso è il cercare per docente, una singola stringa con
+        cognome in maiuscolo, ed ottenere l'effettiva chiave (nome, cognome).
+        """
+        where = where or Where(item.KEY).equals(value)
+        return item.DATABASE.get_one(
+            item.TABLENAME,
+            item.KEY,
+            where=where,
+            load_lists=False,
+        )
+
 
 class ElementoDatabaseConStorico(ElementoDatabase):
     # def __init__(self, cancellato):
@@ -388,10 +403,9 @@ class Aula(ElementoDatabaseConStorico):
     def load():
         return ElementoDatabase.load(Aula)
 
+    @beartype
     def trova(numero: str):
-        return database.get_one(
-            "aula", "numero", where=Where("numero").equals(numero), load_lists=False
-        )
+        return ElementoDatabase.trova(Aula, numero)
 
     # @beartype
     # def __init__(self, numero: str, piano: str, cancellato: bool):
@@ -441,10 +455,9 @@ class Classe(ElementoDatabaseConStorico):
     def load():
         return ElementoDatabase.load(Classe)
 
-    def trova(nome):
-        return database.get_one(
-            "classe", "nome", where=Where("nome").equals(nome), load_lists=False
-        )
+    @beartype
+    def trova(nome: str):
+        return ElementoDatabase.trova(Classe, nome)
 
     # @beartype
     # def __init__(self, nome: str, aule_ospitanti: List[Aula], cancellato: bool):
@@ -489,9 +502,9 @@ class Docente(ElementoDatabaseConStorico):
 
     @beartype
     def trova(cognome_nome: str):
-        return database.get_one(
-            "docente",
-            ("cognome", "nome"),
+        return ElementoDatabase.trova(
+            Docente,
+            cognome_nome,
             where=Where("(cognome || ' ' || nome)").LIKE(cognome_nome.lower()),
         )
 
@@ -562,6 +575,44 @@ class OraPredefinita(ElementoDatabase):
     @ora_fine.setter
     def ora_fine(self, new):
         self._ora_fine = new
+
+
+class NotaStandard(ElementoDatabaseConStorico):
+    TABLENAME = "nota_standard"
+    KEY = "testo"
+
+    def load():
+        return ElementoDatabase.load(NotaStandard)
+
+    def trova(testo: str):
+        return ElementoDatabase.trova(NotaStandard, testo)
+
+    # @beartype
+    # def __init__(self, numero: str, piano: str, cancellato: bool):
+    #     super(Aula, self).__init__(cancellato)
+
+    #     self.numero = numero
+    #     self.piano = piano
+
+    def __repr__(self) -> str:
+        return "Nota standard " + self.numero
+
+    @beartype
+    def modifica(self, testo: str | None = None):
+        if not testo:
+            logger.warning("Nessun parametro passato ad notastandard.modifica")
+            return
+
+        self.testo = testo
+
+    @property
+    def testo(self):
+        return self._testo
+
+    @beartype
+    @testo.setter
+    def testo(self, new: str):
+        self._testo = new
 
 
 class Sostituzione(ElementoDatabaseConStorico):
@@ -1109,7 +1160,11 @@ class Notizia(ElementoDatabaseConStorico):
             # carica le notizie non cancellate comprese nell'intervallo di data
 
             # get todays timestamp
-            today = int(datetime.today().replace(hour=0, minute=0, second=0, microsecond=0).timestamp())
+            today = int(
+                datetime.today()
+                .replace(hour=0, minute=0, second=0, microsecond=0)
+                .timestamp()
+            )
 
             where = (
                 Where("data_inizio")

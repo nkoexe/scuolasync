@@ -39,8 +39,7 @@ function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizi
 	}
 	else { ora = numero_ora_predefinita.length == 1 ? numero_ora_predefinita + "a ora" : numero_ora_predefinita }
 	if (note == null) { note = "" }
-	if (nome_docente == null) { nome_docente = "" }
-	if (cognome_docente == null) { cognome_docente = "" }
+	if (cognome_docente == null) { cognome_docente = ""; nome_docente = ""  }
 	if (nome_classe == null) { nome_classe = "" }
 	if (numero_aula == null) { numero_aula = "" }
 	if (pubblicato) {
@@ -54,7 +53,7 @@ function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizi
 	// Converte da unix timestamp a dd/mm/yyyy
 	data = new Date(data * 1000).toLocaleDateString()
 
-	return ui_sostituzione_html_template.replaceAll("{id}", id).replace('{pubblicato}', pubblicato).replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note).replace("{icona_pubblicato}", icona_pubblicato)
+	return ui_sostituzione_html_template.replace("{id}", id).replace('{pubblicato}', pubblicato).replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note).replace("{icona_pubblicato}", icona_pubblicato)
 }
 
 function add_sostituzione_to_ui_list(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
