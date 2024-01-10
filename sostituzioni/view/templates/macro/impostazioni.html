@@ -1,6 +1,6 @@
 {% macro opzione_testo(opzione) %}
 <div id="{{opzione.id}}" class="opzione opzione-testo">
-  <input type="text" value="{{opzione.valore}}" onkeypress="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %}>
+  <input type="text" value="{{opzione.valore}}" onkeydown="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %}>
 </div>
 {% endmacro %}
 

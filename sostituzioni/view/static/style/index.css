@@ -514,7 +514,7 @@ ul {
 }
 
 /* colori alternati */
-#sostituzioni-lista :nth-child(odd) .sostituzione {
+#sostituzioni-lista :nth-child(odd).sostituzione {
     background-color: var(--color-sostituzioni-lista1);
 }
 
@@ -530,7 +530,7 @@ ul {
     border-right: 1px solid var(--color-sostituzioni-lista1);
 }
 
-#sostituzioni-lista :nth-child(odd) .sostituzione div.sostituzione-data {
+#sostituzioni-lista :nth-child(odd).sostituzione div.sostituzione-data {
     border-right: 1px solid var(--color-sostituzioni-lista2);
 }
 

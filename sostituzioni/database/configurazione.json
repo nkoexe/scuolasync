@@ -6,7 +6,11 @@
     },
     "sistema": {
       "titolo": "Sistema",
-      "descrizione": "Impostazioni generali di sistema, riguardanti il lato tecnico."
+      "descrizione": "Impostazioni generali di sistema, tecniche e informative."
+    },
+    "login": {
+      "titolo": "Pagina di Login",
+      "descrizione": "Impostazioni della pagina di autenticazione."
     },
     "visualizzazioneonline": {
       "titolo": "Visualizzazione Online",
@@ -54,6 +58,28 @@
       "lunghezza_massima": null,
       "default": "Sistema in manutenzione",
       "valore": "Sistema attualmente in manutenzione."
+    },
+    "supportemail": {
+      "titolo": "Email di Supporto",
+      "descrizione": "Email alla quale gli utenti scriveranno per problemi tecnici, richieste di accesso, ecc.",
+      "sezione": "sistema",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "testo",
+      "lunghezza_massima": null,
+      "default": "",
+      "valore": "niccolo.ragazzi@gandhimerano.com"
+    },
+    "loginpageparagraph": {
+      "titolo": "Paragrafo di Note",
+      "descrizione": "Testo che verrà visualizzato sotto al pulsante di accesso. Può essere stilizzato, includendo <br>, <strong>, <i>, ecc.",
+      "sezione": "login",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "testo",
+      "lunghezza_massima": null,
+      "default": "L'accesso al sistema è eseguito tramite l'account Google appartenente al tuo istituto scolastico.",
+      "valore": "L'accesso al sistema è eseguito tramite l'account Google appartenente al tuo istituto scolastico.<br>Assicurati di selezionare il tuo account <i>@gandhimerano.com</i>"
     },
     "nosostituzionimsg": {
       "titolo": "Errore nessuna sostituzione",

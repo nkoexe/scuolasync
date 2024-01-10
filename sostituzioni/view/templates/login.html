@@ -37,9 +37,10 @@
       </div>
 
       <div id="notes-frame">
-        <p>L'accesso al sistema è eseguito tramite l'account Google appartenente al tuo istituto scolastico.</p>
-        <p>Assicurati di selezionare il tuo account <i>@gandhimerano.com</i></p>
-        <p>Non riesci ad accedere? <a href="/richiedi-accesso">Richiedi l'accesso.</a></p>
+        <p>{{ paragraph | safe }}</p>
+        {% if supportemail %}
+        <p>Non riesci ad accedere? <a href="mailto:{{supportemail}}">Segnala un problema</a>.</p>
+        {% endif %}
       </div>
     </div>
     <div id="pulsanti-legali">

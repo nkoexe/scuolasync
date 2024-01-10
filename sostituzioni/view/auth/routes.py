@@ -34,7 +34,13 @@ def login():
 
     # flash("Questo account non è autorizzato all'accesso al sistema.")
 
-    return render_template("login.html", title=configurazione.get("systitle"))
+    return render_template(
+        "login.html",
+        title=configurazione.get("systitle"),
+        bottomparagraph=configurazione.get("loginpageparagraph"),
+        paragraph=configurazione.get("loginpageparagraph"),
+        supportemail=configurazione.get("supportemail"),
+    )
 
 
 @auth.route("/googlesso")
