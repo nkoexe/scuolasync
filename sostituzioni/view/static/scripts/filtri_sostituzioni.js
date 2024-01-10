@@ -1,6 +1,6 @@
 class Filtro extends Selezione {
-    constructor({ id, ordinamento, filtra_lista, render, select_on_keydown }) {
-        super({ id: id, callback: sostituzioni_applica_filtri, filtra_lista: filtra_lista, render: render, select_on_keydown: select_on_keydown })
+    constructor({ id, ordinamento, filtra_lista, render, select_on_keydown, autocomplete }) {
+        super({ id: id, callback: sostituzioni_applica_filtri, filtra_lista: filtra_lista, render: render, select_on_keydown: select_on_keydown, autocomplete: autocomplete })
 
         this.ordinamento = ordinamento
         this.ordinamento = (typeof this.ordinamento === "undefined") ? true : this.ordinamento
@@ -70,7 +70,7 @@ function sostituzioni_applica_filtri() {
     refresh_sostituzioni()
 }
 
-let sostituzioni_filtro_ora = new Filtro({ id: "sostituzioni-filtro-ora", filtra_lista: prendi_ora, render: element => element.length == 1 ? element + "a ora" : element })
+let sostituzioni_filtro_ora = new Filtro({ id: "sostituzioni-filtro-ora", filtra_lista: prendi_ora, render: element => element.length == 1 ? element + "a ora" : element, autocomplete: true })
 let sostituzioni_filtro_classe = new Filtro({ id: "sostituzioni-filtro-classe", filtra_lista: prendi_nome })
 let sostituzioni_filtro_aula = new Filtro({ id: "sostituzioni-filtro-aula", filtra_lista: prendi_numero })
 let sostituzioni_filtro_docente = new Filtro({ id: "sostituzioni-filtro-docente", filtra_lista: prendi_cognome_nome })

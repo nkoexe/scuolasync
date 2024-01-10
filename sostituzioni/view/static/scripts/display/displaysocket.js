@@ -29,6 +29,18 @@ socket.on("lista sostituzioni", (data) => {
 
 socket.on("lista ore predefinite", (data) => {
     ore_predefinite = data
+
+    now = new Date()
+    now.setHours(0, 0, 0, 0)
+
+    for (const ora_predefinita of ore_predefinite) {
+        [hour, minute] = ora_predefinita.ora_inizio_default.split(':')
+        timestamp = now.setHours(parseInt(hour), parseInt(minute))
+
+        // reload sostituzioni after 15 minutes
+        timestamp += 15 * 60
+        tasks[timestamp] = refresh_sostituzioni
+    }
 })
 
 socket.on("lista classi", (data) => {

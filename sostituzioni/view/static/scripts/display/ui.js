@@ -6,6 +6,10 @@ let altezza_container_eventi = 0
 let altezza_lista_eventi = 0
 let current_scroll_eventi = 0
 
+// Cose da fare in un determinato momento
+// struttura: { unixtimestamp: func }
+let tasks = {}
+
 
 options_ora = { 'hour': '2-digit', 'minute': '2-digit', 'second': '2-digit' }
 options_giorno = { 'day': '2-digit' }
@@ -16,6 +20,14 @@ setInterval(() => {
     ui_ora.innerText = now.toLocaleTimeString('it-IT', options_ora)
     ui_giorno.innerText = now.toLocaleDateString('it-IT', options_giorno)
     ui_data.innerText = now.toLocaleDateString('it-IT', options_data)
+
+    // execute all past tasks
+    for (const timestamp in tasks) {
+        if (timestamp < now.getTime()) {
+            tasks[timestamp]()
+            delete tasks[timestamp]
+        }
+    }
 }, 1000);
 
 

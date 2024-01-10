@@ -1,6 +1,4 @@
-const ui_sostituzione_html_template = `
-<li>
-<div class="sostituzione {pubblicato}" data-id={id} tabindex="0">
+const ui_sostituzione_html_template = `<div class="sostituzione {pubblicato}" data-id={id} tabindex="0">
   <div class="sostituzione-data">
     <span>{data}</span>
   </div>
@@ -20,8 +18,7 @@ const ui_sostituzione_html_template = `
     <span>{note}</span>
   </div>
   {icona_pubblicato}
-</div>
-</li>`
+</div>`
 
 
 const ui_sostituzioni_lista = document.getElementById("sostituzioni-lista")
@@ -82,15 +79,33 @@ function refresh_sostituzioni(hard_refresh) {
 	} else {
 		// Non rigenerare la lista ma mostra soltanto le sostituzioni filtrate, le altre vengono nascoste
 
-		ids = sostituzioni_visualizzate.map(element => element.id)
-		for (const sostituzione of document.getElementsByClassName("sostituzione")) {
-			if (ids.includes(parseInt(sostituzione.dataset.id))) {
-				sostituzione.style.display = "flex"
-			} else {
-				sostituzione.style.display = "none"
-			}
+		const elementsMap = new Map();
+		let index = 0;
 
+		const ids = sostituzioni_visualizzate.map(element => element.id);
+
+		for (const sostituzione of document.getElementsByClassName("sostituzione")) {
+			const id = parseInt(sostituzione.dataset.id);
+			if (ids.includes(id)) {
+				sostituzione.style.display = "flex";
+				elementsMap.set(id, { sostituzione, index });
+				index++;
+			} else {
+				sostituzione.style.display = "none";
+			}
 		}
+
+		// Move elements up and down based on the new order
+		ids.forEach((id, newIndex) => {
+			const { sostituzione, index } = elementsMap.get(id);
+
+			// Move the element only if the new position is different from the current position
+			if (newIndex !== index) {
+				const referenceNode = newIndex > index ? ui_sostituzioni_lista.children[newIndex + 1] : ui_sostituzioni_lista.children[newIndex];
+				ui_sostituzioni_lista.insertBefore(sostituzione, referenceNode);
+			}
+		});
+
 	}
 
 	ui_sostituzioni_messaggio_informativo.style.display = "none"
