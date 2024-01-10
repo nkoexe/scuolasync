@@ -18,7 +18,8 @@ class Selezione {
         }
 
         this.current_index = 0
-        this.selected = null
+        this.selected = null  // actual value - set to null while editing
+        this.already_selected = false  // inner signal to prevent callback repeating
 
         this.callback = callback
 
@@ -34,6 +35,8 @@ class Selezione {
         }
 
         this.ui_input.onfocus = (event) => {
+            this.already_selected = false
+            this.selected = null
             this.current_index = -1
             this.ui_input.select()
             this.ui_dropdown.style.display = 'block'
@@ -42,7 +45,7 @@ class Selezione {
 
         this.ui_input.onblur = (event) => {
             if (this.autocomplete) {
-                if (this.lista_visualizzati == this.lista_elementi.values() || this.lista_visualizzati.length == 0 || this.ui_input.value == '') {
+                if (this.ui_input.value == '' || this.lista_visualizzati.length == 0 || this.lista_visualizzati == this.lista_elementi.values()) {
                     this.seleziona(null)
                 } else {
                     if (this.selected == null) {
@@ -52,7 +55,7 @@ class Selezione {
                     }
                 }
             } else if (this.select_on_exit) {
-                if (!this.selected) {
+                if (!this.already_selected) {
                     this.seleziona(this.ui_input.value)
                 }
             }
@@ -60,6 +63,7 @@ class Selezione {
         }
 
         this.ui_input.oninput = (event) => {
+            this.already_selected = false
             this.selected = null
             if (this.select_on_keydown) {
                 this.seleziona(this.ui_input.value)
@@ -99,16 +103,17 @@ class Selezione {
                     break
                 case 13: // enter
                     event.preventDefault()
-                    this.ui_input.blur()
                     if (this.current_index !== -1) {
-                        this.seleziona(this.render(this.lista_visualizzati[this.current_index]))
+                        this.seleziona(this.lista_visualizzati[this.current_index])
                     } else {
                         this.seleziona(this.ui_input.value)
                     }
+                    this.ui_input.blur()
                     break
                 case 27: // escape
-                    this.ui_input.blur()
                     this.seleziona(null)
+                    this.ui_input.blur()
+                    break
             }
         }
     }
@@ -123,6 +128,7 @@ class Selezione {
 
     seleziona(data) {
         console.log('seleziona')
+        this.already_selected = true
         if ((typeof data === 'string' || data instanceof String) && data.length !== 0) {
             this.ui_input.value = this.render(data)
             this.selected = data

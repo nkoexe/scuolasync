@@ -31,7 +31,7 @@ const ui_sostituzioni_lista = document.getElementById("sostituzioni-lista")
 const ui_sostituzioni_messaggio_informativo = document.getElementById("sostituzioni-messaggio-informativo")
 
 
-function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
+function format_sostituzione_to_html(oggi, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
 	if (numero_ora_predefinita == null) {
 		if (ora_inizio == null) { ora = "" }
 		else { ora = ora_inizio + " - " + ora_fine }
@@ -41,7 +41,8 @@ function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizi
 	if (nome_docente == null) { nome_docente = "" }
 	if (cognome_docente == null) { cognome_docente = "" }
 	if (nome_classe == null) { nome_classe = "" }
-	if (numero_aula == null) { numero_aula = ""; piano_aula = "" }
+	let piano_aula = ""
+	if (numero_aula == null) { numero_aula = "" }
 	else {
 		piano_aula = aule.find(aula => aula.numero === numero_aula).piano
 		if (piano_aula == null) { piano_aula = "" }
@@ -54,17 +55,14 @@ function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizi
 
 	// Converte da unix timestamp a dd/mm/yyyy
 	data = new Date(data * 1000)
-	oggi = data.getDay() === oggi_day
-	opzioni_data = { day: '2-digit', month: '2-digit' }
+	let opzioni_data = { day: '2-digit', month: '2-digit' }
 	data = data.toLocaleDateString('it-IT', opzioni_data)
 
-	return ui_sostituzione_html_template.replaceAll("{oggi}", oggi ? "oggi" : "").replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{piano_aula}", piano_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note)
+	return ui_sostituzione_html_template.replace("{oggi}", oggi ? "oggi" : "").replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{piano_aula}", piano_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note)
 }
 
-function add_sostituzione_to_ui_list(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
-	// if (cancellato || !pubblicato) { return }
-
-	let sostituzione_html = format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note)
+function add_sostituzione_to_ui_list(oggi, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
+	let sostituzione_html = format_sostituzione_to_html(oggi, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note)
 	ui_sostituzioni_lista.innerHTML += sostituzione_html
 }
 
@@ -77,9 +75,35 @@ function refresh_sostituzioni() {
 		ui_sostituzioni_messaggio_informativo.style.display = "flex"
 	} else {
 		ui_sostituzioni_messaggio_informativo.style.display = "none"
-		oggi_day = new Date().getDay()
+		let timestamp = 0
+		let oggi = false
+		let now = new Date()
+		let now_timestamp = now.getTime()
+		now.setHours(0, 0, 0, 0)
 		sostituzioni_visualizzate.forEach(element => {
-			add_sostituzione_to_ui_list(element.id, element.pubblicato, element.cancellato, element.data, element.ora_inizio, element.ora_fine, element.numero_ora_predefinita, element.numero_aula, element.nome_classe, element.nome_docente, element.cognome_docente, element.note)
+			if (element.cancellato || !element.pubblicato) { return }
+			// Conferma che la sostituzione non sia passata
+			// La sottrazione è perché le sostituzioni di oggi sono salvate allo timestamp di oggi a mezzanotte
+
+			oggi = false
+			if (element.data * 1000 < (now_timestamp - 24 * 60 * 60 * 1000)) {
+				return
+			}
+			// Se la sostituzione è di oggi, filtra solo le sostituzioni che iniziano dopo l'ora attuale
+			if (element.data * 1000 < now_timestamp) {
+				oggi = true
+				if (element.numero_ora_predefinita) {
+					[hour, minute] = (ore_predefinite.find(ora => ora.numero == element.numero_ora_predefinita).ora_inizio_default).split(":")
+					timestamp = now.setHours(hour, minute)
+					if (timestamp < now_timestamp - 15 * 60 * 1000 + 1) { return }
+
+				} else if (element.ora_inizio) {
+					timestamp = now.setHours(element.ora_inizio.split(":")[0], element.ora_inizio.split(":")[1])
+					if (timestamp < now_timestamp - 15 * 60 * 1000 + 1) { return }
+				}
+			}
+
+			add_sostituzione_to_ui_list(oggi, element.data, element.ora_inizio, element.ora_fine, element.numero_ora_predefinita, element.numero_aula, element.nome_classe, element.nome_docente, element.cognome_docente, element.note)
 		})
 	}
 }

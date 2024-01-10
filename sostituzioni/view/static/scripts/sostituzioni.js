@@ -1,6 +1,4 @@
-const ui_sostituzione_html_template = `
-<li>
-<div class="sostituzione {pubblicato}" data-id={id} tabindex="0">
+const ui_sostituzione_html_template = `<div class="sostituzione {pubblicato}" data-id={id} tabindex="0">
   <div class="sostituzione-data">
     <span>{data}</span>
   </div>
@@ -20,8 +18,7 @@ const ui_sostituzione_html_template = `
     <span>{note}</span>
   </div>
   {icona_pubblicato}
-</div>
-</li>`
+</div>`
 
 
 const ui_sostituzioni_lista = document.getElementById("sostituzioni-lista")
@@ -39,7 +36,7 @@ function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizi
 	}
 	else { ora = numero_ora_predefinita.length == 1 ? numero_ora_predefinita + "a ora" : numero_ora_predefinita }
 	if (note == null) { note = "" }
-	if (cognome_docente == null) { cognome_docente = ""; nome_docente = ""  }
+	if (cognome_docente == null) { cognome_docente = ""; nome_docente = "" }
 	if (nome_classe == null) { nome_classe = "" }
 	if (numero_aula == null) { numero_aula = "" }
 	if (pubblicato) {
@@ -61,24 +58,60 @@ function add_sostituzione_to_ui_list(id, pubblicato, cancellato, data, ora_inizi
 	ui_sostituzioni_lista.innerHTML += sostituzione_html
 }
 
-function refresh_sostituzioni() {
+function refresh_sostituzioni(hard_refresh) {
+	hard_refresh = hard_refresh || false
+
 	ordina_sostituzioni()
 
-	ui_sostituzioni_lista.innerHTML = ""
-	if (sostituzioni_visualizzate.length === 0) {
-		ui_sostituzioni_messaggio_informativo.innerHTML = "<span>" + messaggio_nessuna_sostituzione + "</span>"
-		ui_sostituzioni_messaggio_informativo.style.display = "flex"
-	} else {
-		ui_sostituzioni_messaggio_informativo.style.display = "none"
+	if (hard_refresh) {
+		// Rimuovi completamente ogni dato e rigenera la lista. Per liste di grandi dimensioni, diventa un processo sostanzioso. Necessario al caricamento iniziale.
+
+		ui_sostituzioni_lista.innerHTML = ""
 		sostituzioni_visualizzate.forEach(element => {
 			add_sostituzione_to_ui_list(element.id, element.pubblicato, element.cancellato, element.data, element.ora_inizio, element.ora_fine, element.numero_ora_predefinita, element.numero_aula, element.nome_classe, element.nome_docente, element.cognome_docente, element.note)
 		})
+
+		if (sostituzioni_write) {
+			for (const sostituzione of document.getElementsByClassName("sostituzione")) {
+				sostituzione.oncontextmenu = (e) => { mostra_context_menu_sostituzione(e, sostituzione) }
+			}
+		}
+	} else {
+		// Non rigenerare la lista ma mostra soltanto le sostituzioni filtrate, le altre vengono nascoste
+
+		const elementsMap = new Map();
+		let index = 0;
+
+		const ids = sostituzioni_visualizzate.map(element => element.id);
+
+		for (const sostituzione of document.getElementsByClassName("sostituzione")) {
+			const id = parseInt(sostituzione.dataset.id);
+			if (ids.includes(id)) {
+				sostituzione.style.display = "flex";
+				elementsMap.set(id, { sostituzione, index });
+				index++;
+			} else {
+				sostituzione.style.display = "none";
+			}
+		}
+
+		// Move elements up and down based on the new order
+		ids.forEach((id, newIndex) => {
+			const { sostituzione, index } = elementsMap.get(id);
+
+			// Move the element only if the new position is different from the current position
+			if (newIndex !== index) {
+				const referenceNode = newIndex > index ? ui_sostituzioni_lista.children[newIndex + 1] : ui_sostituzioni_lista.children[newIndex];
+				ui_sostituzioni_lista.insertBefore(sostituzione, referenceNode);
+			}
+		});
+
 	}
 
-	if (sostituzioni_write) {
-		for (const sostituzione of document.getElementsByClassName("sostituzione")) {
-			sostituzione.oncontextmenu = (e) => { mostra_context_menu_sostituzione(e, sostituzione) }
-		}
+	ui_sostituzioni_messaggio_informativo.style.display = "none"
+	if (sostituzioni_visualizzate.length === 0) {
+		ui_sostituzioni_messaggio_informativo.innerHTML = "<span>" + messaggio_nessuna_sostituzione + "</span>"
+		ui_sostituzioni_messaggio_informativo.style.display = "flex"
 	}
 }
 
