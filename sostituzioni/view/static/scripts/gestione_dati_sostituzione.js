@@ -13,10 +13,9 @@ const gestione_dati_sostituzione_docente = new Selezione({ id: 'gestione-dati-so
 const gestione_dati_sostituzione_aula = new Selezione({ id: 'gestione-dati-sostituzione-aula', filtra_lista: prendi_numero, autocomplete: true });
 const gestione_dati_sostituzione_note = new Selezione({ id: 'gestione-dati-sostituzione-note', filtra_lista: prendi_testo });
 const gestione_dati_sostituzione_classe = new Selezione({
-    id: 'gestione-dati-sostituzione-classe', callback: () => {
-        console.log('callback')
-        if (!gestione_dati_sostituzione_aula.valore && gestione_dati_sostituzione_classe.valore) {
-            aule = classi.find(classe => classe.nome == gestione_dati_sostituzione_classe.valore).aule_ospitanti;
+    id: 'gestione-dati-sostituzione-classe', callback: (selected) => {
+        if (!gestione_dati_sostituzione_aula.valore && selected) {
+            const aule = classi.find(classe => classe.nome == selected).aule_ospitanti;
             if (aule.length > 0) {
                 gestione_dati_sostituzione_aula.valore = aule[0];
             }

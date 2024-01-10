@@ -127,7 +127,6 @@ class Selezione {
     }
 
     seleziona(data) {
-        console.log('seleziona')
         this.already_selected = true
         if ((typeof data === 'string' || data instanceof String) && data.length !== 0) {
             this.ui_input.value = this.render(data)

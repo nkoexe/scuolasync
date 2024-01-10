@@ -257,6 +257,9 @@ class Database:
                     else:
                         for aula in aule:
                             classe["aule_ospitanti"].append(aula["numero_aula"])
+                            if aula['predefinito']:
+                                pass
+
 
         return rows
 
