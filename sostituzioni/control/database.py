@@ -252,8 +252,11 @@ class Database:
                     if not aule:
                         continue
 
-                    for aula in aule:
-                        classe["aule_ospitanti"].append(aula["numero_aula"])
+                    if not isinstance(aule, list):
+                        classe["aule_ospitanti"].append(aule["numero_aula"])
+                    else:
+                        for aula in aule:
+                            classe["aule_ospitanti"].append(aula["numero_aula"])
 
         return rows
 

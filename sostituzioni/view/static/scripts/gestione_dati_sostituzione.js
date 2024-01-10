@@ -10,9 +10,19 @@ const gestione_dati_sostituzione_ora_fine = document.getElementById('gestione-da
 
 const gestione_dati_sostituzione_ora_predefinita = new Selezione({ id: 'gestione-dati-sostituzione-ora-predefinita', filtra_lista: prendi_ora, render: element => element.length == 1 ? element + "a ora" : element, autocomplete: true });
 const gestione_dati_sostituzione_docente = new Selezione({ id: 'gestione-dati-sostituzione-docente', filtra_lista: prendi_cognome_nome, autocomplete: true });
-const gestione_dati_sostituzione_classe = new Selezione({ id: 'gestione-dati-sostituzione-classe', filtra_lista: prendi_nome, autocomplete: true });
 const gestione_dati_sostituzione_aula = new Selezione({ id: 'gestione-dati-sostituzione-aula', filtra_lista: prendi_numero, autocomplete: true });
 const gestione_dati_sostituzione_note = new Selezione({ id: 'gestione-dati-sostituzione-note', filtra_lista: prendi_testo });
+const gestione_dati_sostituzione_classe = new Selezione({
+    id: 'gestione-dati-sostituzione-classe', callback: () => {
+        console.log('callback')
+        if (!gestione_dati_sostituzione_aula.valore && gestione_dati_sostituzione_classe.valore) {
+            aule = classi.find(classe => classe.nome == gestione_dati_sostituzione_classe.valore).aule_ospitanti;
+            if (aule.length > 0) {
+                gestione_dati_sostituzione_aula.valore = aule[0];
+            }
+        }
+    }, filtra_lista: prendi_nome, autocomplete: true
+});
 
 
 
