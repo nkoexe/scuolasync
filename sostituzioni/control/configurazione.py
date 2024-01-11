@@ -310,12 +310,10 @@ class Opzione:
 class Configurazione:
     @beartype
     def __init__(self, file: Path = CONFIG_FILE):
-        logger.debug("Inizializzazione caricamento configurazione")
-
         with open(file, encoding="utf-8") as configfile:
             logger.debug("Caricamento file di configurazione..")
             self.data = load(configfile)
-            logger.debug(f"Raw data: {self.data}")
+            # logger.debug(f"Raw data: {self.data}")
 
         # Todo: controllare validità file
 
@@ -338,18 +336,19 @@ class Configurazione:
         self.set("configpath", [0, str(CONFIG_FILE)], force=True)
 
     def __repr__(self):
-        return "Configurazione default"
+        return "Configurazione Sistema"
 
     @beartype
     def get(self, id_opzione: str) -> Opzione | None:
         """
-        La funzione get recupera un oggetto Opzione in base al suo ID o restituisce None se l'ID non è trovato.
+        Recupera un oggetto Opzione in base al suo ID.
+        Restituisce None se l'ID non è trovato.
 
-        :param id_opzione: Il parametro id_opzione è una stringa che rappresenta l'ID di un'opzione.
-        :type id_opzione: str
+        :param id_opzione: Stringa che rappresenta l'ID dell'opzione interessata.
 
-        :return: Il metodo get restituisce un'istanza della classe Opzione se l'id_opzione è
-        trovato nel dizionario self.opzioni. Se l'id_opzione non viene trovato, restituisce None.
+        :return: Il metodo get restituisce un'istanza della classe Opzione
+                 se l'id_opzione è trovato nel dizionario self.opzioni.
+                 Se l'id_opzione non viene trovato, restituisce None.
         """
         if self.opzioni.get(id_opzione) is None:
             logger.warning(f"Getter: id {id_opzione} non trovato.")
@@ -360,18 +359,18 @@ class Configurazione:
     @beartype
     def set(self, id_opzione: str, dati: Any, force: bool = False) -> bool:
         """
-        La funzione verifica se l'ID dell'opzione fornito è valido e imposta il valore di quell'opzione se lo è.
+        Imposta il valore di un'opzione.
 
-        :param id_opzione: Il parametro id_opzione è una stringa che rappresenta l'ID di un'opzione.
-        :type id_opzione: str
-
-        :param dati: Il valore o i valori che verranno inseriti. A dipendere dal tipo dell'opzione, questo parametro può
-                     essere un testo, un numero, un booleano, o una lista di valori se l'opzione è composta.
+        :param id_opzione: Stringa che rappresenta l'ID dell'opzione interessata.
+        :param dati: Il valore o i valori che verranno inseriti. A dipendere dal tipo
+                     dell'opzione, questo parametro può essere un testo, un numero,
+                     un booleano, o una lista di valori se l'opzione è composta.
 
         :param force: Forza l'aggiornamento di un'impostazione, anche se essa è disabilitata.
 
-        :return: Success. Se l'id_opzione non è riconosciuto, restituisce False. In caso contrario,
-                 chiama il metodo set dell'oggetto opzioni[id_opzione] con il parametro dati e restituisce il risultato.
+        :return: Success. Se l'id_opzione non è riconosciuto, restituisce False.
+                 In caso contrario, chiama il metodo set dell'oggetto opzioni[id_opzione]
+                 con il parametro dati e restituisce il risultato.
         """
 
         if id_opzione not in self.opzioni.keys():
@@ -388,7 +387,6 @@ class Configurazione:
         corrispondente rappresenta il nuovo valore per quell'opzione.
 
         :param configurazione: Dizionario contenente i dati di configurazione da aggiornare.
-        :type configurazione: dict
 
         :param salva: Un flag booleano che determina se la configurazione aggiornata deve essere esportata su file.
                       (valore predefinito: True)
