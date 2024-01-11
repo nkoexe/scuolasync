@@ -249,17 +249,22 @@ class Database:
                     classe["aule_ospitanti"] = []
 
                     aule = relazioni.get(classe["nome"], key="nome_classe")
+
                     if not aule:
                         continue
 
                     if not isinstance(aule, list):
                         classe["aule_ospitanti"].append(aule["numero_aula"])
+
                     else:
                         for aula in aule:
                             classe["aule_ospitanti"].append(aula["numero_aula"])
-                            if aula['predefinito']:
-                                pass
-
+                            if aula["predefinito"]:
+                                # L'aula predefinita è il primo elemento della lista.
+                                # L'inserimento automatico del frontend selezionerà questo elemento
+                                classe["aule_ospitanti"].insert(
+                                    0, classe["aule_ospitanti"].pop()
+                                )
 
         return rows
 

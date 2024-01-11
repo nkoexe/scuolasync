@@ -23,22 +23,22 @@ socket.on("lista sostituzioni", (data) => {
     sostituzioni_visualizzate = sostituzioni
 
     // ugly ass fix perché vado a prendere il piano dell'aula dalla lista di aule che non ha ancora finito di caricare
-    setTimeout(refresh_sostituzioni, 200);
+    setTimeout(refresh_sostituzioni, 100);
 })
 
 
 socket.on("lista ore predefinite", (data) => {
     ore_predefinite = data
 
-    now = new Date()
+    let now = new Date()
     now.setHours(0, 0, 0, 0)
 
     for (const ora_predefinita of ore_predefinite) {
-        [hour, minute] = ora_predefinita.ora_inizio_default.split(':')
-        timestamp = now.setHours(parseInt(hour), parseInt(minute))
+        const [hour, minute] = ora_predefinita.ora_fine_default.split(':')
+        let timestamp = now.setHours(parseInt(hour), parseInt(minute))
 
-        // reload sostituzioni after 15 minutes
-        timestamp += 15 * 60
+        // reload sostituzioni tot minuti prima della fine dell'ora
+        timestamp -= 5 * 60 * 1000
         tasks[timestamp] = refresh_sostituzioni
     }
 })
@@ -77,7 +77,7 @@ socket.on("aggiornamento notizie", () => {
 
 // ----------------
 
-socket.on('connect_error', reconnect)
+// socket.on('connect_error', reconnect)
 socket.on('connect_failed', reconnect)
 socket.on('disconnect', reconnect)
 

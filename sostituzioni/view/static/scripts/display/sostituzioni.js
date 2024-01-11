@@ -93,13 +93,14 @@ function refresh_sostituzioni() {
 			if (element.data * 1000 < now_timestamp) {
 				oggi = true
 				if (element.numero_ora_predefinita) {
-					[hour, minute] = (ore_predefinite.find(ora => ora.numero == element.numero_ora_predefinita).ora_inizio_default).split(":")
-					timestamp = now.setHours(hour, minute)
-					if (timestamp < now_timestamp - 15 * 60 * 1000 + 1) { return }
+					const [hour, minute] = (ore_predefinite.find(ora => ora.numero == element.numero_ora_predefinita).ora_fine_default).split(":")
+					const timestamp = now.setHours(parseInt(hour), parseInt(minute))
+					if (timestamp <= now_timestamp - 5 * 60 * 1000) { return }
 
-				} else if (element.ora_inizio) {
-					timestamp = now.setHours(element.ora_inizio.split(":")[0], element.ora_inizio.split(":")[1])
-					if (timestamp < now_timestamp - 15 * 60 * 1000 + 1) { return }
+				} else if (element.ora_fine) {
+					const [hour, minute] = (element.ora_fine).split(":")
+					const timestamp = now.setHours(parseInt(hour), parseInt(minute))
+					if (timestamp <= now_timestamp - 5 * 60 * 1000 + 1) { return }
 				}
 			}
 
