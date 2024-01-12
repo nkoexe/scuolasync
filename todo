@@ -2,17 +2,9 @@ ordinamento data
 
 eliminazione ui (solo mettere a posto css)
 
-note standard
-
-aule collegate a classi
-
 orario collegato a ora predefinita
 
 backup
-
-futuro: sostituzioni della prossima ora display
-
-lista sostituzioni senza cutoff
 
 mio copyright referente
 
@@ -20,8 +12,11 @@ fra flaim diventa editor tra una settimana
 
 attributo booleano fuzzy nella selezione per rendere più comodo l'inserimento di note
 
-pulsante feedback
-
 libreria tooltip
 
-display non mostrare sostituzioni delle ore passate (controllare)
+
+
+------- futuro 
+lista sostituzioni display senza cutoff
+sostituzioni della prossima ora display
+notifiche email
