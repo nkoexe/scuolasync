@@ -4,6 +4,7 @@ from os import system
 
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.control.importer import Docenti, Utenti
+from sostituzioni.control.backup import backup
 
 
 database_cli = AppGroup("database")
@@ -12,6 +13,8 @@ database_utenti_cli = AppGroup("utenti")
 database_cli.add_command(database_utenti_cli)
 
 importer_cli = AppGroup("importa")
+
+backup_cli = AppGroup("backup")
 
 
 @database_cli.command("crea")
@@ -184,3 +187,8 @@ def importa_docenti(file):
 @click.argument("file", type=click.File("rb"))
 def importa_utenti(file):
     Utenti.from_buffer(file.read())
+
+
+@backup_cli.command("esegui")
+def esegui_backup():
+    backup()

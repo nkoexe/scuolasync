@@ -2,3 +2,4 @@ __pycache__/
 .vscode/
 
 sostituzioni/database/database.db
+sostituzioni/database/backup/

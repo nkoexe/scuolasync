@@ -2,8 +2,8 @@ from flask import Flask
 from secrets import token_hex
 
 from sostituzioni.control.configurazione import configurazione
-from sostituzioni.control.cli import database_cli, importer_cli
-
+from sostituzioni.control.cli import database_cli, importer_cli, backup_cli
+import sostituzioni.control.cron
 
 app = Flask(__name__)
 
@@ -20,5 +20,7 @@ app.config["PERMANENT_SESSION_LIFETIME"] = 60 * 60
 # ! attenzione, non si applica a socketio, soltanto a richieste http
 app.config["SESSION_REFRESH_EACH_REQUEST"] = True
 
+
 app.cli.add_command(database_cli)
 app.cli.add_command(importer_cli)
+app.cli.add_command(backup_cli)

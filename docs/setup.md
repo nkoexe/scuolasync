@@ -8,6 +8,7 @@
   - flask-wtf
   - oauthlib
   - beartype
+  - apscheduler
   - pandas
   - openpyxl
   - python-magic

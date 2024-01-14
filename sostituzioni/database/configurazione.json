@@ -16,6 +16,10 @@
       "titolo": "Visualizzazione Online",
       "descrizione": "Configurazione di impostazioni legate alla visualizzazione degli elementi nell'interfaccia online: preferenze visive, colori, dimensioni font."
     },
+    "visualizzazionefisica": {
+      "titolo": "Visualizzazione Fisica",
+      "descrizione": "Preferenze ed opzioni della visualizzazione su display."
+    },
     "percorsi": {
       "titolo": "Percorsi",
       "descrizione": "Configurazione di directory e percorsi di file utilizzati dal sistema. Include posizione del file di configurazione, del database, ed informazioni sulla collocazione del sistema nel server."
@@ -225,6 +229,21 @@
       ],
       "default": "database/utenti.db",
       "valore": "database/utenti.db"
+    },
+    "backupdir": {
+      "titolo": "Cartella Backup",
+      "descrizione": "Directory nella quale si trovano i file di backup del database.",
+      "sezione": "percorsi",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "percorso",
+      "radice": 1,
+      "scelte_radice": [
+        "/",
+        "%ROOT%"
+      ],
+      "default": "database/backup/",
+      "valore": "database/backup/"
     },
     "flaskstaticdir": {
       "titolo": "Cartella file statici",
