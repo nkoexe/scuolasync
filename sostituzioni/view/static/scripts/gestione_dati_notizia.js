@@ -33,6 +33,7 @@ function conferma_nuova_notizia() {
     data_fine = fix_date_from_input(gestione_dati_notizia_data_fine.valueAsNumber) / 1000;
 
     if (data_inizio > data_fine) {
+        notyf.error("La data di inizio non può essere anteriore a quella di fine!")
         return
     };
 
