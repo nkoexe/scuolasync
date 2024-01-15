@@ -290,6 +290,26 @@ input[type="file"]+label:hover {
     opacity: 0.5;
 }
 
+.opzione-utente {
+    display: flex;
+}
+
+.opzione-utente *:not(.container-selezione) {
+    border-radius: 0 !important;
+    border: var(--border-opzione);
+}
+
+.opzione-utente .selezione-ruolo {
+    width: 200px;
+}
+
+.opzione-utente .selezione-ruolo:has(:first-child:checked),
+.opzione-utente .selezione-ruolo:has(:nth-child(2):checked) {
+    font-weight: bold;
+}
+
+
+
 .opzione-testo {}
 
 .opzione-numero {}

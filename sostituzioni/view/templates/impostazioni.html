@@ -1,4 +1,5 @@
-{% from "macro/impostazioni.html" import opzione_testo,
+{% from "macro/impostazioni.html" import opzione_utente,
+opzione_testo,
 opzione_numero,
 opzione_numero_unita,
 opzione_checkbox,
@@ -46,14 +47,14 @@ opzione_percorso with context %}
         <div class="sezione-header">
           <h3 class="sezione-titolo">Gestione Utenti</h3>
           <p class="sezione-descrizione">Vai alla pagina della gestione degli utenti autorizzati all'accesso al sistema e alla gestione dei permessi. Questa parte del sito è ancora incompleta e in fase di sviluppo, non è accessibile. Per modifiche, contattare niccolo.ragazzi@gandhimerano.com</p>
-          <div class="sezione-header-icon"><span class="material-symbols-rounded">open_in_new</span></div>
+          <div class="sezione-header-icon"><span class="material-symbols-rounded">add</span></div>
         </div>
         <div class="opzioni-expandible">
-          <ul>
+          <div class="opzioni-container">
             {% for utente in utenti %}
-            <li>{{utente.email}} | {{utente.ruolo.nome}}</li>
+            {{ opzione_utente(utente) }}
             {% endfor %}
-          </ul>
+          </div>
         </div>
       </li>
       {% for sezione in configurazione.sezioni %}

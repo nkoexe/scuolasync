@@ -1,3 +1,17 @@
+{% macro opzione_utente(utente) %}
+<div class="opzione opzione-utente">
+  <input class="email" type="text" value="{{utente.email}}" onkeydown="modificato({{utente.email}})">
+  <div class="container-selezione">
+    <select class="selezione-ruolo" name="ruolo">
+      <option {% if utente.ruolo.nome=="amministratore" %} selected {% endif %}">Amministratore</option>
+      <option {% if utente.ruolo.nome=="editor" %} selected {% endif %}>Editor</option>
+      <option {% if utente.ruolo.nome=="visualizzatore" %} selected {% endif %}>Visualizzatore</option>
+    </select>
+  </div>
+  <button class="material-symbols-rounded">delete</button>
+</div>
+{% endmacro %}
+
 {% macro opzione_testo(opzione) %}
 <div id="{{opzione.id}}" class="opzione opzione-testo">
   <input type="text" value="{{opzione.valore}}" onkeydown="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %}>

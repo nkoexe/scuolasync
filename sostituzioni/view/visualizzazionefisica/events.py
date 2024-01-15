@@ -1,7 +1,7 @@
 import logging
+from flask import request
 from flask_socketio import emit
 
-from sostituzioni.model.auth import login_required
 from sostituzioni.model.model import (
     Aula,
     Classe,
@@ -17,8 +17,9 @@ logger = logging.getLogger(__name__)
 
 
 @socketio.on("connect", namespace="/display")
-@login_required
 def connect():
+    # request.args.get("authcode")
+
     logger.debug("Nuovo client connesso, invio dei dati iniziali.")
 
     emit("lista sostituzioni", Sostituzione.load())
@@ -31,7 +32,6 @@ def connect():
 
 
 @socketio.on("richiesta sostituzioni", namespace="/display")
-@login_required
 def richiesta_sostituzioni():
     logger.debug("Ricevuto segnale da visualizzazione fisica: richiesta sostituzioni")
 
@@ -39,7 +39,6 @@ def richiesta_sostituzioni():
 
 
 @socketio.on("richiesta eventi", namespace="/display")
-@login_required
 def richiesta_eventi():
     logger.debug("Ricevuto segnale da visualizzazione fisica: richiesta eventi")
 
@@ -47,7 +46,6 @@ def richiesta_eventi():
 
 
 @socketio.on("richiesta notizie", namespace="/display")
-@login_required
 def richiesta_notizie():
     logger.debug("Ricevuto segnale da visualizzazione fisica: richiesta notizie")
     emit("lista notizie", Notizia.load())
