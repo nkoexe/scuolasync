@@ -72,6 +72,11 @@ ul {
     grid-template-rows: 20% 70% 10%;
 }
 
+#main-container:has(#notizie-lista:empty) {
+    grid-template-rows: 20% 80% 0;
+
+}
+
 .frame {
     /* border: 2px solid; */
     border-radius: 1rem;
@@ -257,7 +262,7 @@ ul {
     align-items: stretch;
     width: 100%;
     min-height: 5vh;
-    max-height: 8vh;
+    max-height: 10vh;
     font-size: 1.5vw;
     background-color: var(--color-sostituzioni-lista2);
     border-radius: 0;
