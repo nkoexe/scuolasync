@@ -1397,5 +1397,3 @@ ruoli = SearchableList("nome", [Ruolo(r["nome"]) for r in Ruolo.load()])
 utenti = SearchableList(
     "email", [Utente(u["email"], ruoli.get(u["ruolo"])) for u in Utente.load()]
 )
-# Visualizzazione fisica
-utenti.append(Utente("display", "visualizzatore"))

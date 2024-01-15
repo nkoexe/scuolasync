@@ -77,6 +77,18 @@ socket.on("aggiornamento notizie", () => {
 
 // ----------------
 
+
+// ! test, non funzionante, trovare un modo per capire quando la sessione è scaduta
+socket.on("unauthorized", () => {
+    notyf.error("Prego ricaricare la pagina.")
+})
+socket.on("disconnect", () => {
+    notyf.error("Connessione persa, non sarà possibile ricevere aggiornamenti.")
+})
+
+
+// ----------------
+
 function s_richiedi_sostituzioni(filtri) {
     if (filtri)
         filtri.pubblicato = false

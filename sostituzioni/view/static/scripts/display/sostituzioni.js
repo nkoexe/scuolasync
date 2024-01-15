@@ -75,7 +75,6 @@ function refresh_sostituzioni() {
 		ui_sostituzioni_messaggio_informativo.style.display = "flex"
 	} else {
 		ui_sostituzioni_messaggio_informativo.style.display = "none"
-		let timestamp = 0
 		let oggi = false
 		let now = new Date()
 		let now_timestamp = now.getTime()
@@ -95,12 +94,12 @@ function refresh_sostituzioni() {
 				if (element.numero_ora_predefinita) {
 					const [hour, minute] = (ore_predefinite.find(ora => ora.numero == element.numero_ora_predefinita).ora_fine_default).split(":")
 					const timestamp = now.setHours(parseInt(hour), parseInt(minute))
-					if (timestamp <= now_timestamp - 5 * 60 * 1000) { return }
+					if (timestamp - 5 * 60 * 1000 <= now_timestamp) { return }
 
 				} else if (element.ora_fine) {
 					const [hour, minute] = (element.ora_fine).split(":")
 					const timestamp = now.setHours(parseInt(hour), parseInt(minute))
-					if (timestamp <= now_timestamp - 5 * 60 * 1000 + 1) { return }
+					if (timestamp - 5 * 60 * 1000 <= now_timestamp) { return }
 				}
 			}
 

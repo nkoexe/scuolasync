@@ -2,8 +2,6 @@ ordinamento data
 
 eliminazione ui (solo mettere a posto css)
 
-orario collegato a ora predefinita
-
 backup
 
 mio copyright referente
@@ -12,12 +10,14 @@ fra flaim diventa editor tra una settimana
 
 libreria tooltip
 
-autenticazione display fisico con socketio (authcode inserito nel template, poi autenticazione socketio)
-
 notizie future visualizzate agli editor
 
+notifiche per errori, disconnessione, ecc
 
-------- futuro 
+
+------- futuro
+orario collegato a ora predefinita
+autenticazione display fisico con socketio (authcode inserito nel template, poi autenticazione socketio)
 lista sostituzioni display senza cutoff
 sostituzioni della prossima ora display
 notifiche email
