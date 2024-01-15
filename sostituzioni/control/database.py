@@ -1025,6 +1025,8 @@ class Evento(ElementoDatabaseConStorico):
                 Evento, where=filtri, order_by="data_ora_inizio"
             )
 
+        # filtri: dict
+
         data_ora_inizio: int | None = filtri.get(
             "data_ora_inizio", int(datetime.today().timestamp())
         )  # default è oggi

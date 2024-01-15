@@ -10,13 +10,15 @@ mio copyright referente
 
 fra flaim diventa editor tra una settimana
 
-attributo booleano fuzzy nella selezione per rendere più comodo l'inserimento di note
-
 libreria tooltip
 
+autenticazione display fisico con socketio (authcode inserito nel template, poi autenticazione socketio)
+
+notizie future visualizzate agli editor
 
 
 ------- futuro 
 lista sostituzioni display senza cutoff
 sostituzioni della prossima ora display
 notifiche email
+attributo booleano fuzzy nella selezione per rendere più comodo l'inserimento di note
