@@ -20,6 +20,10 @@
       "titolo": "Visualizzazione Fisica",
       "descrizione": "Preferenze ed opzioni della visualizzazione su display."
     },
+    "backup": {
+      "titolo": "Backup",
+      "descrizione": "Esecuzione e ripristino di backup del sistema."
+    },
     "percorsi": {
       "titolo": "Percorsi",
       "descrizione": "Configurazione di directory e percorsi di file utilizzati dal sistema. Include posizione del file di configurazione, del database, ed informazioni sulla collocazione del sistema nel server."
@@ -28,12 +32,12 @@
   "opzioni": {
     "systitle": {
       "titolo": "Nome del sistema",
-      "descrizione": "Titolo principale del sistema da mostrare nelle varie pagine",
+      "descrizione": "Titolo del sistema da mostrare nel header della pagina principale.",
       "sezione": "sistema",
       "disabilitato": false,
       "nascosto": false,
       "tipo": "testo",
-      "lunghezza_massima": 50,
+      "lunghezza_massima": 30,
       "default": "Gestione Digitale",
       "valore": "Calendario Eventi"
     },
@@ -50,7 +54,7 @@
         "In Sviluppo"
       ],
       "default": 0,
-      "valore": 2
+      "valore": 0
     },
     "maintenancemsg": {
       "titolo": "Messaggio di manutenzione",
@@ -60,8 +64,8 @@
       "nascosto": false,
       "tipo": "testo",
       "lunghezza_massima": null,
-      "default": "Sistema in manutenzione",
-      "valore": "Sistema attualmente in manutenzione."
+      "default": "Sistema attualmente in manutenzione, grazie per la pazienza.",
+      "valore": "Sistema attualmente in manutenzione, grazie per la pazienza."
     },
     "supportemail": {
       "titolo": "Email di Supporto",
@@ -76,7 +80,7 @@
     },
     "loginpageparagraph": {
       "titolo": "Paragrafo di Note",
-      "descrizione": "Testo che verrà visualizzato sotto al pulsante di accesso. Può essere stilizzato, includendo <br>, <strong>, <i>, ecc.",
+      "descrizione": "Testo che verrà visualizzato sotto al pulsante di accesso. Può essere stilizzato, includendo <br> per andare a capo, <b> per grassetto, <i> per corsivo ecc.",
       "sezione": "login",
       "disabilitato": false,
       "nascosto": false,
@@ -276,4 +280,4 @@
       "valore": "view/templates"
     }
   }
-}
+}
