@@ -668,6 +668,11 @@ ul {
     border-radius: 1rem;
 }
 
+.notizia.futura {
+    color: #00000099;
+    font-style: italic;
+}
+
 
 /* SELEZIONE */
 .selezione-dropdown {
