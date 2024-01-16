@@ -1193,11 +1193,30 @@ class Notizia(ElementoDatabaseConStorico):
         if isinstance(filtri, Where):
             return ElementoDatabase.load(Notizia, where=filtri, order_by="data_inizio")
 
-        # todo completare, decidere come far filtrare notizie, se per data o aggiungere un pulsante "tutte" boh
-        logger.warning(
-            "Notizia.load(filtri) non ancora implementato, questo non sarebbe dovuto succedere"
+        # filtri: dict
+        solo_attivo = filtri.get("solo_attivo", True)
+        cancellato = filtri.get("cancellato", False)
+
+        today = int(
+            datetime.today()
+            .replace(hour=0, minute=0, second=0, microsecond=0)
+            .timestamp()
         )
-        return ElementoDatabase.load(Notizia, order_by="data_inizio")
+
+        if solo_attivo:
+            where = (
+                Where("data_inizio")
+                .lessthanorequal(today)
+                .AND("data_fine")
+                .greaterthanorequal(today)
+            )
+        else:
+            where = Where("data_fine").greaterthanorequal(today)
+
+        if not cancellato:
+            where = where.AND("cancellato").equals(False)
+
+        return ElementoDatabase.load(Notizia, where=where, order_by="data_inizio")
 
     def inserisci(self):
         id = self.DATABASE.insert(

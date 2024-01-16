@@ -147,7 +147,7 @@ INSERT OR IGNORE INTO aula_ospita_classe VALUES
     ('056', '1 SUb', 1),
     ('057', '1 SUa', 1),
     ('059', '2 SUb', 1),
-    ('060', '5 SUa', 1),
+    ('060', '4 SUa', 1),
     ('101', '3 SUb', 1),
     ('102', '5 Eb', 1),
     ('103', '2 Ea', 1),
@@ -189,4 +189,5 @@ INSERT OR IGNORE INTO aula_ospita_classe VALUES
     ('313', '5 S', 1),
     ('Prefabbricato C1', '3 S', 1),
     ('Prefabbricato C2', '3 SUa', 1),
-    ('Palazzina', '5 Ea', 1);
+    ('Palazzina', '5 Ea', 1),
+    ('Laboratorio di scienze', "4 La", 1);

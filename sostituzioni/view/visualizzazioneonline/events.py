@@ -89,6 +89,10 @@ def richiesta_notizie(filtri: dict | None = None):
     """
 
     logger.debug(f"Ricevuto segnale richiesta notizie con filtri: {filtri}")
+
+    if filtri is None and current_user.permessi.notizie.write:
+        filtri = {"solo_attivo": False}
+
     emit("lista notizie", Notizia.load(filtri))
 
 
