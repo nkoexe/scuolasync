@@ -86,14 +86,26 @@ def sso_login(request):
         code=code,
     )
 
-    token_response = requests.post(
-        token_url,
-        headers=headers,
-        data=body,
-        auth=(OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET),
-    )
+    try:
+        token_response = requests.post(
+            token_url,
+            headers=headers,
+            data=body,
+            auth=(OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET),
+        )
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Errore durante l'autenticazione: {e}")
+        flash("Si è verificato un errore durante l'autenticazione.")
+        return False
 
-    OAUTH_CLIENT.parse_request_body_response(json.dumps(token_response.json()))
+    try:
+        OAUTH_CLIENT.parse_request_body_response(json.dumps(token_response.json()))
+    except oauth2.OAuth2Error as e:
+        logger.error(
+            f"Errore durante l'autenticazione, probabilmente annullata dall'utente: {e}"
+        )
+        flash("Autenticazione annullata.")
+        return False
 
     uri, headers, body = OAUTH_CLIENT.add_token(
         "https://www.googleapis.com/oauth2/v3/userinfo"
@@ -105,7 +117,7 @@ def sso_login(request):
     # Struttura info utente:
     # {
     #   email: ...
-    #   
+    #
     # }
 
     result = authenticate_user(info["email"])
