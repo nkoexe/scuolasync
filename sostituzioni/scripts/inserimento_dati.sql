@@ -127,6 +127,7 @@ INSERT OR IGNORE INTO aula VALUES
     ('SCPAL', 0, 0),
     ('SPAL', 0, 0),
     ('SA', 0, 0),
+    ('SB', 0, 0),
     ('SR', 0, 0),
     ('S1A', 1, 0),
     ('S1B', 1, 0),

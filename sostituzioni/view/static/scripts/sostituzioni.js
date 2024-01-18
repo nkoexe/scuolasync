@@ -27,7 +27,7 @@ const ui_sostituzioni_messaggio_informativo = document.getElementById("sostituzi
 let sostituzioni_data_verso_ordinamento = 1
 
 
-function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
+async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
 	if (numero_ora_predefinita == null) {
 		if (ora_inizio == null) { ora = "" }
 		else {
@@ -53,12 +53,12 @@ function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizi
 	return ui_sostituzione_html_template.replace("{id}", id).replace('{pubblicato}', pubblicato).replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note).replace("{icona_pubblicato}", icona_pubblicato)
 }
 
-function add_sostituzione_to_ui_list(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
+async function add_sostituzione_to_ui_list(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
 	let sostituzione_html = format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note)
 	ui_sostituzioni_lista.innerHTML += sostituzione_html
 }
 
-function refresh_sostituzioni(hard_refresh) {
+async function refresh_sostituzioni(hard_refresh) {
 	hard_refresh = hard_refresh || false
 
 	ordina_sostituzioni()
@@ -67,9 +67,14 @@ function refresh_sostituzioni(hard_refresh) {
 		// Rimuovi completamente ogni dato e rigenera la lista. Per liste di grandi dimensioni, diventa un processo sostanzioso. Necessario al caricamento iniziale.
 
 		ui_sostituzioni_lista.innerHTML = ""
-		sostituzioni_visualizzate.forEach(element => {
-			add_sostituzione_to_ui_list(element.id, element.pubblicato, element.cancellato, element.data, element.ora_inizio, element.ora_fine, element.numero_ora_predefinita, element.numero_aula, element.nome_classe, element.nome_docente, element.cognome_docente, element.note)
-		})
+
+		const promises = sostituzioni_visualizzate.map(element => {
+			return format_sostituzione_to_html(element.id, element.pubblicato, element.cancellato, element.data, element.ora_inizio, element.ora_fine, element.numero_ora_predefinita, element.numero_aula, element.nome_classe, element.nome_docente, element.cognome_docente, element.note);
+		});
+
+		const htmlStrings = await Promise.all(promises);
+
+		ui_sostituzioni_lista.innerHTML = htmlStrings.join('');
 
 		if (sostituzioni_write) {
 			for (const sostituzione of document.getElementsByClassName("sostituzione")) {

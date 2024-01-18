@@ -1,7 +1,8 @@
 from flask import render_template, request
 
 from sostituzioni.control.configurazione import configurazione
-from sostituzioni.model.auth import login_required, role_required, current_user
+from sostituzioni.model.auth import login_required, current_user
+from sostituzioni.model.model import Sostituzione, Aula, Docente, Classe, OraPredefinita
 from sostituzioni.view.visualizzazioneonline import online
 
 
@@ -25,3 +26,33 @@ def index():
         configurazione=configurazione,
         utente=current_user,
     )
+
+
+@online.route("/testone")
+@login_required
+def testone():
+    from random import choice, randint
+    from datetime import datetime, timedelta
+
+    aule = Aula.load()
+    docenti = Docente.load()
+    classi = Classe.load()
+    orapredefinite = OraPredefinita.load()
+
+    for i in range(100):
+        aula = choice(aule)["numero"]
+        docente = choice(docenti)
+        docente = docente["cognome"] + " " + docente["nome"]
+        classe = choice(classi)["nome"]
+        orapredefinita = choice(orapredefinite)["numero"]
+        data = datetime.now().replace(
+            hour=0, minute=0, second=0, microsecond=0
+        ) + timedelta(days=randint(0, 30))
+        data = int(data.timestamp())
+
+        sostituzione = Sostituzione(
+            None, aula, classe, docente, data, None, None, orapredefinita, None, True
+        )
+        sostituzione.inserisci()
+
+    return "ok"
