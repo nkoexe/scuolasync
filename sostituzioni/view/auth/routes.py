@@ -33,6 +33,7 @@ def login():
     # return redirect(url_for("online.index"))
 
     # flash("Questo account non è autorizzato all'accesso al sistema.")
+    # flash("Autenticazione annullata.")
 
     return render_template(
         "login.html",

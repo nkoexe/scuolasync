@@ -66,16 +66,16 @@ body {
 
 #messages-container div {
     display: flex;
+    align-items: center;
     padding: 10px 15px;
-    background-color: #df1a24;
+    background-color: #C00F19;
     color: white;
     font-size: 20px;
     border-radius: 3vh;
 }
 
 #messages-container div span.icon {
-    width: 40px;
-    margin: auto;
+    margin: auto 20px;
     font-size: 40px;
 }
 
