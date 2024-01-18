@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
 
     <title>Licenze</title>
 </head>
@@ -15,12 +16,25 @@
     <div id="main-container">
         <h1>Licenze Software</h1>
         <hr>
-        <p>Licenza sui dati contenuti dal sistema: &copy; <a href="https://https://www.iiss-gandhi-merano.it/">I.I.S.S. "Gandhi" Merano</a></p>
-        <p>Licenza software: &copy; <a href="https://njcodev.web.app">Niccolò Ragazzi</a></p>
+        <p>Licenza sui dati contenuti: &copy; <a href="https://www.iiss-gandhi-merano.it/">I.I.S.S. "Gandhi" Merano</a></p>
+        <p>Licenza sul codice sorgente: &copy; <a href="https://njcodev.web.app">Niccolò Ragazzi</a></p>
         <br>
         <br>
         <br>
-        <h3>Software utilizzati</h3>
+        <h3>Tecnologie utilizzate:</h3>
+        <ul>
+            <li><span class="material-symbols-rounded icon">folder_data</span><a href="http://python.org">Python</a></li>
+            <li><span class="material-symbols-rounded icon">dns</span><a href="https://github.com/pallets/flask">Flask</a><a href="https://www.sqlite.org/index.html">SQLite</a><a href="https://gunicorn.org/">Gunicorn</a><a href="https://nginx.org/">Nginx</a></li>
+            <li><span class="material-symbols-rounded icon">code</span><span>HTML, CSS, JS</span></li>
+        </ul>
+        <h3>Software open source utilizzati:</h3>
+        <ul>
+            <li><span class="material-symbols-rounded icon">hub</span><a href="https://socket.io/">Socket.IO</a></li>
+            <li><span class="material-symbols-rounded icon">notifications_active</span><a href="https://github.com/caroso1222/notyf">Notyf</a></li>
+            <li><span class="material-symbols-rounded icon">data_array</span><a href="https://github.com/Glench/fuzzyset.js">FuzzySet</a></li>
+            <li><span class="material-symbols-rounded icon">emoticon</span><a href="https://fonts.google.com/icons">Material Icons</a></li>
+            <li><span class="material-symbols-rounded icon">close_fullscreen</span><a href="https://github.com/kangax/html-minifier">html-minifier</a><a href="https://github.com/css/csso">csso</a><a href="https://github.com/mishoo/UglifyJS">uglify-js</a></li>
+        </ul>
     </div>
     <style>
         #main-container {
@@ -32,6 +46,25 @@
             #main-container {
                 margin: 0;
             }
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+        }
+
+        li a:not(:last-of-type)::after {
+            content: ", ";
+            padding-right: 0.4em;
+        }
+
+        .icon {
+            padding: 5px;
+            margin-right: 10px;
         }
     </style>
 </body>
