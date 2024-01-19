@@ -2,6 +2,7 @@ __pycache__/
 .vscode/
 
 node_modules/
+package.json
 package-lock.json
 
 sostituzioni/database/database.db

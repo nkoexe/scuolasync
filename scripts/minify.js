@@ -51,3 +51,5 @@ var jsresult = UglifyJS.minify(code, jsoptions);
 fs.writeFileSync("sostituzioni/view/templates/indexmin.html", htmlresult);
 fs.writeFileSync("sostituzioni/view/static/style/indexmin.css", cssresult.css);
 fs.writeFileSync("sostituzioni/view/static/scripts/sostituzioni.min.js", jsresult.code);
+
+console.log("Done.")
