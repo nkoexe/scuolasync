@@ -21,7 +21,7 @@ def test():
 @login_required
 def index():
     return render_template(
-        "indexmin.html",
+        "index.html",
         title=configurazione.get("systitle"),
         configurazione=configurazione,
         utente=current_user,
