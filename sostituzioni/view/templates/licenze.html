@@ -48,6 +48,29 @@
             }
         }
 
+        a {
+            position: relative;
+            text-decoration: none;
+            color: #0074D9;
+        }
+
+        a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background-color: #0074D9;
+            transition: width 0.3s;
+        }
+
+        a:hover::before {
+            left: 0;
+            right: auto;
+            width: 100%;
+        }
+
         ul {
             list-style: none;
         }
