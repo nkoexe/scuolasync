@@ -1,6 +1,7 @@
 import logging
 from flask_socketio import emit
 
+from sostituzioni.control.exporter import esporta
 from sostituzioni.model.model import (
     Aula,
     Classe,
@@ -228,3 +229,19 @@ def elimina_notizia(data):
 
     emit("aggiornamento notizie", broadcast=True)
     emit("aggiornamento notizie", broadcast=True, namespace="/display")
+
+
+# ////////////////////////////////////
+
+
+@socketio.on("esporta sostituzioni")
+@login_required
+@role_required("sostituzioni.write")
+def esporta_sostituzioni(filtri: dict | None = None):
+    """
+    filtri: stessi della funzione per richiesta sostituzioni
+    """
+
+    logger.debug(f"Ricevuto segnale per esportazione sostituzioni con filtri: {filtri}")
+
+    esporta(filtri)
