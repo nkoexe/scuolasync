@@ -217,7 +217,7 @@
         "%ROOT%"
       ],
       "default": "database/database.db",
-      "valore": "database/presentazione_terze.db"
+      "valore": "database/database.db"
     },
     "authdatabasepath": {
       "titolo": "Posizione database gestione utenti",
