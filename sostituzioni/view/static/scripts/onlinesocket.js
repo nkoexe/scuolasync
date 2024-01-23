@@ -75,6 +75,15 @@ socket.on("aggiornamento notizie", () => {
     s_richiedi_notizie()
 })
 
+socket.on("esportazione completata", () => {
+    notyf.success("Esportazione completata.")
+    window.open("/export")
+})
+
+socket.on("errore esportazione", (msg) => {
+    notyf.error(msg)
+})
+
 // ----------------
 
 

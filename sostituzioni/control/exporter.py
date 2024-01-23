@@ -1,33 +1,73 @@
 import pandas as pd
+import io
 
 from sostituzioni.model.model import Sostituzione
 
 
-def esporta(filtri):
-    sostituzioni = Sostituzione.load()
+class Exporter:
+    exported_buffer = None
+    exported_mimetype = None
 
-    # Creazione di liste di tutti gli attributi
-    dati = {}
-    for sostituzione in sostituzioni:
-        for key, value in sostituzione.items():
-            if key not in dati:
-                dati[key] = []
-            dati[key].append(value)
+    class EmptyError(Exception):
+        pass
 
-    dataframe = pd.DataFrame(
-        {
-            "Data": dati["data"],
-            "Ora Predefinita": dati["numero_ora_predefinita"],
-            "Ora Inizio": dati["ora_inizio"],
-            "Ora Fine": dati["ora_fine"],
-            "Classe": dati["nome_classe"],
-            "Aula": dati["numero_aula"],
-            "Nome Docente": dati["nome_docente"],
-            "Cognome Docente": dati["cognome_docente"],
-            "Note": dati["note"],
-        }
-    )
-    print(dataframe)
+    class FormatError(Exception):
+        pass
 
-    dataframe.to_excel("export.xlsx", "Sostituzioni")
-    return ""
+    def esporta(filtri):
+        sostituzioni = Sostituzione.load(filtri)
+
+        # Creazione di liste di tutti gli attributi
+        dati = {}
+        for sostituzione in sostituzioni:
+            for key, value in sostituzione.items():
+                if key not in dati:
+                    dati[key] = []
+                dati[key].append(value)
+
+        if not dati:
+            Exporter.exported_buffer = None
+            Exporter.exported_mimetype = None
+            raise Exporter.EmptyError("Nessuna sostituzione trovata")
+
+        dataframe = pd.DataFrame(
+            {
+                "Data": dati["data"],
+                "Ora Predefinita": dati["numero_ora_predefinita"],
+                "Ora Inizio": dati["ora_inizio"],
+                "Ora Fine": dati["ora_fine"],
+                "Classe": dati["nome_classe"],
+                "Aula": dati["numero_aula"],
+                "Nome Docente": dati["nome_docente"],
+                "Cognome Docente": dati["cognome_docente"],
+                "Note": dati["note"],
+            }
+        )
+
+        if filtri.get("formato") == "csv":
+            Exporter.exported_buffer = io.StringIO()
+            dataframe.to_csv(Exporter.exported_buffer, index=False)
+            Exporter.exported_buffer.seek(0)
+            Exporter.exported_mimetype = "text/csv"
+
+            # Convert from stringio to bytesio
+            bytesio = io.BytesIO()
+            bytesio.write(Exporter.exported_buffer.getvalue().encode())
+            bytesio.seek(0)
+            Exporter.exported_buffer = bytesio
+
+        elif filtri.get("formato") == "xlsx":
+            Exporter.exported_buffer = io.BytesIO()
+            dataframe.to_excel(Exporter.exported_buffer, "Sostituzioni")
+
+            Exporter.exported_buffer.seek(0)
+            Exporter.exported_mimetype = (
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            )
+
+        else:
+            Exporter.exported_buffer = None
+            Exporter.exported_mimetype = None
+            raise Exporter.FormatError("Formato non supportato")
+
+        return Exporter.exported_buffer, Exporter.exported_mimetype

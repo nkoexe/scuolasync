@@ -20,6 +20,10 @@ app.config["PERMANENT_SESSION_LIFETIME"] = 60 * 60
 # ! attenzione, non si applica a socketio, soltanto a richieste http
 app.config["SESSION_REFRESH_EACH_REQUEST"] = True
 
+# development
+app.config["DEBUG"] = True
+app.config["TEMPLATES_AUTO_RELOAD"] = True
+
 
 app.cli.add_command(database_cli)
 app.cli.add_command(importer_cli)

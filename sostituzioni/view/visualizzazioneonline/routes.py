@@ -1,8 +1,8 @@
-from flask import render_template, request
+from flask import render_template, request, send_file
 
+from sostituzioni.control.exporter import Exporter
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.model.auth import login_required, current_user
-from sostituzioni.model.model import Sostituzione, Aula, Docente, Classe, OraPredefinita
 from sostituzioni.view.visualizzazioneonline import online
 
 
@@ -25,6 +25,31 @@ def index():
         title=configurazione.get("systitle"),
         configurazione=configurazione,
         utente=current_user,
+    )
+
+
+@online.route("/export")
+@login_required
+def export():
+    if Exporter.exported_buffer is None:
+        return "Nessun file."
+
+    if Exporter.exported_buffer.closed:
+        print("closed")
+        return "Nessun file."
+
+    match Exporter.exported_mimetype:
+        case "text/csv":
+            exported_ext = ".csv"
+        case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+            exported_ext = ".xlsx"
+        case _:
+            exported_ext = ""
+
+    return send_file(
+        Exporter.exported_buffer,
+        as_attachment=True,
+        download_name="export" + exported_ext,
     )
 
 

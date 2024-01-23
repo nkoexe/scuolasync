@@ -1,7 +1,8 @@
 import logging
+from flask import redirect
 from flask_socketio import emit
 
-from sostituzioni.control.exporter import esporta
+from sostituzioni.control.exporter import Exporter
 from sostituzioni.model.model import (
     Aula,
     Classe,
@@ -244,4 +245,16 @@ def esporta_sostituzioni(filtri: dict | None = None):
 
     logger.debug(f"Ricevuto segnale per esportazione sostituzioni con filtri: {filtri}")
 
-    esporta(filtri)
+    try:
+        Exporter.esporta(filtri)
+    except Exporter.EmptyError:
+        emit(
+            "errore esportazione",
+            "Nessuna sostituzione trovata per i filtri impostati.",
+        )
+        return
+    except Exporter.FormatError as e:
+        emit("errore esportazione", str(e))
+        return
+
+    emit("esportazione completata")
