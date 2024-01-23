@@ -191,4 +191,4 @@ INSERT OR IGNORE INTO aula_ospita_classe VALUES
     ('Prefabbricato C1', '3 S', 1),
     ('Prefabbricato C2', '3 SUa', 1),
     ('Palazzina', '5 Ea', 1),
-    ('Laboratorio di scienze', "4 La", 1);
+    ('Laboratorio di scienze', '4 La', 1);

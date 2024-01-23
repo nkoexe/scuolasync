@@ -80,14 +80,14 @@
     },
     "loginpageparagraph": {
       "titolo": "Paragrafo di Note",
-      "descrizione": "Testo che verrà visualizzato sotto al pulsante di accesso. Può essere stilizzato, includendo <br> per andare a capo, <b> per grassetto, <i> per corsivo ecc.",
+      "descrizione": "Testo che verr\u00e0 visualizzato sotto al pulsante di accesso. Pu\u00f2 essere stilizzato, includendo <br> per andare a capo, <b> per grassetto, <i> per corsivo ecc.",
       "sezione": "login",
       "disabilitato": false,
       "nascosto": false,
       "tipo": "testo",
       "lunghezza_massima": null,
-      "default": "L'accesso al sistema è eseguito tramite l'account Google appartenente al tuo istituto scolastico.",
-      "valore": "L'accesso al sistema è eseguito tramite l'account Google appartenente al tuo istituto scolastico.<br>Assicurati di selezionare il tuo account <i>@gandhimerano.com</i>"
+      "default": "L'accesso al sistema \u00e8 eseguito tramite l'account Google appartenente al tuo istituto scolastico.",
+      "valore": "L'accesso al sistema \u00e8 eseguito tramite l'account Google appartenente al tuo istituto scolastico.<br>Assicurati di selezionare il tuo account <i>@gandhimerano.com</i>"
     },
     "nosostituzionimsg": {
       "titolo": "Errore nessuna sostituzione",
@@ -217,7 +217,7 @@
         "%ROOT%"
       ],
       "default": "database/database.db",
-      "valore": "database/database.db"
+      "valore": "database/presentazione_terze.db"
     },
     "authdatabasepath": {
       "titolo": "Posizione database gestione utenti",
