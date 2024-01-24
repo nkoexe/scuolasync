@@ -96,6 +96,8 @@ function sostituzioni_filtra_data() {
 
     ui_sostituzioni_filtro_data_rimuovi_selected()
 
+    let data_inizio, data_fine, filtri
+
     switch (sostituzioni_filtro_data_attivo) {
         case "oggi":
             data_inizio = new Date()
@@ -159,8 +161,22 @@ function sostituzioni_filtra_data() {
             break
 
         case "mese":
-            //todo complete      
-            ui_sostituzioni_filtro_data_mese.value
+            const mese = parseInt(ui_sostituzioni_filtro_data_mese.value)
+            const now = new Date()
+            const mese_corrente = now.getMonth() + 1
+            let anno = now.getFullYear()
+            if (mese > 7 && mese_corrente <= 7) {
+                // Anno scolastico precedente
+                anno -= 1
+            } else if (mese <= 7 && mese_corrente > 7) {
+                // Anno scolastico successivo
+                anno += 1
+            }
+
+            filtri = {
+                data_inizio: new Date(anno, mese, 1).getTime() / 1000,
+                data_fine: new Date(anno, mese + 1, 0, 23, 59, 59).getTime() / 1000
+            }
 
             ui_sostituzioni_filtro_data_mese.classList.add("selected")
             break
@@ -187,7 +203,6 @@ function sostituzioni_filtra_data() {
 
     return filtri
 }
-
 
 
 ui_sostituzioni_filtro_data.onfocus = (e) => {

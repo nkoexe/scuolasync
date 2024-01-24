@@ -31,7 +31,7 @@ ui_popup_esporta_report.onblur = (e) => {
     if (e.relatedTarget && e.relatedTarget.closest("#popup-esporta-sostituzioni")) {
         e.preventDefault()
         e.stopPropagation()
-        ui_popup_esporta_report.focus()
+        // ui_popup_esporta_report.focus()
         return
     }
 
@@ -46,14 +46,13 @@ ui_filtro_mese_esporta_report.onclick = () => {
     ui_radio_data_esporta_report.checked = false
 }
 
-let focus_data_esporta_report = () => {
-    ui_radio_mese_esporta_report.checked = false
-    ui_radio_data_esporta_report.checked = true
-}
-ui_filtro_data_inizio_esporta_report.onclick = focus_data_esporta_report
-ui_filtro_data_inizio_esporta_report.onchange = focus_data_esporta_report
-ui_filtro_data_fine_esporta_report.onclick = focus_data_esporta_report
-ui_filtro_data_fine_esporta_report.onchange = focus_data_esporta_report
+ui_filtro_data_inizio_esporta_report.onclick =
+    ui_filtro_data_inizio_esporta_report.onchange =
+    ui_filtro_data_fine_esporta_report.onclick =
+    ui_filtro_data_fine_esporta_report.onchange = () => {
+        ui_radio_mese_esporta_report.checked = false
+        ui_radio_data_esporta_report.checked = true
+    }
 
 
 ui_pulsante_scarica_report.onclick = () => {
