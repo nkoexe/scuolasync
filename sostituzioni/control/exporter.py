@@ -74,7 +74,7 @@ class Exporter:
                 col_idx = dataframe.columns.get_loc(column) + 1
                 writer.sheets["Sostituzioni"].set_column(col_idx, col_idx, column_width)
 
-            writer.save()
+            writer.close()
 
             Exporter.exported_buffer.seek(0)
             Exporter.exported_mimetype = (
