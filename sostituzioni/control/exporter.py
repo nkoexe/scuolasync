@@ -33,6 +33,8 @@ class Exporter:
 
         for i in range(len(dati["data"])):
             dati["data"][i] = datetime.fromtimestamp(dati["data"][i]).date()
+            dati["pubblicato"][i] = bool(dati["pubblicato"][i])
+            dati["cancellato"][i] = bool(dati["cancellato"][i])
 
         dataframe = pd.DataFrame(
             {
