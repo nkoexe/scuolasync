@@ -496,7 +496,7 @@ input[type='radio'] {
     display: flex;
 }
 
-#sostituzione-filtro-data-testo {
+#sostituzioni-filtro-data-testo {
     display: flex;
     align-items: center;
     margin: auto;
@@ -504,14 +504,14 @@ input[type='radio'] {
     color: var(--color-sostituzioni-filtri-placeholder);
 }
 
-#sostituzione-filtro-data-testo .icon {
+#sostituzioni-filtro-data-testo .icon {
     /* quick layout fixes */
     margin-left: -2px;
     margin-top: 2px;
     transition: all 0.4s;
 }
 
-#sostituzioni-filtro-data:has(#sostituzioni-filtro-data-expandible.active) #sostituzione-filtro-data-testo .icon {
+#sostituzioni-filtro-data:has(#sostituzioni-filtro-data-expandible.active) #sostituzioni-filtro-data-testo .icon {
     /* rotate: 180deg; */
     transform: scaleY(-1);
     -moz-transform: scaleY(-1);
@@ -837,7 +837,8 @@ input[type='radio'] {
     min-height: 1rem;
     max-height: 20rem;
     padding: 5px 0;
-    background-color: white;
+    color: var(--color-selezione-fg);
+    background-color: var(--color-selezione-bg);
     box-shadow: 1px 5px 8px 0px var(--color-shadow);
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -850,7 +851,7 @@ input[type='radio'] {
 
 .selezione-dropdown li:hover,
 .selezione-dropdown li.lista_current {
-    background-color: #cccccc;
+    background-color: var(--color-selezione-hover-bg);
 }
 
 .selezione-dropdown li span {
@@ -864,7 +865,7 @@ input[type='radio'] {
     user-select: none;
     color: var(--color-selezione-fg);
     background-color: var(--color-selezione-bg);
-    box-shadow: 0px 3px 5px #00000088;
+    box-shadow: 0 1px 3px var(--color-shadow), 0 4px 10px var(--color-shadow);
     border-radius: 10px;
     font-size: 18px;
 }
@@ -902,36 +903,29 @@ input[type='radio'] {
     display: flex;
     flex-direction: column;
     padding: 10px;
+    /* min-width messa per poter calcolare in js la grandezza e non far rimpicciolire il dialog al lato dello schermo */
+    min-width: 310px;
 }
 
 #dialog-conferma-elimina-titolo-container {
     display: flex;
     margin-bottom: 15px;
     font-size: 20px;
-}
-
-#dialog-conferma-elimina-titolo-container .icon {
-    /* color: var(--color-accent); */
-}
-
-
-#dialog-conferma-elimina-titolo {
-    margin: auto;
-    margin-left: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
 
 #dialog-conferma-elimina-storico-container {
     flex: 1;
-    margin: auto;
-    margin-bottom: 15px;
+    margin: 15px;
     display: flex;
     gap: 10px
 }
 
 #dialog-conferma-elimina-pulsanti {
     margin: auto;
-    /* padding: 10px; */
 }
 
 #dialog-conferma-elimina-pulsanti button {
@@ -940,6 +934,7 @@ input[type='radio'] {
     border: 1px solid black;
     padding: 15px 30px;
     font-size: 15px;
+    background-color: var(--color-selezione-bg);
     box-shadow: none;
     transition: all 0.1s;
 }

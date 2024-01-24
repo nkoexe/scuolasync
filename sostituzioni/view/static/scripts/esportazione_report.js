@@ -36,7 +36,7 @@ ui_popup_esporta_report.onblur = (e) => {
     if (e.relatedTarget && e.relatedTarget.closest("#popup-esporta-sostituzioni")) {
         e.preventDefault()
         e.stopPropagation()
-        // ui_popup_esporta_report.focus()
+        ui_popup_esporta_report.focus()
         return
     }
 

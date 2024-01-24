@@ -82,6 +82,7 @@ let sostituzioni_filtro_note = new Filtro({ id: "sostituzioni-filtro-note", ordi
 
 let sostituzioni_filtro_data_attivo = 'future'
 const ui_sostituzioni_filtro_data = document.getElementById("sostituzioni-filtro-data")
+const ui_sostituzioni_filtro_data_testo = document.getElementById("sostituzioni-filtro-data-testo")
 const ui_sostituzioni_filtro_data_expandible = document.getElementById("sostituzioni-filtro-data-expandible")
 const ui_sostituzioni_filtro_data_oggi = document.getElementById("sostituzioni-filtro-data-oggi")
 const ui_sostituzioni_filtro_data_domani = document.getElementById("sostituzioni-filtro-data-domani")
@@ -205,15 +206,22 @@ function sostituzioni_filtra_data() {
 }
 
 
-ui_sostituzioni_filtro_data.onclick = (e) => {
+ui_sostituzioni_filtro_data_testo.onclick = (e) => {
+    if (ui_sostituzioni_filtro_data_expandible.classList.contains("active")) {
+        ui_sostituzioni_filtro_data_expandible.classList.remove("active")
+        return
+    }
+
+    ui_sostituzioni_filtro_data.focus()
     ui_sostituzioni_filtro_data_expandible.classList.toggle("active")
 }
 
 ui_sostituzioni_filtro_data.onblur = (e) => {
     if (e.relatedTarget && e.relatedTarget.closest("#sostituzioni-filtro-data-expandible")) {
-        ui_sostituzioni_filtro_data.focus()
+        console.log("blur stop[parayto")
         e.preventDefault()
         e.stopPropagation()
+        ui_sostituzioni_filtro_data.focus()
         return
     }
 

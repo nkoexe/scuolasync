@@ -1,7 +1,5 @@
 :root {
     --color-background: #F3F6F8;
-    --color-scrollbar: #00000046;
-    --color-scrollbar-hover: #00000059;
     --color-accent: #C00F19;
     --color-accent-text: #ffffff;
     --color-danger: #C00F19;
@@ -14,11 +12,14 @@
     --color-sostituzioni-lista1: #f3f3f3;
     --color-sostituzioni-lista2: #fdfdfd;
     --color-shadow: #00000055;
+    --color-input-border: #bababa;
     --color-selezione-bg: #F3F6F8;
     --color-selezione-fg: #0a0a0a;
     --color-selezione-hover-bg: #0000001b;
     --color-selezione-hover-delete-bg: #C00F19;
     --color-selezione-hover-delete-fg: #ffffff;
+    --color-scrollbar: #00000046;
+    --color-scrollbar-hover: #00000059;
 }
 
 /* @media (prefers-color-scheme: dark) {

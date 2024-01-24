@@ -19,7 +19,7 @@
     width: 100vh;
     height: 70vh;
     margin: auto;
-    background-color: white;
+    background-color: var(--color-background);
     border-radius: 1rem;
     box-shadow: 0 10px 25px var(--color-shadow), 0 0 10px var(--color-shadow);
     display: flex;
@@ -32,6 +32,16 @@
         width: 70vw;
     }
 }
+
+#gestione-dati-frame input,
+#gestione-dati-frame select,
+#gestione-dati-frame textarea {
+    padding: 10px 15px;
+    background-color: var(--color-background);
+    border: 1px solid var(--color-input-border);
+    border-radius: 5px;
+}
+
 
 
 #gestione-dati-frame .gestione-dati-element {
@@ -80,6 +90,7 @@
 
 .pulsante-secondario-gestione-dati {
     box-shadow: none;
+    background-color: var();
 }
 
 .pulsante-secondario-gestione-dati:hover {
@@ -97,9 +108,6 @@
 #gestione-dati-sostituzione input {
     font-size: 20px;
     margin: 0;
-    padding: 10px 15px;
-    border: 1px solid #cacaca;
-    border-radius: 5px;
 }
 
 #gestione-dati-sostituzione .selezione {
@@ -233,8 +241,6 @@
     height: 100%;
     resize: none;
     padding: 15px 25px;
-    border: 1px solid #cacaca;
-    border-radius: 5px;
 }
 
 #gestione-dati-evento-urgente {
@@ -244,8 +250,7 @@
     margin: 0 20px;
     display: grid;
     place-content: center;
-    border-radius: 1rem;
-    border: 1px solid #a8a8a8;
+    border-radius: 1rem !important;
     transition: all 0.1s;
 }
 
@@ -256,7 +261,7 @@
 
 #gestione-dati-evento-urgente::before {
     content: "priority_high";
-    color: #a8a8a8;
+    color: var(--color-input-border);
     transition: all 0.1s;
 }
 

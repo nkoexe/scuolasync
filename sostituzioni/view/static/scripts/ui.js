@@ -119,6 +119,14 @@ function ui_conferma_elimina_notizia() {
 function ui_elimina() {
     ui_pulsanti_context_menu.classList.add("hidden")
     ui_conferma_elimina.classList.remove("hidden")
+    // check if context menu is outside window, move it in case
+    const rect = ui_conferma_elimina.getBoundingClientRect()
+    if (rect.right > window.innerWidth) {
+        ui_context_menu.style.left = window.innerWidth - rect.width + "px"
+    }
+    if (rect.bottom > window.innerHeight) {
+        ui_context_menu.style.top = window.innerHeight - rect.height + "px"
+    }
 }
 function ui_annulla_elimina() {
     ui_context_menu.closingcallback()
