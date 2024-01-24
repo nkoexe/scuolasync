@@ -35,6 +35,8 @@ function ui_refresh_sostituzioni() {
     ui_loading_sostituzioni()
 
     filtri = sostituzioni_filtra_data()
+    // temporaneo, rimuovere quanod si crea il filtro 'pubblicato'
+    filtri.non_pubblicato = true
     s_richiedi_sostituzioni(filtri)
 }
 

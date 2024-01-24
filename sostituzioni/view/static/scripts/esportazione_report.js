@@ -82,16 +82,16 @@ ui_pulsante_scarica_report.onclick = () => {
         data_fine = fix_date_from_input(ui_filtro_data_fine_esporta_report.valueAsNumber) / 1000
     }
 
-    const pubblicati = ui_filtro_pubblicati_esporta_report.checked
-    const cancellati = ui_filtro_cancellati_esporta_report.checked
+    const non_pubblicato = ui_filtro_pubblicati_esporta_report.checked
+    const cancellato = ui_filtro_cancellati_esporta_report.checked
     const formato = ui_select_formato_report.value
 
 
     socket.emit("esporta sostituzioni", {
         data_inizio,
         data_fine,
-        pubblicati,
-        cancellati,
+        non_pubblicato,
+        cancellato,
         formato,
     })
 }

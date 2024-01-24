@@ -700,8 +700,8 @@ class Sostituzione(ElementoDatabaseConStorico):
             where = where.AND("cancellato").equals(False)
 
         # Lo stesso vale per i pubblicati, o tutti o solo pubblicati
-        pubblicato = filtri.get("pubblicato", True)
-        if pubblicato:
+        pubblicato = filtri.get("non_pubblicato", False)
+        if not pubblicato:
             where = where.AND("pubblicato").equals(True)
 
         return ElementoDatabase.load(Sostituzione, where=where, order_by="data")

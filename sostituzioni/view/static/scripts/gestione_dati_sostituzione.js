@@ -148,7 +148,7 @@ function mostra_duplica_sostituzione(id) {
 }
 
 function pubblica_sostituzione(id, pubblica) {
-    pubblica = pubblica === undefined ? true : pubblica;
+    pubblica = pubblica || true;
 
     s_modifica_sostituzione(
         id, {

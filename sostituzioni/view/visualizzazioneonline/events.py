@@ -36,7 +36,7 @@ def connect():
     emit("lista docenti", Docente.load())
     richiesta_notizie()
     richiesta_eventi()
-    richiesta_sostituzioni({"pubblicato": False})
+    richiesta_sostituzioni({"non_pubblicato": True})
 
 
 @socketio.on("disconnect")
@@ -51,7 +51,7 @@ def richiesta_sostituzioni(filtri: dict | None = None):
     """
     filtri:
     { cancellato: true }  // per mostrare anche sostituzioni cancellate
-    { pubblicato: false }  // per mostrare anche sostituzioni non pubblicate
+    { non_pubblicato: true }  // per mostrare anche sostituzioni non pubblicate
     { data_inizio: 1702767600, data_fine: 1702854000 }  // per sostituzioni comprese in un intervallo
     { data_inizio: 1702767600, data_fine: None }  // per sostituzioni future
     """
@@ -61,8 +61,8 @@ def richiesta_sostituzioni(filtri: dict | None = None):
     # check if user has necessary permissions for non default view
     if "cancellato" in filtri and not current_user.permessi.sostituzioni.write:
         filtri.pop("cancellato")
-    if "pubblicato" in filtri and not current_user.permessi.sostituzioni.write:
-        filtri.pop("pubblicato")
+    if "non_pubblicato" in filtri and not current_user.permessi.sostituzioni.write:
+        filtri.pop("non_pubblicato")
 
     emit("lista sostituzioni", Sostituzione.load(filtri))
 
