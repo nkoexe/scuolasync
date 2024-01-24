@@ -1,5 +1,6 @@
 import pandas as pd
 import io
+from datetime import datetime
 
 from sostituzioni.model.model import Sostituzione
 
@@ -30,6 +31,9 @@ class Exporter:
             Exporter.exported_mimetype = None
             raise Exporter.EmptyError("Nessuna sostituzione trovata")
 
+        for i in range(len(dati["data"])):
+            dati["data"][i] = datetime.fromtimestamp(dati["data"][i]).date()
+
         dataframe = pd.DataFrame(
             {
                 "Data": dati["data"],
@@ -41,6 +45,8 @@ class Exporter:
                 "Nome Docente": dati["nome_docente"],
                 "Cognome Docente": dati["cognome_docente"],
                 "Note": dati["note"],
+                "Pubblicato": dati["pubblicato"],
+                "Cancellato": dati["cancellato"],
             }
         )
 
@@ -58,7 +64,17 @@ class Exporter:
 
         elif filtri.get("formato") == "xlsx":
             Exporter.exported_buffer = io.BytesIO()
-            dataframe.to_excel(Exporter.exported_buffer, "Sostituzioni")
+            writer = pd.ExcelWriter(Exporter.exported_buffer)
+            dataframe.to_excel(writer, "Sostituzioni")
+
+            for column in dataframe:
+                column_width = (
+                    max(dataframe[column].astype(str).map(len).max(), len(column)) + 3
+                )
+                col_idx = dataframe.columns.get_loc(column) + 1
+                writer.sheets["Sostituzioni"].set_column(col_idx, col_idx, column_width)
+
+            writer.save()
 
             Exporter.exported_buffer.seek(0)
             Exporter.exported_mimetype = (

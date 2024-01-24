@@ -87,7 +87,7 @@ function ui_duplica_sostituzione() {
 }
 function ui_conferma_elimina_sostituzione() {
     id = parseInt(ui_context_menu.dataset.id)
-    s_elimina_sostituzione(id, false)
+    s_elimina_sostituzione(id, !(ui_conferma_elimina_storico.checked))
     ui_context_menu.closingcallback()
 }
 function ui_modifica_evento() {

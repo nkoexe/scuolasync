@@ -117,7 +117,7 @@ function s_nuova_sostituzione(data) {
 }
 
 function s_elimina_sostituzione(id, mantieni_in_storico) {
-    socket.emit("elimina sostituzione", { id: id, mantieni_in_storico: mantieni_in_storico })
+    socket.emit("elimina sostituzione", { id, mantieni_in_storico })
 }
 
 function s_modifica_sostituzione(id, data) {

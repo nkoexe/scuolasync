@@ -12,6 +12,7 @@
   - apscheduler
   - pandas
   - openpyxl
+  - xlsxwriter
   - python-magic
 
 - Pacchetti NPM

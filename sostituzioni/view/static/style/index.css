@@ -276,6 +276,10 @@ input[type='radio'] {
     transition: all 0.2s;
 }
 
+#popup-esporta-sostituzioni:focus-visible {
+    outline: none;
+}
+
 #popup-esporta-sostituzioni::after {
     content: "";
     position: absolute;

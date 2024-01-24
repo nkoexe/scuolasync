@@ -256,5 +256,8 @@ def esporta_sostituzioni(filtri: dict | None = None):
     except Exporter.FormatError as e:
         emit("errore esportazione", str(e))
         return
+    except Exception as e:
+        emit("errore esportazione", "Errore: " + str(e))
+        return
 
     emit("esportazione completata")
