@@ -11,6 +11,13 @@ const ui_select_formato_report = document.getElementById("select-sostituzione-fo
 const ui_pulsante_scarica_report = document.getElementById("pulsante-scarica-esporta-sostituzioni")
 
 
+const now = new Date()
+now.setHours(0, 0, 0, 0)
+ui_filtro_mese_esporta_report.value = now.getMonth()
+ui_filtro_data_inizio_esporta_report.valueAsNumber = fix_date_to_input(now)
+ui_filtro_data_fine_esporta_report.valueAsNumber = fix_date_to_input(now)
+
+
 ui_pulsante_esporta_report.onclick = () => {
     ui_popup_esporta_report.style.display = "flex"
     setTimeout(() => {
@@ -23,6 +30,9 @@ ui_pulsante_esporta_report.onclick = () => {
 
 ui_popup_esporta_report.onblur = (e) => {
     if (e.relatedTarget && e.relatedTarget.closest("#popup-esporta-sostituzioni")) {
+        e.preventDefault()
+        e.stopPropagation()
+        ui_popup_esporta_report.focus()
         return
     }
 
