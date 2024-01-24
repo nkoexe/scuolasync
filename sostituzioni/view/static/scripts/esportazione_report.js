@@ -21,8 +21,7 @@ ui_filtro_data_fine_esporta_report.valueAsNumber = fix_date_to_input(now)
 ui_pulsante_esporta_report.onclick = () => {
     ui_popup_esporta_report.style.display = "flex"
     setTimeout(() => {
-        ui_popup_esporta_report.style.opacity = "1"
-        ui_popup_esporta_report.style.top = "100%"
+        ui_popup_esporta_report.classList.add("visible")
     }, 1)
     ui_popup_esporta_report.focus()
 }
@@ -36,8 +35,7 @@ ui_popup_esporta_report.onblur = (e) => {
         return
     }
 
-    ui_popup_esporta_report.style.opacity = "0"
-    ui_popup_esporta_report.style.top = "80%"
+    ui_popup_esporta_report.classList.remove("visible")
     setTimeout(() => {
         ui_popup_esporta_report.style.display = "none"
     }, 200)
