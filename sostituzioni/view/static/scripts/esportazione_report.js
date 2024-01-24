@@ -19,6 +19,11 @@ ui_filtro_data_fine_esporta_report.valueAsNumber = fix_date_to_input(now)
 
 
 ui_pulsante_esporta_report.onclick = () => {
+    if (ui_popup_esporta_report.style.display == "flex") {
+        // animation has already started, let the dialog close
+        return
+    }
+
     ui_popup_esporta_report.style.display = "flex"
     setTimeout(() => {
         ui_popup_esporta_report.classList.add("visible")

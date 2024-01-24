@@ -205,8 +205,8 @@ function sostituzioni_filtra_data() {
 }
 
 
-ui_sostituzioni_filtro_data.onfocus = (e) => {
-    ui_sostituzioni_filtro_data_expandible.classList.add("active")
+ui_sostituzioni_filtro_data.onclick = (e) => {
+    ui_sostituzioni_filtro_data_expandible.classList.toggle("active")
 }
 
 ui_sostituzioni_filtro_data.onblur = (e) => {
@@ -267,5 +267,5 @@ ui_sostituzioni_filtro_data_tutte.onclick = (e) => {
     ui_sostituzioni_filtra_data()
 }
 
-
 ui_sostituzioni_filtro_data_data.valueAsDate = new Date()
+ui_sostituzioni_filtro_data_mese.value = new Date().getMonth()
