@@ -45,6 +45,12 @@ def disconnect():
     logout_user()
 
 
+@socketio.on("auth check")
+@login_required
+def auth_check():
+    return True
+
+
 @socketio.on("richiesta sostituzioni")
 @login_required
 def richiesta_sostituzioni(filtri: dict | None = None):

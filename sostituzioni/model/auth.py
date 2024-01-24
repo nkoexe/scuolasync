@@ -1,4 +1,4 @@
-from flask import abort, redirect, url_for, flash, session
+from flask import abort, redirect, url_for, flash, session, request
 from flask_login import (
     LoginManager,
     UserMixin,
@@ -7,6 +7,7 @@ from flask_login import (
     logout_user,
     current_user,
 )
+from flask_socketio import emit
 from functools import wraps
 from oauthlib import oauth2
 import logging
@@ -157,4 +158,8 @@ def load_user(user_id):
 
 @login_manager.unauthorized_handler
 def unauthorized():
+    # check if request was sent with socketio
+    if hasattr(request, "namespace"):
+        emit("unauthorized")
+        return
     return redirect(url_for("auth.login"))

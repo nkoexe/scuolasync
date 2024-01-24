@@ -26,6 +26,8 @@ const gestione_dati_sostituzione_classe = new Selezione({
 
 
 function mostra_gestione_sostituzione() {
+    s_auth_check()
+
     gestione_dati_sostituzione_ora_predefinita.aggiorna(ore_predefinite);
     gestione_dati_sostituzione_note.aggiorna(note_standard)
     gestione_dati_sostituzione_docente.aggiorna(docenti);

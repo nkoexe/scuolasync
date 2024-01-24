@@ -1,4 +1,5 @@
 from flask import render_template, request, send_file
+from datetime import datetime
 
 from sostituzioni.control.exporter import Exporter
 from sostituzioni.control.configurazione import configurazione
@@ -49,7 +50,9 @@ def export():
     return send_file(
         Exporter.exported_buffer,
         as_attachment=True,
-        download_name="export" + exported_ext,
+        download_name="export_sostituzioni_"
+        + datetime.now().strftime("%Y%m%d_%H%M%S")
+        + exported_ext,
     )
 
 

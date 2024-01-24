@@ -65,13 +65,13 @@ class Exporter:
         elif filtri.get("formato") == "xlsx":
             Exporter.exported_buffer = io.BytesIO()
             writer = pd.ExcelWriter(Exporter.exported_buffer)
-            dataframe.to_excel(writer, "Sostituzioni")
+            dataframe.to_excel(writer, "Sostituzioni", index=False)
 
             for column in dataframe:
                 column_width = (
                     max(dataframe[column].astype(str).map(len).max(), len(column)) + 3
                 )
-                col_idx = dataframe.columns.get_loc(column) + 1
+                col_idx = dataframe.columns.get_loc(column)
                 writer.sheets["Sostituzioni"].set_column(col_idx, col_idx, column_width)
 
             writer.close()

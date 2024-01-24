@@ -87,9 +87,9 @@ socket.on("errore esportazione", (msg) => {
 // ----------------
 
 
-// ! test, non funzionante, trovare un modo per capire quando la sessione è scaduta
 socket.on("unauthorized", () => {
-    notyf.error("Prego ricaricare la pagina.")
+    location.reload()
+    // notyf.error("Prego ricaricare la pagina.")
 })
 socket.on("disconnect", () => {
     notyf.error("Connessione persa, non sarà possibile ricevere aggiornamenti.")
@@ -97,6 +97,10 @@ socket.on("disconnect", () => {
 
 
 // ----------------
+
+function s_auth_check() {
+    socket.emit("auth check")
+}
 
 function s_richiedi_sostituzioni(filtri) {
     if (filtri)
