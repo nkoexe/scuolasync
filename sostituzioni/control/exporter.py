@@ -66,8 +66,18 @@ class Exporter:
 
         elif filtri.get("formato") == "xlsx":
             Exporter.exported_buffer = io.BytesIO()
-            writer = pd.ExcelWriter(Exporter.exported_buffer)
+            writer = pd.ExcelWriter(Exporter.exported_buffer, date_format="dd/mm/yyyy")
+            dataframe.style.set_properties(**{"text-align": "right"})
             dataframe.to_excel(writer, "Sostituzioni", index=False)
+
+            border_format = writer.book.add_format({"border": 1})
+
+            columns = len(dataframe.columns)
+            rows = len(dataframe.index)
+            writer.sheets["Sostituzioni"].conditional_format(
+                "A2:" + chr(ord("A") + columns - 1) + str(rows + 1),
+                {"type": "no_errors", "format": border_format},
+            )
 
             for column in dataframe:
                 column_width = (
