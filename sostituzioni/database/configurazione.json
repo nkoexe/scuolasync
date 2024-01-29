@@ -160,6 +160,32 @@
       "default": 7,
       "valore": 100
     },
+    "backupdir": {
+      "titolo": "Cartella di Backup",
+      "descrizione": "Directory locale nella quale eseguire il backup.",
+      "sezione": "backup",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "percorso",
+      "radice": 1,
+      "scelte_radice": [
+        "/",
+        "%ROOT%"
+      ],
+      "default": "database/backup/",
+      "valore": "database/backup/"
+    },
+    "backupdrivefolderid": {
+      "titolo": "Cartella Drive",
+      "descrizione": "ID della cartella di Google Drive nella quale caricare il backup del sistema. Assicurarsi che essa sia condivisa con l'account di servizio che è stato creato per gestire il backup. Si può trovare l'account di servizio nella pagina \"Credenziali\" del progetto Google Cloud Console del sistema.",
+      "sezione": "backup",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "testo",
+      "lunghezza_massima": null,
+      "default": "",
+      "valore": "1BK1N4yg3_vWi_MN8WeMXo7GEHpmfFzG7"
+    },
     "rootpath": {
       "titolo": "Percorso radice - Root",
       "descrizione": "Percorso della cartella nella quale sono posizionati i file di questo sistema.",
@@ -233,21 +259,6 @@
       ],
       "default": "database/utenti.db",
       "valore": "database/utenti.db"
-    },
-    "backupdir": {
-      "titolo": "Cartella Backup",
-      "descrizione": "Directory nella quale si trovano i file di backup del database.",
-      "sezione": "percorsi",
-      "disabilitato": false,
-      "nascosto": false,
-      "tipo": "percorso",
-      "radice": 1,
-      "scelte_radice": [
-        "/",
-        "%ROOT%"
-      ],
-      "default": "database/backup/",
-      "valore": "database/backup/"
     },
     "flaskstaticdir": {
       "titolo": "Cartella file statici",
