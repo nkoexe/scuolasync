@@ -82,7 +82,6 @@ socket.on('connect_failed', reconnect)
 socket.on('disconnect', reconnect)
 
 function reconnect() {
-    console.log('Reconnecting...')
     fetch('/')
         .then((response) => {
             if (response.ok) {
