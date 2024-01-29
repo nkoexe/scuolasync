@@ -59,7 +59,7 @@ def role_required(role):
     Usage:
     ```
     @login_requided
-    @role_required('sostituzioni.write')
+    @role_required("sostituzioni.write")
     def protected():
         ...
     ```
