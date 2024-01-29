@@ -12,6 +12,15 @@ const ui_conferma_elimina_per_reale = document.getElementById("dialog-conferma-e
 // ----------------------------------
 
 
+const userLocale =
+    navigator.languages && navigator.languages.length
+        ? navigator.languages[0]
+        : navigator.language;
+
+
+// ----------------------------------
+
+
 function fix_date_to_input(date) {
     return date.getTime() - date.getTimezoneOffset() * 60 * 1000
 }

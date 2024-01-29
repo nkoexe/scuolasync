@@ -54,7 +54,7 @@
         "In Sviluppo"
       ],
       "default": 0,
-      "valore": 0
+      "valore": 2
     },
     "maintenancemsg": {
       "titolo": "Messaggio di manutenzione",
@@ -177,7 +177,7 @@
     },
     "backupdrivefolderid": {
       "titolo": "Cartella Drive",
-      "descrizione": "ID della cartella di Google Drive nella quale caricare il backup del sistema. Assicurarsi che essa sia condivisa con l'account di servizio che è stato creato per gestire il backup. Si può trovare l'account di servizio nella pagina \"Credenziali\" del progetto Google Cloud Console del sistema.",
+      "descrizione": "ID della cartella di Google Drive nella quale caricare il backup del sistema. Assicurarsi che essa sia condivisa con l'account di servizio che \u00e8 stato creato per gestire il backup. Si pu\u00f2 trovare l'account di servizio nella pagina \"Credenziali\" del progetto Google Cloud Console del sistema.",
       "sezione": "backup",
       "disabilitato": false,
       "nascosto": false,
@@ -198,7 +198,7 @@
         "/"
       ],
       "default": "",
-      "valore": "/home/nxco/Proj/sostituzioni/sostituzioni"
+      "valore": "C:\\Users\\nicco\\Programming\\sostituzioni\\sostituzioni"
     },
     "configpath": {
       "titolo": "Percorso file di configurazione",
@@ -213,7 +213,7 @@
         "%ROOT%"
       ],
       "default": "database/configurazione.json",
-      "valore": "/home/nxco/Proj/sostituzioni/sostituzioni/database/configurazione.json"
+      "valore": "C:\\Users\\nicco\\Programming\\sostituzioni\\sostituzioni\\database\\configurazione.json"
     },
     "scriptsdir": {
       "titolo": "Directory degli script",

@@ -48,15 +48,19 @@ async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora
 	}
 
 	// Converte da unix timestamp a dd/mm/yyyy
-	data = new Date(data * 1000).toLocaleDateString()
+	data = new Date(data * 1000).toLocaleDateString(userLocale, {
+		year: "numeric",
+		month: "2-digit",
+		day: "2-digit"
+	})
 
 	return ui_sostituzione_html_template.replace("{id}", id).replace('{pubblicato}', pubblicato).replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note).replace("{icona_pubblicato}", icona_pubblicato)
 }
 
-async function add_sostituzione_to_ui_list(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
-	let sostituzione_html = format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note)
-	ui_sostituzioni_lista.innerHTML += sostituzione_html
-}
+// async function add_sostituzione_to_ui_list(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
+// 	let sostituzione_html = format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note)
+// 	ui_sostituzioni_lista.innerHTML += sostituzione_html
+// }
 
 async function refresh_sostituzioni(hard_refresh) {
 	hard_refresh = hard_refresh || false

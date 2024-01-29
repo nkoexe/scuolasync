@@ -38,7 +38,7 @@ function format_date(data_ora_inizio, data_ora_fine) {
         format_options_fine.month = undefined
     }
 
-    return data_ora_inizio.toLocaleString(Intl.NumberFormat().resolvedOptions().locale, format_options_inizio) + " - " + data_ora_fine.toLocaleString(Intl.NumberFormat().resolvedOptions().locale, format_options_fine)
+    return data_ora_inizio.toLocaleString(userLocale, format_options_inizio) + " - " + data_ora_fine.toLocaleString(userLocale, format_options_fine)
 }
 
 function format_evento_to_html(id, pubblicato, urgente, data_ora_inizio, data_ora_fine, testo) {
