@@ -5,6 +5,7 @@ from googleapiclient.http import MediaFileUpload
 from google.oauth2 import service_account
 import googleapiclient.discovery
 import logging
+import zipfile
 
 from sostituzioni.control.configurazione import configurazione
 
@@ -13,24 +14,30 @@ logger = logging.getLogger(__name__)
 
 
 def backup():
-    database_file = configurazione.get("databasepath").path
+    files = [
+        configurazione.get("databasepath").path,
+        configurazione.get("authdatabasepath").path,
+        configurazione.get("configpath").path,
+    ]
+
     backup_dir = configurazione.get("backupdir").path
 
-    if not database_file.is_file():
-        return FileNotFoundError(f"Database file {database_file} not found.")
+    for file in files:
+        if not file.is_file():
+            return FileNotFoundError(f"File per backup {file} not found.")
 
     if not backup_dir.is_dir():
         backup_dir.mkdir()
 
-    database_name = database_file.stem
-    database_ext = database_file.suffix
     date = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
-    backup_file = backup_dir / f"backup_{database_name}_{date}{database_ext}"
+    backup_file = backup_dir / f"backup_{date}.zip"
 
-    logger.debug(f"Backing up database to {backup_file}")
+    logger.debug(f"Compressing files to {backup_file}")
 
-    copyfile(database_file, backup_file)
+    with zipfile.ZipFile(backup_file, "w") as zip_file:
+        for file in files:
+            zip_file.write(file, arcname=file.name)
 
     logger.debug("Uploading backup to Google Drive..")
     upload_to_drive(backup_file)
@@ -42,14 +49,14 @@ def backup():
 
 def upload_to_drive(backup_file):
     file_name = str(backup_file.name)
-    folder_id = configurazione.get("backupdrivefolderid")
+    folder_id = configurazione.get("backupdrivefolderid").valore
 
     metadata = {"name": file_name, "parents": [folder_id] if folder_id else []}
 
     media = MediaFileUpload(backup_file, resumable=True)
 
     credentials = service_account.Credentials.from_service_account_file(
-        Path(__file__).parent / "sostituzioni-test-14b8b9ffec37.json",
+        Path(__file__).parent / "sostituzioni-test-a2ee0a8fdc1d.json",
         scopes=["https://www.googleapis.com/auth/drive.file"],
     )
 
@@ -57,11 +64,15 @@ def upload_to_drive(backup_file):
         "drive", "v3", credentials=credentials
     )
 
-    file = (
-        drive_service.files()
-        .create(body=metadata, media_body=media, fields="id")
-        .execute()
-    )
+    try:
+        file = (
+            drive_service.files()
+            .create(body=metadata, media_body=media, fields="id")
+            .execute()
+        )
+    except googleapiclient.errors.HttpError as error:
+        logger.error(f"Error uploading backup file: {error}")
+        return None
 
     logger.debug(f"File uploaded with ID: {file['id']}")
     return file["id"]
