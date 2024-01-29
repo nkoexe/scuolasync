@@ -1,6 +1,7 @@
 from datetime import datetime
 from pathlib import Path
 from shutil import copyfile
+import requests
 from googleapiclient.http import MediaFileUpload
 from google.oauth2 import service_account
 import googleapiclient.discovery
@@ -44,24 +45,44 @@ def upload_to_drive(backup_file):
     file_name = str(backup_file.name)
     folder_id = configurazione.get("backupdrivefolderid")
 
-    metadata = {"name": file_name, "parents": [folder_id] if folder_id else []}
-
-    media = MediaFileUpload(backup_file, resumable=True)
-
     credentials = service_account.Credentials.from_service_account_file(
         Path(__file__).parent / "sostituzioni-test-14b8b9ffec37.json",
         scopes=["https://www.googleapis.com/auth/drive.file"],
     )
 
-    drive_service = googleapiclient.discovery.build(
-        "drive", "v3", credentials=credentials
-    )
+    headers = {
+        "Authorization": f"Bearer {credentials.token}",
+        "Content-Type": "application/json",
+    }
 
-    file = (
-        drive_service.files()
-        .create(body=metadata, media_body=media, fields="id")
-        .execute()
-    )
+    metadata = {"name": file_name, "parents": [folder_id] if folder_id else []}
 
-    logger.debug(f"File uploaded with ID: {file['id']}")
-    return file["id"]
+    upload_url = "https://www.googleapis.com/upload/drive/v3/files?uploadType=media"
+
+    with open(backup_file, "rb") as file:
+        response = requests.post(
+            upload_url, headers=headers, params=metadata, data=file
+        )
+
+    if response.status_code == 200:
+        file_id = response.json().get("id")
+        print(f"File uploaded with ID: {file_id}")
+        return file_id
+    else:
+        print(f"Failed to upload file. Error: {response.text}")
+        return None
+
+    # media = MediaFileUpload(backup_file, resumable=True)
+
+    # drive_service = googleapiclient.discovery.build(
+    #     "drive", "v3", credentials=credentials
+    # )
+
+    # file = (
+    #     drive_service.files()
+    #     .create(body=metadata, media_body=media, fields="id")
+    #     .execute()
+    # )
+
+    # logger.debug(f"File uploaded with ID: {file['id']}")
+    # return file["id"]
