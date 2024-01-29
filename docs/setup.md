@@ -1,6 +1,6 @@
 # Preparazione ambiente
 
-- Python 3.11.1
+- Python >=3.11
 - Pacchetti Python (installati con pip):
 
   - flask
@@ -14,8 +14,8 @@
   - openpyxl
   - xlsxwriter
   - python-magic
+  - google-auth
   - google-api-python-client
-  - 
 - Pacchetti NPM
 
   - html-minifier
