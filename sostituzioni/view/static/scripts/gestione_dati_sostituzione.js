@@ -149,9 +149,7 @@ function mostra_duplica_sostituzione(id) {
     ui_pulsante_principale_sostituzione.onclick = () => conferma_nuova_sostituzione(true);
 }
 
-function pubblica_sostituzione(id, pubblica) {
-    pubblica = pubblica || true;
-
+function pubblica_sostituzione(id, pubblica = true) {
     s_modifica_sostituzione(
         id, {
         pubblicato: pubblica

@@ -63,8 +63,9 @@ async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora
 // }
 
 async function refresh_sostituzioni(hard_refresh) {
-	hard_refresh = hard_refresh || false
+	hard_refresh = typeof hard_refresh === 'boolean' ? hard_refresh : false
 
+	sostituzioni_applica_filtri()
 	ordina_sostituzioni()
 
 	if (hard_refresh) {

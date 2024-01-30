@@ -993,7 +993,7 @@ class Sostituzione(ElementoDatabaseConStorico):
     @beartype
     @note.setter
     def note(self, new: str | None):
-        self._note = new
+        self._note = new if new else None
 
 
 class Evento(ElementoDatabaseConStorico):

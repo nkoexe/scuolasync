@@ -106,7 +106,6 @@ function ui_modifica_evento() {
 }
 function ui_duplica_evento() {
     id = parseInt(ui_context_menu.dataset.id)
-    console.log("Duplica evento: " + id)
     mostra_duplica_evento(id)
     ui_context_menu.closingcallback()
 }

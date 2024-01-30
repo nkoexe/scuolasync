@@ -1,6 +1,6 @@
 class Filtro extends Selezione {
     constructor({ id, ordinamento, filtra_lista, render, select_on_keydown, autocomplete }) {
-        super({ id: id, callback: sostituzioni_applica_filtri, filtra_lista: filtra_lista, render: render, select_on_keydown: select_on_keydown, autocomplete: autocomplete })
+        super({ id: id, callback: refresh_sostituzioni, filtra_lista: filtra_lista, render: render, select_on_keydown: select_on_keydown, autocomplete: autocomplete })
 
         this.ordinamento = ordinamento
         this.ordinamento = (typeof this.ordinamento === "undefined") ? true : this.ordinamento
@@ -64,10 +64,11 @@ function sostituzioni_applica_filtri() {
     }
     if (sostituzioni_filtro_note.selected !== null) {
         // todo: implement fuzzy search
-        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.note.toLowerCase().includes(sostituzioni_filtro_note.selected.toLowerCase()))
+        sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => {
+            if (element.note === null) return
+            return element.note.toLowerCase().includes(sostituzioni_filtro_note.selected.toLowerCase())
+        })
     }
-
-    refresh_sostituzioni()
 }
 
 let sostituzioni_filtro_ora = new Filtro({ id: "sostituzioni-filtro-ora", filtra_lista: prendi_ora, render: element => element.length == 1 ? element + "a ora" : element, autocomplete: true })

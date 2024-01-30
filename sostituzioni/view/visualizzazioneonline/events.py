@@ -62,6 +62,10 @@ def richiesta_sostituzioni(filtri: dict | None = None):
     { data_inizio: 1702767600, data_fine: None }  // per sostituzioni future
     """
 
+    #! fix temporaneo finché non si implementa il filtro per le sostituzioni non pubblicate
+    if isinstance(filtri, dict):
+        filtri["non_pubblicato"] = True
+
     logger.debug(f"Ricevuto segnale richiesta sostituzioni con filtri: {filtri}")
 
     # check if user has necessary permissions for non default view
