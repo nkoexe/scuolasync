@@ -219,7 +219,6 @@ ui_sostituzioni_filtro_data_testo.onclick = (e) => {
 
 ui_sostituzioni_filtro_data.onblur = (e) => {
     if (e.relatedTarget && e.relatedTarget.closest("#sostituzioni-filtro-data-expandible")) {
-        console.log("blur stop[parayto")
         e.preventDefault()
         e.stopPropagation()
         ui_sostituzioni_filtro_data.focus()

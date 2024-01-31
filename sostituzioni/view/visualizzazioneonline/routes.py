@@ -56,31 +56,38 @@ def export():
     )
 
 
-# @online.route("/testone")
-# @login_required
-# def testone():
-#     from random import choice, randint
-#     from datetime import datetime, timedelta
+@online.route("/testone")
+@login_required
+def testone():
+    from random import choice, randint
+    from datetime import datetime, timedelta
+    from sostituzioni.model.model import (
+        Aula,
+        Docente,
+        Classe,
+        OraPredefinita,
+        Sostituzione,
+    )
 
-#     aule = Aula.load()
-#     docenti = Docente.load()
-#     classi = Classe.load()
-#     orapredefinite = OraPredefinita.load()
+    aule = Aula.load()
+    docenti = Docente.load()
+    classi = Classe.load()
+    orapredefinite = OraPredefinita.load()
 
-#     for i in range(100):
-#         aula = choice(aule)["numero"]
-#         docente = choice(docenti)
-#         docente = docente["cognome"] + " " + docente["nome"]
-#         classe = choice(classi)["nome"]
-#         orapredefinita = choice(orapredefinite)["numero"]
-#         data = datetime.now().replace(
-#             hour=0, minute=0, second=0, microsecond=0
-#         ) + timedelta(days=randint(0, 30))
-#         data = int(data.timestamp())
+    for i in range(100):
+        aula = choice(aule)["numero"]
+        docente = choice(docenti)
+        docente = docente["cognome"] + " " + docente["nome"]
+        classe = choice(classi)["nome"]
+        orapredefinita = choice(orapredefinite)["numero"]
+        data = datetime.now().replace(
+            hour=0, minute=0, second=0, microsecond=0
+        ) + timedelta(days=randint(0, 30))
+        data = int(data.timestamp())
 
-#         sostituzione = Sostituzione(
-#             None, aula, classe, docente, data, None, None, orapredefinita, None, True
-#         )
-#         sostituzione.inserisci()
+        sostituzione = Sostituzione(
+            None, aula, classe, docente, data, None, None, orapredefinita, None, True
+        )
+        sostituzione.inserisci()
 
-#     return "ok"
+    return "ok"

@@ -65,9 +65,6 @@ async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora
 async function refresh_sostituzioni(hard_refresh) {
 	hard_refresh = typeof hard_refresh === 'boolean' ? hard_refresh : false
 
-	sostituzioni_applica_filtri()
-	ordina_sostituzioni()
-
 	if (hard_refresh) {
 		// Rimuovi completamente ogni dato e rigenera la lista. Per liste di grandi dimensioni, diventa un processo sostanzioso. Necessario al caricamento iniziale.
 
@@ -82,40 +79,51 @@ async function refresh_sostituzioni(hard_refresh) {
 		ui_sostituzioni_lista.innerHTML = htmlStrings.join('');
 
 		if (sostituzioni_write) {
-			for (const sostituzione of document.getElementsByClassName("sostituzione")) {
+			for (const sostituzione of document.querySelectorAll(".sostituzione")) {
 				sostituzione.oncontextmenu = (e) => { mostra_context_menu_sostituzione(e, sostituzione) }
 			}
 		}
+
+		// ordina e filtra
+		refresh_sostituzioni(false)
 	} else {
 		// Non rigenerare la lista ma mostra soltanto le sostituzioni filtrate, le altre vengono nascoste
 
+		sostituzioni_applica_filtri()
+		ordina_sostituzioni()
+
 		const elementsMap = new Map();
+		const elementsToShow = []
+		const elementsToHide = []
 		let index = 0;
 
 		const ids = sostituzioni_visualizzate.map(element => element.id);
 
-		for (const sostituzione of document.getElementsByClassName("sostituzione")) {
+		for (const sostituzione of document.querySelectorAll(".sostituzione")) {
 			const id = parseInt(sostituzione.dataset.id);
 			if (ids.includes(id)) {
-				sostituzione.style.display = "flex";
+				elementsToShow.push(sostituzione);
 				elementsMap.set(id, { sostituzione, index });
 				index++;
 			} else {
-				sostituzione.style.display = "none";
+				elementsToHide.push(sostituzione);
 			}
 		}
 
 		// Move elements up and down based on the new order
-		ids.forEach((id, newIndex) => {
-			const { sostituzione, index } = elementsMap.get(id);
+		for (let newIndex = 0; newIndex < ids.length; newIndex++) {
+			const id = ids[newIndex];
+			const { sostituzione } = elementsMap.get(id);
 
 			// Move the element only if the new position is different from the current position
-			if (newIndex !== index) {
+			if (newIndex !== sostituzione.index) {
 				const referenceNode = newIndex > index ? ui_sostituzioni_lista.children[newIndex + 1] : ui_sostituzioni_lista.children[newIndex];
 				ui_sostituzioni_lista.insertBefore(sostituzione, referenceNode);
 			}
-		});
+		};
 
+		elementsToHide.forEach(element => element.classList.add("hidden"));
+		elementsToShow.forEach(element => element.classList.remove("hidden"));
 	}
 
 	ui_sostituzioni_messaggio_informativo.style.display = "none"
