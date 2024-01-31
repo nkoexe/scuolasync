@@ -5,27 +5,17 @@ File json per le impostazioni di configurazione.
 
 ## Struttura del file
 
-Il file di configurazione è una lista di sezioni:
+Il file di configurazione è composto in due parti, sezioni e opzioni.
+Le sezioni sono definite inizialmente nel file e 
 
 ```jsonc
     "sistema": {  // identificativo della sezione che verrà utilizzato per la navigazione
-        "title": "Sistema",  // Titolo della sezione
-        "descr": "",  // Descrizione
-        "options": {  // Lista di impostazioni che fanno parte della sezione
-        }
+        "titolo": "Sistema",  // Titolo della sezione
+        "descrizione": "",    // Breve descrizione
     }
 ```
 
-Che a loro volta contengono una lista di opzioni:
 
-```jsonc
-    "settingid": {  // identificativo per uso interno dell'opzione, deve essere univoco
-        "title": "Setting title",  // Testo che verrà mostrato come titolo dell'opzione
-        "descr": "Descriptive text of the setting.",  // Descrizione della funzione dell'opzione
-        "config": {  // Campo dell'opzione
-        }
-      }
-```
 
 La singola opzione può avere diversi tipi di campi, tutti con questa struttura base:
 
@@ -36,6 +26,70 @@ La singola opzione può avere diversi tipi di campi, tutti con questa struttura 
 ```
 
 ### Lista di tutti i campi previsti
+
+### 1. Testo
+
+- **Descrizione**: Opzione che accetta input di testo.
+
+#### Attributi di Testo:
+
+- **Lunghezza Massima** (max_length):
+  - **Descrizione**: Specifica la lunghezza massima consentita per l'input di testo.
+  - **Tipo**: Numero intero.
+  - **Esempio**: `{"max_length": 30}`
+
+### 2. Selezione
+
+- **Descrizione**: Opzione che permette la selezione di un valore da un insieme di opzioni predefinite.
+
+#### Attributi di Selezione:
+
+- **Scelte** (choices):
+  - **Descrizione**: Lista delle opzioni tra cui l'utente può selezionare.
+  - **Tipo**: Lista di stringhe.
+  - **Esempio**: `{"choices": ["In Produzione", "In Manutenzione", "In Sviluppo"]}`
+
+### 3. Numero
+
+- **Descrizione**: Opzione che accetta input numerici.
+
+#### Attributi di Numero:
+
+- **Intervallo** (range):
+  - **Descrizione**: Specifica l'intervallo di valori consentito per l'input numerico.
+  - **Tipo**: Lista contenente due valori (minimo e massimo).
+  - **Esempio**: `{"range": [-10, 399]}`
+
+### 4. Numero con Unità di Misura
+
+- **Descrizione**: Opzione che accetta input numerici con unità di misura.
+
+#### Attributi di Numero con Unità di Misura:
+
+- **Scelte Unità** (unit_choices):
+  - **Descrizione**: Lista delle unità di misura disponibili.
+  - **Tipo**: Lista di stringhe.
+  - **Esempio**: `{"unit_choices": ["px", "em", "rem", "cm"]}`
+  
+### 5. Booleano
+
+- **Descrizione**: Opzione che rappresenta uno stato di vero o falso.
+
+#### Attributi Booleani:
+
+- Nessun attributo specifico oltre al valore booleano stesso.
+
+### 6. Percorso
+
+- **Descrizione**: Opzione che rappresenta un percorso di file o directory nel sistema.
+
+#### Attributi di Percorso:
+
+- **Radice** (root):
+  - **Descrizione**: Specifica la radice del percorso (ad esempio, "/" per radice del filesystem).
+  - **Tipo**: Stringa.
+  - **Esempio**: `{"root": "/"}`
+
 
 I campi possibili sono: text, num, unitnum, bool, color, select.
 
