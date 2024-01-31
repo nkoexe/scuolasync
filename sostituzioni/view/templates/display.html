@@ -80,7 +80,9 @@
     </div>
   </div>
   <script>
-    const messaggio_nessuna_sostituzione = "{{ configurazione.get('nosostituzionimsg') }}"
+    const messaggio_nessuna_sostituzione = "{{ configurazione.get('displaynosostituzionimsg') }}"
+    const giorni_futuri_da_mostrare = {{ configurazione.get('displayrangegiornifuturi').valore }}
+    const giorni_futuri_da_mostrare_lavorativi = Boolean({{ configurazione.get('displayrangegiornifuturi').unita }})
 
     let eventi = []
     let notizie = []

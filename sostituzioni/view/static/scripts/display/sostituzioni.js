@@ -55,8 +55,7 @@ function format_sostituzione_to_html(oggi, data, ora_inizio, ora_fine, numero_or
 
 	// Converte da unix timestamp a dd/mm/yyyy
 	data = new Date(data * 1000)
-	let opzioni_data = { day: '2-digit', month: '2-digit' }
-	data = data.toLocaleDateString('it-IT', opzioni_data)
+	data = data.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' })
 
 	return ui_sostituzione_html_template.replace("{oggi}", oggi ? "oggi" : "").replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{piano_aula}", piano_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note)
 }
@@ -79,15 +78,45 @@ function refresh_sostituzioni() {
 		let now = new Date()
 		let now_timestamp = now.getTime()
 		now.setHours(0, 0, 0, 0)
+		let max_timestamp = null
+
+		// Tieni solo le sostituzioni entro il range di date impostato
+		// Se il numero di giorni futuri è -1 bypassa il filtro
+		if (giorni_futuri_da_mostrare >= 0) {
+			max_timestamp = (now_timestamp + giorni_futuri_da_mostrare * 24 * 60 * 60 * 1000)
+			if (giorni_futuri_da_mostrare_lavorativi) {
+				// Interpreta i giorni futuri soltanto come lavorativi, ignorando Sabato e Domenica
+				let weekday = now.getDay()
+				let day_counter = giorni_futuri_da_mostrare
+				while (day_counter >= 0) {
+					if (weekday == 0 || weekday == 6) {
+						// Sabato o Domenica, quindi aggiungi un loop per controllare il giorno successivo
+						day_counter++
+						max_timestamp += 24 * 60 * 60 * 1000
+					}
+					weekday = (weekday + 1) % 7
+					day_counter--
+				}
+			}
+		}
+
+
 		sostituzioni_visualizzate.forEach(element => {
+			// Non pubblicata? Cancellata? Non dovrebbe arrivare qui ma meglio un double check
 			if (element.cancellato || !element.pubblicato) { return }
+
 			// Conferma che la sostituzione non sia passata
 			// La sottrazione è perché le sostituzioni di oggi sono salvate allo timestamp di oggi a mezzanotte
-
 			oggi = false
 			if (element.data * 1000 < (now_timestamp - 24 * 60 * 60 * 1000)) {
 				return
 			}
+
+			// Sostituzioni entro il range di date impostato, vedi sopra
+			if (max_timestamp && element.data * 1000 > max_timestamp) {
+				return
+			}
+
 			// Se la sostituzione è di oggi, filtra solo le sostituzioni che iniziano dopo l'ora attuale
 			if (element.data * 1000 < now_timestamp) {
 				oggi = true

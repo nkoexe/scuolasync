@@ -325,8 +325,13 @@ input[type="file"]+label:hover {
     gap: 10px;
 }
 
+/* Selezione unità del numero */
 .opzione-numero-unita .container-selezione {
-    width: 100px;
+    min-width: 100px;
+}
+
+.opzione-numero-unita .container-selezione select {
+    padding-right: 50px;
 }
 
 .opzione-percorso .container-selezione {

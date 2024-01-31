@@ -100,6 +100,37 @@
       "default": "Nessuna sostituzione per i filtri impostati.",
       "valore": "Nessuna sostituzione per i filtri impostati :("
     },
+    "displaynosostituzionimsg": {
+      "titolo": "Errore nessuna sostituzione",
+      "descrizione": "Testo che verr\u00e0 mostrato quando non ci sono sostituzioni future e la lista \u00e8 vuota.",
+      "sezione": "visualizzazionefisica",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "testo",
+      "lunghezza_massima": null,
+      "default": "Nessuna supplenza in vista!",
+      "valore": "Nessuna supplenza in vista!"
+    },
+    "displayrangegiornifuturi": {
+      "titolo": "Range di giorni da mostrare",
+      "descrizione": "Mostra le sostituzioni sul display soltanto per questo numero di giorni futuri, non mostrare quelle oltre. Il giorno corrente \u00e8 escluso - se l'impostazione \u00e8 a 2 ed \u00e8 luned\u00ed, si mostreranno le sostituzioni fino a mercoled\u00ed. Impostare a -1 per disabilitare e mostrare tutte le sostituzioni future.",
+      "sezione": "visualizzazionefisica",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "numero_unita",
+      "intervallo": [
+        -1,
+        null
+      ],
+      "scelte_unita": [
+        "giorni",
+        "giorni lavorativi"
+      ],
+      "unita_default": 1,
+      "unita": 1,
+      "default": 3,
+      "valore": 2
+    },
     "hotreload": {
       "titolo": "Hot reload",
       "descrizione": "Applica immediatamente le impostazioni cambiate. Utile per vedere istantaneamente i cambiamenti di colori e font, ma sconsigliato in ogni altro caso. (test checkbox, non implementare seriamente)",
