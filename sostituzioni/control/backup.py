@@ -56,7 +56,7 @@ def upload_to_drive(backup_file):
     media = MediaFileUpload(backup_file, resumable=True)
 
     credentials = service_account.Credentials.from_service_account_file(
-        Path(__file__).parent / "sostituzioni-test-a2ee0a8fdc1d.json",
+        Path(__file__).parent / "chiavi" / "chiave_account_servizio.json",
         scopes=["https://www.googleapis.com/auth/drive.file"],
     )
 
