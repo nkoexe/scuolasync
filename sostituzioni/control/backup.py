@@ -55,9 +55,16 @@ def upload_to_drive(backup_file):
 
     media = MediaFileUpload(backup_file, resumable=True)
 
+    chiave_account_servizio = configurazione.get("backupserviceaccountkey").path
+
+    if not chiave_account_servizio.is_file():
+        logger.warning(
+            f"Chiave per l'account di servizio non trovata, non è possibile eseguire il backup su Google Drive. ({chiave_account_servizio})"
+        )
+        return None
+
     credentials = service_account.Credentials.from_service_account_file(
-        Path(__file__).parent / "chiavi" / "chiave_account_servizio.json",
-        scopes=["https://www.googleapis.com/auth/drive.file"],
+        chiave_account_servizio, scopes=["https://www.googleapis.com/auth/drive.file"]
     )
 
     drive_service = googleapiclient.discovery.build(
