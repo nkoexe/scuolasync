@@ -227,6 +227,10 @@ input[type='radio'] {
     }
 }
 
+#main-container:has(#notizie-lista:empty) {
+    grid-template-rows: 75% 25%;
+}
+
 
 /* HEADER SOSTITUZIONI */
 #header-sostituzioni {
@@ -807,6 +811,18 @@ input[type='radio'] {
     height: calc(100% - 70px);
     padding: 0 10px;
     overflow: auto;
+}
+
+#notizie-messaggio-informativo {
+    display: flex;
+    width: 100%;
+    height: 80%;
+}
+
+#notizie-messaggio-informativo span {
+    margin: auto;
+    font-size: 16px;
+    color: #00000070;
 }
 
 #notizie-lista-container {}

@@ -7,6 +7,7 @@ const ui_notizia_html_template = `
 
 
 const ui_notizie_container = document.getElementById("notizie-container")
+const ui_notizie_messaggio_informativo = document.getElementById("notizie-messaggio-informativo")
 const ui_notizie_lista = document.getElementById("notizie-lista")
 
 function format_notizia_to_html(id, data_inizio, data_fine, testo) {
@@ -31,6 +32,13 @@ function refresh_notizie() {
     notizie.forEach(element => {
         add_notizia_to_ui_list(element.id, element.data_inizio, element.data_fine, element.testo)
     })
+
+
+    ui_notizie_messaggio_informativo.classList.add("hidden")
+    if (notizie.length === 0) {
+        ui_notizie_messaggio_informativo.innerHTML = "<span>Niente di nuovo qui.</span>"
+        ui_notizie_messaggio_informativo.classList.remove("hidden")
+    }
 
     if (notizie_write) {
         for (const notizia of document.getElementsByClassName("notizia")) {

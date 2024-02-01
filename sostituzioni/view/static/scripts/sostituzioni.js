@@ -126,10 +126,10 @@ async function refresh_sostituzioni(hard_refresh) {
 		elementsToShow.forEach(element => element.classList.remove("hidden"));
 	}
 
-	ui_sostituzioni_messaggio_informativo.style.display = "none"
+	ui_sostituzioni_messaggio_informativo.classList.add("hidden")
 	if (sostituzioni_visualizzate.length === 0) {
 		ui_sostituzioni_messaggio_informativo.innerHTML = "<span>" + messaggio_nessuna_sostituzione + "</span>"
-		ui_sostituzioni_messaggio_informativo.style.display = "flex"
+		ui_sostituzioni_messaggio_informativo.classList.remove("hidden")
 	}
 }
 
