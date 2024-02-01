@@ -3,18 +3,43 @@
 ! obsoleto, da rifare completamente
 File json per le impostazioni di configurazione.
 
-## Struttura del file
+### Struttura del file
 
 Il file di configurazione è composto in due parti, sezioni e opzioni.
-Le sezioni sono definite inizialmente nel file e 
 
 ```jsonc
-    "sistema": {  // identificativo della sezione che verrà utilizzato per la navigazione
-        "titolo": "Sistema",  // Titolo della sezione
-        "descrizione": "",    // Breve descrizione
-    }
+{
+  "sezioni": {
+    ...
+  },
+  "opzioni": {
+    ...
+  }
+}
 ```
 
+## Sezioni
+Le sezioni sono definite nella prima metà nel file, sono meramente una lista di titoli che indicano nella visualizzazione come vengono suddivise le opzioni.
+Sono identificate da un id univoco che ha soltanto uso interno, non verrà mostrato all'utente.
+Ogni opzione ha un attributo `sezione` che fa riferimento all'identificativo della sezione alla quale appartiene.
+Ogni sezione ha attributi di titolo e descrizione, che verranno mostrati nell'interfaccia di impostazioni per dirigere l'utente.
+
+```jsonc
+"sezioni": {
+  // identificativo della sezione
+  "sistema": {
+      // Titolo della sezione
+      "titolo": "Sistema", 
+      // Breve descrizione
+      "descrizione": "Impostazioni base"
+  },
+  ...
+}
+```
+
+---
+
+## Opzioni
 
 
 La singola opzione può avere diversi tipi di campi, tutti con questa struttura base:
