@@ -206,9 +206,24 @@
       "default": "database/backup/",
       "valore": "database/backup/"
     },
+    "backupserviceaccountkey": {
+      "titolo": "Chiave account di servizio",
+      "descrizione": "File JSON che il sistema utilizza per accedere all'account di servizio che gestisce i backup sulla cartella Drive condivisa. Le impostazioni dell'account di servizio sono visualizzabili nella pagina \"Credenziali\" del progetto Google Cloud Console del sistema.",
+      "sezione": "backup",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "percorso",
+      "radice": 1,
+      "scelte_radice": [
+        "/",
+        "%ROOT%"
+      ],
+      "default": "control/chiavi/chiave_account_servizio.json",
+      "valore": "control/chiavi/chiave_account_servizio.json"
+    },
     "backupdrivefolderid": {
       "titolo": "Cartella Drive",
-      "descrizione": "ID della cartella di Google Drive nella quale caricare il backup del sistema. Assicurarsi che essa sia condivisa con l'account di servizio che \u00e8 stato creato per gestire il backup. Si pu\u00f2 trovare l'account di servizio nella pagina \"Credenziali\" del progetto Google Cloud Console del sistema.",
+      "descrizione": "ID della cartella di Google Drive nella quale caricare il backup del sistema. Assicurarsi che essa sia condivisa con l'account di servizio che \u00e8 stato creato per gestire il backup. Si pu\u00f2 trovare l'email dell'account di servizio nella pagina \"Credenziali\" del progetto Google Cloud Console del sistema.",
       "sezione": "backup",
       "disabilitato": false,
       "nascosto": false,
