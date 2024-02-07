@@ -6,6 +6,7 @@ socket.on("lista eventi", (data) => {
 
     refresh_eventi()
 })
+
 socket.on("lista notizie", (data) => {
     notizie = data
 
