@@ -1,4 +1,4 @@
-{% from "macro/impostazioni.html" import opzione_utente,
+{% from "macro/impostazioni.html" import
 opzione_testo,
 opzione_numero,
 opzione_numero_unita,
@@ -41,81 +41,101 @@ opzione_percorso with context %}
   <!-- {% for sezione in configurazione.sezioni %}
   <a href="#{{sezione.id}}"><button>{{sezione.titolo}}</button></a>
   {% endfor %} -->
-  <div id="sezioni-container">
-    <ul id="sezioni-list">
-      <li class="sezione">
-        <div class="sezione-header">
-          <h3 class="sezione-titolo">Gestione Utenti</h3>
-          <p class="sezione-descrizione">Vai alla pagina della gestione degli utenti autorizzati all'accesso al sistema e alla gestione dei permessi. Questa parte del sito è ancora incompleta e in fase di sviluppo, non è accessibile. Per modifiche, contattare niccolo.ragazzi@gandhimerano.com</p>
-          <div class="sezione-header-icon"><span class="material-symbols-rounded">add</span></div>
-        </div>
-        <div class="opzioni-expandible">
-          <div class="opzioni-container">
-            {% for utente in utenti %}
-            {{ opzione_utente(utente) }}
-            {% endfor %}
+  <div id="main-frame">
+    <div id="main-container">
+      <div id="link-container">
+        <a id="link-gestione-utenti" class="link-gestione" href="{{url_for('impostazioni.utenti')}}">
+          <span class="material-symbols-rounded icon">group</span>
+          <h2>Gestione Utenti</h2>
+          <span class="material-symbols-rounded icon-open-new">open_in_new</span>
+        </a>
+        <a id="link-gestione-docenti" class="link-gestione" href="{{url_for('impostazioni.main')}}">
+          <span class="material-symbols-rounded icon">badge</span>
+          <h2>Gestione Docenti</h2>
+          <span class="material-symbols-rounded icon-open-new">open_in_new</span>
+        </a>
+        <a id="link-gestione-utenti" class="link-gestione" href="{{url_for('impostazioni.main')}}">
+          <span class="material-symbols-rounded icon">school</span>
+          <h2>Gestione Classi</h2>
+          <span class="material-symbols-rounded icon-open-new">open_in_new</span>
+        </a>
+        <a id="link-gestione-utenti" class="link-gestione" href="{{url_for('impostazioni.main')}}">
+          <span class="material-symbols-rounded icon">location_on</span>
+          <h2>Gestione Aule</h2>
+          <span class="material-symbols-rounded icon-open-new">open_in_new</span>
+        </a>
+        <a id="link-gestione-utenti" class="link-gestione" href="{{url_for('impostazioni.main')}}">
+          <span class="material-symbols-rounded icon">work_history</span>
+          <h2>Ore Predefinite</h2>
+          <span class="material-symbols-rounded icon-open-new">open_in_new</span>
+        </a>
+        <a id="link-gestione-utenti" class="link-gestione" href="{{url_for('impostazioni.main')}}">
+          <span class="material-symbols-rounded icon">format_list_bulleted</span>
+          <h2>Note Standard</h2>
+          <span class="material-symbols-rounded icon-open-new">open_in_new</span>
+        </a>
+      </div>
+      <ul id="sezioni-list">
+        {% for sezione in configurazione.sezioni %}
+        <li id="{{sezione.id}}" class="sezione">
+          <div class="sezione-header">
+            <h2 class="sezione-titolo">{{sezione.titolo}}</h2>
+            <p class="sezione-descrizione">{{sezione.descrizione}}</p>
+            <div class="sezione-header-icon"><span class="material-symbols-rounded">add</span></div>
           </div>
-        </div>
-      </li>
-      {% for sezione in configurazione.sezioni %}
-      <li id="{{sezione.id}}" class="sezione">
-        <div class="sezione-header">
-          <h3 class="sezione-titolo">{{sezione.titolo}}</h3>
-          <p class="sezione-descrizione">{{sezione.descrizione}}</p>
-          <div class="sezione-header-icon"><span class="material-symbols-rounded">add</span></div>
-        </div>
-        <div class="opzioni-expandible">
-          <div class="opzioni-container">
-            <ul class="opzioni-lista">
-              {% for opzione in configurazione.opzioni %}
-              {% if not opzione.nascosto %}
-              {% if opzione.sezione == sezione.id %}
-              <li>
-                <h5 class="opzione-titolo">{{opzione.titolo}}</h5>
-                <p class="opzione-descrizione">{{opzione.descrizione}}</p>
-                {% if opzione.tipo == opzione.TESTO %}
-                {{ opzione_testo(opzione) }}
-                {% elif opzione.tipo == opzione.NUMERO %}
-                {{ opzione_numero(opzione) }}
-                {% elif opzione.tipo == opzione.NUMERO_UNITA %}
-                {{ opzione_numero_unita(opzione) }}
-                {% elif opzione.tipo == opzione.BOOLEANO %}
-                {{ opzione_checkbox(opzione) }}
-                {% elif opzione.tipo == opzione.COLORE %}
-                {{ opzione_colorpicker(opzione) }}
-                {% elif opzione.tipo == opzione.SELEZIONE %}
-                {{ opzione_selezione(opzione) }}
-                {% elif opzione.tipo == opzione.PERCORSO %}
-                {{ opzione_percorso(opzione) }}
+          <div class="opzioni-expandible">
+            <div class="opzioni-container">
+              <ul class="opzioni-lista">
+                {% for opzione in configurazione.opzioni %}
+                {% if not opzione.nascosto %}
+                {% if opzione.sezione == sezione.id %}
+                <li>
+                  <h5 class="opzione-titolo">{{opzione.titolo}}</h5>
+                  <p class="opzione-descrizione">{{opzione.descrizione}}</p>
+                  {% if opzione.tipo == opzione.TESTO %}
+                  {{ opzione_testo(opzione) }}
+                  {% elif opzione.tipo == opzione.NUMERO %}
+                  {{ opzione_numero(opzione) }}
+                  {% elif opzione.tipo == opzione.NUMERO_UNITA %}
+                  {{ opzione_numero_unita(opzione) }}
+                  {% elif opzione.tipo == opzione.BOOLEANO %}
+                  {{ opzione_checkbox(opzione) }}
+                  {% elif opzione.tipo == opzione.COLORE %}
+                  {{ opzione_colorpicker(opzione) }}
+                  {% elif opzione.tipo == opzione.SELEZIONE %}
+                  {{ opzione_selezione(opzione) }}
+                  {% elif opzione.tipo == opzione.PERCORSO %}
+                  {{ opzione_percorso(opzione) }}
+                  {% endif %}
+                </li>
+                <div class="opzioni-separator"></div>
                 {% endif %}
-              </li>
-              <div class="opzioni-separator"></div>
-              {% endif %}
-              {% endif %}
-              {% endfor %}
-              {% if sezione.id == 'sistema' %}
-              <li>
-                <button onclick="server_update()">Update</button>
-                <button onclick="server_reboot()">Reboot</button>
-              </li>
-              {% elif sezione.id == 'docenti' %}
-              <li>
-                <h5 class="opzione-titolo">Importa docenti da file</h5>
-                <p class="opzione-descrizione">Usare i file esportati dai gruppi Google. Accettati formati XSLX e CSV, con nome e cognome nella colonna 'Member Name'. Il nome del file dovrebbe assomigliare a questo: 'Members_xxxxxxxxxxxxxxxx_01012023_000000.csv.xlsx'</p>
-                <div class="opzione-file">
-                  <input type="file" id="import-docenti-filepicker">
-                  <label for="import-docenti-filepicker" class="material-symbols-rounded pulsante">upload_file</label>
-                  <button onclick="importa_docenti()" class="pulsante">Importa</button>
-                  <span id="import-docenti-selected-file-label"></span>
-                </div>
-              </li>
-              {% endif %}
-            </ul>
+                {% endif %}
+                {% endfor %}
+                {% if sezione.id == 'sistema' %}
+                <li>
+                  <button onclick="server_update()">Update</button>
+                  <button onclick="server_reboot()">Reboot</button>
+                </li>
+                {% elif sezione.id == 'docenti' %}
+                <li>
+                  <h5 class="opzione-titolo">Importa docenti da file</h5>
+                  <p class="opzione-descrizione">Usare i file esportati dai gruppi Google. Accettati formati XSLX e CSV, con nome e cognome nella colonna 'Member Name'. Il nome del file dovrebbe assomigliare a questo: 'Members_xxxxxxxxxxxxxxxx_01012023_000000.csv.xlsx'</p>
+                  <div class="opzione-file">
+                    <input type="file" id="import-docenti-filepicker">
+                    <label for="import-docenti-filepicker" class="material-symbols-rounded pulsante">upload_file</label>
+                    <button onclick="importa_docenti()" class="pulsante">Importa</button>
+                    <span id="import-docenti-selected-file-label"></span>
+                  </div>
+                </li>
+                {% endif %}
+              </ul>
+            </div>
           </div>
-        </div>
-      </li>
-      {% endfor %}
-    </ul>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
   </div>
   <div id="footer-shadow"></div>
   <div id="footer">
