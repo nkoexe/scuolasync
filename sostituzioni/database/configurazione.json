@@ -191,6 +191,20 @@
       "default": 7,
       "valore": 100
     },
+    "maxbackupdays": {
+      "titolo": "Eliminazione automatica backup",
+      "descrizione": "Il backup viene mantenuto per questo numero di giorni, dopodiché viene automaticamente eliminato. Impostare a -1 per disattivare l'eliminazione automatica. Per il calcolo, viene considerata la data dell'ultima modifica.",
+      "sezione": "backup",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "numero",
+      "intervallo": [
+        -1,
+        null
+      ],
+      "default": 30,
+      "valore": 30
+    },
     "backupdir": {
       "titolo": "Cartella di Backup",
       "descrizione": "Directory locale nella quale eseguire il backup.",

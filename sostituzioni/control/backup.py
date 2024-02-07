@@ -14,21 +14,25 @@ logger = logging.getLogger(__name__)
 def backup():
     local_backup_dir = configurazione.get("backupdir").path
 
-    # local_file = local_backup(local_backup_dir)
-    local_backup_list = get_local_backups(local_backup_dir)
-    print(local_backup_list)
+    # create the new backup
+    local_file = local_backup(local_backup_dir)
 
     drive_service = service_account_login()
     drive_folder_id = configurazione.get("backupdrivefolderid").valore
 
-    # upload_to_drive(drive_service, local_file, drive_folder_id)
+    upload_to_drive(drive_service, local_file, drive_folder_id)
+
+    logger.info("Backup completed successfully.")
+
+    # get the previous backups
+    local_backup_list = get_local_backups(local_backup_dir)
     drive_backup_list = get_drive_backups(drive_service, drive_folder_id)
 
-    print(drive_backup_list)
+    # delete the old backups, duration can be set in the configuration
+    delete_old_local_backups(local_backup_list)
+    delete_old_drive_backups(drive_service, drive_backup_list)
 
-    # logger.info("Backup completed successfully.")
-
-    # return local_file
+    return local_file
 
 
 def local_backup(directory):
@@ -91,6 +95,39 @@ def get_local_backups(directory):
     return valid_files
 
 
+def delete_old_backups(file_list):
+    # function to get the backups to delete from a list.
+
+    # get the number of days to keep backups
+    days_to_keep = configurazione.get("maxbackupdays").valore
+
+    # user has disabled backup deletion
+    if (days_to_keep) < 0:
+        return []
+
+    # if there's only one backup left for some reason, keep it
+    if len(file_list) <= 1:
+        return []
+
+    to_delete = []
+
+    for file in file_list:
+        now = datetime.now(file["modifiedTime"].tzinfo)
+        print(now.tzinfo, file["modifiedTime"].tzinfo)
+        if (now - file["modifiedTime"]).days > days_to_keep:
+            to_delete.append(file)
+
+    return to_delete
+
+
+def delete_old_local_backups(file_list):
+    to_delete = delete_old_backups(file_list)
+
+    for file in to_delete:
+        logger.debug(f"Deleting backup {file['path']}")
+        file["path"].unlink()
+
+
 def service_account_login():
     chiave_account_servizio = configurazione.get("backupserviceaccountkey").path
 
@@ -134,15 +171,6 @@ def upload_to_drive(drive_service, backup_file, folder_id):
 
 
 def get_drive_backups(drive_service, folder_id):
-    # try:
-    #     files = drive_service.files().list(q=f"'{folder_id}' in parents").execute()
-    # except googleapiclient.errors.HttpError as error:
-    #     logger.error(f"Error retrieving drive files: {error}")
-    #     return None
-
-    # return files.get("files", [])
-
-    ## get more info about file
     files = (
         drive_service.files()
         .list(
@@ -160,3 +188,14 @@ def get_drive_backups(drive_service, folder_id):
         file["path"] = f"https://drive.google.com/file/d/{file['id']}/view"
 
     return files
+
+
+def delete_old_drive_backups(drive_service, file_list):
+    to_delete = delete_old_backups(file_list)
+
+    for file in to_delete:
+        logger.debug(f"Deleting Drive backup {file['path']}")
+        drive_service.files().delete(fileId=file["id"]).execute()
+        logger.debug(f"Backup {file['path']} deleted successfully.")
+
+    return to_delete
