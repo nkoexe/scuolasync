@@ -318,13 +318,12 @@ ul {
 /* HEADER EVENTI */
 #header-eventi {
     display: flex;
-    height: 8vh;
+    padding: 2vh 1vw;
     z-index: 10;
     box-shadow: 0 0.5vh 0.5vh var(--color-eventi-bg);
 }
 
 #header-eventi-titolo {
-    margin: auto 1vw;
     font-size: 1.8vw;
     font-weight: normal;
     font-style: italic;
