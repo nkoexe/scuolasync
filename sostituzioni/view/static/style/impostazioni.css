@@ -39,23 +39,70 @@ ul {
     padding: 0;
 }
 
+a {
+    text-decoration: none;
+}
 
-#sezioni-container {
+#main-frame {
     flex: 1;
-    display: flex;
-    flex-direction: column;
     overflow-y: scroll;
     width: 100%;
 }
 
-#sezioni-list {
-    display: flex;
-    flex-direction: column;
+#main-container {
     width: 1000px;
     min-width: 60%;
     max-width: 100%;
     margin: 50px auto;
-    gap: 20px
+}
+
+#link-container {
+    width: 100%;
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.link-gestione {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    height: 100%;
+    padding: 30px 30px;
+    background-color: var(--color-sezioni);
+    color: var(--color-text-sezione);
+    border-radius: 1rem;
+}
+
+.link-gestione .icon {
+    font-size: 34px;
+}
+
+.link-gestione h2 {
+    font-size: 32px;
+}
+
+.link-gestione .icon-open-new {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    transition: all 0.2s;
+}
+
+.link-gestione:hover .icon-open-new {
+    padding: 8px;
+}
+
+
+#sezioni-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 30px;
 }
 
 .sezione {}
@@ -70,7 +117,7 @@ ul {
 }
 
 .sezione-header .sezione-titolo {
-    font-size: xx-large;
+    font-size: 32px;
 }
 
 .sezione-header .sezione-descrizione {
