@@ -162,10 +162,10 @@ body {
     bottom: 0;
     right: 0;
     margin: 15px;
-    z-index: 15;
 }
 
 #pulsanti-legali a {
+    z-index: 30;
     color: #555555;
     text-decoration: none;
     padding: 10px 15px;
