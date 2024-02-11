@@ -196,6 +196,7 @@ a {
 }
 
 .pulsante {
+    width: fit-content;
     margin: auto;
     padding: 15px 30px;
     background-color: var(--color-background-opzione);
@@ -336,26 +337,6 @@ input[type="file"]+label:hover {
 .container-selezione:has(:disabled)::after {
     opacity: 0.5;
 }
-
-.opzione-utente {
-    display: flex;
-}
-
-.opzione-utente *:not(.container-selezione) {
-    border-radius: 0 !important;
-    border: var(--border-opzione);
-}
-
-.opzione-utente .selezione-ruolo {
-    width: 200px;
-}
-
-.opzione-utente .selezione-ruolo:has(:first-child:checked),
-.opzione-utente .selezione-ruolo:has(:nth-child(2):checked) {
-    font-weight: bold;
-}
-
-
 
 .opzione-testo {}
 

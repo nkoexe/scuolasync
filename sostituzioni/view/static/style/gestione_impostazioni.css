@@ -26,3 +26,66 @@ ul {
 a {
     text-decoration: none;
 }
+
+#main-container>.opzione {
+    margin: 20px 0;
+}
+
+.opzione {
+    background-color: var(--color-opzioni);
+    border-radius: 1rem;
+    padding: 40px;
+}
+
+#container-utenti .pulsante {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    font-size: 24px;
+    gap: 5px;
+    padding: 15px 20px;
+    margin: 0 0 30px 20px;
+    background-color: var(--color-accent);
+    color: var(--color-accent-text);
+}
+
+#container-utenti .pulsante .icon {
+    font-size: 30px;
+}
+
+
+#lista-utenti input {
+    background-color: var(--color-opzioni);
+    border: none;
+}
+
+#lista-utenti .separator {
+    background-color: black;
+    width: 70%;
+    height: 1px;
+    margin: 1px 0;
+}
+
+.opzione-utente {
+    display: flex;
+    gap: 10px;
+}
+
+.opzione-utente *:not(.container-selezione) {
+    border: var(--border-opzione);
+}
+
+.opzione-utente .selezione-ruolo {
+    width: 200px;
+}
+
+.opzione-utente .selezione-ruolo:has(:first-child:checked),
+.opzione-utente .selezione-ruolo:has(:nth-child(2):checked) {
+    font-weight: bold;
+}
+
+.opzione-utente button {
+    border-radius: 5px;
+    background-color: var(--color-danger);
+    color: var(--color-danger-fg);
+}
