@@ -37,12 +37,12 @@ a {
     padding: 40px;
 }
 
+.pulsante {
+    margin-left: 0;
+}
+
 #container-utenti .pulsante {
-    display: flex;
-    align-items: center;
-    width: fit-content;
     font-size: 24px;
-    gap: 5px;
     padding: 15px 20px;
     margin: 0 0 30px 20px;
     background-color: var(--color-accent);
@@ -53,17 +53,25 @@ a {
     font-size: 30px;
 }
 
-
 #lista-utenti input {
     background-color: var(--color-opzioni);
     border: none;
 }
 
-#lista-utenti .separator {
+#lista-utenti .opzione-utente {
+    position: relative;
+    padding-bottom: 2px;
+}
+
+#lista-utenti .opzione-utente::after {
+    content: "";
+    position: absolute;
+    bottom: 1px;
     background-color: black;
     width: 70%;
     height: 1px;
-    margin: 1px 0;
+    margin-top: 1px;
+    z-index: 30;
 }
 
 .opzione-utente {
@@ -75,17 +83,27 @@ a {
     border: var(--border-opzione);
 }
 
-.opzione-utente .selezione-ruolo {
+.opzione-utente .selezione-ruolo-utente {
     width: 200px;
 }
 
-.opzione-utente .selezione-ruolo:has(:first-child:checked),
-.opzione-utente .selezione-ruolo:has(:nth-child(2):checked) {
+.opzione-utente .selezione-ruolo-utente:has(:first-child:checked),
+.opzione-utente .selezione-ruolo-utente:has(:nth-child(2):checked) {
     font-weight: bold;
 }
 
 .opzione-utente button {
+    cursor: pointer;
+    padding: 7px;
     border-radius: 5px;
+}
+
+.opzione-utente .pulsante-elimina-utente {
     background-color: var(--color-danger);
     color: var(--color-danger-fg);
+}
+
+.opzione-utente .pulsante-conferma-modifiche-utente {
+    background-color: var(--color-confirm);
+    color: var(--color-confirm-fg);
 }

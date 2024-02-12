@@ -20,6 +20,10 @@
     font-family: 'Gabarito', sans-serif;
 }
 
+.hidden {
+    display: none;
+}
+
 html,
 body {
     margin: 0;
@@ -196,6 +200,9 @@ a {
 }
 
 .pulsante {
+    display: flex;
+    gap: 5px;
+    align-items: center;
     width: fit-content;
     margin: auto;
     padding: 15px 30px;
@@ -204,6 +211,8 @@ a {
     border-radius: 10px;
     box-shadow: 0 2px 5px var(--color-shadow);
     font-size: large;
+    cursor: pointer;
+    user-select: none;
     transition: all 0.1s;
 }
 

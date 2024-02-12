@@ -355,6 +355,9 @@ class ElementoDatabase:
 
         return data
 
+    def elimina(self):
+        self.DATABASE.delete(self.TABLENAME, Where(self.KEY).equals(self.id))
+
     def trova(item, value: any = None, where: Where | None = None):
         """
         Funzione usata nell'inserimento di dati per verificare che
@@ -1375,12 +1378,35 @@ class Utente(ElementoDatabase):
     def load(*args, **kwargs):
         return ElementoDatabase.load(Utente, *args, **kwargs)
 
+    def elimina(self):
+        return self.DATABASE.delete(self.TABLENAME, Where("email").equals(self.email))
+
     def inserisci(self):
-        id = self.DATABASE.insert(
+        self.DATABASE.insert(
             self.TABLENAME, email=self.email, ruolo=self.ruolo.nome, or_ignore=True
         )
 
-        self.id = id
+        return self.email
+
+    def modifica(self, dati: Dict):
+        if "email" in dati:
+            self.email = dati["email"]
+
+        if "ruolo" in dati:
+            self.ruolo = dati["ruolo"]
+
+        return self.aggiorna()
+
+    def aggiorna(self):
+        if not self.email:
+            return
+
+        return self.DATABASE.update(
+            self.TABLENAME,
+            Where("email").equals(self.email),
+            email=self.email,
+            ruolo=self.ruolo.nome,
+        )
 
     @beartype
     def __init__(self, email: str, ruolo: Ruolo | str):
@@ -1399,6 +1425,13 @@ class Utente(ElementoDatabase):
     @beartype
     @email.setter
     def email(self, new: str):
+        if "@" not in new or "." not in new:
+            raise ValueError(f"Email {new} non valida")
+        if len(new) > 80:
+            raise ValueError(f"Email {new} troppo lunga")
+        if len(new) < 5:
+            raise ValueError(f"Email {new} troppo corta")
+
         self._email = new
 
     @property
@@ -1407,7 +1440,9 @@ class Utente(ElementoDatabase):
 
     @beartype
     @ruolo.setter
-    def ruolo(self, new: Ruolo):
+    def ruolo(self, new: Ruolo | str):
+        if isinstance(new, str):
+            new = Ruolo(new)
         self._ruolo = new
 
 

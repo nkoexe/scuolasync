@@ -4,6 +4,16 @@
     --color-accent-text: #ffffff;
     --color-danger: #C00F19;
     --color-danger-fg: #ffffff;
+    --color-confirm: #68ab2e;
+    --color-confirm-fg: #ffffff;
+    --color-success: #61a328;
+    --color-success-fg: #ffffff;
+    --color-error: #d30404;
+    --color-error-fg: #ffffff;
+    --color-warning: #ffa726;
+    --color-warning-fg: #ffffff;
+    --color-info: #0d8ec5;
+    --color-info-fg: #ffffff;
     --color-eventi-bg: #eaeaea;
     --color-notizie-bg: #eaeaea;
     --color-sostituzioni-bg: #eaeaea;
@@ -21,6 +31,28 @@
     --color-selezione-hover-delete-fg: #ffffff;
     --color-scrollbar: #00000046;
     --color-scrollbar-hover: #00000059;
+}
+
+.notyf__toast--error .notyf__ripple,
+.notyf__toast--error .notyf__message {
+    background-color: var(--color-error) !important;
+    color: var(--color-error-fg);
+}
+
+.notyf__icon--error {
+    background-color: var(--color-error-fg);
+    color: var(--color-error) !important;
+}
+
+.notyf__toast--success .notyf__ripple,
+.notyf__toast--success .notyf__message {
+    background-color: var(--color-success) !important;
+    color: var(--color-success-fg);
+}
+
+.notyf__icon--success {
+    background-color: var(--color-success-fg);
+    color: var(--color-success) !important;
 }
 
 /* @media (prefers-color-scheme: dark) {

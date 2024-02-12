@@ -1,32 +1,18 @@
-{% macro opzione_utente(utente) %}
-<div class="opzione-utente">
-  <input class="email" type="text" value="{{utente.email}}" onkeydown="modificato({{utente.email}})">
-  <div class="container-selezione">
-    <select class="selezione-ruolo" name="ruolo">
-      <option {% if utente.ruolo.nome=="amministratore" %} selected {% endif %}">Amministratore</option>
-      <option {% if utente.ruolo.nome=="editor" %} selected {% endif %}>Editor</option>
-      <option {% if utente.ruolo.nome=="visualizzatore" %} selected {% endif %}>Visualizzatore</option>
-    </select>
-  </div>
-  <button class="material-symbols-rounded">delete</button>
-</div>
-{% endmacro %}
-
 {% macro opzione_testo(opzione) %}
 <div id="{{opzione.id}}" class="opzione opzione-testo">
-  <input type="text" value="{{opzione.valore}}" onkeydown="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %}>
+  <input type="text" value="{{opzione.valore}}" oninput="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %}>
 </div>
 {% endmacro %}
 
 {% macro opzione_numero(opzione) %}
 <div id="{{opzione.id}}" class="opzione opzione-numero">
-  <input type="number" value="{{opzione.valore}}" {% if opzione.intervallo %}min={{opzione.intervallo[0]}} max={{opzione.intervallo[1]}}{% endif %} onkeypress="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %} />
+  <input type="number" value="{{opzione.valore}}" {% if opzione.intervallo %}min={{opzione.intervallo[0]}} max={{opzione.intervallo[1]}}{% endif %} oninput="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %} />
 </div>
 {% endmacro %}
 
 {% macro opzione_numero_unita(opzione) %}
 <div id="{{opzione.id}}" class="opzione opzione-numero-unita">
-  <input type="number" value="{{opzione.valore}}" {% if opzione.intervallo %}min={{opzione.intervallo[0]}} max={{opzione.intervallo[1]}}{% endif %} onkeypress="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %} />
+  <input type="number" value="{{opzione.valore}}" {% if opzione.intervallo %}min={{opzione.intervallo[0]}} max={{opzione.intervallo[1]}}{% endif %} oninput="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %} />
   <div class="container-selezione">
     <select onchange="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %}>
       {% for optionindex in range(opzione.scelte_unita|length) %}
@@ -65,6 +51,6 @@
       {% endfor %}
     </select>
   </div>
-  <input type="text" value="{{opzione.valore}}" onkeypress="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %} />
+  <input type="text" value="{{opzione.valore}}" oninput="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %} />
 </div>
 {% endmacro %}

@@ -1,6 +1,7 @@
 const socket = io("/impostazioni");
 
-const pulsante_applica = document.getElementById('pulsante-applica');
+const ui_main_frame = document.querySelector("#main-frame")
+const pulsante_applica = document.querySelector('#pulsante-applica');
 
 let modifiche = []
 

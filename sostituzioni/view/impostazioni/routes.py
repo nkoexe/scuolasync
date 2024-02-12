@@ -17,12 +17,12 @@ def main():
     )
 
 
-
 @impostazioni.route("/impostazioni/utenti")
 @login_required
 @role_required("impostazioni.write")
 def utenti():
-    return render_template("gestione_utenti.html", utenti=db_utenti)
+    utenti = [(u.email, u.ruolo.nome) for u in db_utenti]
+    return render_template("gestione_utenti.html", utenti=utenti)
 
 
 @impostazioni.route("/update")
