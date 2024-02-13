@@ -7,11 +7,30 @@ const utente_template = `<div class="opzione-utente" data-email="{email}">
     <option {visualizzatore} value="visualizzatore" >Visualizzatore</option>
   </select>
 </div>
-<button class="material-symbols-rounded pulsante-elimina-utente" onclick="elimina_utente('{email}')">delete</button>
-<button class="material-symbols-rounded pulsante-conferma-modifiche-utente hidden" onclick="conferma_modifiche('{email}')">check_circle</button>
+<button class="material-symbols-rounded pulsante-elimina-utente" onclick="ui_elimina_utente('{email}')">delete</button>
+<button class="material-symbols-rounded pulsante-conferma-modifiche-utente hidden" onclick="ui_conferma_modifiche('{email}')">check_circle</button>
 </div>`
 
 const ui_lista_utenti = document.querySelector("#lista-utenti")
+
+utenti.sort((a, b) => {
+    if (a[1] == b[1])
+        return a[0].localeCompare(b[0])
+
+    if (a[1] == "amministratore")
+        return -1
+
+    if (b[1] == "amministratore")
+        return 1
+
+    if (a[1] == "editor")
+        return -1
+
+    if (b[1] == "editor")
+        return 1
+
+    return 1
+})
 
 utenti.forEach(utente => {
     ui_lista_utenti.innerHTML += utente_template.replaceAll("{email}", utente[0])
@@ -20,14 +39,13 @@ utenti.forEach(utente => {
         .replace("{visualizzatore}", utente[1] == "visualizzatore" ? "selected" : "")
 })
 
-
 function modificato(email) {
     let element = document.querySelector(`[data-email="${email}"]`)
     element.querySelector(".pulsante-elimina-utente").classList.add("hidden")
     element.querySelector(".pulsante-conferma-modifiche-utente").classList.remove("hidden")
 }
 
-function conferma_modifiche(email) {
+function ui_conferma_modifiche(email) {
     let element = document.querySelector(`[data-email="${email}"]`)
     let new_email = element.querySelector(".input-email-utente").value
     let new_ruolo = element.querySelector(".selezione-ruolo-utente").value
@@ -50,6 +68,14 @@ function conferma_modifiche(email) {
     element.querySelector(".selezione-ruolo-utente").disabled = true
 
     socket.emit("modifica utente", { email: email, new_email: new_email, ruolo: new_ruolo })
+}
+
+function ui_elimina_utente(email) {
+    if (email == "") {
+        elimina_utente(email)
+        return
+    }
+    mostra_popup_conferma({ titolo: "Elimina Utente", descrizione: "Sei sicuro di voler eliminare l'utente <strong>" + email + "</strong>?", testo_pulsante_secondario: "Annulla", testo_pulsante_primario: "Elimina", callback: () => { elimina_utente(email) } })
 }
 
 function elimina_utente(email) {

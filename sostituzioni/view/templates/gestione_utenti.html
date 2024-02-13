@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style/gestione_impostazioni.css') }}">
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <script src="{{ url_for('static', filename='scripts/impostazioni.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='scripts/impostazioni/popup.js') }}" defer></script>
   <script src="{{ url_for('static', filename='scripts/impostazioni/utenti.js') }}" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js" onload="notyf = new Notyf({duration: 3000})" defer></script>
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
@@ -55,6 +56,17 @@
         <h5 class="opzione-titolo">Elimina tutti gli utenti</h5>
         <p class="opzione-descrizione">Elimina tutti gli utenti del sistema tranne quello in uso al momento. Questa azione non è reversibile.</p>
         <div class="pulsante"><span class="icon material-symbols-rounded">delete</span><span>Elimina</span></div>
+      </div>
+    </div>
+    <div id="popup-conferma-container" class="hidden">
+      <div id="popup-conferma">
+        <div id="pulsante-chiudi-popup-conferma" onclick="nascondi_popup_conferma()"><span class="material-symbols-rounded">close</span></div>
+        <h2 id="popup-conferma-titolo"></h2>
+        <p id="popup-conferma-descrizione"></p>
+        <div id="popup-conferma-pulsanti">
+          <div id="popup-conferma-pulsante-secondario" class="pulsante"></div>
+          <div id="popup-conferma-pulsante-primario" class="pulsante"></div>
+        </div>
       </div>
     </div>
   </div>
