@@ -82,6 +82,10 @@ function elimina_utente(email) {
     socket.emit("elimina utente", email)
 }
 
+function ui_elimina_tutti_utenti() {
+    mostra_popup_conferma({ titolo: "Elimina tutti gli utenti", descrizione: "Sei sicuro di voler eliminare <strong>tutti</strong> gli utenti del sistema tranne quello in uso al momento?", testo_pulsante_secondario: "Annulla", testo_pulsante_primario: "Elimina", callback: () => { socket.emit("elimina tutti utenti") } })
+}
+
 function nuovo_utente() {
     if (document.querySelector('[data-email=""]')) {
         document.querySelector(".input-email-utente").focus()
