@@ -66,6 +66,63 @@ function add_sostituzione_to_ui_list(oggi, data, ora_inizio, ora_fine, numero_or
 }
 
 function refresh_sostituzioni() {
+	let now = new Date()
+	let now_timestamp = now.getTime()
+	now.setHours(0, 0, 0, 0)
+	let max_timestamp = null
+
+	// Tieni solo le sostituzioni entro il range di date impostato
+	// Se il numero di giorni futuri è -1 bypassa il filtro
+	if (giorni_futuri_da_mostrare >= 0) {
+		max_timestamp = (now_timestamp + giorni_futuri_da_mostrare * 24 * 60 * 60 * 1000)
+		if (giorni_futuri_da_mostrare_lavorativi) {
+			// Interpreta i giorni futuri soltanto come lavorativi, ignorando Sabato e Domenica
+			let weekday = now.getDay()
+			let day_counter = giorni_futuri_da_mostrare
+			while (day_counter >= 0) {
+				if (weekday == 0 || weekday == 6) {
+					// Sabato o Domenica, quindi aggiungi un loop per controllare il giorno successivo
+					day_counter++
+					max_timestamp += 24 * 60 * 60 * 1000
+				}
+				weekday = (weekday + 1) % 7
+				day_counter--
+			}
+		}
+	}
+
+	sostituzioni_visualizzate = sostituzioni_visualizzate.filter(sostituzione => {
+		// Non pubblicata? Cancellata? Non dovrebbe arrivare qui ma meglio un double check
+		if (sostituzione.cancellato || !sostituzione.pubblicato) { return False }
+
+		// Conferma che la sostituzione non sia passata
+		// La sottrazione è perché le sostituzioni di oggi sono salvate allo timestamp di oggi a mezzanotte
+		if (sostituzione.data * 1000 < (now_timestamp - 24 * 60 * 60 * 1000)) {
+			return false
+		}
+
+		// Sostituzioni entro il range di date impostato, vedi sopra
+		if (max_timestamp && sostituzione.data * 1000 > max_timestamp) {
+			return false
+		}
+
+		// Se la sostituzione è di oggi, filtra solo le sostituzioni che iniziano dopo l'ora attuale
+		if (sostituzione.data * 1000 < now_timestamp) {
+			if (sostituzione.numero_ora_predefinita) {
+				const [hour, minute] = (ore_predefinite.find(ora => ora.numero == sostituzione.numero_ora_predefinita).ora_fine_default).split(":")
+				const timestamp = now.setHours(parseInt(hour), parseInt(minute))
+				if (timestamp - 5 * 60 * 1000 <= now_timestamp) { return false }
+
+			} else if (sostituzione.ora_fine) {
+				const [hour, minute] = (sostituzione.ora_fine).split(":")
+				const timestamp = now.setHours(parseInt(hour), parseInt(minute))
+				if (timestamp - 5 * 60 * 1000 <= now_timestamp) { return false }
+			}
+		}
+
+		return true
+	})
+
 	ordina_sostituzioni()
 
 	ui_sostituzioni_lista.innerHTML = ""
@@ -74,62 +131,12 @@ function refresh_sostituzioni() {
 		ui_sostituzioni_messaggio_informativo.style.display = "flex"
 	} else {
 		ui_sostituzioni_messaggio_informativo.style.display = "none"
-		let oggi = false
-		let now = new Date()
-		let now_timestamp = now.getTime()
-		now.setHours(0, 0, 0, 0)
-		let max_timestamp = null
-
-		// Tieni solo le sostituzioni entro il range di date impostato
-		// Se il numero di giorni futuri è -1 bypassa il filtro
-		if (giorni_futuri_da_mostrare >= 0) {
-			max_timestamp = (now_timestamp + giorni_futuri_da_mostrare * 24 * 60 * 60 * 1000)
-			if (giorni_futuri_da_mostrare_lavorativi) {
-				// Interpreta i giorni futuri soltanto come lavorativi, ignorando Sabato e Domenica
-				let weekday = now.getDay()
-				let day_counter = giorni_futuri_da_mostrare
-				while (day_counter >= 0) {
-					if (weekday == 0 || weekday == 6) {
-						// Sabato o Domenica, quindi aggiungi un loop per controllare il giorno successivo
-						day_counter++
-						max_timestamp += 24 * 60 * 60 * 1000
-					}
-					weekday = (weekday + 1) % 7
-					day_counter--
-				}
-			}
-		}
-
 
 		sostituzioni_visualizzate.forEach(element => {
-			// Non pubblicata? Cancellata? Non dovrebbe arrivare qui ma meglio un double check
-			if (element.cancellato || !element.pubblicato) { return }
+			let oggi = false
 
-			// Conferma che la sostituzione non sia passata
-			// La sottrazione è perché le sostituzioni di oggi sono salvate allo timestamp di oggi a mezzanotte
-			oggi = false
-			if (element.data * 1000 < (now_timestamp - 24 * 60 * 60 * 1000)) {
-				return
-			}
-
-			// Sostituzioni entro il range di date impostato, vedi sopra
-			if (max_timestamp && element.data * 1000 > max_timestamp) {
-				return
-			}
-
-			// Se la sostituzione è di oggi, filtra solo le sostituzioni che iniziano dopo l'ora attuale
 			if (element.data * 1000 < now_timestamp) {
 				oggi = true
-				if (element.numero_ora_predefinita) {
-					const [hour, minute] = (ore_predefinite.find(ora => ora.numero == element.numero_ora_predefinita).ora_fine_default).split(":")
-					const timestamp = now.setHours(parseInt(hour), parseInt(minute))
-					if (timestamp - 5 * 60 * 1000 <= now_timestamp) { return }
-
-				} else if (element.ora_fine) {
-					const [hour, minute] = (element.ora_fine).split(":")
-					const timestamp = now.setHours(parseInt(hour), parseInt(minute))
-					if (timestamp - 5 * 60 * 1000 <= now_timestamp) { return }
-				}
 			}
 
 			add_sostituzione_to_ui_list(oggi, element.data, element.ora_inizio, element.ora_fine, element.numero_ora_predefinita, element.numero_aula, element.nome_classe, element.nome_docente, element.cognome_docente, element.note)
