@@ -68,6 +68,13 @@ a {
     gap: 10px;
 }
 
+/* TEMP */
+#link-container a:not(#link-gestione-utenti) {
+    pointer-events: none;
+    color: #ffffff77;
+}
+
+
 .link-gestione {
     position: relative;
     display: flex;
@@ -118,6 +125,7 @@ a {
     width: 100%;
     padding: 15px;
     border-radius: 1rem;
+    cursor: pointer;
 }
 
 .sezione-header .sezione-titolo {

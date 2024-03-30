@@ -54,22 +54,22 @@ opzione_percorso with context %}
           <h2>Gestione Docenti</h2>
           <span class="material-symbols-rounded icon-open-new">open_in_new</span>
         </a>
-        <a id="link-gestione-utenti" class="link-gestione" href="{{url_for('impostazioni.main')}}">
+        <a id="link-gestione-classi" class="link-gestione" href="{{url_for('impostazioni.main')}}">
           <span class="material-symbols-rounded icon">school</span>
           <h2>Gestione Classi</h2>
           <span class="material-symbols-rounded icon-open-new">open_in_new</span>
         </a>
-        <a id="link-gestione-utenti" class="link-gestione" href="{{url_for('impostazioni.main')}}">
+        <a id="link-gestione-aule" class="link-gestione" href="{{url_for('impostazioni.main')}}">
           <span class="material-symbols-rounded icon">location_on</span>
           <h2>Gestione Aule</h2>
           <span class="material-symbols-rounded icon-open-new">open_in_new</span>
         </a>
-        <a id="link-gestione-utenti" class="link-gestione" href="{{url_for('impostazioni.main')}}">
+        <a id="link-gestione-ore-predefinite" class="link-gestione" href="{{url_for('impostazioni.main')}}">
           <span class="material-symbols-rounded icon">work_history</span>
           <h2>Ore Predefinite</h2>
           <span class="material-symbols-rounded icon-open-new">open_in_new</span>
         </a>
-        <a id="link-gestione-utenti" class="link-gestione" href="{{url_for('impostazioni.main')}}">
+        <a id="link-gestione-note-standard" class="link-gestione" href="{{url_for('impostazioni.main')}}">
           <span class="material-symbols-rounded icon">format_list_bulleted</span>
           <h2>Note Standard</h2>
           <span class="material-symbols-rounded icon-open-new">open_in_new</span>
@@ -114,8 +114,9 @@ opzione_percorso with context %}
                 {% endfor %}
                 {% if sezione.id == 'sistema' %}
                 <li>
-                  <button onclick="server_update()">Update</button>
-                  <button onclick="server_reboot()">Reboot</button>
+                  <button onclick="server_update()" class="pulsante">Aggiorna il Sistema</button>
+                  <br>
+                  <button onclick="server_reboot()" class="pulsante">Riavvio</button>
                 </li>
                 {% elif sezione.id == 'docenti' %}
                 <li>
