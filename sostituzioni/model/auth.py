@@ -14,7 +14,7 @@ import logging
 import requests
 import json
 
-from sostituzioni.control.database import Where, Utente, utenti
+from sostituzioni.control.database import Where, Ruolo, Utente, SearchableList
 from sostituzioni.model.app import app
 
 logger = logging.getLogger(__name__)
@@ -34,7 +34,17 @@ GOOGLE_SSO_REQ_URI = OAUTH_CLIENT.prepare_request_uri(
 )
 
 
+def load_utenti():
+    global ruoli, utenti
+
+    ruoli = SearchableList("nome", [Ruolo(r["nome"]) for r in Ruolo.load()])
+    utenti = SearchableList(
+        "email", [Utente(u["email"], ruoli.get(u["ruolo"])) for u in Utente.load()]
+    )
+
+
 login_manager = LoginManager(app)
+load_utenti()
 
 
 class User(UserMixin, Utente):
@@ -42,6 +52,7 @@ class User(UserMixin, Utente):
         utente = utenti.get(id)
 
         self.id = id
+        self.email = utente.email
         self.ruolo = utente.ruolo
         self.permessi = utente.ruolo.permessi
 

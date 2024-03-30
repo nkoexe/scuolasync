@@ -1,12 +1,20 @@
 import logging
 import subprocess
 import os
+from datetime import datetime, timedelta
 from flask_socketio import emit
 
 from sostituzioni.control.configurazione import configurazione
+from sostituzioni.control.cron import scheduler
 from sostituzioni.control.importer import Docenti
 from sostituzioni.model.model import Utente
-from sostituzioni.model.auth import login_required, role_required, utenti
+from sostituzioni.model.auth import (
+    login_required,
+    role_required,
+    current_user,
+    utenti,
+    load_utenti,
+)
 from sostituzioni.view import socketio
 
 
@@ -123,3 +131,41 @@ def elimina_utente(email):
     logger.debug(f"utente {email} eliminato")
 
     emit("elimina utente successo", email)
+
+
+@socketio.on("elimina tutti utenti", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def elimina_tutti_utenti():
+    def actually_elimina(email_da_mantenere: list):
+        try:
+            # elimina tutti gli utenti dal database
+            Utente.elimina_tutti(email_da_mantenere)
+            # rigenera la lista di utenti
+            load_utenti()
+        except Exception as e:
+            logger.error(f"Errore durante l'eliminazione di tutti gli utenti: {e}")
+
+    scheduler.add_job(
+        actually_elimina,
+        "date",
+        run_date=datetime.now() + timedelta(seconds=10),
+        args=[[current_user.email]],
+        id="eliminazione_utenti",
+        replace_existing=True,
+        max_instances=1,
+    )
+
+    emit("elimina tutti utenti in corso", 10)
+    logger.debug(
+        "Eliminazione di tutti gli utenti iniziata. L'utente ha 10 secondi per annullare l'operazione"
+    )
+
+
+@socketio.on("elimina tutti utenti annulla", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def elimina_tutti_utenti_annulla():
+    scheduler.remove_job("eliminazione_utenti")
+    emit("elimina tutti utenti annulla successo", "")
+    logger.debug("Eliminazione di tutti gli utenti annullata.")

@@ -20,7 +20,19 @@
   <script src="{{ url_for('static', filename='scripts/impostazioni.js') }}" defer></script>
   <script src="{{ url_for('static', filename='scripts/impostazioni/popup.js') }}" defer></script>
   <script src="{{ url_for('static', filename='scripts/impostazioni/utenti.js') }}" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js" onload="notyf = new Notyf({duration: 3000})" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js" onload="notyf = new Notyf({duration: 3000, types: [
+    {
+      type: 'info',
+      background: '#ffa726',
+      icon: {
+        className: 'material-symbols-rounded',
+        tagName: 'span',
+        text: 'info',
+        color: 'white'
+      },
+    },
+  ],
+})" defer></script>
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
 </head>
 
@@ -38,7 +50,7 @@
     <div id="main-container">
       <div class="opzione">
         <h5 class="opzione-titolo">Importa utenti da file</h5>
-        <p class="opzione-descrizione">Usare preferibilmente file esportati dai gruppi Google. Accettati formati XSLX e CSV, con l'email nella colonna 'Member Email'. Il nome del file dovrebbe assomigliare a questo: 'Members_xxxxxxxxxxxxxxxx_01012023_000000.csv.xlsx'</p>
+        <p class="opzione-descrizione">(NON ANCORA IMPLEMENTATO) Usare preferibilmente file esportati dai gruppi Google. Accettati formati XSLX e CSV, con l'email nella colonna 'Member Email'. Il nome del file dovrebbe assomigliare a questo: 'Members_xxxxxxxxxxxxxxxx_01012023_000000.csv.xlsx'</p>
         <div class="opzione-file">
           <input type="file" id="import-utenti-filepicker">
           <label for="import-utenti-filepicker" class="material-symbols-rounded pulsante">upload_file</label>

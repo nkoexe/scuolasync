@@ -163,3 +163,29 @@ socket.on("elimina utente successo", (email) => {
 socket.on("elimina utente errore", (data) => {
     notyf.error("Errore nell'eliminazione dell'utente: " + data.error)
 })
+
+socket.on("elimina tutti utenti in corso", (data) => {
+    // todo: aggiornare testo pulsante originale
+    let should_reload = true
+    setTimeout(() => {
+        if (should_reload) {
+            location.reload()
+        }
+    }, data * 1000 + 1000)
+    notyf
+        .open({
+            type: 'info',
+            message: "Eliminazione di tutti gli utenti in corso. Premere il pulsante X per annullare l'operazione.",
+            dismissible: true,
+            duration: data * 1000
+        })
+        .on('dismiss', ({ target, event }) => {
+            should_reload = false
+            socket.emit("elimina tutti utenti annulla")
+        });
+})
+
+
+socket.on("elimina tutti utenti annulla successo", () => {
+    notyf.success("Eliminazione annullata.")
+})

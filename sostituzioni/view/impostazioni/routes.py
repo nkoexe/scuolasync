@@ -1,7 +1,6 @@
 from flask import render_template
 
 from sostituzioni.control.configurazione import configurazione
-from sostituzioni.control.database import utenti as db_utenti
 from sostituzioni.model.model import Docente
 from sostituzioni.model.auth import login_required, role_required
 from sostituzioni.view.impostazioni import impostazioni
@@ -20,9 +19,11 @@ def main():
 @impostazioni.route("/impostazioni/utenti")
 @login_required
 @role_required("impostazioni.write")
-def utenti():
-    utenti = [(u.email, u.ruolo.nome) for u in db_utenti]
-    return render_template("gestione_utenti.html", utenti=utenti)
+def gestione_utenti():
+    from sostituzioni.model.auth import utenti
+
+    lista_utenti = [(u.email, u.ruolo.nome) for u in utenti]
+    return render_template("gestione_utenti.html", utenti=lista_utenti)
 
 
 @impostazioni.route("/update")
