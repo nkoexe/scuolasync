@@ -3,7 +3,7 @@ database controller
 """
 
 from beartype import beartype
-from beartype.typing import List, Tuple, Dict
+from beartype.typing import Any
 import sqlite3
 from datetime import datetime
 import logging
@@ -17,10 +17,11 @@ logger = logging.getLogger(__name__)
 
 class Where:
     def __init__(self, attribute: str, parent=None) -> None:
-        self.attribute = attribute
-        self.operator = "="
+        self.attribute: str = attribute
+        self.operator: str = "="
         self.value: any = None
-        self.parent = parent
+        self.value_is_list: bool = False
+        self.parent: Where | None = parent
 
     def resolve(self):
         # match self.value:
@@ -45,67 +46,90 @@ class Where:
         #     case _:
         #         value = '"' + str(self.value) + '"'
 
-        resolved = str(self.attribute) + self.operator + "?"
+        query_marks = "?"
+        if self.value_is_list:
+            query_marks = "(" + ", ".join("?" for _ in self.value) + ")"
+
+        resolved = str(self.attribute) + self.operator + query_marks
 
         if isinstance(self.parent, Where):
             where, values = self.parent.resolve()
             resolved = where + " AND " + resolved
-            values.append(self.value)
+            if self.value_is_list:
+                values += self.value
+            else:
+                values.append(self.value)
         else:
-            values = [self.value]
+            if self.value_is_list:
+                values = self.value
+            else:
+                values = [self.value]
 
         return resolved, values
 
-    def equals(self, value):
+    @beartype
+    def equals(self, value: Any):
         self.operator = "="
         self.value = value
         return self
 
-    def notequals(self, value):
+    @beartype
+    def notequals(self, value: Any):
         self.operator = "!="
         self.value = value
         return self
 
-    def lessthan(self, value):
+    @beartype
+    def lessthan(self, value: int | float):
         self.operator = "<"
         self.value = value
         return self
 
-    def lessthanorequal(self, value):
+    @beartype
+    def lessthanorequal(self, value: int | float):
         self.operator = "<="
         self.value = value
         return self
 
-    def greaterthan(self, value):
+    @beartype
+    def greaterthan(self, value: int | float):
         self.operator = ">"
         self.value = value
         return self
 
-    def greaterthanorequal(self, value):
+    @beartype
+    def greaterthanorequal(self, value: int | float):
         self.operator = ">="
         self.value = value
         return self
 
-    def LIKE(self, value):
+    @beartype
+    def LIKE(self, value: str):
         self.operator = " LIKE "
         self.value = value
         return self
 
-    def NOTLIKE(self, value):
+    @beartype
+    def NOTLIKE(self, value: str):
         self.operator = " NOT LIKE "
         self.value = value
 
-    def IN(self, value):
+    @beartype
+    def IN(self, value: list | tuple):
         self.operator = " IN "
         self.value = value
+        self.value_is_list = True
         return self
 
-    def NOTIN(self, value):
+    @beartype
+    def NOTIN(self, value: list | tuple):
         self.operator = " NOT IN "
         self.value = value
+        self.value_is_list = True
         return self
 
-    def AND(self, attribute):
+    @beartype
+    def AND(self, attribute: str):
         return Where(attribute, self)
 
 
@@ -138,7 +162,7 @@ class Database:
             self.connection = None
         # logger.debug("Connection to database closed successfully")
 
-    def execute(self, query: str, values: List | None = None):
+    def execute(self, query: str, values: list | None = None):
         logger.debug("Executing query " + query + " - " + str(values))
         try:
             if values is not None:
@@ -154,7 +178,7 @@ class Database:
     def get(
         self,
         table: str,
-        columns: str | Tuple = "*",
+        columns: str | tuple = "*",
         where: Where | None = None,
         order_by: str | None = None,
         limit: int | None = None,
@@ -201,7 +225,7 @@ class Database:
     def get_one(
         self,
         table: str,
-        columns: str | Tuple = "*",
+        columns: str | tuple = "*",
         where: Where | None = None,
         load_lists: bool = True,
     ) -> SearchableList:
@@ -345,7 +369,7 @@ class ElementoDatabase:
 
     def load(
         item,
-        columns: str | Tuple = "*",
+        columns: str | tuple = "*",
         where: Where | None = None,
         order_by: str | None = None,
         limit: int | None = None,
@@ -653,7 +677,7 @@ class Sostituzione(ElementoDatabaseConStorico):
         self.ora_fine = data["ora_fine"]
         self.note = data["note"]
 
-    def load(filtri: Where | Dict | None = None):
+    def load(filtri: Where | dict | None = None):
         if filtri is None:
             # default sono le sostituzioni future
 
@@ -728,7 +752,7 @@ class Sostituzione(ElementoDatabaseConStorico):
         self.id = id
 
     @beartype
-    def modifica(self, dati: Dict):
+    def modifica(self, dati: dict):
         if not self.id:
             return False
 
@@ -1003,7 +1027,7 @@ class Evento(ElementoDatabaseConStorico):
     TABLENAME = "evento"
     KEY = "id"
 
-    def load(filtri: Where | Dict | None = None):
+    def load(filtri: Where | dict | None = None):
         if filtri is None:
             # carica gli eventi futuri non cancellati
 
@@ -1066,7 +1090,7 @@ class Evento(ElementoDatabaseConStorico):
         self.id = id
 
     @beartype
-    def modifica(self, dati: Dict):
+    def modifica(self, dati: dict):
         if not self.id:
             return
 
@@ -1171,7 +1195,7 @@ class Notizia(ElementoDatabaseConStorico):
     KEY = "id"
 
     @beartype
-    def load(filtri: Where | Dict | None = None):
+    def load(filtri: Where | dict | None = None):
         if filtri is None:
             # carica le notizie non cancellate comprese nell'intervallo di data
 
@@ -1232,7 +1256,7 @@ class Notizia(ElementoDatabaseConStorico):
 
         self.id = id
 
-    def modifica(self, dati: Dict):
+    def modifica(self, dati: dict):
         if not self.id:
             return
 
@@ -1378,6 +1402,13 @@ class Utente(ElementoDatabase):
     def load(*args, **kwargs):
         return ElementoDatabase.load(Utente, *args, **kwargs)
 
+    @beartype
+    def elimina_tutti(users_to_keep: list | None = None):
+        return Utente.DATABASE.delete(
+            Utente.TABLENAME,
+            Where("email").NOTIN(users_to_keep),
+        )
+
     def elimina(self):
         return self.DATABASE.delete(self.TABLENAME, Where("email").equals(self.email))
 
@@ -1388,7 +1419,7 @@ class Utente(ElementoDatabase):
 
         return self.email
 
-    def modifica(self, dati: Dict):
+    def modifica(self, dati: dict):
         if "email" in dati:
             self.email = dati["email"]
 
@@ -1444,10 +1475,3 @@ class Utente(ElementoDatabase):
         if isinstance(new, str):
             new = Ruolo(new)
         self._ruolo = new
-
-
-# For efficiency purposes, handle users in memory
-ruoli = SearchableList("nome", [Ruolo(r["nome"]) for r in Ruolo.load()])
-utenti = SearchableList(
-    "email", [Utente(u["email"], ruoli.get(u["ruolo"])) for u in Utente.load()]
-)
