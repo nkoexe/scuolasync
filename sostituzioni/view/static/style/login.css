@@ -170,7 +170,7 @@ body {
     text-decoration: none;
     padding: 10px 15px;
     border-radius: 10px;
-    transition: all 0.1s;
+    transition: all 0.2s;
 }
 
 #pulsanti-legali a:hover {
@@ -179,6 +179,8 @@ body {
 
 #pulsanti-legali .separator {
     margin: auto;
+    color: #555555;
+    z-index: 10;
 }
 
 @media (max-width: 600px) {
