@@ -21,7 +21,9 @@
 
 <body>
   <div id="header">
-    <img id="header-logo" src="{{ url_for('static', filename='images/logo_white.png') }}" alt="Logo Gandhi">
+    <a href="{{url_for('online.index')}}">
+      <img id="header-logo" src="{{ url_for('static', filename='images/logo_white.png') }}" alt="Logo Gandhi">
+    </a>
     <div id="header-separator"></div>
     <h1 id="header-titolo">{{title}}</h1>
     <div id="header-pulsanti">
