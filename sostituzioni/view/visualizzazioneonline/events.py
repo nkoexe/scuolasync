@@ -39,10 +39,10 @@ def connect():
     richiesta_sostituzioni({"non_pubblicato": True})
 
 
-@socketio.on("disconnect")
-def disconnect():
-    #! does not work at the moment
-    logout_user()
+# @socketio.on("disconnect")
+# def disconnect():
+#     #! does not work at the moment
+#     logout_user()
 
 
 @socketio.on("auth check")
@@ -56,10 +56,10 @@ def auth_check():
 def richiesta_sostituzioni(filtri: dict | None = None):
     """
     filtri:
-    { cancellato: true }  // per mostrare anche sostituzioni cancellate
-    { non_pubblicato: true }  // per mostrare anche sostituzioni non pubblicate
-    { data_inizio: 1702767600, data_fine: 1702854000 }  // per sostituzioni comprese in un intervallo
-    { data_inizio: 1702767600, data_fine: None }  // per sostituzioni future
+    `{ cancellato: true }`  // per mostrare anche sostituzioni cancellate
+    `{ non_pubblicato: true }`  // per mostrare anche sostituzioni non pubblicate
+    `{ data_inizio: 1702767600, data_fine: 1702854000 }`  // per sostituzioni comprese in un intervallo
+    `{ data_inizio: 1702767600, data_fine: None }`  // per sostituzioni future
     """
 
     #! fix temporaneo finché non si implementa il filtro per le sostituzioni non pubblicate
@@ -68,7 +68,8 @@ def richiesta_sostituzioni(filtri: dict | None = None):
 
     logger.debug(f"Ricevuto segnale richiesta sostituzioni con filtri: {filtri}")
 
-    # check if user has necessary permissions for non default view
+    # Check se l'utente ha permessi per visualizzare dati speciali.
+    # Il filtro per data è accessibile da tutti
     if "cancellato" in filtri and not current_user.permessi.sostituzioni.write:
         filtri.pop("cancellato")
     if "non_pubblicato" in filtri and not current_user.permessi.sostituzioni.write:
