@@ -1,11 +1,12 @@
 """
 descr
 """
-from beartype._decor.decormain import beartype
 
+from beartype._decor.decormain import beartype
+from beartype.typing import Tuple
+
+from sostituzioni.lib.searchablelist import SearchableList
 from sostituzioni.control.database import (
-    database,
-    ElementoDatabase,
     Aula,
     Classe,
     Docente,
@@ -91,23 +92,31 @@ class Notizia(Notizia):
         self.testo = testo
 
 
-class VisualizzazioneOnline(Visualizzazione):
+# class VisualizzazioneOnline(Visualizzazione):
+#     def __init__(self):
+#         pass
+
+
+# class VisualizzazioneFisica(Visualizzazione):
+#     def __init__(self):
+#         pass
+
+
+# //////////////////////////////////
+
+
+class Sostituzioni(SearchableList):
     def __init__(self):
+        super().__init__(key_name="id")
+
+    def filtra(filtri: dict):
+        pass
+
+    def add(sostituzione: Sostituzione):
+        pass
+
+    def check_errors():
         pass
 
 
-class VisualizzazioneFisica(Visualizzazione):
-    def __init__(self):
-        pass
-
-
-# from time import time
-# print('start', time())
-# total = 0
-# for i in range(10000):
-#     start_time = time()
-#     database.get('permesso', where=f'nome="permesso{i}"')
-#     end_time = time()
-#     total += end_time - start_time
-# print('total', total)
-# print('average', total / 10000)
+sostituzioni = Sostituzioni()
