@@ -3,7 +3,7 @@ from datetime import datetime
 
 from sostituzioni.control.exporter import Exporter
 from sostituzioni.control.configurazione import configurazione
-from sostituzioni.model.auth import login_required, current_user
+from sostituzioni.model.auth import login_required, role_required, current_user
 from sostituzioni.view.visualizzazioneonline import online
 
 
@@ -47,6 +47,7 @@ def export():
 
 @online.route("/testone")
 @login_required
+@role_required("sostituzioni.write")
 def testone():
     from random import choice, randint
     from datetime import datetime, timedelta
