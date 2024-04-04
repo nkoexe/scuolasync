@@ -23,6 +23,7 @@ app.config["SESSION_REFRESH_EACH_REQUEST"] = True
 # development
 app.config["DEBUG"] = True
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 60 * 60
 
 
 app.cli.add_command(database_cli)
