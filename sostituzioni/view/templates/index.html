@@ -32,7 +32,6 @@
       <a href="{{ url_for('impostazioni.main')}}"><span class="material-symbols-rounded">settings</span></a>
       {% endif %}
       <a id="pulsante-logout" href="{{ url_for('auth.logout')}}"><span class="material-symbols-rounded">logout</span></a>
-      <div id="fun"></div>
     </div>
   </div>
   <div id="main-window">
@@ -344,6 +343,7 @@
       </div>
     </div>
     {% endif %}
+    <div id="logout-fun"></div>
   </div>
   {% if current_user.ruolo != 'visualizzatore' %}
   <div id="context-menu" class="hidden" tabindex="0">

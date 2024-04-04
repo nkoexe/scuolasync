@@ -59,8 +59,8 @@
 }
 
 /* logout animation */
-#fun {
-    position: absolute;
+#logout-fun {
+    position: fixed;
     top: -1000px;
     right: -1000px;
     width: 1000px;

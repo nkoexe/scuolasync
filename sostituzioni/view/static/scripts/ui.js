@@ -1,12 +1,13 @@
-const pulsante_logout = document.getElementById('pulsante-logout')
+const ui_pulsante_logout = document.querySelector('#pulsante-logout')
+const ui_logout_fun = document.querySelector("#logout-fun")  // logout overlay animation
 
-const ui_context_menu = document.getElementById("context-menu")
-const ui_pulsanti_context_menu = document.getElementById("pulsanti-context-menu")
-const ui_conferma_elimina = document.getElementById("dialog-conferma-elimina")
-const ui_conferma_elimina_titolo = document.getElementById("dialog-conferma-elimina-titolo")
-const ui_conferma_elimina_storico_container = document.getElementById("dialog-conferma-elimina-storico-container")
-const ui_conferma_elimina_storico = document.getElementById("dialog-conferma-elimina-storico")
-const ui_conferma_elimina_per_reale = document.getElementById("dialog-conferma-elimina-per-reale")
+const ui_context_menu = document.querySelector("#context-menu")
+const ui_pulsanti_context_menu = document.querySelector("#pulsanti-context-menu")
+const ui_conferma_elimina = document.querySelector("#dialog-conferma-elimina")
+const ui_conferma_elimina_titolo = document.querySelector("#dialog-conferma-elimina-titolo")
+const ui_conferma_elimina_storico_container = document.querySelector("#dialog-conferma-elimina-storico-container")
+const ui_conferma_elimina_storico = document.querySelector("#dialog-conferma-elimina-storico")
+const ui_conferma_elimina_per_reale = document.querySelector("#dialog-conferma-elimina-per-reale")
 
 
 // ----------------------------------
@@ -50,16 +51,15 @@ function ui_refresh_sostituzioni() {
 }
 
 // logout animation
-pulsante_logout.onclick = (e) => {
-    let fun = document.getElementById('fun')
-    fun.style.top = "-70vh"
-    fun.style.right = "-70vw"
-    fun.style.height = "200vh"
-    fun.style.width = "200vw"
+ui_pulsante_logout.onclick = (e) => {
+    ui_logout_fun.style.top = "-70vh"
+    ui_logout_fun.style.right = "-70vw"
+    ui_logout_fun.style.height = "200vh"
+    ui_logout_fun.style.width = "200vw"
 
     e.preventDefault()
 
-    setTimeout(() => { location.href = pulsante_logout.href }, 210)
+    setTimeout(() => { location.href = ui_pulsante_logout.href }, 210)
 }
 
 
