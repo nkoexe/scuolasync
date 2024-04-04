@@ -2,6 +2,8 @@
     font-family: 'Gabarito', sans-serif;
     box-sizing: border-box;
     margin: 0;
+    min-width: 0;
+    min-height: 0;
 }
 
 .hidden {
@@ -15,11 +17,8 @@ body {
 }
 
 body {
-    min-width: 400px;
-    min-height: 500px;
     width: 100%;
     height: 100%;
-    overflow: hidden;
 }
 
 ul {
@@ -179,6 +178,10 @@ input[type='radio'] {
     grid-template-rows: 50% 50%;
 }
 
+#main-container:has(#notizie-lista:empty) {
+    grid-template-rows: 75% 25%;
+}
+
 .frame {
     /* border: 2px solid; */
     border-radius: 1rem;
@@ -200,36 +203,6 @@ input[type='radio'] {
     background-color: var(--color-sostituzioni-bg);
     display: flex;
     flex-direction: column;
-}
-
-@media (max-width: 1000px) {
-    #main-container {
-        padding: 0;
-        grid-template-columns: 1fr;
-        grid-template-rows: 90% 50% 50%;
-    }
-
-    #eventi-frame {
-        grid-area: 2/1/3/2;
-    }
-
-    #notizie-frame {
-        grid-area: 3/1/4/2;
-    }
-
-    #sostituzioni-frame {
-        grid-area: 1/1/2/2;
-    }
-
-    .frame {
-        overflow-x: auto;
-        margin: 0;
-        border-radius: 0;
-    }
-}
-
-#main-container:has(#notizie-lista:empty) {
-    grid-template-rows: 75% 25%;
 }
 
 
@@ -960,4 +933,50 @@ input[type='radio'] {
     border-color: var(--color-selezione-hover-delete-bg);
     background-color: var(--color-selezione-hover-delete-bg);
     color: var(--color-selezione-hover-delete-fg);
+}
+
+
+/* MOBILE */
+
+
+@media (max-width: 1000px) {
+    #main-window {
+        overflow: auto;
+    }
+
+    #main-container {
+        padding: 0;
+        grid-template-columns: 1fr;
+        grid-template-rows: 90% 50% 50% !important;
+    }
+
+    #eventi-frame {
+        grid-area: 2/1/3/2;
+    }
+
+    #notizie-frame {
+        grid-area: 3/1/4/2;
+    }
+
+    #sostituzioni-frame {
+        grid-area: 1/1/2/2;
+    }
+
+    .frame {
+        overflow-x: hidden;
+        margin: 0;
+        border-radius: 0;
+    }
+}
+
+/* Nascondi titolo sostituzioni solo se l'utente è amministratore o editor */
+@media (max-width: 550px) {
+    :has(#pulsante-nuova-sostituzione) #header-sostituzioni-titolo {
+        display: none;
+    }
+
+    :has(#pulsante-nuova-sostituzione) #pulsanti-header-sostituzioni {
+        margin-left: 30px;
+        margin-right: auto;
+    }
 }
