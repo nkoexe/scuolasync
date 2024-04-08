@@ -16,7 +16,7 @@ options_giorno = { 'day': '2-digit' }
 options_data = { 'month': 'long', 'year': 'numeric' }
 
 setInterval(() => {
-    now = new Date()
+    const now = new Date()
     ui_ora.innerText = now.toLocaleTimeString('it-IT', options_ora)
     ui_giorno.innerText = now.toLocaleDateString('it-IT', options_giorno)
     ui_data.innerText = now.toLocaleDateString('it-IT', options_data)
@@ -32,7 +32,7 @@ setInterval(() => {
 
 
 setInterval(() => {
-    containerscroll = ui_sostituzioni_container.scrollTop
+    let containerscroll = ui_sostituzioni_container.scrollTop
     containerscroll += ui_sostituzioni_container.offsetHeight
     if (containerscroll >= ui_sostituzioni_lista.offsetHeight) { containerscroll = 0 }
     ui_sostituzioni_container.scroll({ top: containerscroll, behavior: "smooth" })

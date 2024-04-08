@@ -2,6 +2,7 @@
     font-family: 'Gabarito', sans-serif;
     box-sizing: border-box;
     margin: 0;
+    user-select: none;
 }
 
 .hidden {
@@ -79,7 +80,7 @@ ul {
 
 .frame {
     /* border: 2px solid; */
-    border-radius: 1rem;
+    border-radius: 1vw;
     margin: 0.3vw;
 }
 
@@ -139,7 +140,7 @@ ul {
 #data {}
 
 /* HEADER SOSTITUZIONI */
-#header-sostituzioni {
+/* #header-sostituzioni {
     display: flex;
     height: 80px;
     min-height: 80px;
@@ -148,7 +149,7 @@ ul {
 #header-sostituzioni-titolo {
     font-size: 35px;
     margin: auto 30px;
-}
+} */
 
 #sostituzioni-main {
     flex: 1;
@@ -172,9 +173,10 @@ ul {
     width: 100%;
     font-size: 1.25vw;
     font-style: italic;
+    letter-spacing: 0.03em;
     background-color: var(--color-sostituzioni-filtri-bg);
-    border-top-left-radius: 1rem;
-    border-top-right-radius: 1rem;
+    border-top-left-radius: 1vw;
+    border-top-right-radius: 1vw;
 }
 
 #sostituzioni-didascalie-container>div {
@@ -226,17 +228,18 @@ ul {
 
 .sostituzioni-didascalia span {
     margin: auto;
-    margin-left: 10px;
+    margin-left: 1vw;
     color: var(--color-sostituzioni-filtri-placeholder);
 }
 
 
 /* SOSTITUZIONI */
 #sostituzioni-lista-container {
+    /* scroll-snap-type: y mandatory; */
     overflow-y: auto;
     height: 100%;
-    border-bottom-left-radius: 1rem;
-    border-bottom-right-radius: 1rem;
+    border-bottom-left-radius: 1vw;
+    border-bottom-right-radius: 1vw;
 }
 
 #sostituzioni-messaggio-informativo {
@@ -253,9 +256,12 @@ ul {
 
 
 /* LISTA SOSTITUZIONI */
-#sostituzioni-lista {}
+#sostituzioni-lista {
+    /* scroll-snap-type: y mandatory; */
+}
 
 #sostituzioni-lista li {
+    /* scroll-snap-align: start; */
     position: relative;
     width: 100%;
 }
@@ -290,7 +296,7 @@ ul {
 
 #sostituzioni-lista .sostituzione div.sostituzione-data span {
     margin: auto;
-    margin-left: 10px;
+    margin-left: 1vw;
 }
 
 #sostituzioni-lista .sostituzione.oggi {
@@ -335,8 +341,8 @@ ul {
 /* LISTA EVENTI */
 #eventi-container {
     overflow: auto;
-    border-top-left-radius: 1rem;
-    border-top-right-radius: 1rem;
+    border-top-left-radius: 1vw;
+    border-top-right-radius: 1vw;
 }
 
 /* Shadow in fondo alla lista */
@@ -352,17 +358,17 @@ ul {
 .evento {
     display: flex;
     flex-direction: column;
-    margin: 5px 0;
-    padding: 10px 15px;
-    gap: 10px;
+    margin: 0.3vw 0;
+    padding: 0.5vw 0.8vw;
+    gap: 0.5vw;
     background-color: #f3f3f3;
-    border-radius: 1rem;
+    border-radius: 1vw;
 }
 
 .evento.urgente {
-    padding: 15px 15px;
+    padding: 1vw;
     background-color: #f0c0bc;
-    border-radius: 0.5rem;
+    border-radius: 0.5vw;
 }
 
 
@@ -390,8 +396,8 @@ ul {
 .notizie-lista {
     height: 100%;
     display: flex;
-    gap: 80px;
-    padding-right: 80px;
+    gap: 5vw;
+    padding-right: 5vw;
     font-size: 1.7vw;
 }
 
