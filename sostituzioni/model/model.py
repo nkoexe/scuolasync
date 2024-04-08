@@ -108,12 +108,15 @@ class Notizia(Notizia):
 class Sostituzioni(SearchableList):
     def __init__(self):
         super().__init__(key_name="id")
+        self.extend(Sostituzione.load())
 
-    def filtra(filtri: dict):
+    def get(filtri: dict):
         pass
 
-    def add(sostituzione: Sostituzione):
-        pass
+    @beartype
+    def add(self, sostituzione: Sostituzione):
+        sostituzione.inserisci()
+        self.append(sostituzione)
 
     def check_errors():
         pass
