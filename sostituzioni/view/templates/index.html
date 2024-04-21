@@ -29,7 +29,7 @@
     <h1 id="header-titolo">{{title}}</h1>
     <div id="header-pulsanti">
       {% if utente.permessi.impostazioni.write %}
-      <a href="{{ url_for('impostazioni.main')}}"><span class="material-symbols-rounded">settings</span></a>
+      <a href="{{ url_for('impostazioni.main')}}"><span class="material-symbols-rounded" data-tooltip="Impostazioni">settings</span></a>
       {% endif %}
       <a id="pulsante-logout" href="{{ url_for('auth.logout')}}"><span class="material-symbols-rounded">logout</span></a>
     </div>
@@ -40,7 +40,7 @@
         <div id="header-eventi">
           <h2 id="header-eventi-titolo">Eventi</h2>
           <div id="header-eventi-pulsanti">
-            <div id="eventi-filtro-data" class="has-tooltip"><span class="material-symbols-rounded">calendar_month</span><span class="tooltip tooltip-bottom">Filtro degli eventi per data (non ancora implementato)</span></div>
+            <div id="eventi-filtro-data" data-tooltip="Filtro degli eventi per data (non ancora implementato)"><span class="material-symbols-rounded">calendar_month</span></div>
             {% if utente.permessi.eventi.write %}
             <div id="pulsante-nuovo-evento" class="pulsante pulsante-inserimento" onclick="mostra_nuovo_evento()"><span class="material-symbols-rounded">add</span></div>
             {% endif %}
@@ -72,7 +72,7 @@
           <div id="pulsanti-header-sostituzioni">
             {% if utente.permessi.sostituzioni.write %}
             <div id="container-esporta-sostituzioni">
-              <div id="pulsante-esporta-sostituzioni" class="pulsante-header-sostituzioni has-tooltip"><span class="material-symbols-rounded">export_notes</span><span class="tooltip">Esportazione dei dati</span></div>
+              <div id="pulsante-esporta-sostituzioni" class="pulsante-header-sostituzioni" data-tooltip="Esportazione dei dati"><span class="material-symbols-rounded">export_notes</span></div>
               <div id="popup-esporta-sostituzioni" tabindex="0">
                 <div>
                   <h2>Esportazione Dati</h2>
@@ -129,7 +129,7 @@
               </div>
             </div>
             {% endif %}
-            <div id="pulsante-refresh-sostituzioni" class="pulsante-header-sostituzioni has-tooltip" onclick="ui_refresh_sostituzioni()"><span class="material-symbols-rounded">sync</span><span class="tooltip">Ricarica lista di sostituzioni</span></div>
+            <div id="pulsante-refresh-sostituzioni" class="pulsante-header-sostituzioni" onclick="ui_refresh_sostituzioni()" data-tooltip="Ricarica lista di sostituzioni"><span class="material-symbols-rounded">sync</span></div>
           </div>
           {% if utente.permessi.sostituzioni.write %}
           <div id="pulsante-nuova-sostituzione" class="pulsante pulsante-inserimento" onclick="mostra_nuova_sostituzione()"><span class="material-symbols-rounded icon">add</span><span class="text">Nuova</span></div>
@@ -140,8 +140,7 @@
             <div id="sostituzioni-filtri-container">
               <div id="sostituzioni-filtro-data" tabindex="0">
                 <span id="sostituzioni-filtro-data-testo"><span>Data</span><span class="material-symbols-rounded icon">expand_more</span></span>
-                <div class="sostituzioni-ordinamento has-tooltip">
-                  <span class="tooltip tooltip-bottom">Ordinamento per data, non ancora implementato</span>
+                <div class="sostituzioni-ordinamento" data-tooltip="Ordinamento per data, non ancora implementato">
                   <div class="sostituzioni-ordinamento-arrowup"></div>
                   <div class="sostituzioni-ordinamento-arrowdown"></div>
                 </div>
@@ -316,10 +315,7 @@
             <textarea id="gestione-dati-evento-testo" placeholder="Testo dell'evento"></textarea>
           </div>
           <div class="pulsanti-gestione-dati">
-            <div class="has-tooltip">
-              <input type="checkbox" id="gestione-dati-evento-urgente" class="material-symbols-rounded">
-              <span class="tooltip">Contrassegna l'evento come urgente</span>
-            </div>
+            <input type="checkbox" id="gestione-dati-evento-urgente" class="material-symbols-rounded" data-tooltip="Contrassegna l'evento come urgente">
             <button id="pulsante-principale-evento" class="pulsante pulsante-principale-gestione-dati"></button>
           </div>
         </div>
@@ -358,6 +354,13 @@
     <div id="pulsanti-context-menu">
     </div>
   </div>
+  <div id="tooltip">
+    <div id="tooltip-arrow"></div>
+    <div id="tooltip-content">
+      <span id="tooltip-text">test</span>
+    </div>
+  </div>
+
   {% endif %}
   <script>
     const messaggio_nessuna_sostituzione = "{{ configurazione.get('nosostituzionimsg') }}"
@@ -382,6 +385,7 @@
   <script src="{{url_for('static', filename='scripts/lib/fuzzyset.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/lib/compare.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/lib/selezione.js')}}"></script>
+  <script src="{{url_for('static', filename='scripts/lib/tooltip.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/ui.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/eventi.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/notizie.js')}}"></script>
