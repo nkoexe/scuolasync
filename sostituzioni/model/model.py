@@ -337,7 +337,7 @@ class Sostituzioni(SearchableList):
         `{ data_inizio: 1702767600, data_fine: None }`  // per sostituzioni future
         """
 
-        if filtri is None:
+        if not filtri:
             return self.to_json()
 
         # filtri: dict
