@@ -11,16 +11,16 @@ function compara_ora_inizio(a, b) {
 }
 
 function compara_ora_predefinita(a, b) {
-    if (a.numero_ora_predefinita === null && b.numero_ora_predefinita === null) {
+    if (a.ora_predefinita === null && b.ora_predefinita === null) {
         return compara_ora_inizio(a, b)
-    } else if (a.numero_ora_predefinita === null) {
+    } else if (a.ora_predefinita === null) {
         return 1
-    } else if (b.numero_ora_predefinita === null) {
+    } else if (b.ora_predefinita === null) {
         return -1
-    } else if (typeof a.numero_ora_predefinita === "string" || typeof b.numero_ora_predefinita === "string") {
-        return b.numero_ora_predefinita.localeCompare(a.numero_ora_predefinita)
+    } else if (typeof a.ora_predefinita === "string" || typeof b.ora_predefinita === "string") {
+        return b.ora_predefinita.localeCompare(a.ora_predefinita)
     } else {
-        return b.numero_ora_predefinita - a.numero_ora_predefinita
+        return b.ora_predefinita - a.ora_predefinita
     }
 }
 

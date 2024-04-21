@@ -70,8 +70,8 @@ function conferma_nuova_sostituzione(pubblicato) {
         ora_inizio: gestione_dati_sostituzione_ora_inizio.value,
         ora_fine: gestione_dati_sostituzione_ora_fine.value,
         docente: gestione_dati_sostituzione_docente.valore,
-        classe: gestione_dati_sostituzione_classe.valore,
-        aula: gestione_dati_sostituzione_aula.valore,
+        nome_classe: gestione_dati_sostituzione_classe.valore,
+        numero_aula: gestione_dati_sostituzione_aula.valore,
         note: gestione_dati_sostituzione_note.valore
     });
 
@@ -83,7 +83,7 @@ function mostra_modifica_sostituzione(id) {
     let sostituzione = sostituzioni.find(element => element.id === id)
 
     gestione_dati_sostituzione_data.valueAsNumber = fix_date_to_input(new Date(sostituzione.data * 1000));
-    gestione_dati_sostituzione_ora_predefinita.valore = sostituzione.numero_ora_predefinita;
+    gestione_dati_sostituzione_ora_predefinita.valore = sostituzione.ora_predefinita;
     gestione_dati_sostituzione_ora_inizio.value = sostituzione.ora_inizio;
     gestione_dati_sostituzione_ora_fine.value = sostituzione.ora_fine;
     gestione_dati_sostituzione_classe.valore = sostituzione.nome_classe;
@@ -114,8 +114,8 @@ function conferma_modifica_sostituzione(id) {
         ora_inizio: gestione_dati_sostituzione_ora_inizio.value,
         ora_fine: gestione_dati_sostituzione_ora_fine.value,
         docente: gestione_dati_sostituzione_docente.valore,
-        classe: gestione_dati_sostituzione_classe.valore,
-        aula: gestione_dati_sostituzione_aula.valore,
+        nome_classe: gestione_dati_sostituzione_classe.valore,
+        numero_aula: gestione_dati_sostituzione_aula.valore,
         note: gestione_dati_sostituzione_note.valore
     });
 
@@ -126,7 +126,7 @@ function mostra_duplica_sostituzione(id) {
     let sostituzione = sostituzioni.find(element => element.id === id);
 
     gestione_dati_sostituzione_data.valueAsNumber = fix_date_to_input(new Date(sostituzione.data * 1000));
-    gestione_dati_sostituzione_ora_predefinita.valore = sostituzione.numero_ora_predefinita;
+    gestione_dati_sostituzione_ora_predefinita.valore = sostituzione.ora_predefinita;
     gestione_dati_sostituzione_ora_inizio.value = sostituzione.ora_inizio;
     gestione_dati_sostituzione_ora_fine.value = sostituzione.ora_fine;
     gestione_dati_sostituzione_classe.valore = sostituzione.nome_classe;

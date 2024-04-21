@@ -7,4 +7,4 @@ from sostituzioni.view import socketio
 
 
 if __name__ == "__main__":
-    socketio.run(app, use_reloader=True, log_output=False)
+    socketio.run(app, use_reloader=True, log_output=False, debug=True)

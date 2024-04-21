@@ -39,7 +39,7 @@ class Exporter:
         dataframe = pd.DataFrame(
             {
                 "Data": dati["data"],
-                "Ora Predefinita": dati["numero_ora_predefinita"],
+                "Ora Predefinita": dati["ora_predefinita"],
                 "Ora Inizio": dati["ora_inizio"],
                 "Ora Fine": dati["ora_fine"],
                 "Classe": dati["nome_classe"],

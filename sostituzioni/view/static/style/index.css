@@ -1,5 +1,5 @@
 * {
-    font-family: 'Gabarito', sans-serif;
+    font-family: 'Gabarito', 'Segoe UI', Helvetica, Verdana, Tahoma, Geneva, Arial, sans-serif;
     box-sizing: border-box;
     margin: 0;
     min-width: 0;
@@ -93,7 +93,6 @@ input[type='radio'] {
 }
 
 
-
 /* ICONS */
 .material-symbols-rounded {
     user-select: none;
@@ -106,7 +105,7 @@ input[type='radio'] {
 }
 
 /* TOOLTIP */
-.has-tooltip {
+/* .has-tooltip {
     position: relative;
 }
 
@@ -152,6 +151,39 @@ input[type='radio'] {
 }
 
 .tooltip-bottom::after {
+    top: unset;
+    bottom: 100%;
+    border-color: transparent transparent black transparent;
+} */
+
+#tooltip {
+    position: absolute;
+    width: max-content;
+    max-width: 250px;
+    opacity: 0;
+    background-color: black;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    z-index: 110;
+    font-size: 14px !important;
+    text-align: center;
+    transition: opacity 0.2s;
+    transition-delay: 0.5s;
+    pointer-events: none;
+}
+
+#tooltip-arrow {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+
+#tooltip.tooltip-bottom #tooltip-arrow {
     top: unset;
     bottom: 100%;
     border-color: transparent transparent black transparent;
@@ -652,44 +684,54 @@ input[type='radio'] {
     background-color: #dbdbdb;
 }
 
-#sostituzioni-lista .sostituzione div.sostituzione-data {
+#sostituzioni-lista .sostituzione .dato-sostituzione {
     display: flex;
     overflow: auto;
     border-right: 1px solid var(--color-sostituzioni-lista1);
 }
 
-#sostituzioni-lista :nth-child(odd).sostituzione div.sostituzione-data {
+#sostituzioni-lista :nth-child(odd).sostituzione .dato-sostituzione {
     border-right: 1px solid var(--color-sostituzioni-lista2);
 }
 
-#sostituzioni-lista .sostituzione div.sostituzione-data span {
+#sostituzioni-lista .sostituzione .dato-sostituzione span {
     margin: auto;
     margin-left: 10px;
 }
 
-
-/* fix radius del primo elemento a sinistra */
-#sostituzioni-lista .sostituzione div.sostituzione-data:first-of-type {
-    border-top-left-radius: inherit;
-    border-bottom-left-radius: inherit;
+/* Rimuove bordo alla destra delle note */
+#sostituzioni-lista .sostituzione-note {
+    border-right: none !important;
 }
 
-/* e dell'ultimo a destra */
-#sostituzioni-lista .sostituzione div.sostituzione-data:last-of-type {
-    border-top-right-radius: inherit;
-    border-bottom-right-radius: inherit;
-    border-right: none;
+#sostituzioni-lista .sostituzione .sostituzione-icon {
+    border-right: none !important;
+}
+
+#sostituzioni-lista .sostituzione .sostituzione-icon:has(.icon) {
+    padding-right: 10px;
 }
 
 #sostituzioni-lista .sostituzione .icon {
-    margin: auto;
-    margin-right: 5px;
+    margin: auto 3px !important;
 }
 
 #sostituzioni-lista .sostituzione.non-pubblicato {
     color: #00000099;
     font-style: italic;
     font-size: 16px;
+}
+
+#sostituzioni-lista .sostituzione.incompleta .dato-sostituzione,
+#sostituzioni-lista .sostituzione.incompleta .sostituzione-icon {
+    background-color: var(--color-sostituzioni-incompleta);
+    border-right: 1px solid var(--color-sostituzioni-incompleta);
+}
+
+#sostituzioni-lista .sostituzione.sovrapposizioni .dato-sostituzione,
+#sostituzioni-lista .sostituzione.sovrapposizioni .sostituzione-icon {
+    background-color: var(--color-sostituzioni-sovrapposizioni);
+    border-right: 1px solid var(--color-sostituzioni-sovrapposizioni);
 }
 
 

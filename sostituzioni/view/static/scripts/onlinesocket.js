@@ -80,6 +80,10 @@ socket.on("esportazione completata", () => {
     window.open("/export")
 })
 
+socket.on("errore inserimento sostituzione", (msg) => {
+    notyf.error(msg)
+})
+
 socket.on("errore esportazione", (msg) => {
     notyf.error(msg)
 })
@@ -94,12 +98,19 @@ socket.on("unauthorized", () => {
 socket.on("disconnect", () => {
     notyf.error("Connessione persa, non sarà possibile ricevere aggiornamenti.")
 })
+socket.io.on("reconnect", () => {
+    notyf.success("Connessione riuscita.")
+})
 
 
 // ----------------
 
 function s_auth_check() {
-    socket.emit("auth check")
+    socket.timeout(3000).emit("auth check", (err) => {
+        if (err) {
+            notyf.error("Non connesso al server, i dati inseriti non saranno salvati. Prego ricaricare la pagina.")
+        }
+    })
 }
 
 function s_richiedi_sostituzioni(filtri) {

@@ -1,23 +1,27 @@
-const ui_sostituzione_html_template = `<div class="sostituzione {pubblicato}" data-id={id} tabindex="0">
-  <div class="sostituzione-data">
+const ui_sostituzione_html_template = `<div class="sostituzione {pubblicato} {incompleta} {sovrapposizioni}" data-id={id} tabindex="0">
+  <div class="dato-sostituzione sostituzione-data">
     <span>{data}</span>
   </div>
-  <div class="sostituzione-data sostituzione-ora">
+  <div class="dato-sostituzione sostituzione-ora">
     <span>{ora}</span>
   </div>
-  <div class="sostituzione-data sostituzione-classe">
+  <div class="dato-sostituzione sostituzione-classe">
     <span>{nome_classe}</span>
   </div>
-  <div class="sostituzione-data sostituzione-aula">
+  <div class="dato-sostituzione sostituzione-aula">
     <span>{numero_aula}</span>
   </div>
-  <div class="sostituzione-data sostituzione-docente">
+  <div class="dato-sostituzione sostituzione-docente">
     <span>{cognome_docente} {nome_docente}</span>
   </div>
-  <div class="sostituzione-data sostituzione-note">
+  <div class="dato-sostituzione sostituzione-note">
     <span>{note}</span>
   </div>
-  {icona_pubblicato}
+  <div class="dato-sostituzione sostituzione-icon">
+	{icona_pubblicato}
+	{icona_incompleta}
+	{icona_sovrapposizioni}
+  </div>
 </div>`
 
 
@@ -27,14 +31,14 @@ const ui_sostituzioni_messaggio_informativo = document.getElementById("sostituzi
 let sostituzioni_data_verso_ordinamento = 1
 
 
-async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
-	if (numero_ora_predefinita == null) {
+async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note, incompleta, sovrapposizioni, descrizione_sovrapposizione) {
+	if (ora_predefinita == null) {
 		if (ora_inizio == null) { ora = "" }
 		else {
 			ora = ora_inizio + " - " + ora_fine
 		}
 	}
-	else { ora = numero_ora_predefinita.length == 1 ? numero_ora_predefinita + "a ora" : numero_ora_predefinita }
+	else { ora = ora_predefinita.length == 1 ? ora_predefinita + "a ora" : ora_predefinita }
 	if (note == null) { note = "" }
 	if (cognome_docente == null) { cognome_docente = ""; nome_docente = "" }
 	if (nome_classe == null) { nome_classe = "" }
@@ -46,6 +50,20 @@ async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora
 		pubblicato = "non-pubblicato"
 		icona_pubblicato = '<span class="material-symbols-rounded icon">visibility_off</span>'
 	}
+	if (incompleta) {
+		incompleta = "incompleta"
+		icona_incompleta = '<span class="material-symbols-rounded icon" data-tooltip="Questa sostituzione è incompleta.">error</span>'
+	} else {
+		incompleta = ""
+		icona_incompleta = ""
+	}
+	if (sovrapposizioni) {
+		sovrapposizioni = "sovrapposizioni"
+		icona_sovrapposizioni = '<span class="material-symbols-rounded icon" data-tooltip="' + descrizione_sovrapposizione + '">warning</span>'
+	} else {
+		sovrapposizioni = ""
+		icona_sovrapposizioni = ""
+	}
 
 	// Converte da unix timestamp a dd/mm/yyyy
 	data = new Date(data * 1000).toLocaleDateString(userLocale, {
@@ -54,11 +72,11 @@ async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora
 		day: "2-digit"
 	})
 
-	return ui_sostituzione_html_template.replace("{id}", id).replace('{pubblicato}', pubblicato).replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note).replace("{icona_pubblicato}", icona_pubblicato)
+	return ui_sostituzione_html_template.replace("{id}", id).replace('{pubblicato}', pubblicato).replace("{incompleta}", incompleta).replace("{sovrapposizioni}", sovrapposizioni).replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note).replace("{icona_pubblicato}", icona_pubblicato).replace("{icona_incompleta}", icona_incompleta).replace("{icona_sovrapposizioni}", icona_sovrapposizioni)
 }
 
-// async function add_sostituzione_to_ui_list(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
-// 	let sostituzione_html = format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note)
+// async function add_sostituzione_to_ui_list(id, pubblicato, cancellato, data, ora_inizio, ora_fine, ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
+// 	let sostituzione_html = format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note)
 // 	ui_sostituzioni_lista.innerHTML += sostituzione_html
 // }
 
@@ -71,7 +89,7 @@ async function refresh_sostituzioni(hard_refresh) {
 		ui_sostituzioni_lista.innerHTML = ""
 
 		const promises = sostituzioni_visualizzate.map(element => {
-			return format_sostituzione_to_html(element.id, element.pubblicato, element.cancellato, element.data, element.ora_inizio, element.ora_fine, element.numero_ora_predefinita, element.numero_aula, element.nome_classe, element.nome_docente, element.cognome_docente, element.note);
+			return format_sostituzione_to_html(element.id, element.pubblicato, element.cancellato, element.data, element.ora_inizio, element.ora_fine, element.ora_predefinita, element.numero_aula, element.nome_classe, element.nome_docente, element.cognome_docente, element.note, element.incompleta, element.sovrapposizioni, element.descrizione_sovrapposizione);
 		});
 
 		const htmlStrings = await Promise.all(promises);
@@ -83,6 +101,8 @@ async function refresh_sostituzioni(hard_refresh) {
 				sostituzione.oncontextmenu = (e) => { mostra_context_menu_sostituzione(e, sostituzione) }
 			}
 		}
+
+		attach_tooltips()
 
 		// ordina e filtra
 		refresh_sostituzioni(false)

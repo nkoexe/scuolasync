@@ -151,7 +151,7 @@ class Database:
                 # logger.debug("Database cursor created.")
             except sqlite3.Error as e:
                 logger.error(e)
-                exit()
+                raise e
 
     def close(self):
         # logger.debug("Closing connection to database...")
@@ -171,8 +171,9 @@ class Database:
             else:
                 self.cursor.execute(query)
         except sqlite3.Error as e:
-            logger.error(e)
             self.connection.rollback()
+            logger.error(e)
+            raise e
 
     @beartype
     def get(
@@ -399,8 +400,8 @@ class ElementoDatabase:
 
 
 class ElementoDatabaseConStorico(ElementoDatabase):
-    # def __init__(self, cancellato):
-    #     self._cancellato = cancellato
+    def __init__(self, cancellato: bool = False):
+        self._cancellato = cancellato
 
     #     self.elimina = self.cancella = self.__del__
 
@@ -657,35 +658,123 @@ class Sostituzione(ElementoDatabaseConStorico):
     TABLENAME = "sostituzione"
     KEY = "id"
 
-    def __init__(self, id: int):
-        # Load data from database
-        data = self.DATABASE.get_one(self.TABLENAME, "*", where=Where("id").equals(id))
+    @beartype
+    def __init__(
+        self,
+        # id: int,
+        # aula: Aula | None = None,
+        # classe: Classe | None = None,
+        # docente: Docente | None = None,
+        # data: int | None = None,
+        # ora_inizio: str | None = None,
+        # ora_fine: str | None = None,
+        # ora_predefinita: OraPredefinita | None = None,
+        # note: str | None = None,
+        # pubblicato: bool = False,
+    ):
+        super(Sostituzione, self).__init__()
+        """
+        Questa classe rappresenta una sostituzione esistente nel database.
+        Nota per futuro nico: non serve letteralmente mai utilizzare questa classe.
+        I dati vengono caricati nella classe del model
 
-        if data is None:
-            raise ValueError(f"Sostituzione con id {id} non trovata")
+        Se viene passato solamente l'id, i dati verranno caricati dal database.
+        Se vengono passati anche tutti i dati,
+        """
 
-        self.id = id
-        self.cancellato = data["cancellato"]
-        self.pubblicato = data["pubblicato"]
-        self.numero_aula = data["numero_aula"]
-        self.nome_classe = data["nome_classe"]
-        self.nome_docente = data["nome_docente"]
-        self.cognome_docente = data["cognome_docente"]
-        self.data = data["data"]
-        self.ora_predefinita = data["numero_ora_predefinita"]
-        self.ora_inizio = data["ora_inizio"]
-        self.ora_fine = data["ora_fine"]
-        self.note = data["note"]
+        # dati = None
+        # if dati is None:
+        #     # Carica i dati da database
+        #     dati = self.DATABASE.get_one(
+        #         self.TABLENAME, "*", where=Where("id").equals(id)
+        #     )
 
+        #     # Id della sostituzione non esiste nel database
+        #     if dati is None:
+        #         raise ValueError(f"Sostituzione con id {id} non trovata")
+
+        # # Controlla che i dati inseriti siano validi
+        # if not all(
+        #     [
+        #         attr in dati
+        #         for attr in [
+        #             "cancellato",
+        #             "pubblicato",
+        #             "numero_aula",
+        #             "nome_classe",
+        #             "nome_docente",
+        #             "cognome_docente",
+        #             "data",
+        #             "ora_predefinita",
+        #             "ora_inizio",
+        #             "ora_fine",
+        #             "note",
+        #         ]
+        #     ]
+        # ):
+        #     raise ValueError(
+        #         f"Sostituzione con id {id} non valida. Dati inseriti: {dati}"
+        #     )
+
+        # self.id = id
+        # self.cancellato = dati["cancellato"]
+        # self.pubblicato = dati["pubblicato"]
+        # self.numero_aula = dati["numero_aula"]
+        # self.nome_classe = dati["nome_classe"]
+        # self.nome_docente = dati["nome_docente"]
+        # self.cognome_docente = dati["cognome_docente"]
+        # self.data = dati["data"]
+        # self.ora_predefinita = dati["ora_predefinita"]
+        # self.ora_inizio = dati["ora_inizio"]
+        # self.ora_fine = dati["ora_fine"]
+        # self.note = dati["note"]
+
+    @beartype
     def load(filtri: Where | dict | None = None):
-        if filtri is None:
+        if isinstance(filtri, Where):
+            where = filtri
+
+        elif isinstance(filtri, dict):
+            data_inizio: int = filtri.get(
+                "data_inizio",
+                int(
+                    datetime.today()
+                    .replace(hour=0, minute=0, second=0, microsecond=0)
+                    .timestamp()
+                ),
+            )  # default è oggi
+            data_fine: int | None = filtri.get(
+                "data_fine", None
+            )  # default è nessuna, quindi future
+
+            if data_inizio is None:
+                data_inizio = 0
+
+            where = Where("data").greaterthanorequal(data_inizio)
+
+            if data_fine is not None:
+                where = where.AND("data").lessthanorequal(data_fine)
+
+            # Se è specificato di caricare anche i cancellati, non impostare un where aggiuntivo
+            # Mostrare solo i cancellati non è possibile, le opzioni sono tutti o non cancellati
+            cancellato = filtri.get("cancellato", False)
+            if not cancellato:
+                where = where.AND("cancellato").equals(False)
+
+            # Lo stesso vale per i pubblicati, o tutti o solo pubblicati
+            pubblicato = filtri.get("non_pubblicato", False)
+            if not pubblicato:
+                where = where.AND("pubblicato").equals(True)
+
+        else:
             # default sono le sostituzioni future
 
-            # get todays timestamp at midnight
+            # timestap della mezzanotte passata
             today = datetime.today()
             today = today.replace(hour=0, minute=0, second=0, microsecond=0)
             today = int(today.timestamp())
 
+            # Sostituzioni future pubblicate (visualizzazione di un docente)
             where = (
                 Where("data")
                 .greaterthanorequal(today)
@@ -695,43 +784,16 @@ class Sostituzione(ElementoDatabaseConStorico):
                 .equals(True)
             )
 
-            return ElementoDatabase.load(Sostituzione, where=where, order_by="data")
+        # Carica le sostituzioni dal database
+        sostituzioni = ElementoDatabase.load(Sostituzione, where=where, order_by="data")
 
-        if isinstance(filtri, Where):
-            return ElementoDatabase.load(Sostituzione, where=filtri, order_by="data")
+        # Modifica nome attributo perché sono stupido e mi piace crearmi problemi
+        # numero_ora_predefinita viene usato nel database
+        # ora_predefinita viene usato sia nel server che in frontend
+        for sostituzione in sostituzioni:
+            sostituzione["ora_predefinita"] = sostituzione.pop("numero_ora_predefinita")
 
-        data_inizio: int = filtri.get(
-            "data_inizio",
-            int(
-                datetime.today()
-                .replace(hour=0, minute=0, second=0, microsecond=0)
-                .timestamp()
-            ),
-        )  # default è oggi
-        data_fine: int | None = filtri.get(
-            "data_fine", None
-        )  # default è nessuna, quindi future
-
-        if data_inizio is None:
-            data_inizio = 0
-
-        where = Where("data").greaterthanorequal(data_inizio)
-
-        if data_fine is not None:
-            where = where.AND("data").lessthanorequal(data_fine)
-
-        # Se è specificato di caricare anche i cancellati, non impostare un where aggiuntivo
-        # Mostrare solo i cancellati non è possibile, le opzioni sono tutti o non cancellati
-        cancellato = filtri.get("cancellato", False)
-        if not cancellato:
-            where = where.AND("cancellato").equals(False)
-
-        # Lo stesso vale per i pubblicati, o tutti o solo pubblicati
-        pubblicato = filtri.get("non_pubblicato", False)
-        if not pubblicato:
-            where = where.AND("pubblicato").equals(True)
-
-        return ElementoDatabase.load(Sostituzione, where=where, order_by="data")
+        return sostituzioni
 
     def inserisci(self):
         id = self.DATABASE.insert(
@@ -759,11 +821,11 @@ class Sostituzione(ElementoDatabaseConStorico):
         if "pubblicato" in dati:
             self.pubblicato = dati["pubblicato"]
 
-        if "aula" in dati:
-            self.aula = dati["aula"]
+        if "numero_aula" in dati:
+            self.numero_aula = dati["numero_aula"]
 
-        if "classe" in dati:
-            self.classe = dati["classe"]
+        if "nome_classe" in dati:
+            self.nome_classe = dati["nome_classe"]
 
         if "docente" in dati:
             self.docente = dati["docente"]
@@ -846,6 +908,9 @@ class Sostituzione(ElementoDatabaseConStorico):
     def numero_aula(self, new: str | None):
         self._numero_aula = new
 
+        if not new:
+            self._numero_aula = None
+
     @property
     def aula(self):
         return self._aula
@@ -874,6 +939,9 @@ class Sostituzione(ElementoDatabaseConStorico):
     @nome_classe.setter
     def nome_classe(self, new: str | None):
         self._nome_classe = new
+
+        if not new:
+            self._nome_classe = None
 
     @property
     def classe(self):

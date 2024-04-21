@@ -31,12 +31,12 @@ const ui_sostituzioni_lista = document.getElementById("sostituzioni-lista")
 const ui_sostituzioni_messaggio_informativo = document.getElementById("sostituzioni-messaggio-informativo")
 
 
-function format_sostituzione_to_html(oggi, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
-	if (numero_ora_predefinita == null) {
+function format_sostituzione_to_html(oggi, data, ora_inizio, ora_fine, ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
+	if (ora_predefinita == null) {
 		if (ora_inizio == null) { ora = "" }
 		else { ora = ora_inizio + " - " + ora_fine }
 	}
-	else { ora = numero_ora_predefinita.length == 1 ? numero_ora_predefinita + "a ora" : numero_ora_predefinita }
+	else { ora = ora_predefinita.length == 1 ? ora_predefinita + "a ora" : ora_predefinita }
 	if (note == null) { note = "" }
 	if (nome_docente == null) { nome_docente = "" }
 	if (cognome_docente == null) { cognome_docente = "" }
@@ -60,8 +60,8 @@ function format_sostituzione_to_html(oggi, data, ora_inizio, ora_fine, numero_or
 	return ui_sostituzione_html_template.replace("{oggi}", oggi ? "oggi" : "").replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{piano_aula}", piano_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note)
 }
 
-function add_sostituzione_to_ui_list(oggi, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
-	let sostituzione_html = format_sostituzione_to_html(oggi, data, ora_inizio, ora_fine, numero_ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note)
+function add_sostituzione_to_ui_list(oggi, data, ora_inizio, ora_fine, ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
+	let sostituzione_html = format_sostituzione_to_html(oggi, data, ora_inizio, ora_fine, ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note)
 	ui_sostituzioni_lista.innerHTML += sostituzione_html
 }
 
@@ -108,8 +108,8 @@ function refresh_sostituzioni() {
 
 		// Se la sostituzione è di oggi, filtra solo le sostituzioni che iniziano dopo l'ora attuale
 		if (sostituzione.data * 1000 < now_timestamp) {
-			if (sostituzione.numero_ora_predefinita) {
-				const [hour, minute] = (ore_predefinite.find(ora => ora.numero == sostituzione.numero_ora_predefinita).ora_fine_default).split(":")
+			if (sostituzione.ora_predefinita) {
+				const [hour, minute] = (ore_predefinite.find(ora => ora.numero == sostituzione.ora_predefinita).ora_fine_default).split(":")
 				const timestamp = now.setHours(parseInt(hour), parseInt(minute))
 				if (timestamp - 5 * 60 * 1000 <= now_timestamp) { return false }
 
@@ -139,7 +139,7 @@ function refresh_sostituzioni() {
 				oggi = true
 			}
 
-			add_sostituzione_to_ui_list(oggi, element.data, element.ora_inizio, element.ora_fine, element.numero_ora_predefinita, element.numero_aula, element.nome_classe, element.nome_docente, element.cognome_docente, element.note)
+			add_sostituzione_to_ui_list(oggi, element.data, element.ora_inizio, element.ora_fine, element.ora_predefinita, element.numero_aula, element.nome_classe, element.nome_docente, element.cognome_docente, element.note)
 		})
 	}
 }

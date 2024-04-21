@@ -12,6 +12,7 @@ from sostituzioni.model.model import (
     Sostituzione,
     Evento,
     Notizia,
+    sostituzioni,
 )
 from sostituzioni.model.auth import (
     login_required,
@@ -75,7 +76,7 @@ def richiesta_sostituzioni(filtri: dict | None = None):
     if "non_pubblicato" in filtri and not current_user.permessi.sostituzioni.write:
         filtri.pop("non_pubblicato")
 
-    emit("lista sostituzioni", Sostituzione.load(filtri))
+    emit("lista sostituzioni", sostituzioni.filtra(filtri))
 
 
 @socketio.on("richiesta eventi")
@@ -119,18 +120,23 @@ def nuova_sostituzione(data):
     logger.debug(f"Ricevuto dati per inserimento nuova sostituzione: {data}")
 
     sostituzione = Sostituzione(
-        id=None,
-        aula=data.get("aula"),
-        classe=data.get("classe"),
-        docente=data.get("docente"),
-        data=data.get("data"),
-        ora_inizio=data.get("ora_inizio"),
-        ora_fine=data.get("ora_fine"),
-        ora_predefinita=data.get("ora_predefinita"),
-        note=data.get("note"),
-        pubblicato=data.get("pubblicato"),
+        # id=None,
+        # aula=data.get("aula"),
+        # classe=data.get("classe"),
+        # docente=data.get("docente"),
+        # data=data.get("data"),
+        # ora_inizio=data.get("ora_inizio"),
+        # ora_fine=data.get("ora_fine"),
+        # ora_predefinita=data.get("ora_predefinita"),
+        # note=data.get("note"),
+        # pubblicato=data.get("pubblicato"),
+        dati=data,
     )
-    sostituzione.inserisci()
+    try:
+        sostituzioni.inserisci(sostituzione)
+    except Exception as e:
+        emit("errore inserimento sostituzione", str(e))
+        return
 
     emit("aggiornamento sostituzioni", broadcast=True)
     emit("aggiornamento sostituzioni", broadcast=True, namespace="/display")
@@ -142,7 +148,20 @@ def nuova_sostituzione(data):
 def modifica_sostituzione(data):
     logger.debug(f"Ricevuto dati modifica sostituzione: {data}")
 
-    Sostituzione(id=data.get("id")).modifica(data.get("data"))
+    id, dati = data.get("id"), data.get("data")
+
+    if not isinstance(id, int) or not isinstance(dati, dict):
+        logger.error(
+            f"Modifica sostituzione: errore nel formato dei dati ricevuti - id: {id}, dati: {dati}"
+        )
+        emit("errore modifica sostituzione", "Errore nella modifica della sostituzione")
+        return
+
+    try:
+        sostituzioni.modifica(data.get("id"), data.get("data"))
+    except Exception as e:
+        emit("errore modifica sostituzione", str(e))
+        return
 
     emit("aggiornamento sostituzioni", broadcast=True)
     emit("aggiornamento sostituzioni", broadcast=True, namespace="/display")
@@ -154,9 +173,8 @@ def modifica_sostituzione(data):
 def elimina_sostituzione(data):
     logger.debug(f"Ricevuto segnale eliminazione sostituzione: {data}")
 
-    Sostituzione(data.get("id")).elimina(
-        data.get("mantieni_in_storico", True)
-    )  # usare default di configurazione
+    # todo usare default mantieniinstorico di configurazione
+    sostituzioni.elimina(data.get("id"), data.get("mantieni_in_storico", True))
 
     emit("aggiornamento sostituzioni", broadcast=True)
     emit("aggiornamento sostituzioni", broadcast=True, namespace="/display")
