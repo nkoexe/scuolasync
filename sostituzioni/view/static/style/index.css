@@ -672,6 +672,7 @@ input[type='radio'] {
     max-height: 4rem;
     background-color: var(--color-sostituzioni-lista2);
     border-radius: 0;
+    overflow: hidden;
 }
 
 /* colori alternati */
@@ -698,6 +699,13 @@ input[type='radio'] {
 #sostituzioni-lista .sostituzione .dato-sostituzione span {
     margin: auto;
     margin-left: 10px;
+}
+
+/* Arrotondamento bordo dell'ultima sostituzione */
+#sostituzioni-lista .sostituzione:last-of-type {
+    /* #sostituzioni-lista .sostituzione:last-of-type .dato-sostituzione:first-child { */
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
 }
 
 /* Rimuove bordo alla destra delle note */
