@@ -237,11 +237,20 @@ class Sostituzioni(SearchableList):
             (
                 sostituzione.data,
                 (
+                    # Controlla che ci sia ora predefinita oppure ora manuale
                     sostituzione.ora_predefinita
                     or (sostituzione.ora_inizio and sostituzione.ora_fine)
                 ),
+                (
+                    # Se l'ora predefinita é una pausa non è necessario che ci sia una classe
+                    sostituzione.nome_classe
+                    if (
+                        sostituzione.ora_predefinita
+                        and ("Pausa" not in sostituzione.ora_predefinita)
+                    )
+                    else True
+                ),
                 sostituzione.numero_aula,
-                sostituzione.nome_classe,
                 sostituzione.nome_docente,
                 sostituzione.cognome_docente,
             )
