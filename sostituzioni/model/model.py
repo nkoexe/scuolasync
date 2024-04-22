@@ -198,7 +198,19 @@ class Sostituzioni(SearchableList):
         super().__init__(key_name="id")
 
     def load(self):
-        self.extend([Sostituzione(data) for data in Sostituzione.load()])
+        self.extend(
+            [
+                Sostituzione(data)
+                for data in Sostituzione.load(
+                    {
+                        "data_inizio": 0,
+                        "data_fine": None,
+                        "non_pubblicato": True,
+                        "cancellato": True,
+                    }
+                )
+            ]
+        )
         self.check_errors()
 
     def to_json(self):
@@ -365,12 +377,12 @@ class Sostituzioni(SearchableList):
 
         for sostituzione in self:
             if (
-                (data_inizio is None or sostituzione.data >= data_inizio)
-                and (data_fine is None or sostituzione.data <= data_fine)
-                and (
-                    (sostituzione.cancellato is False) if cancellato else True
-                )  # Includi anche le sostituzioni cancellate se
-                and ((sostituzione.pubblicato is True) if not non_pubblicato else True)
+                (sostituzione.data >= data_inizio)
+                and ((data_fine is None) or (sostituzione.data <= data_fine))
+                # Filtra solo per sostituzioni non cancellate, altrimenti includi anche quelle cancellate
+                and ((not sostituzione.cancellato) if cancellato else True)
+                # Filtra solo per le sostituzioni pubblicate se non_pubblicato è false, altrimenti includi tutte
+                and ((sostituzione.pubblicato) if not non_pubblicato else True)
             ):
                 lista_filtrata.append(sostituzione)
 
