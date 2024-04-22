@@ -603,19 +603,30 @@ input[type='radio'] {
     gap: 4px;
 }
 
-#sostituzioni-filtri-container .sostituzioni-ordinamento .sostituzioni-ordinamento-arrowup {
+/* Frecce di ordinamento */
+#sostituzioni-filtri-container .sostituzioni-ordinamento>div {
     width: 0;
     height: 0;
     border: 6px solid transparent;
+    transition: all 0.1s;
+}
+
+#sostituzioni-filtri-container .sostituzioni-ordinamento .sostituzioni-ordinamento-arrowup {
     border-bottom-color: var(--color-sostituzioni-filtri-placeholder);
 }
 
 #sostituzioni-filtri-container .sostituzioni-ordinamento .sostituzioni-ordinamento-arrowdown {
-    width: 0;
-    height: 0;
-    border: 6px solid transparent;
     border-top-color: var(--color-sostituzioni-filtri-placeholder);
 }
+
+#sostituzioni-filtri-container .sostituzioni-ordinamento:has(.selected)>div {
+    opacity: 0.5;
+}
+
+#sostituzioni-filtri-container .sostituzioni-ordinamento>div.selected {
+    opacity: 1;
+}
+
 
 #sostituzioni-filtri-container .sostituzioni-ordinamento .sostituzioni-ordinamento-arrowup.selected {
     border-bottom-color: var(--color-sostituzioni-filtri-fg);
