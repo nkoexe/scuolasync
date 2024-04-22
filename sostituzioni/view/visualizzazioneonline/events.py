@@ -1,6 +1,6 @@
 import logging
-from flask import redirect
 from flask_socketio import emit
+from time import time
 
 from sostituzioni.control.exporter import Exporter
 from sostituzioni.model.model import (
@@ -63,6 +63,8 @@ def richiesta_sostituzioni(filtri: dict | None = None):
     `{ data_inizio: 1702767600, data_fine: None }`  // per sostituzioni future
     """
 
+    # start_time = time()
+
     #! fix temporaneo finché non si implementa il filtro per le sostituzioni non pubblicate
     if isinstance(filtri, dict):
         filtri["non_pubblicato"] = True
@@ -77,6 +79,8 @@ def richiesta_sostituzioni(filtri: dict | None = None):
         filtri.pop("non_pubblicato")
 
     emit("lista sostituzioni", sostituzioni.filtra(filtri))
+
+    # print(f"GET SOSTITUZIONI - {time() - start_time:.6f}")
 
 
 @socketio.on("richiesta eventi")
