@@ -48,7 +48,7 @@ async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora
 		icona_pubblicato = ""
 	} else {
 		pubblicato = "non-pubblicato"
-		icona_pubblicato = '<span class="material-symbols-rounded icon">visibility_off</span>'
+		icona_pubblicato = '<span class="material-symbols-rounded icon" data-tooltip="Questa sostituzione non è pubblicata. È invisibile agli utenti e non verrà mostrata sul display.">visibility_off</span>'
 	}
 	if (incompleta) {
 		incompleta = "incompleta"
