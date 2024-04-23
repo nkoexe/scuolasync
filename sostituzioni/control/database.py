@@ -142,7 +142,9 @@ class Database:
         if not self.connection:
             # logger.debug("Trying to open database connection...")
             try:
-                self.connection = sqlite3.connect(self.path)
+                self.connection = sqlite3.connect(
+                    self.path
+                )  # check_same_thread=False ?
                 # logger.debug("Database connection established.")
                 self.connection.execute("PRAGMA foreign_keys = 1")
                 self.connection.row_factory = sqlite3.Row

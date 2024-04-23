@@ -8,7 +8,7 @@ class SearchableList(List):
     """
 
     @beartype
-    def __init__(self, key_name: str | Tuple = 'id', values: list | None = None):
+    def __init__(self, key_name: str | Tuple = "id", values: list | None = None):
         super(SearchableList, self).__init__()
 
         self.key = key_name
@@ -30,7 +30,9 @@ class SearchableList(List):
                     if getattr(element, key) == id:
                         res.append(element)
                 else:
-                    raise TypeError(f'SearchableList.get: non è possibile ricercare elementi di tipo {type(element)}')
+                    raise TypeError(
+                        f"SearchableList.get: non è possibile ricercare elementi di tipo {type(element)}"
+                    )
 
         elif isinstance(key, Tuple):
             for element in self:
@@ -41,7 +43,9 @@ class SearchableList(List):
                     if all(getattr(element, k) == v for k, v in zip(key, id)):
                         res.append(element)
                 else:
-                    raise TypeError(f'SearchableList.get: non è possibile ricercare elementi di tipo {type(element)}')
+                    raise TypeError(
+                        f"SearchableList.get: non è possibile ricercare elementi di tipo {type(element)}"
+                    )
 
         if len(res) == 1:
             return res[0]
@@ -49,6 +53,36 @@ class SearchableList(List):
             return res
 
         return default
+
+    def get_all(self, id, key: str | Tuple | None = None):
+        if key is None:
+            key = self.key
+
+        if isinstance(key, str):
+            for element in self:
+                if isinstance(element, dict):
+                    if element[key] == id:
+                        yield element
+                elif isinstance(element, object):
+                    if getattr(element, key) == id:
+                        yield element
+                else:
+                    raise TypeError(
+                        f"SearchableList.get: non è possibile ricercare elementi di tipo {type(element)}"
+                    )
+
+        elif isinstance(key, Tuple):
+            for element in self:
+                if isinstance(element, dict):
+                    if all(element[k] == v for k, v in zip(key, id)):
+                        yield element
+                elif isinstance(element, object):
+                    if all(getattr(element, k) == v for k, v in zip(key, id)):
+                        yield element
+                else:
+                    raise TypeError(
+                        f"SearchableList.get: non è possibile ricercare elementi di tipo {type(element)}"
+                    )
 
     def keys(self):
         id_list = []
@@ -64,10 +98,12 @@ class Test:
         self.b = b
 
     def __repr__(self):
-        return f'{self.a} {self.b}'
+        return f"{self.a} {self.b}"
 
 
-if __name__ == '__main__':
-    a = SearchableList(key_name='a', values=[Test('ciao', 'buon'), Test('hello', 'good')])
-    print(a.get('ciao'))
-    print(a.get(('ciao', 'a'), ('a', 'b')))
+if __name__ == "__main__":
+    a = SearchableList(
+        key_name="a", values=[Test("ciao", "buon"), Test("hello", "good")]
+    )
+    print(a.get("ciao"))
+    print(a.get(("ciao", "a"), ("a", "b")))

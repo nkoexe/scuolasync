@@ -114,8 +114,6 @@ function s_auth_check() {
 }
 
 function s_richiedi_sostituzioni(filtri) {
-    if (filtri)
-        filtri.pubblicato = false
     socket.emit("richiesta sostituzioni", filtri)
 }
 

@@ -4,6 +4,7 @@ descr
 
 from beartype._decor.decormain import beartype
 from datetime import datetime
+from time import time
 import logging
 
 from sostituzioni.lib.searchablelist import SearchableList
@@ -56,7 +57,7 @@ class Sostituzione(Sostituzione):
         super(Sostituzione, self).__init__()
 
         self.incompleta: bool = False
-        self.sovrapposizioni: bool = False
+        self.sovrapposizioni: list = []
         self.elemento_sovrapposizione: str | None = None
 
         # if id is not None:
@@ -196,13 +197,42 @@ class Notizia(Notizia):
 class Sostituzioni(SearchableList):
     def __init__(self):
         super().__init__(key_name="id")
+        self.indice_per_data = {}
 
     def load(self):
-        self.extend([Sostituzione(data) for data in Sostituzione.load()])
-        self.check_errors()
+        self.extend(
+            [
+                Sostituzione(data)
+                for data in Sostituzione.load(
+                    {
+                        "data_inizio": 0,
+                        "data_fine": None,
+                        "non_pubblicato": True,
+                        "cancellato": True,
+                    }
+                )
+            ]
+        )
+
+        for sostituzione in self:
+            self.aggiungi_a_indice(sostituzione)
+
+        self.check_errori()
+
+    def aggiungi_a_indice(self, sostituzione: Sostituzione):
+        if sostituzione.data not in self.indice_per_data:
+            self.indice_per_data[sostituzione.data] = []
+
+        self.indice_per_data[sostituzione.data].append(sostituzione)
+
+    def rimuovi_da_indice(self, sostituzione: Sostituzione):
+        if sostituzione.data in self.indice_per_data:
+            self.indice_per_data[sostituzione.data].remove(sostituzione)
+            if len(self.indice_per_data[sostituzione.data]) == 0:
+                del self.indice_per_data[sostituzione.data]
 
     def to_json(self):
-        descrizioni_sovrapposizioni = {
+        descrizioni_sovrapposizione = {
             "docente": "Errore: Il docente ha una supplenza alla stessa ora.",
             "aula": "Errore: Questa aula ha due supplenze in contemporanea.",
             "classe": "Errore: Questa classe ha due supplenze in contemporanea.",
@@ -222,8 +252,9 @@ class Sostituzioni(SearchableList):
                 "ora_fine": sostituzione.ora_fine,
                 "note": sostituzione.note,
                 "incompleta": sostituzione.incompleta,
-                "sovrapposizioni": sostituzione.sovrapposizioni,
-                "descrizione_sovrapposizione": descrizioni_sovrapposizioni.get(
+                # idea: mandare la lista di sovrapposizioni, on hover l'altra sostituzione con errore lampeggia
+                "sovrapposizioni": len(sostituzione.sovrapposizioni) > 0,
+                "descrizione_sovrapposizione": descrizioni_sovrapposizione.get(
                     sostituzione.elemento_sovrapposizione, None
                 ),
             }
@@ -233,7 +264,7 @@ class Sostituzioni(SearchableList):
     @staticmethod
     @beartype
     def check_incompleta(sostituzione: Sostituzione):
-        return not all(
+        sostituzione.incompleta = not all(
             (
                 sostituzione.data,
                 (
@@ -258,49 +289,84 @@ class Sostituzioni(SearchableList):
 
     @beartype
     def check_sovrapposizioni(
-        self, sostituzione: Sostituzione
-    ) -> tuple[bool, str | None]:
+        self,
+        sostituzione: Sostituzione,
+        contrassegna_altre: bool = False,
+    ):
         """
         Controlla se una sostituzione ha errori di sovrapposizione
         Sono considerati errori:
         - Stessa data e ora, e stessa aula
         - Stessa data e ora, stessa classe
         - Stessa data e ora, stesso docente
-
-        Ritorna un tuple con il risultato e il motivo dell'errore
         """
 
-        for sostituzione_altra in self:
+        if sostituzione.data not in self.indice_per_data:
+            return False, None
+
+        for sostituzione_altra in self.indice_per_data[sostituzione.data]:
+            # Controllo per supplenze contemporanee
             if (
+                # Non devono essere cancellate e non devono essere la stessa sostituzione
+                # Il controllo avviene anche alle sostituzioni non pubblicate
                 sostituzione_altra.id != sostituzione.id
-                and sostituzione.cancellato == False
-                and sostituzione_altra.cancellato == False
-                and sostituzione_altra.data == sostituzione.data
+                and not sostituzione.cancellato
+                and not sostituzione_altra.cancellato
                 and (
+                    # Se entrambe le sostituzioni hanno ora_predefinita, controlla che siano uguali
                     sostituzione_altra.ora_predefinita == sostituzione.ora_predefinita
                     if (
-                        sostituzione_altra.ora_predefinita is not None
-                        and sostituzione.ora_predefinita is not None
+                        sostituzione_altra.ora_predefinita
+                        and sostituzione.ora_predefinita
                     )
                     else (
-                        sostituzione_altra.ora_inizio is not None
-                        and (
-                            sostituzione_altra.ora_inizio == sostituzione.ora_inizio
-                            or sostituzione_altra.ora_fine == sostituzione.ora_fine
+                        # Altrimenti controlla che la ora d'inizio di una sia anteriore all'altra
+                        (
+                            sostituzione.ora_inizio
+                            and sostituzione_altra.ora_fine
+                            and (sostituzione.ora_inizio < sostituzione_altra.ora_fine)
                         )
-                        # Todo: check per ora_inizio2 > ora_fine1 oppure ora_inizio1 > ora_fine2
+                        # Oppure che la ora di fine sia posteriore all'altra
+                        or (
+                            sostituzione.ora_fine
+                            and sostituzione_altra.ora_inizio
+                            and (sostituzione.ora_fine > sostituzione_altra.ora_inizio)
+                        )
                     )
                 )
             ):
-                if sostituzione.nome_classe is not None and (
+                # Controlli per sostituzioni contemporanee, riordinare gli if per stabilire la gerarchia
+                # In una sostituzione che ha sovrapposizioni sia di classe sia di docente, se l'if di classe
+                # è antecedente, il messaggio mostrato sarà per la classe.
+
+                # Stessa classe
+                if sostituzione.nome_classe and (
                     sostituzione_altra.nome_classe == sostituzione.nome_classe
                 ):
-                    return True, "classe"
-                if sostituzione.numero_aula is not None and (
+                    if contrassegna_altre:
+                        sostituzione_altra.sovrapposizioni.append(sostituzione)
+                        sostituzione_altra.elemento_sovrapposizione = "classe"
+
+                    sostituzione.sovrapposizioni.append(sostituzione_altra)
+                    sostituzione.elemento_sovrapposizione = "classe"
+
+                    return True
+
+                # Stessa aula
+                elif sostituzione.numero_aula and (
                     sostituzione_altra.numero_aula == sostituzione.numero_aula
                 ):
-                    return True, "aula"
-                if (
+                    if contrassegna_altre:
+                        sostituzione_altra.sovrapposizioni.append(sostituzione)
+                        sostituzione_altra.elemento_sovrapposizione = "aula"
+
+                    sostituzione.sovrapposizioni.append(sostituzione_altra)
+                    sostituzione.elemento_sovrapposizione = "aula"
+
+                    return True
+
+                # Stesso docente
+                elif (
                     sostituzione.nome_docente
                     and (
                         sostituzione_altra.nome_docente == sostituzione.nome_docente
@@ -308,24 +374,52 @@ class Sostituzioni(SearchableList):
                     )
                     == sostituzione.cognome_docente
                 ):
-                    return True, "docente"
+                    if contrassegna_altre:
+                        sostituzione_altra.sovrapposizioni.append(sostituzione)
+                        sostituzione_altra.elemento_sovrapposizione = "docente"
 
-        return False, None
+                    sostituzione.sovrapposizioni.append(sostituzione_altra)
+                    sostituzione.elemento_sovrapposizione = "docente"
 
-    def check_errors(self, sostituzione: Sostituzione | None = None):
-        if sostituzione is None:
-            for sostituzione in self:
-                sostituzione.incompleta = self.check_incompleta(sostituzione)
+                    return True
 
-                sostituzione.sovrapposizioni, sostituzione.elemento_sovrapposizione = (
-                    self.check_sovrapposizioni(sostituzione)
-                )
+        sostituzione.sovrapposizioni = []
+        sostituzione.elemento_sovrapposizione = None
+
+        return False
+
+    @beartype
+    def rimuovi_altre_sovrapposizioni(self, sostituzione: Sostituzione):
+        for sostituzione_altra in sostituzione.sovrapposizioni:
+            self.check_sovrapposizioni(sostituzione_altra)
+
+    @beartype
+    def check_errori(
+        self,
+        sostituzione: Sostituzione | None = None,
+    ):
+
+        if sostituzione:
+            self.check_incompleta(sostituzione)
+            self.check_sovrapposizioni(sostituzione, contrassegna_altre=True)
+
         else:
-            sostituzione.incompleta = self.check_incompleta(sostituzione)
+            # totaltimeincompleta = 0
+            # totaltimesovrapposizioni = 0
 
-            sostituzione.sovrapposizioni, sostituzione.elemento_sovrapposizione = (
+            for sostituzione in self:
+                # start_time = time()
+                self.check_incompleta(sostituzione)
+                # incompleta_time = time()
+
                 self.check_sovrapposizioni(sostituzione)
-            )
+                # sovrapposizioni_time = time()
+
+                # totaltimeincompleta += incompleta_time - start_time
+                # totaltimesovrapposizioni += sovrapposizioni_time - incompleta_time
+
+            # print(f"incompleta - {totaltimeincompleta:.6f}")
+            # print(f"sovrapposizioni - {totaltimesovrapposizioni:.6f}")
 
     @beartype
     def filtra(self, filtri: dict | None = None):
@@ -337,10 +431,13 @@ class Sostituzioni(SearchableList):
         `{ data_inizio: 1702767600, data_fine: None }`  // per sostituzioni future
         """
 
-        if not filtri:
-            return self.to_json()
+        if not isinstance(filtri, dict):
+            filtri = {}
 
-        # filtri: dict
+        # Questa roba salva letteralmente 1ms shit aint worth it
+        # if str(filtri) in self.json_salvati:
+        # return self.json_salvati[str(filtri)]
+
         lista_filtrata = Sostituzioni()
 
         data_inizio: int | None = filtri.get(
@@ -365,12 +462,12 @@ class Sostituzioni(SearchableList):
 
         for sostituzione in self:
             if (
-                (data_inizio is None or sostituzione.data >= data_inizio)
-                and (data_fine is None or sostituzione.data <= data_fine)
-                and (
-                    (sostituzione.cancellato is False) if cancellato else True
-                )  # Includi anche le sostituzioni cancellate se
-                and ((sostituzione.pubblicato is True) if not non_pubblicato else True)
+                (sostituzione.data >= data_inizio)
+                and ((data_fine is None) or (sostituzione.data <= data_fine))
+                # Filtra solo per sostituzioni non cancellate, altrimenti includi anche quelle cancellate
+                and ((not sostituzione.cancellato) if not cancellato else True)
+                # Filtra solo per le sostituzioni pubblicate se non_pubblicato è false, altrimenti includi tutte
+                and ((sostituzione.pubblicato) if not non_pubblicato else True)
             ):
                 lista_filtrata.append(sostituzione)
 
@@ -387,12 +484,17 @@ class Sostituzioni(SearchableList):
             raise e
 
         self.append(sostituzione)
-        # self.check_errors(sostituzione)
-        self.check_errors()
+        self.aggiungi_a_indice(sostituzione)
+        self.check_errori(sostituzione)
 
     @beartype
     def modifica(self, id: int, data: dict):
+        # start_time = time()
+
         sostituzione = self.get(id)
+
+        # print(f"find - {time() - start_time:.6f}")
+
         try:
             sostituzione.modifica(data)
         except Exception as e:
@@ -401,8 +503,16 @@ class Sostituzioni(SearchableList):
             )
             raise e
 
-        # self.check_errors(sostituzione)
-        self.check_errors()
+        # print(f"modifica - {time() - start_time:.6f}")
+
+        self.rimuovi_altre_sovrapposizioni(sostituzione)
+
+        self.rimuovi_da_indice(sostituzione)
+        self.aggiungi_a_indice(sostituzione)
+
+        self.check_errori(sostituzione)
+
+        # print(f"errori - {time() - start_time:.6f}")
 
     @beartype
     def elimina(self, id: int, mantieni_in_storico: bool = True):
@@ -418,7 +528,10 @@ class Sostituzioni(SearchableList):
             raise e
 
         self.remove(sostituzione)
-        self.check_errors()
+        self.rimuovi_altre_sovrapposizioni(sostituzione)
+        self.rimuovi_da_indice(sostituzione)
+
+        del sostituzione
 
 
 sostituzioni = Sostituzioni()
