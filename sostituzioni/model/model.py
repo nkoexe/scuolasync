@@ -233,9 +233,9 @@ class Sostituzioni(SearchableList):
 
     def to_json(self):
         descrizioni_sovrapposizione = {
-            "docente": "Errore: Il docente ha una supplenza alla stessa ora.",
-            "aula": "Errore: Questa aula ha due supplenze in contemporanea.",
-            "classe": "Errore: Questa classe ha due supplenze in contemporanea.",
+            "docente": "Il docente ha una supplenza alla stessa ora.",
+            "aula": "Questa aula ha due supplenze in contemporanea.",
+            "classe": "Questa classe ha due supplenze in contemporanea.",
         }
         return [
             {
