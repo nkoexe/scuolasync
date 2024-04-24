@@ -1,4 +1,4 @@
-const ui_sostituzione_html_template = `<div class="sostituzione {pubblicato} {incompleta} {sovrapposizioni}" data-id={id} tabindex="0">
+const ui_sostituzione_html_template = `<div class="sostituzione ${sostituzioni_write ? "{pubblicato} {incompleta} {sovrapposizioni}" : ""}" data-id={id} tabindex="0">
   <div class="dato-sostituzione sostituzione-data">
     <span>{data}</span>
   </div>
@@ -16,12 +16,12 @@ const ui_sostituzione_html_template = `<div class="sostituzione {pubblicato} {in
   </div>
   <div class="dato-sostituzione sostituzione-note">
     <span>{note}</span>
-  </div>
-  <div class="dato-sostituzione sostituzione-icon">
-	{icona_pubblicato}
-	{icona_incompleta}
-	{icona_sovrapposizioni}
-  </div>
+  </div>${sostituzioni_write ?
+		`<div class="dato-sostituzione sostituzione-icon">
+  {icona_pubblicato}
+  {icona_incompleta}
+  {icona_sovrapposizioni}
+</div>` : ''}
 </div>`
 
 
@@ -103,48 +103,47 @@ async function refresh_sostituzioni(hard_refresh) {
 		}
 
 		attach_tooltips()
-
-		// ordina e filtra
-		refresh_sostituzioni(false)
-	} else {
-		// Non rigenerare la lista ma mostra soltanto le sostituzioni filtrate, le altre vengono nascoste
-
-		sostituzioni_applica_filtri()
-		ordina_sostituzioni()
-
-		const elementsMap = new Map();
-		const elementsToShow = []
-		const elementsToHide = []
-		let index = 0;
-
-		const ids = sostituzioni_visualizzate.map(element => element.id);
-
-		for (const sostituzione of document.querySelectorAll(".sostituzione")) {
-			const id = parseInt(sostituzione.dataset.id);
-			if (ids.includes(id)) {
-				elementsToShow.push(sostituzione);
-				elementsMap.set(id, { sostituzione, index });
-				index++;
-			} else {
-				elementsToHide.push(sostituzione);
-			}
-		}
-
-		// Move elements up and down based on the new order
-		for (let newIndex = 0; newIndex < ids.length; newIndex++) {
-			const id = ids[newIndex];
-			const { sostituzione } = elementsMap.get(id);
-
-			// Move the element only if the new position is different from the current position
-			if (newIndex !== sostituzione.index) {
-				const referenceNode = newIndex > index ? ui_sostituzioni_lista.children[newIndex + 1] : ui_sostituzioni_lista.children[newIndex];
-				ui_sostituzioni_lista.insertBefore(sostituzione, referenceNode);
-			}
-		};
-
-		elementsToHide.forEach(element => element.classList.add("hidden"));
-		elementsToShow.forEach(element => element.classList.remove("hidden"));
 	}
+
+	// Ordina e filtra
+	// Non rigenerare la lista ma mostra soltanto le sostituzioni filtrate, le altre vengono nascoste
+
+	sostituzioni_applica_filtri()
+	ordina_sostituzioni()
+
+	const elementsMap = new Map();
+	const elementsToShow = []
+	const elementsToHide = []
+	let index = 0;
+
+	const ids = sostituzioni_visualizzate.map(element => element.id);
+
+	for (const sostituzione of document.querySelectorAll(".sostituzione")) {
+		const id = parseInt(sostituzione.dataset.id);
+		if (ids.includes(id)) {
+			elementsToShow.push(sostituzione);
+			elementsMap.set(id, { sostituzione, index });
+			index++;
+		} else {
+			elementsToHide.push(sostituzione);
+		}
+	}
+
+	// Move elements up and down based on the new order
+	for (let newIndex = 0; newIndex < ids.length; newIndex++) {
+		const id = ids[newIndex];
+		const { sostituzione } = elementsMap.get(id);
+
+		// Move the element only if the new position is different from the current position
+		if (newIndex !== sostituzione.index) {
+			const referenceNode = newIndex > index ? ui_sostituzioni_lista.children[newIndex + 1] : ui_sostituzioni_lista.children[newIndex];
+			ui_sostituzioni_lista.insertBefore(sostituzione, referenceNode);
+		}
+	};
+
+	elementsToHide.forEach(element => element.classList.add("hidden"));
+	elementsToShow.forEach(element => element.classList.remove("hidden"));
+
 
 	ui_sostituzioni_messaggio_informativo.classList.add("hidden")
 	if (sostituzioni_visualizzate.length === 0) {
