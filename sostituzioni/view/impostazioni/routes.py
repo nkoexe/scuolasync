@@ -30,7 +30,7 @@ def gestione_utenti():
 @impostazioni.route("/reboot")
 @login_required
 @role_required("impostazioni.write")
-def reboot():
+def reboot(render: bool = True):
     if os.name == "nt":
         subprocess.Popen(
             [
@@ -44,6 +44,9 @@ def reboot():
         subprocess.Popen(
             ["/bin/bash", str(configurazione.get("scriptsdir").path / "reboot.sh")]
         )
+
+    if not render:
+        return
 
     return render_template("reboot.html", operazione="Riavvio")
 
@@ -70,9 +73,9 @@ def update():
 
     os.chdir(rootpath)
 
-    reboot()
+    reboot(render=False)
 
-    return render_template("update.html", operazione="Aggiornamento")
+    return render_template("reboot.html", operazione="Aggiornamento")
 
 
 @impostazioni.route("/log")
