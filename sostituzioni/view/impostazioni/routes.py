@@ -1,8 +1,6 @@
 from flask import render_template
-import os, subprocess
 
 from sostituzioni.control.configurazione import configurazione
-from sostituzioni.model.model import Docente
 from sostituzioni.model.auth import login_required, role_required
 from sostituzioni.view.impostazioni import impostazioni
 
@@ -30,52 +28,28 @@ def gestione_utenti():
 @impostazioni.route("/reboot")
 @login_required
 @role_required("impostazioni.write")
-def reboot(render: bool = True):
-    if os.name == "nt":
-        subprocess.Popen(
-            [
-                "cmd",
-                "/c",
-                str(configurazione.get("scriptsdir").path / "reboot.bat"),
-                str(os.getpid()),
-            ]
-        )
-    else:
-        subprocess.Popen(
-            ["/bin/bash", str(configurazione.get("scriptsdir").path / "reboot.sh")]
-        )
-
-    if not render:
-        return
-
-    return render_template("reboot.html", operazione="Riavvio")
+def reboot():
+    return render_template(
+        "updater.html",
+        version=configurazione.get("version").valore,
+        reboot=True,
+    )
 
 
 @impostazioni.route("/update")
 @login_required
 @role_required("impostazioni.write")
 def update():
-    rootpath = configurazione.get("rootpath").path
+    return render_template(
+        "updater.html",
+        version=configurazione.get("version").valore,
+        reboot=False,  # indica semplicemente che non è la pagina di reboot
+    )
 
-    # "/sostituzioni/sostituzioni", git è un livello più alto
-    repopath = rootpath.parent
 
-    os.chdir(repopath)
-
-    if os.name == "nt":
-        subprocess.check_call(
-            ["cmd", "/c", str(configurazione.get("scriptsdir").path / "update.bat")]
-        )
-    else:
-        subprocess.check_call(
-            ["/bin/bash", str(configurazione.get("scriptsdir").path / "update.sh")]
-        )
-
-    os.chdir(rootpath)
-
-    reboot(render=False)
-
-    return render_template("reboot.html", operazione="Aggiornamento")
+@impostazioni.route("/version")
+def version():
+    return configurazione.get("version").valore
 
 
 @impostazioni.route("/log")

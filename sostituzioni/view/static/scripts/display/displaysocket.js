@@ -93,7 +93,6 @@ function reconnect() {
     fetch('/')
         .then((response) => {
             if (response.ok) {
-                console.log('Reloading...')
                 location.reload()
             }
         })

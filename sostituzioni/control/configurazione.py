@@ -2,6 +2,8 @@
 Gestione della configurazione del sistema tramite il file configurazione.json
 """
 
+import os
+import subprocess
 from pathlib import Path
 from json import load, dump
 import logging
@@ -310,6 +312,41 @@ class Opzione:
 class Configurazione:
     @beartype
     def __init__(self, file: Path = CONFIG_FILE):
+        self.shell_commands = {}
+
+        if os.name == "nt":
+            self.shell_commands["update"] = ["git", "pull"]
+            self.shell_commands["reboot"] = [
+                "kill",
+                "-9",
+                str(os.getpid()),
+                "&&",
+                "python",
+                "-m",
+                "sostituzioni",
+            ]
+            self.shell_commands["get_version"] = [
+                "git",
+                "rev-parse",
+                "--short",
+                "HEAD",
+            ]
+            self.shell_commands["check_update"] = ["git", "fetch", "--dry-run"]
+        else:
+            self.shell_commands["update"] = ["/usr/bin/git", "pull"]
+            self.shell_commands["reboot"] = [
+                "/usr/bin/systemctl",
+                "restart",
+                "sostituzioni.service",
+            ]
+            self.shell_commands["get_version"] = [
+                "/usr/bin/git",
+                "rev-parse",
+                "--short",
+                "HEAD",
+            ]
+            self.shell_commands["check_update"] = ["/usr/bin/git", "fetch", "--dry-run"]
+
         with open(file, encoding="utf-8") as configfile:
             logger.debug("Caricamento file di configurazione..")
             self.data = load(configfile)
@@ -334,6 +371,14 @@ class Configurazione:
         # Aggiorna il percorso base di sistema e quello del file di configurazione
         self.set("rootpath", [0, str(ROOT_PATH)], force=True)
         self.set("configpath", [0, str(CONFIG_FILE)], force=True)
+
+        # Carica il dato di versione del sistema
+        v = (
+            subprocess.check_output(self.shell_commands["get_version"])
+            .decode("utf-8")
+            .strip()
+        )
+        self.set("version", v, force=True)
 
     def __repr__(self):
         return "Configurazione Sistema"

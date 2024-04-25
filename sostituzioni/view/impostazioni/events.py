@@ -42,6 +42,57 @@ def importa_docenti(file_bytearray):
     Docenti.from_buffer(file_bytearray)
 
 
+# //////////////////////////////
+
+
+@socketio.on("check update", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def check_update():
+    output = (
+        subprocess.check_output(
+            configurazione.shell_commands["check_update"],
+            cwd=configurazione.get("rootpath").path.parent,
+            shell=True,
+        )
+        .decode("utf-8")
+        .strip()
+    )
+
+    # git fetch --dry-run non restituisce nulla se non c'è aggiornamento
+    aggiornamento = not output == ""
+
+    emit("check update successo", {"value": aggiornamento})
+
+
+@socketio.on("update", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def update():
+    rootpath = configurazione.get("rootpath").path
+
+    # "/sostituzioni/sostituzioni", git è un livello più alto
+    repopath = rootpath.parent
+
+    subprocess.check_call(
+        configurazione.shell_commands["update"], cwd=repopath, shell=True
+    )
+
+    reboot()
+
+
+@socketio.on("reboot", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def reboot():
+    subprocess.Popen(
+        configurazione.shell_commands["reboot"], cwd=os.getcwd(), shell=True
+    )
+
+
+# //////////////////////////////
+
+
 @socketio.on("modifica utente", namespace="/impostazioni")
 @login_required
 @role_required("impostazioni.write")
@@ -130,3 +181,6 @@ def elimina_tutti_utenti_annulla():
     scheduler.remove_job("eliminazione_utenti")
     emit("elimina tutti utenti annulla successo", "")
     logger.debug("Eliminazione di tutti gli utenti annullata.")
+
+
+# //////////////////////////////
