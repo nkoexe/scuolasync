@@ -90,6 +90,9 @@ socket.on("errore esportazione", (msg) => {
 
 // ----------------
 
+// socket.on("shutdown", () => {
+//     notyf.error("Server shutting down.")
+// })
 
 socket.on("unauthorized", () => {
     location.reload()

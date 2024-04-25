@@ -1,4 +1,5 @@
 from flask import render_template
+import os, subprocess
 
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.model.model import Docente
@@ -26,6 +27,27 @@ def gestione_utenti():
     return render_template("gestione_utenti.html", utenti=lista_utenti)
 
 
+@impostazioni.route("/reboot")
+@login_required
+@role_required("impostazioni.write")
+def reboot():
+    if os.name == "nt":
+        subprocess.Popen(
+            [
+                "cmd",
+                "/c",
+                str(configurazione.get("scriptsdir").path / "reboot.bat"),
+                str(os.getpid()),
+            ]
+        )
+    else:
+        subprocess.Popen(
+            ["/bin/bash", str(configurazione.get("scriptsdir").path / "reboot.sh")]
+        )
+
+    return render_template("reboot.html", operazione="Riavvio")
+
+
 @impostazioni.route("/update")
 @login_required
 @role_required("impostazioni.write")
@@ -35,32 +57,22 @@ def update():
     # "/sostituzioni/sostituzioni", git è un livello più alto
     repopath = rootpath.parent
 
-    import os, subprocess
-
     os.chdir(repopath)
-    subprocess.check_call(["/usr/bin/git", "pull"])
-    os.chdir(rootpath)
 
     if os.name == "nt":
         subprocess.check_call(
-            [
-                "cmd",
-                "/c",
-                str(configurazione.get("scriptsdir").path / "reboot.bat"),
-                os.getpid(),
-            ]
+            ["cmd", "/c", str(configurazione.get("scriptsdir").path / "update.bat")]
         )
     else:
         subprocess.check_call(
-            [
-                "/bin/bash",
-                str(configurazione.get("scriptsdir").path / "reboot.sh"),
-                "&",
-                "disown",
-            ]
+            ["/bin/bash", str(configurazione.get("scriptsdir").path / "update.sh")]
         )
 
-    return "Updating////////"
+    os.chdir(rootpath)
+
+    reboot()
+
+    return render_template("update.html", operazione="Aggiornamento")
 
 
 @impostazioni.route("/log")

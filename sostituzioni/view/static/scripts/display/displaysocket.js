@@ -78,6 +78,13 @@ socket.on("aggiornamento notizie", () => {
 
 // ----------------
 
+// vedi view/__init__.py
+// socket.on('shutdown', () => {
+//     console.log('Shutting down')
+//     socket.disconnect()
+// })
+
+
 // socket.on('connect_error', reconnect)
 socket.on('connect_failed', reconnect)
 socket.on('disconnect', reconnect)
