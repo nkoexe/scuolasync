@@ -68,7 +68,9 @@ a {
 }
 
 #button {
+    position: relative;
     display: flex;
+    flex-direction: column;
     height: 200px;
     width: 200px;
     max-width: 100%;
@@ -128,7 +130,9 @@ a {
 }
 
 #loading-container {
-    margin: auto;
+    position: absolute;
+    top: 25px;
+    left: 25px;
     width: 150px;
     height: 150px;
     opacity: 0;

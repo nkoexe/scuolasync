@@ -115,13 +115,7 @@ opzione_percorso with context %}
                 {% endif %}
                 {% endif %}
                 {% endfor %}
-                {% if sezione.id == 'sistema' %}
-                <li>
-                  <a href="{{url_for('impostazioni.update')}}"><button class="pulsante">Aggiorna il Sistema</button></a>
-                  <br>
-                  <a href="{{url_for('impostazioni.reboot')}}"><button class="pulsante">Riavvio</button></a>
-                </li>
-                {% elif sezione.id == 'docenti' %}
+                {% if sezione.id == 'docenti' %}
                 <li>
                   <h5 class="opzione-titolo">Importa docenti da file</h5>
                   <p class="opzione-descrizione">Usare i file esportati dai gruppi Google. Accettati formati XSLX e CSV, con nome e cognome nella colonna 'Member Name'. Il nome del file dovrebbe assomigliare a questo: 'Members_xxxxxxxxxxxxxxxx_01012023_000000.csv.xlsx'</p>
@@ -143,6 +137,10 @@ opzione_percorso with context %}
   </div>
   <div id="footer-shadow"></div>
   <div id="footer">
+    <div id="link-aggiorna-riavvio">
+      <a id="link-aggiorna" href="{{url_for('impostazioni.update')}}">Aggiornamento</a>
+      <a id="link-riavvio" href="{{url_for('impostazioni.reboot')}}">Riavvio</a>
+    </div>
     <button id="pulsante-applica" class="pulsante pulsante-footer" onclick="applica()" disabled>Applica</button>
   </div>
   </form>
