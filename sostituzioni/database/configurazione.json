@@ -54,7 +54,7 @@
     },
     "version": {
       "titolo": "Versione del sistema",
-      "descrizione": null,
+      "descrizione": "",
       "sezione": "sistema",
       "disabilitato": true,
       "nascosto": false,
