@@ -52,6 +52,11 @@ socket.on("check update successo", (data) => {
     }
 })
 
+socket.on("check update errore", (data) => {
+    ui_prompt("Errore durante il controllo dell'aggiornamento.", "Si prega di riprovare più tardi.<br>Errore: " + data, "Torna al sito", null, "/")
+})
+
+
 
 socket.io.on("reconnect", () => {
     if (should_reboot) {

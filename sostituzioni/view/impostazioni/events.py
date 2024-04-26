@@ -49,15 +49,25 @@ def importa_docenti(file_bytearray):
 @login_required
 @role_required("impostazioni.write")
 def check_update():
-    output = (
-        subprocess.check_output(
-            configurazione.shell_commands["check_update"],
-            cwd=configurazione.get("rootpath").path.parent,
-            shell=True,
+    rootpath = configurazione.get("rootpath").path
+
+    # "/sostituzioni/sostituzioni", git è un livello più alto
+    repopath = rootpath.parent
+
+    try:
+        output = (
+            subprocess.check_output(
+                configurazione.shell_commands["check_update"],
+                cwd=repopath,
+                shell=True,
+            )
+            .decode("utf-8")
+            .strip()
         )
-        .decode("utf-8")
-        .strip()
-    )
+    except Exception as e:
+        logger.error(f"Errore durante il controllo dell'aggiornamento: {e}")
+        emit("check update errore", str(e))
+        return
 
     # git fetch --dry-run non restituisce nulla se non c'è aggiornamento
     aggiornamento = not output == ""
