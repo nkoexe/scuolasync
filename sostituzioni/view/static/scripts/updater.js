@@ -31,7 +31,7 @@ function ui_prompt(title, description, button_text, button_callback, href) {
 }
 
 function update() {
-    ui_loading("Aggiornamento in corso...", "Durata stimata: 10 secondi")
+    ui_loading("Aggiornamento in corso...", "Durata stimata: <10 secondi")
     socket.emit("update")
 }
 
