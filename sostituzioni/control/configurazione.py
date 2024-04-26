@@ -328,10 +328,15 @@ class Configurazione:
             self.shell_commands["get_version"] = [
                 "git",
                 "rev-parse",
-                "--short",
+                # "--short",
                 "HEAD",
             ]
-            self.shell_commands["check_update"] = ["git", "fetch", "--dry-run"]
+            self.shell_commands["check_update"] = [
+                "git",
+                "ls-remote",
+                "origin",
+                "main",
+            ]
         else:
             self.shell_commands["update"] = ["/usr/bin/git", "pull"]
             self.shell_commands["reboot"] = [
@@ -342,10 +347,15 @@ class Configurazione:
             self.shell_commands["get_version"] = [
                 "/usr/bin/git",
                 "rev-parse",
-                "--short",
+                # "--short",
                 "HEAD",
             ]
-            self.shell_commands["check_update"] = ["/usr/bin/git", "fetch", "--dry-run"]
+            self.shell_commands["check_update"] = [
+                "/usr/bin/git",
+                "ls-remote",
+                "origin",
+                "main",
+            ]
 
         with open(file, encoding="utf-8") as configfile:
             logger.debug("Caricamento file di configurazione..")

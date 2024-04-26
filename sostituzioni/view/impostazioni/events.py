@@ -55,12 +55,14 @@ def check_update():
     repopath = rootpath.parent
 
     try:
-        output = (
-            subprocess.check_output(
+        new_version = (
+            subprocess.run(
                 configurazione.shell_commands["check_update"],
                 cwd=repopath,
+                capture_output=True,
             )
-            .decode("utf-8")
+            .stdout.decode("utf-8")
+            .split("\t")[0]
             .strip()
         )
     except Exception as e:
@@ -68,8 +70,10 @@ def check_update():
         emit("check update errore", str(e))
         return
 
-    # git fetch --dry-run non restituisce nulla se non c'è aggiornamento
-    aggiornamento = not output == ""
+    if new_version == configurazione.get("version").valore:
+        aggiornamento = False
+    else:
+        aggiornamento = True
 
     emit("check update successo", {"value": aggiornamento})
 
@@ -83,9 +87,7 @@ def update():
     # "/sostituzioni/sostituzioni", git è un livello più alto
     repopath = rootpath.parent
 
-    subprocess.check_call(
-        configurazione.shell_commands["update"], cwd=repopath
-    )
+    subprocess.run(configurazione.shell_commands["update"], cwd=repopath)
 
     reboot()
 
@@ -94,9 +96,7 @@ def update():
 @login_required
 @role_required("impostazioni.write")
 def reboot():
-    subprocess.Popen(
-        configurazione.shell_commands["reboot"], cwd=os.getcwd()
-    )
+    subprocess.Popen(configurazione.shell_commands["reboot"], cwd=os.getcwd())
 
 
 # //////////////////////////////
