@@ -35,9 +35,9 @@ class Sezione:
     @beartype
     def __init__(self, id: str, dati: Dict):
         self.id = id
-        self.titolo = dati.get("titolo")
-        self.descrizione = dati.get("descrizione")
-        self.opzioni = []
+        self.titolo: str = dati.get("titolo", "")
+        self.descrizione: str = dati.get("descrizione", "")
+        self.opzioni: List[Opzione] = []
 
     def __repr__(self):
         return "Sezione" + self.id
@@ -60,13 +60,13 @@ class Opzione:
     def __init__(self, id: str, dati: Dict):
         self.id = id
 
-        self.titolo: str = dati.get("titolo", "Titolo Opzione")
-        self.descrizione: str = dati.get("descrizione", "Descrizione Opzione")
-        self.sezione: str = dati.get("sezione", "test")
+        self.titolo: str = dati.get("titolo", "")
+        self.descrizione: str = dati.get("descrizione", "")
+        self.sezione: str = dati.get("sezione", "")
         self.disabilitato: bool = dati.get("disabilitato", False)
         self.nascosto: bool = dati.get("nascosto", False)
 
-        self.tipo: str = dati.get("tipo")
+        self.tipo: str = dati.get("tipo", "")
 
         match self.tipo:
             case self.TESTO:
