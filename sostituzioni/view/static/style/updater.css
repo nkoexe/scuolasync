@@ -107,13 +107,20 @@ a {
 }
 
 #button-text-container-inner {
-    margin: 0 15%;
+    max-width: 100%;
+    padding: 0 15%;
     padding-bottom: 5px;
     display: flex;
     align-items: center;
     text-wrap: nowrap;
     min-width: auto;
     transition: inherit;
+}
+
+@media (max-width: 500px) {
+    #button-text-container-inner {
+        font-size: 2rem;
+    }
 }
 
 #button-text {}
