@@ -1,3 +1,4 @@
+const ui_pulsante_refresh_sostituzioni = document.querySelector('#pulsante-refresh-sostituzioni')
 const ui_pulsante_logout = document.querySelector('#pulsante-logout')
 const ui_logout_fun = document.querySelector("#logout-fun")  // logout overlay animation
 
@@ -43,6 +44,10 @@ function ui_loading_sostituzioni() {
 // pulsante refresh richiesto dall'utente
 function ui_refresh_sostituzioni() {
     ui_loading_sostituzioni()
+
+    ui_pulsante_refresh_sostituzioni.style.animation = 'none';
+    ui_pulsante_refresh_sostituzioni.offsetHeight; /* trigger reflow and restart animation */
+    ui_pulsante_refresh_sostituzioni.style.animation = null;
 
     filtri = sostituzioni_filtra_data()
     // temporaneo, rimuovere quanod si crea il filtro 'pubblicato'
