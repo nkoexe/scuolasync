@@ -59,7 +59,6 @@ def check_update():
             subprocess.check_output(
                 configurazione.shell_commands["check_update"],
                 cwd=repopath,
-                shell=True,
             )
             .decode("utf-8")
             .strip()
@@ -85,7 +84,7 @@ def update():
     repopath = rootpath.parent
 
     subprocess.check_call(
-        configurazione.shell_commands["update"], cwd=repopath, shell=True
+        configurazione.shell_commands["update"], cwd=repopath
     )
 
     reboot()
@@ -96,7 +95,7 @@ def update():
 @role_required("impostazioni.write")
 def reboot():
     subprocess.Popen(
-        configurazione.shell_commands["reboot"], cwd=os.getcwd(), shell=True
+        configurazione.shell_commands["reboot"], cwd=os.getcwd()
     )
 
 
