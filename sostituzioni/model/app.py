@@ -1,5 +1,6 @@
-from flask import Flask
+from os import environ
 from secrets import token_hex
+from flask import Flask
 
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.control.cli import database_cli, importer_cli, backup_cli
@@ -10,6 +11,7 @@ app = Flask(__name__)
 app.static_folder = configurazione.get("flaskstaticdir").path
 app.template_folder = configurazione.get("flasktemplatedir").path
 
+app.config['TESTING'] = environ.get('TESTING', False)
 app.config["SECRET_KEY"] = token_hex(32)
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SECURE"] = True

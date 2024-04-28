@@ -6,6 +6,7 @@ from pathlib import Path
 from json import load, dump
 import logging
 
+from dotenv import load_dotenv
 from beartype._decor.decormain import beartype
 from beartype.typing import List, Dict, Any
 
@@ -17,6 +18,9 @@ logger = logging.getLogger(__name__)
 
 ROOT_PATH = Path(__file__).parent.parent
 CONFIG_FILE = ROOT_PATH / "database" / "configurazione.json"
+
+
+load_dotenv(ROOT_PATH / ".env")
 
 
 def parsepath(pathstring: str) -> Path:
