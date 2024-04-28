@@ -266,6 +266,20 @@ input[type='radio'] {
     font-size: 30px;
 }
 
+#pulsante-refresh-sostituzioni {
+    animation: refresh-sostituzioni-animation 0.3s ease-out;
+}
+
+@keyframes refresh-sostituzioni-animation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(-180deg);
+    }
+}
+
 #container-esporta-sostituzioni {
     position: relative;
 }

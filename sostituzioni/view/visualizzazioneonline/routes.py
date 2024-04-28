@@ -57,6 +57,7 @@ def testone():
         Classe,
         OraPredefinita,
         Sostituzione,
+        sostituzioni,
     )
 
     aule = Aula.load()
@@ -76,8 +77,20 @@ def testone():
         data = int(data.timestamp())
 
         sostituzione = Sostituzione(
-            None, aula, classe, docente, data, None, None, orapredefinita, None, True
+            {
+                "data": data,
+                "numero_aula": aula,
+                "nome_classe": classe,
+                "docente": docente,
+                "ora_predefinita": orapredefinita,
+                "ora_inizio": None,
+                "ora_fine": None,
+                "note": None,
+                "pubblicato": True,
+                "cancellato": False,
+            }
         )
-        sostituzione.inserisci()
+
+        sostituzioni.inserisci(sostituzione)
 
     return "ok"

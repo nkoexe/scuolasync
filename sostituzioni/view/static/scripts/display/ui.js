@@ -15,7 +15,7 @@ options_ora = { 'hour': '2-digit', 'minute': '2-digit', 'second': '2-digit' }
 options_giorno = { 'day': '2-digit' }
 options_data = { 'month': 'long', 'year': 'numeric' }
 
-setInterval(() => {
+function update_ui() {
     const now = new Date()
     ui_ora.innerText = now.toLocaleTimeString('it-IT', options_ora)
     ui_giorno.innerText = now.toLocaleDateString('it-IT', options_giorno)
@@ -28,7 +28,10 @@ setInterval(() => {
             delete tasks[timestamp]
         }
     }
-}, 1000);
+}
+
+update_ui()
+setInterval(update_ui, 1000);
 
 
 setInterval(() => {

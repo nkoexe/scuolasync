@@ -52,6 +52,17 @@
       "default": 0,
       "valore": 2
     },
+    "version": {
+      "titolo": "Versione del sistema",
+      "descrizione": "",
+      "sezione": "sistema",
+      "disabilitato": true,
+      "nascosto": false,
+      "tipo": "testo",
+      "lunghezza_massima": null,
+      "default": "",
+      "valore": ""
+    },
     "maintenancemsg": {
       "titolo": "Messaggio di manutenzione",
       "descrizione": "Testo che verr\u00e0 mostrato agli utenti che cercano di accedere al sito quando esso \u00e8 in modalit\u00e0 manutenzione.",

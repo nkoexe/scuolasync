@@ -1,4 +1,5 @@
 import logging
+import signal
 
 from flask_socketio import SocketIO
 from flask_wtf.csrf import CSRFProtect
@@ -30,6 +31,17 @@ app.register_blueprint(impostazioni_blueprint)
 app.register_blueprint(auth_blueprint)
 app.register_blueprint(visualizzazionefisica_blueprint)
 app.register_blueprint(visualizzazioneonline_blueprint)
+
+
+def exit_handler(signal, frame):
+    logger.info("Shutting down")
+    # todo: velocizzare il shutdown di socketio
+    # socketio.emit("shutdown") per qualche motivo non funziona, clients non lo ricevono
+    exit(0)
+
+
+signal.signal(signal.SIGINT, exit_handler)
+signal.signal(signal.SIGTERM, exit_handler)
 
 logger.debug("All blueprints registered")
 logger.info("System ready")

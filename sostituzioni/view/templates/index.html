@@ -15,7 +15,10 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/header.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/index.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/help.css') }}">
+  {% if utente.ruolo.nome != 'visualizzatore' %}
   <link rel="stylesheet" href="{{ url_for('static', filename='style/gestionedati.css') }}">
+  {% endif %}
   <!-- <link rel="stylesheet" href="{{ url_for('static', filename='style/indexmin.css') }}"> -->
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
 </head>
@@ -29,9 +32,10 @@
     <h1 id="header-titolo">{{title}}</h1>
     <div id="header-pulsanti">
       {% if utente.permessi.impostazioni.write %}
-      <a href="{{ url_for('impostazioni.main')}}"><span class="material-symbols-rounded" data-tooltip="Impostazioni">settings</span></a>
+      <!-- <button id="pulsante-help" class="pulsante-header"><span class="material-symbols-rounded" data-tooltip="Aiuto">help</span></button> -->
+      <a class="pulsante-header" href="{{ url_for('impostazioni.main')}}"><span class="material-symbols-rounded" data-tooltip="Impostazioni">settings</span></a>
       {% endif %}
-      <a id="pulsante-logout" href="{{ url_for('auth.logout')}}"><span class="material-symbols-rounded" data-tooltip="Logout">logout</span></a>
+      <a class="pulsante-header" id="pulsante-logout" href="{{ url_for('auth.logout')}}"><span class="material-symbols-rounded" data-tooltip="Logout">logout</span></a>
     </div>
   </div>
   <div id="main-window">
@@ -231,6 +235,12 @@
         </div>
       </div>
     </div>
+    <div id="help-container" class="hidden">
+      <div id="help-frame">
+        <h1 id="help-titolo">Aiuto</h1>
+        <!-- <iframe id="help-video" height="100%" src="https://www.youtube.com/embed/855Yrashumw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+      </div>
+    </div>
     {% if utente.ruolo.nome != 'visualizzatore' %}
     <div id="gestione-dati-container" class="hidden">
       <div id="gestione-dati-frame">
@@ -297,8 +307,10 @@
             </div>
           </div>
           <div class="pulsanti-gestione-dati">
-            <button id="pulsante-terziario-sostituzione" class="pulsante pulsante-secondario-gestione-dati"></button>
-            <button id="pulsante-secondario-sostituzione" class="pulsante pulsante-secondario-gestione-dati"></button>
+            <div class="pulsanti-secondari-gestione-dati">
+              <button id="pulsante-terziario-sostituzione" class="pulsante pulsante-secondario-gestione-dati"></button>
+              <button id="pulsante-secondario-sostituzione" class="pulsante pulsante-secondario-gestione-dati"></button>
+            </div>
             <button id="pulsante-primario-sostituzione" class="pulsante pulsante-principale-gestione-dati"></button>
           </div>
         </div>
@@ -315,7 +327,9 @@
             <textarea id="gestione-dati-evento-testo" placeholder="Testo dell'evento"></textarea>
           </div>
           <div class="pulsanti-gestione-dati">
-            <input type="checkbox" id="gestione-dati-evento-urgente" class="material-symbols-rounded" data-tooltip="Contrassegna l'evento come urgente">
+            <div class="pulsanti-secondari-gestione-dati">
+              <input type="checkbox" id="gestione-dati-evento-urgente" class="material-symbols-rounded" data-tooltip="Contrassegna l'evento come urgente">
+            </div>
             <button id="pulsante-principale-evento" class="pulsante pulsante-principale-gestione-dati"></button>
           </div>
         </div>
@@ -332,6 +346,7 @@
             <textarea id="gestione-dati-notizia-testo" placeholder="Testo della notizia"></textarea>
           </div>
           <div class="pulsanti-gestione-dati">
+            <div class="pulsanti-secondari-gestione-dati"></div>
             <button id="pulsante-principale-notizia" class="pulsante pulsante-principale-gestione-dati"></button>
           </div>
         </div>

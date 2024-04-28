@@ -71,9 +71,7 @@
 #gestione-dati-titolo {}
 
 .pulsanti-gestione-dati {
-    margin: auto;
-    margin-right: 0;
-    /* padding: 20px; */
+    width: 100%;
     display: flex;
     gap: 10px;
 }
@@ -83,6 +81,12 @@
     font-size: 20px;
 }
 
+.pulsanti-secondari-gestione-dati {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}
+
 .pulsante-principale-gestione-dati {
     background-color: var(--color-accent);
     color: var(--color-accent-text);
@@ -90,7 +94,6 @@
 
 .pulsante-secondario-gestione-dati {
     box-shadow: none;
-    background-color: var();
 }
 
 .pulsante-secondario-gestione-dati:hover {
@@ -268,4 +271,30 @@
 #gestione-dati-evento-urgente:checked::before {
     color: white;
     scale: 1.2;
+}
+
+
+@media (max-width: 1000px) {
+    #gestione-dati-frame {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+
+    #pulsante-chiudi-gestione-dati {
+        border-radius: 0;
+    }
+
+}
+
+/* Soltanto se ci sono due o più pulsanti secondari, metti i secondari in alto e il primario in basso */
+@media (max-width: 600px) {
+    .pulsanti-gestione-dati:has(.pulsante-secondario-gestione-dati:nth-child(1)) {
+        flex-direction: column;
+    }
+
+    .pulsanti-secondari-gestione-dati:has(.pulsante-secondario-gestione-dati:nth-child(1)) {
+        margin: 0;
+        justify-content: space-between;
+    }
 }

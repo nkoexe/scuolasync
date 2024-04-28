@@ -2,6 +2,8 @@
 Gestione della configurazione del sistema tramite il file configurazione.json
 """
 
+import os
+import subprocess
 from pathlib import Path
 from json import load, dump
 import logging
@@ -37,9 +39,9 @@ class Sezione:
     @beartype
     def __init__(self, id: str, dati: Dict):
         self.id = id
-        self.titolo = dati.get("titolo")
-        self.descrizione = dati.get("descrizione")
-        self.opzioni = []
+        self.titolo: str = dati.get("titolo", "")
+        self.descrizione: str = dati.get("descrizione", "")
+        self.opzioni: List[Opzione] = []
 
     def __repr__(self):
         return "Sezione" + self.id
@@ -62,13 +64,13 @@ class Opzione:
     def __init__(self, id: str, dati: Dict):
         self.id = id
 
-        self.titolo: str = dati.get("titolo", "Titolo Opzione")
-        self.descrizione: str = dati.get("descrizione", "Descrizione Opzione")
-        self.sezione: str = dati.get("sezione", "test")
+        self.titolo: str = dati.get("titolo", "")
+        self.descrizione: str = dati.get("descrizione", "")
+        self.sezione: str = dati.get("sezione", "")
         self.disabilitato: bool = dati.get("disabilitato", False)
         self.nascosto: bool = dati.get("nascosto", False)
 
-        self.tipo: str = dati.get("tipo")
+        self.tipo: str = dati.get("tipo", "")
 
         match self.tipo:
             case self.TESTO:
@@ -314,6 +316,51 @@ class Opzione:
 class Configurazione:
     @beartype
     def __init__(self, file: Path = CONFIG_FILE):
+        self.shell_commands = {}
+
+        if os.name == "nt":
+            self.shell_commands["update"] = ["git", "pull"]
+            self.shell_commands["reboot"] = [
+                "kill",
+                "-9",
+                str(os.getpid()),
+                "&&",
+                "python",
+                "-m",
+                "sostituzioni",
+            ]
+            self.shell_commands["get_version"] = [
+                "git",
+                "rev-parse",
+                # "--short",
+                "HEAD",
+            ]
+            self.shell_commands["check_update"] = [
+                "git",
+                "ls-remote",
+                "origin",
+                "main",
+            ]
+        else:
+            self.shell_commands["update"] = ["/usr/bin/git", "pull"]
+            self.shell_commands["reboot"] = [
+                "/usr/bin/systemctl",
+                "restart",
+                "sostituzioni.service",
+            ]
+            self.shell_commands["get_version"] = [
+                "/usr/bin/git",
+                "rev-parse",
+                # "--short",
+                "HEAD",
+            ]
+            self.shell_commands["check_update"] = [
+                "/usr/bin/git",
+                "ls-remote",
+                "origin",
+                "main",
+            ]
+
         with open(file, encoding="utf-8") as configfile:
             logger.debug("Caricamento file di configurazione..")
             self.data = load(configfile)
@@ -338,6 +385,14 @@ class Configurazione:
         # Aggiorna il percorso base di sistema e quello del file di configurazione
         self.set("rootpath", [0, str(ROOT_PATH)], force=True)
         self.set("configpath", [0, str(CONFIG_FILE)], force=True)
+
+        # Carica il dato di versione del sistema
+        v = (
+            subprocess.check_output(self.shell_commands["get_version"])
+            .decode("utf-8")
+            .strip()
+        )
+        self.set("version", v, force=True)
 
     def __repr__(self):
         return "Configurazione Sistema"

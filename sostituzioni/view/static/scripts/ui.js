@@ -1,5 +1,9 @@
+const ui_pulsante_help = document.querySelector('#pulsante-help')
+const ui_help_container = document.querySelector('#help-container')
 const ui_pulsante_logout = document.querySelector('#pulsante-logout')
 const ui_logout_fun = document.querySelector("#logout-fun")  // logout overlay animation
+
+const ui_pulsante_refresh_sostituzioni = document.querySelector('#pulsante-refresh-sostituzioni')
 
 const ui_context_menu = document.querySelector("#context-menu")
 const ui_pulsanti_context_menu = document.querySelector("#pulsanti-context-menu")
@@ -44,10 +48,18 @@ function ui_loading_sostituzioni() {
 function ui_refresh_sostituzioni() {
     ui_loading_sostituzioni()
 
+    ui_pulsante_refresh_sostituzioni.style.animation = 'none';
+    ui_pulsante_refresh_sostituzioni.offsetHeight; /* trigger reflow and restart animation */
+    ui_pulsante_refresh_sostituzioni.style.animation = null;
+
     filtri = sostituzioni_filtra_data()
     // temporaneo, rimuovere quanod si crea il filtro 'pubblicato'
     filtri.non_pubblicato = true
     s_richiedi_sostituzioni(filtri)
+}
+
+ui_pulsante_help.onclick = () => {
+    ui_help_container.classList.remove("hidden")
 }
 
 // logout animation

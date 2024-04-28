@@ -35,31 +35,50 @@ def applica(dati):
     emit("applica impostazioni successo")
 
 
-@socketio.on("server reboot", namespace="/impostazioni")
+@socketio.on("importa docenti", namespace="/impostazioni")
 @login_required
 @role_required("impostazioni.write")
-def reboot():
-    if os.name == "nt":
-        subprocess.check_call(
-            [
-                "cmd",
-                "/c",
-                str(configurazione.get("scriptsdir").path / "reboot.bat"),
-                os.getpid(),
-            ]
+def importa_docenti(file_bytearray):
+    Docenti.from_buffer(file_bytearray)
+
+
+# //////////////////////////////
+
+
+@socketio.on("check update", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def check_update():
+    rootpath = configurazione.get("rootpath").path
+
+    # "/sostituzioni/sostituzioni", git è un livello più alto
+    repopath = rootpath.parent
+
+    try:
+        new_version = (
+            subprocess.run(
+                configurazione.shell_commands["check_update"],
+                cwd=repopath,
+                capture_output=True,
+            )
+            .stdout.decode("utf-8")
+            .split("\t")[0]
+            .strip()
         )
+    except Exception as e:
+        logger.error(f"Errore durante il controllo dell'aggiornamento: {e}")
+        emit("check update errore", str(e))
+        return
+
+    if new_version == configurazione.get("version").valore:
+        aggiornamento = False
     else:
-        subprocess.check_call(
-            [
-                "/bin/bash",
-                str(configurazione.get("scriptsdir").path / "reboot.sh"),
-                "&",
-                "disown",
-            ]
-        )
+        aggiornamento = True
+
+    emit("check update successo", {"value": aggiornamento})
 
 
-@socketio.on("server update", namespace="/impostazioni")
+@socketio.on("update", namespace="/impostazioni")
 @login_required
 @role_required("impostazioni.write")
 def update():
@@ -68,17 +87,19 @@ def update():
     # "/sostituzioni/sostituzioni", git è un livello più alto
     repopath = rootpath.parent
 
-    os.chdir(repopath)
-    subprocess.check_call(["/usr/bin/git", "pull"])
-    os.chdir(rootpath)
+    subprocess.run(configurazione.shell_commands["update"], cwd=repopath)
+
     reboot()
 
 
-@socketio.on("importa docenti", namespace="/impostazioni")
+@socketio.on("reboot", namespace="/impostazioni")
 @login_required
 @role_required("impostazioni.write")
-def importa_docenti(file_bytearray):
-    Docenti.from_buffer(file_bytearray)
+def reboot():
+    subprocess.Popen(configurazione.shell_commands["reboot"], cwd=os.getcwd())
+
+
+# //////////////////////////////
 
 
 @socketio.on("modifica utente", namespace="/impostazioni")
@@ -169,3 +190,6 @@ def elimina_tutti_utenti_annulla():
     scheduler.remove_job("eliminazione_utenti")
     emit("elimina tutti utenti annulla successo", "")
     logger.debug("Eliminazione di tutti gli utenti annullata.")
+
+
+# //////////////////////////////

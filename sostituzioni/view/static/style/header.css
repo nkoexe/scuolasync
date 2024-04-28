@@ -46,8 +46,17 @@
 }
 
 #header-pulsanti a {
-    display: flex;
     text-decoration: none;
+}
+
+#header-pulsanti button {}
+
+#header-pulsanti .pulsante-header {
+    display: flex;
+    background-color: inherit;
+    border: none;
+    cursor: pointer;
+    padding: 0;
 }
 
 

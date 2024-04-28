@@ -395,6 +395,39 @@ input[type="file"]+label:hover {
     z-index: 100;
 }
 
+#link-aggiorna-riavvio {
+    display: flex;
+    margin: auto 10px auto 30px;
+    font-size: large;
+    border-radius: 1rem;
+    text-decoration: none;
+}
+
+#link-aggiorna,
+#link-riavvio {
+    border: 2px solid #ffffff80;
+    color: white;
+    padding: 15px;
+    transition: all 0.2s;
+}
+
+#link-aggiorna:hover,
+#link-riavvio:hover {
+    background-color: #ffffff27;
+}
+
+#link-aggiorna {
+    border-right: none;
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+}
+
+#link-riavvio {
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+
+
 .pulsante-footer {
     padding: 15px 30px;
     background-color: #ffffff;
