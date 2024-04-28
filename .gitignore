@@ -5,6 +5,8 @@ node_modules/
 package.json
 package-lock.json
 
+sostituzioni/.env
+
 sostituzioni/control/chiavi/
 sostituzioni/database/backup/
 
