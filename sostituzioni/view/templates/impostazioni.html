@@ -109,6 +109,16 @@ opzione_percorso with context %}
                   {{ opzione_selezione(opzione) }}
                   {% elif opzione.tipo == opzione.PERCORSO %}
                   {{ opzione_percorso(opzione) }}
+                  {% elif opzione.tipo == opzione.LISTA %}
+                  {% for elemento in opzione.valore %}
+                  {% if opzione.tipo_valori == opzione.TESTO %}
+                  {{ opzione_testo(elemento) }}
+                  {% elif opzione.tipo_valori == opzione.NUMERO %}
+                  {{ opzione_numero(elemento) }}
+                  {% elif opzione.tipo_valori == opzione.PERCORSO %}
+                  {{ opzione_percorso(elemento) }}
+                  {% endif %}
+                  {% endfor %}
                   {% endif %}
                 </li>
                 <div class="opzioni-separator"></div>

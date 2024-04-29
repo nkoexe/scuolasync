@@ -24,29 +24,29 @@ for (let index = 0; index < sezioni.length; index++) {
 //////////////////////////////
 
 
-const docenti_filepicker = document.getElementById("import-docenti-filepicker")
-const docenti_selected_file_label = document.getElementById("import-docenti-selected-file-label")
+// const docenti_filepicker = document.getElementById("import-docenti-filepicker")
+// const docenti_selected_file_label = document.getElementById("import-docenti-selected-file-label")
 
-docenti_filepicker.onchange = () => {
-    if (docenti_filepicker.value == "") {
-        docenti_selected_file_label.innerHTML = ""
-    } else {
-        docenti_selected_file_label.innerHTML = docenti_filepicker.files[0].name
-    }
-}
+// docenti_filepicker.onchange = () => {
+//     if (docenti_filepicker.value == "") {
+//         docenti_selected_file_label.innerHTML = ""
+//     } else {
+//         docenti_selected_file_label.innerHTML = docenti_filepicker.files[0].name
+//     }
+// }
 
-function importa_docenti() {
-    if (docenti_filepicker.files.length == 0) {
-        alert("Seleziona un file");
-    }
+// function importa_docenti() {
+//     if (docenti_filepicker.files.length == 0) {
+//         alert("Seleziona un file");
+//     }
 
-    let file = docenti_filepicker.files[0]
-    let reader = new FileReader();
-    reader.readAsArrayBuffer(file);
-    reader.onload = () => {
-        socket.emit("importa docenti", reader.result);
-    }
-}
+//     let file = docenti_filepicker.files[0]
+//     let reader = new FileReader();
+//     reader.readAsArrayBuffer(file);
+//     reader.onload = () => {
+//         socket.emit("importa docenti", reader.result);
+//     }
+// }
 
 
 //////////////////////////////

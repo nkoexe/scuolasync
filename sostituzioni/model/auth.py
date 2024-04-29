@@ -127,8 +127,6 @@ def sso_login(request):
     response_user_info = requests.get(uri, headers=headers, data=body)
     info = response_user_info.json()
 
-    print(info)
-
     # Struttura info utente:
     # {
     #   email: ...
