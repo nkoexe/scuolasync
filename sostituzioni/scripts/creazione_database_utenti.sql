@@ -59,6 +59,39 @@ CREATE TABLE IF NOT EXISTS accounting (
 );
 
 
+INSERT OR IGNORE INTO permesso VALUES 
+    ('notizie.read', ''),
+    ('notizie.write', ''),
+    ('eventi.read', ''),
+    ('eventi.write', ''),
+    ('sostituzioni.read', ''),
+    ('sostituzioni.write', ''),
+    ('impostazioni.write', '');
+
+INSERT OR IGNORE INTO ruolo VALUES 
+    ('amministratore'),
+    ('editor'),
+    ('visualizzatore');
+
+INSERT OR IGNORE INTO permesso_per_ruolo VALUES 
+    ('amministratore', 'notizie.read'),
+    ('amministratore', 'notizie.write'),
+    ('amministratore', 'eventi.read'),
+    ('amministratore', 'eventi.write'),
+    ('amministratore', 'sostituzioni.read'),
+    ('amministratore', 'sostituzioni.write'),
+    ('amministratore', 'impostazioni.write'),
+    ('editor', 'notizie.read'),
+    ('editor', 'notizie.write'),
+    ('editor', 'eventi.read'),
+    ('editor', 'eventi.write'),
+    ('editor', 'sostituzioni.read'),
+    ('editor', 'sostituzioni.write'),
+    ('visualizzatore', 'notizie.read'),
+    ('visualizzatore', 'eventi.read'),
+    ('visualizzatore', 'sostituzioni.read');
+
+
 ------ Creazione Trigger ------
 
 -- -- Copia dati nome e ruolo dall'utente che ha eseguito l'azione

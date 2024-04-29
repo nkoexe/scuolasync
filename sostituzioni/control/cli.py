@@ -3,8 +3,6 @@ from flask.cli import AppGroup
 from os import system
 
 from sostituzioni.control.configurazione import configurazione
-from sostituzioni.control.importer import Docenti, Utenti
-from sostituzioni.control.backup import backup
 
 
 database_cli = AppGroup("database")
@@ -118,6 +116,21 @@ def inserisci_db(nome):
     print("Dati di test inseriti nel database principale.")
 
 
+@database_utenti_cli.command("aggiungi-utente")
+@click.argument("email", type=str, required=True)
+@click.argument("ruolo", type=str, required=False)
+def aggiungi_utente(email, ruolo):
+    from sostituzioni.model.model import Utente
+
+    if not ruolo:
+        ruolo = "amministratore"
+
+    utente = Utente(email, ruolo)
+    utente.inserisci()
+
+    print("Utente aggiunto.")
+
+
 @database_utenti_cli.command("inserisci-test")
 @click.argument("nome", type=str, required=False)
 def inserisci_db_utenti(nome):
@@ -180,15 +193,21 @@ def elimina_db_utenti(nome):
 @importer_cli.command("docenti")
 @click.argument("file", type=click.File("rb"))
 def importa_docenti(file):
+    from sostituzioni.control.importer import Docenti
+
     Docenti.from_buffer(file.read())
 
 
 @importer_cli.command("utenti")
 @click.argument("file", type=click.File("rb"))
 def importa_utenti(file):
+    from sostituzioni.control.importer import Utenti
+
     Utenti.from_buffer(file.read())
 
 
 @backup_cli.command("esegui")
 def esegui_backup():
+    from sostituzioni.control.backup import backup
+
     backup()

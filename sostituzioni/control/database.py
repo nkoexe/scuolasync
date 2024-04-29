@@ -351,8 +351,16 @@ class Database:
 # -----------------------------------------------
 
 
-database = Database(configurazione.get("databasepath").path)
-authdatabase = Database(configurazione.get("authdatabasepath").path)
+databasepath = configurazione.get("databasepath").path
+authdatabasepath = configurazione.get("authdatabasepath").path
+
+if not databasepath.exists():
+    raise FileNotFoundError(f"Database {databasepath} non trovato.")
+if not authdatabasepath.exists():
+    raise FileNotFoundError(f"Database utenti {authdatabasepath} non trovato.")
+
+database = Database(databasepath)
+authdatabase = Database(authdatabasepath)
 
 
 # -----------------------------------------------
