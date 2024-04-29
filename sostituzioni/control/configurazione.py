@@ -3,13 +3,14 @@ Gestione della configurazione del sistema tramite il file configurazione.json
 """
 
 import os
+import re
 import subprocess
 from pathlib import Path
 from json import load, dump
 import logging
 
 from beartype._decor.decormain import beartype
-from beartype.typing import List, Dict, Any
+from beartype.typing import List, Dict, Any, Iterator
 
 import sostituzioni.control.logging
 from sostituzioni.lib.searchablelist import SearchableList
@@ -55,60 +56,106 @@ class Opzione:
     COLORE = "colore"
     SELEZIONE = "selezione"
     PERCORSO = "percorso"
+    LISTA = "lista"
 
     @beartype
-    def __init__(self, id: str, dati: Dict):
+    def __init__(
+        self,
+        id: str | None = None,
+        dati: Dict = {},
+        parent: object | None = None,
+        index: int | None = None,
+    ):
+        self.parent = parent
+
+        # Opzione regolare
+        if id is not None:
+            titolo = dati.get("titolo", "")
+            descrizione = dati.get("descrizione", "")
+            sezione = dati.get("sezione", "")
+            disabilitato = dati.get("disabilitato", False)
+            nascosto = dati.get("nascosto", False)
+            tipo = dati.get("tipo", "")
+
+        # Questa è una sotto-opzione
+        elif parent is not None:
+            id = parent.id + "_" + str(index)
+            titolo = ""
+            descrizione = ""
+            sezione = parent.sezione
+            disabilitato = dati.get("disabilitato", False)
+            nascosto = dati.get("nascosto", False)
+            tipo = parent.tipo_valori
+
+        else:
+            raise ValueError("Fornire id o parent")
+
         self.id = id
-
-        self.titolo: str = dati.get("titolo", "")
-        self.descrizione: str = dati.get("descrizione", "")
-        self.sezione: str = dati.get("sezione", "")
-        self.disabilitato: bool = dati.get("disabilitato", False)
-        self.nascosto: bool = dati.get("nascosto", False)
-
-        self.tipo: str = dati.get("tipo", "")
+        self.titolo: str = titolo
+        self.descrizione: str = descrizione
+        self.sezione: str = sezione
+        self.disabilitato: bool = disabilitato
+        self.nascosto: bool = nascosto
+        self.tipo: str = tipo
 
         match self.tipo:
             case self.TESTO:
-                self.lunghezza_massima = dati.get("lunghezza_massima")
-                self.default = dati.get("default")
-                self.valore = dati.get("valore")
+                self.lunghezza_massima: int | None = dati.get("lunghezza_massima", None)
+                self.default: str = dati.get("default", "")
+                self.valore: str = dati.get("valore", "")
 
             case self.NUMERO:
-                self.intervallo: List[int | None] = dati.get("intervallo")
-                self.default: int | float = dati.get("default")
-                self.valore: int | float = dati.get("valore")
+                self.intervallo: List[int | None] = dati.get("intervallo", [None, None])
+                self.default: int | float = dati.get("default", 0)
+                self.valore: int | float = dati.get("valore", 0)
 
             case self.NUMERO_UNITA:
-                self.intervallo: List[int | None] = dati.get("intervallo")
-                self.scelte_unita: List[str] = dati.get("scelte_unita")
-                self.unita_default: int = dati.get("unita_default")
-                self.unita: int = dati.get("unita")
-                self.default: int | float = dati.get("default")
-                self.valore: int | float = dati.get("valore")
+                self.intervallo: List[int | None] = dati.get("intervallo", [None, None])
+                self.scelte_unita: List[str] = dati.get("scelte_unita", [""])
+                self.unita_default: int = dati.get("unita_default", 0)
+                self.unita: int = dati.get("unita", 0)
+                self.default: int | float = dati.get("default", 0)
+                self.valore: int | float = dati.get("valore", 0)
 
             case self.BOOLEANO:
-                self.default: bool = dati.get("default")
-                self.valore: bool = dati.get("valore")
+                self.default: bool = dati.get("default", False)
+                self.valore: bool = dati.get("valore", False)
 
             case self.COLORE:
-                self.default: str = dati.get("default")
-                self.valore: str = dati.get("valore")
+                self.default: str = dati.get("default", "")
+                self.valore: str = dati.get("valore", "")
 
             case self.SELEZIONE:
-                self.scelte: List[str] = dati.get("scelte")
-                self.default: int = dati.get("default")
-                self.valore: int = dati.get("valore")
+                self.scelte: List[str] = dati.get("scelte", [""])
+                self.default: int = dati.get("default", 0)
+                self.valore: int = dati.get("valore", 0)
 
             case self.PERCORSO:
-                self.radice: int = dati.get("radice")
-                self.scelte_radice: List[str] = dati.get("scelte_radice")
-                self.default: str = dati.get("default")
-                self.valore: str = dati.get("valore")
+                self.scelte_radice: List[str] = dati.get("scelte_radice", [""])
+                self.radice: int = dati.get("radice", 0)
+                self.default: str = dati.get("default", "")
+                self.valore: str = dati.get("valore", "")
 
                 self.path = parsepath(self.scelte_radice[self.radice]) / parsepath(
                     self.valore
                 )
+
+            case self.LISTA:
+                self.tipo_valori: str = dati.get("tipo_valori", "")
+                self.default: list = []
+                self.valore: list = []
+
+                for index in range(len(dati.get("default", []))):
+                    dati_lista = dati.get("default")[index]
+                    self.default.append(
+                        Opzione(parent=self, dati=dati_lista, index=index)
+                    )
+
+                for index in range(len(dati.get("valore", []))):
+                    dati_lista = dati.get("valore")[index]
+                    self.valore.append(
+                        Opzione(parent=self, dati=dati_lista, index=index)
+                    )
 
             case _:
                 logger.error(
@@ -193,11 +240,20 @@ class Opzione:
     def __len__(self) -> int:
         return len(self.valore)
 
-    @beartype
-    def set(self, dati: Any, force: bool = False):
-        logger.debug(f"Setter {self.id}: {dati}")
+    def __iter__(self) -> Iterator[str]:
+        return iter(self.valore)
 
-        if not force and (self.disabilitato or self.nascosto):
+    def __contains__(self, item: str) -> bool:
+        return item in self.valore
+
+    def __getitem__(self, item: int) -> str:
+        return self.valore[item]
+
+    @beartype
+    def set(self, dati: Any, force: bool = False, index: int | None = None):
+        logger.debug(f"Setter {self.id}: {dati} {index if index else ''}")
+
+        if not force and (self.disabilitato):
             logger.debug("Setter disabilitato, impossibile aggiornare l'opzione.")
             return False
 
@@ -333,7 +389,28 @@ class Opzione:
 
                 return True
 
+            case self.LISTA:
+                # Modifica un solo elemento della lista
+                if index is not None:
+                    opzione = Opzione(parent=self)
+                    opzione.set(dati)
+                    self.valore[index] = opzione
+                    return True
+
+                # Modifica tutte le opzioni della lista
+                if not isinstance(dati, list):
+                    raise TypeError("Dati non validi, per lista fornire un array")
+
+                self.valore = []
+                for dato in dati:
+                    opzione = Opzione(parent=self)
+                    opzione.set(dato)
+                    self.valore.append(opzione)
+
+                return True
+
     def esporta(self):
+
         dati = {
             "titolo": self.titolo,
             "descrizione": self.descrizione,
@@ -380,6 +457,29 @@ class Opzione:
                 dati["scelte_radice"] = self.scelte_radice
                 dati["default"] = str(self.default)
                 dati["valore"] = str(self.valore)
+
+            case self.LISTA:
+                dati["tipo_valori"] = self.tipo_valori
+                dati["default"] = [
+                    {"valore": opzione.valore} for opzione in self.default
+                ]
+
+                valori = []
+                for opzione in self.valore:
+                    match self.tipo_valori:
+                        case self.TESTO:
+                            dato = {"valore": opzione.valore}
+                        case self.NUMERO:
+                            dato = {"valore": opzione.valore}
+                        case self.PERCORSO:
+                            dato = {"valore": opzione.valore}
+                        case _:
+                            raise ValueError(
+                                f"Tipo {self.tipo_valori} non ancora supportato."
+                            )
+                    valori.append(dato)
+
+                dati["valore"] = valori
 
         return dati
 
@@ -502,6 +602,10 @@ class Configurazione:
                  In caso contrario, chiama il metodo set dell'oggetto opzioni[id_opzione]
                  con il parametro dati e restituisce il risultato.
         """
+
+        match id_opzione.split("_"):
+            case [id_parent, index] if index.isdigit():
+                return self.opzioni.get(id_parent).set(dati, index=int(index))
 
         if id_opzione not in self.opzioni.keys():
             logger.warning(f"Setter: id {id_opzione} non riconosciuto.")
