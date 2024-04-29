@@ -655,7 +655,7 @@ class Configurazione:
             "opzioni": {o.id: o.esporta() for o in self.opzioni},
         }
 
-        with open(file, "w") as f:
+        with open(file, "w", encoding="utf-8") as f:
             dump(dati, f, ensure_ascii=False, indent=2)
 
 
