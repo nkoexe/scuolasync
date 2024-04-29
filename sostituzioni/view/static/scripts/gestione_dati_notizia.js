@@ -67,10 +67,21 @@ function mostra_modifica_notizia(id) {
 }
 
 function conferma_modifica_notizia(id) {
-    data_inizio = fix_date_from_input(gestione_dati_notizia_data_inizio.valueAsNumber) / 1000;
-    data_fine = fix_date_from_input(gestione_dati_notizia_data_fine.valueAsNumber) / 1000;
+    let data_inizio = fix_date_from_input(gestione_dati_notizia_data_inizio.valueAsNumber) / 1000;
+    let data_fine = fix_date_from_input(gestione_dati_notizia_data_fine.valueAsNumber) / 1000;
+
+    let testo = gestione_dati_notizia_testo.value;
+    testo = testo.trim();
+    testo = testo.replace(/\n/g, '<br>');
+
+
+    if (testo.length == 0) {
+        notyf.error("Inserire un testo")
+        return;
+    };
 
     if (data_inizio > data_fine) {
+        notyf.error("La data di inizio non può essere anteriore a quella di fine")
         return
     };
 
@@ -78,7 +89,7 @@ function conferma_modifica_notizia(id) {
         id, {
         data_inizio: data_inizio,
         data_fine: data_fine,
-        testo: gestione_dati_notizia_testo.value
+        testo: testo
     });
 
     nascondi_gestione_dati();

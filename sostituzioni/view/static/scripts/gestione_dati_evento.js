@@ -35,7 +35,12 @@ function conferma_nuovo_evento() {
     data_ora_inizio = fix_date_from_input(gestione_dati_evento_data_inizio.valueAsNumber) / 1000;
     data_ora_fine = fix_date_from_input(gestione_dati_evento_data_fine.valueAsNumber) / 1000;
 
-    if (gestione_dati_evento_testo.value.length == 0) {
+    testo = gestione_dati_evento_testo.value;
+    testo = testo.trim();
+    testo = testo.replace(/\n/g, '<br>');
+
+
+    if (testo.length == 0) {
         notyf.error("Inserire un testo");
         return;
     };
@@ -47,7 +52,7 @@ function conferma_nuovo_evento() {
     s_nuovo_evento({
         data_ora_inizio: data_ora_inizio,
         data_ora_fine: data_ora_fine,
-        testo: gestione_dati_evento_testo.value,
+        testo: testo,
         urgente: gestione_dati_evento_urgente.checked
     });
 
@@ -73,6 +78,15 @@ function conferma_modifica_evento(id) {
     data_ora_inizio = fix_date_from_input(gestione_dati_evento_data_inizio.valueAsNumber) / 1000;
     data_ora_fine = fix_date_from_input(gestione_dati_evento_data_fine.valueAsNumber) / 1000;
 
+    testo = gestione_dati_evento_testo.value;
+    testo = testo.trim();
+    testo = testo.replace(/\n/g, '<br>');
+
+    if (testo.length == 0) {
+        notyf.error("Inserire un testo");
+        return;
+    };
+
     if (data_ora_inizio >= data_ora_fine) {
         return
     };
@@ -81,7 +95,7 @@ function conferma_modifica_evento(id) {
         id, {
         data_ora_inizio: data_ora_inizio,
         data_ora_fine: data_ora_fine,
-        testo: gestione_dati_evento_testo.value,
+        testo: testo,
         urgente: gestione_dati_evento_urgente.checked
     });
 
