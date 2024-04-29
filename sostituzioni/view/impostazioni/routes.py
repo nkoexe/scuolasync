@@ -61,7 +61,6 @@ def log():
     return (
         subprocess.check_output(
             ["/usr/bin/journalctl", "-u", "sostituzioni", "-n", "1000", "--no-pager"],
-            universal_newlines=True,
             stderr=subprocess.STDOUT,
         )
         .decode("utf-8")
