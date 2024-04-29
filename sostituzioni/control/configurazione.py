@@ -656,7 +656,7 @@ class Configurazione:
         }
 
         with open(file, "w") as f:
-            dump(dati, f, indent=2)
+            dump(dati, f, ensure_ascii=False, indent=2)
 
 
 configurazione = Configurazione()

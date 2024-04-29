@@ -54,7 +54,7 @@
     },
     "maintenancemsg": {
       "titolo": "Messaggio di manutenzione",
-      "descrizione": "Testo che verr\u00e0 mostrato agli utenti che cercano di accedere al sito quando esso \u00e8 in modalit\u00e0 manutenzione.",
+      "descrizione": "Testo che verrà mostrato agli utenti che cercano di accedere al sito quando esso è in modalità manutenzione.",
       "sezione": "sistema",
       "disabilitato": false,
       "nascosto": false,
@@ -72,7 +72,7 @@
       "tipo": "testo",
       "lunghezza_massima": null,
       "default": "",
-      "valore": "niccolo.ragazzi@gandhimerano.com"
+      "valore": ""
     },
     "version": {
       "titolo": "Versione del sistema",
@@ -87,14 +87,14 @@
     },
     "loginpageparagraph": {
       "titolo": "Paragrafo di Note",
-      "descrizione": "Testo che verr\u00e0 visualizzato sotto al pulsante di accesso. Pu\u00f2 essere stilizzato, includendo <br> per andare a capo, <b> per grassetto, <i> per corsivo ecc.",
+      "descrizione": "Testo che verrà visualizzato sotto al pulsante di accesso. Può essere stilizzato, includendo <br> per andare a capo, <b> per grassetto, <i> per corsivo ecc.",
       "sezione": "login",
       "disabilitato": false,
       "nascosto": false,
       "tipo": "testo",
       "lunghezza_massima": null,
-      "default": "L'accesso al sistema \u00e8 eseguito tramite l'account Google appartenente al tuo istituto scolastico.",
-      "valore": "L'accesso al sistema \u00e8 eseguito tramite l'account Google appartenente al tuo istituto scolastico.<br>Assicurati di selezionare il tuo account <i>@gandhimerano.com</i>"
+      "default": "L'accesso al sistema è eseguito tramite l'account Google appartenente al tuo istituto scolastico.",
+      "valore": "L'accesso al sistema è eseguito tramite l'account Google appartenente al tuo istituto scolastico.<br>Assicurati di selezionare il tuo account <i>@gandhimerano.com</i>"
     },
     "flasksessionlifetime": {
       "titolo": "Durata della sessione",
@@ -156,7 +156,7 @@
     },
     "nosostituzionimsg": {
       "titolo": "Errore nessuna sostituzione",
-      "descrizione": "Testo che verr\u00e0 mostrato quando non ci sono sostituzioni da visualizzare per i filtri che l'utente ha impostato.",
+      "descrizione": "Testo che verrà mostrato quando non ci sono sostituzioni da visualizzare per i filtri che l'utente ha impostato.",
       "sezione": "visualizzazioneonline",
       "disabilitato": false,
       "nascosto": false,
@@ -165,9 +165,20 @@
       "default": "Nessuna sostituzione per i filtri impostati.",
       "valore": "Nessuna sostituzione per i filtri impostati :("
     },
+    "controlloerroriauleescluse": {
+      "titolo": "Aule escluse dal controllo sovrapposizioni",
+      "descrizione": "Nel controllo per sovrapposizioni, ammettere sovrapposizioni in queste aule. Esempio di caso d'uso sono le zone per la sorveglianza a pausa, nelle quali ci sono più insegnanti contemporaneamente.",
+      "sezione": "visualizzazioneonline",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "lista",
+      "tipo_valori": "testo",
+      "default": [],
+      "valore": []
+    },
     "displaynosostituzionimsg": {
       "titolo": "Errore nessuna sostituzione",
-      "descrizione": "Testo che verr\u00e0 mostrato quando non ci sono sostituzioni future e la lista \u00e8 vuota.",
+      "descrizione": "Testo che verrà mostrato quando non ci sono sostituzioni future e la lista è vuota.",
       "sezione": "visualizzazionefisica",
       "disabilitato": false,
       "nascosto": false,
@@ -178,7 +189,7 @@
     },
     "displayrangegiornifuturi": {
       "titolo": "Range di giorni da mostrare",
-      "descrizione": "Mostra le sostituzioni sul display soltanto per questo numero di giorni futuri, non mostrare quelle oltre. Il giorno corrente \u00e8 escluso - se l'impostazione \u00e8 a 2 ed \u00e8 luned\u00ed, si mostreranno le sostituzioni fino a mercoled\u00ed. Impostare a -1 per disabilitare e mostrare tutte le sostituzioni future.",
+      "descrizione": "Mostra le sostituzioni sul display soltanto per questo numero di giorni futuri, non mostrare quelle oltre. Il giorno corrente è escluso - se l'impostazione è a 2 ed è lunedí, si mostreranno le sostituzioni fino a mercoledí. Impostare a -1 per disabilitare e mostrare tutte le sostituzioni future.",
       "sezione": "visualizzazionefisica",
       "disabilitato": false,
       "nascosto": false,
@@ -196,69 +207,24 @@
       "default": 3,
       "valore": 2
     },
-    "hotreload": {
-      "titolo": "Hot reload",
-      "descrizione": "Applica immediatamente le impostazioni cambiate. Utile per vedere istantaneamente i cambiamenti di colori e font, ma sconsigliato in ogni altro caso. (test checkbox, non implementare seriamente)",
-      "sezione": "test",
+    "displayauthcodes": {
+      "titolo": "Codici di autorizzazione",
+      "descrizione": "Il display dovrà mandare uno di questi codici per poter stabilire un collegamento.",
+      "sezione": "visualizzazionefisica",
       "disabilitato": false,
       "nascosto": false,
-      "tipo": "booleano",
-      "default": false,
-      "valore": true
-    },
-    "numeroebbasta": {
-      "titolo": "Numero",
-      "descrizione": "e basta",
-      "sezione": "test",
-      "disabilitato": false,
-      "nascosto": false,
-      "tipo": "numero",
-      "intervallo": [
-        null,
-        null
+      "tipo": "lista",
+      "tipo_valori": "testo",
+      "default": [
+        {
+          "valore": "test"
+        }
       ],
-      "default": 10,
-      "valore": 2.5
-    },
-    "numerounita": {
-      "titolo": "Numero",
-      "descrizione": "con unit\u00e0 di misura?? Wow!!!! che ingegno, che grandiosit\u00e0.",
-      "sezione": "test",
-      "disabilitato": false,
-      "nascosto": false,
-      "tipo": "numero_unita",
-      "intervallo": [
-        null,
-        null
-      ],
-      "scelte_unita": [
-        "px",
-        "em",
-        "rem",
-        "cm"
-      ],
-      "unita_default": 0,
-      "unita": 0,
-      "default": 20,
-      "valore": 20
-    },
-    "numero_intervallo": {
-      "titolo": "NNumero",
-      "descrizione": "Con intervallo tra -10 e 399",
-      "sezione": "test",
-      "disabilitato": false,
-      "nascosto": false,
-      "tipo": "numero",
-      "intervallo": [
-        -10,
-        399
-      ],
-      "default": 7,
-      "valore": 100
+      "valore": []
     },
     "maxbackupdays": {
       "titolo": "Eliminazione automatica backup",
-      "descrizione": "Il backup viene mantenuto per questo numero di giorni, dopodich\u00e9 viene automaticamente eliminato. Impostare a -1 per disattivare l'eliminazione automatica. Per il calcolo, viene considerata la data dell'ultima modifica.",
+      "descrizione": "Il backup viene mantenuto per questo numero di giorni, dopodiché viene automaticamente eliminato. Impostare a -1 per disattivare l'eliminazione automatica. Per il calcolo, viene considerata la data dell'ultima modifica.",
       "sezione": "backup",
       "disabilitato": false,
       "nascosto": false,
@@ -302,14 +268,14 @@
     },
     "backupdrivefolderid": {
       "titolo": "Cartella Drive",
-      "descrizione": "ID della cartella di Google Drive nella quale caricare il backup del sistema. Assicurarsi che essa sia condivisa con l'account di servizio che \u00e8 stato creato per gestire il backup. Si pu\u00f2 trovare l'email dell'account di servizio nella pagina \"Credenziali\" del progetto Google Cloud Console del sistema.",
+      "descrizione": "ID della cartella di Google Drive nella quale caricare il backup del sistema. Assicurarsi che essa sia condivisa con l'account di servizio che è stato creato per gestire il backup. Si può trovare l'email dell'account di servizio nella pagina \"Credenziali\" del progetto Google Cloud Console del sistema.",
       "sezione": "backup",
       "disabilitato": false,
       "nascosto": false,
       "tipo": "testo",
       "lunghezza_massima": null,
       "default": "",
-      "valore": "1Bueb29FkdkKSP_3VAWXX5cbJsvMO0a1x"
+      "valore": ""
     },
     "rootpath": {
       "titolo": "Percorso radice - Root",
@@ -323,7 +289,7 @@
         "/"
       ],
       "default": "",
-      "valore": "C:\\Users\\nicco\\Programming\\sostituzioni\\sostituzioni"
+      "valore": ""
     },
     "configpath": {
       "titolo": "Percorso file di configurazione",
@@ -338,7 +304,7 @@
         "%ROOT%"
       ],
       "default": "database/configurazione.json",
-      "valore": "C:\\Users\\nicco\\Programming\\sostituzioni\\sostituzioni\\database\\configurazione.json"
+      "valore": ""
     },
     "scriptsdir": {
       "titolo": "Directory degli script",
