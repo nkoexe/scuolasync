@@ -113,7 +113,7 @@ def delete_old_backups(file_list):
 
     for file in file_list:
         now = datetime.now(file["modifiedTime"].tzinfo)
-        print(now.tzinfo, file["modifiedTime"].tzinfo)
+        # print(now.tzinfo, file["modifiedTime"].tzinfo)
         if (now - file["modifiedTime"]).days > days_to_keep:
             to_delete.append(file)
 

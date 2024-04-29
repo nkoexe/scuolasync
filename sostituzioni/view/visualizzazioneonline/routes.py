@@ -25,7 +25,7 @@ def export():
         return "Nessun file."
 
     if Exporter.exported_buffer.closed:
-        print("closed")
+        # print("closed")
         return "Nessun file."
 
     match Exporter.exported_mimetype:
