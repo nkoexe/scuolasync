@@ -58,6 +58,10 @@ def version():
 def log():
     import subprocess
 
-    return subprocess.check_output(
-        ["/usr/bin/journalctl", "-u", "sostituzioni", "-n", "1000", "--no-pager"]
-    ).decode("utf-8")
+    return (
+        subprocess.check_output(
+            ["/usr/bin/journalctl", "-u", "sostituzioni", "-n", "1000", "--no-pager"]
+        )
+        .decode("utf-8")
+        .replace("\n", "<br>")
+    )
