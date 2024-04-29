@@ -10,6 +10,7 @@ sostituzioni/.env
 sostituzioni/control/chiavi/
 sostituzioni/database/backup/
 
+sostituzioni/database/configurazione.json
 sostituzioni/database/database.db
 sostituzioni/database/demo.db
 sostituzioni/database/utenti.db

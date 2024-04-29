@@ -1,3 +1,9 @@
+from functools import wraps
+from oauthlib import oauth2
+import logging
+import requests
+import json
+
 from flask import abort, redirect, url_for, flash, session, request
 from flask_login import (
     LoginManager,
@@ -8,29 +14,24 @@ from flask_login import (
     current_user,
 )
 from flask_socketio import emit
-from functools import wraps
-from oauthlib import oauth2
-import logging
-import requests
-import json
 
+
+from sostituzioni.control.configurazione import configurazione
 from sostituzioni.control.database import Where, Ruolo, Utente, SearchableList
 from sostituzioni.model.app import app
 
 logger = logging.getLogger(__name__)
 
 
-OAUTH_CLIENT_ID = (
-    "824960094253-vlhoqf37teg8i307fkeui4041tmu2lk9.apps.googleusercontent.com"
-)
-OAUTH_CLIENT_SECRET = "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"
+OAUTH_CLIENT_ID = configurazione.get("oauthclientid")
+OAUTH_CLIENT_SECRET = configurazione.get("oauthclientsecret")
 
 OAUTH_CLIENT = oauth2.WebApplicationClient(OAUTH_CLIENT_ID)
 GOOGLE_SSO_REQ_URI = OAUTH_CLIENT.prepare_request_uri(
     uri="https://accounts.google.com/o/oauth2/v2/auth",
-    redirect_uri="https://gandhi-merano.fuss.bz.it/loginredirect",
+    redirect_uri=configurazione.get("redirecturi"),
     scope="https://www.googleapis.com/auth/userinfo.email",
-    prompt="consent",
+    prompt="select_account",
 )
 
 
@@ -126,6 +127,8 @@ def sso_login(request):
     response_user_info = requests.get(uri, headers=headers, data=body)
     info = response_user_info.json()
 
+    print(info)
+
     # Struttura info utente:
     # {
     #   email: ...
@@ -143,6 +146,8 @@ def sso_login(request):
 
 def authenticate_user(email):
     logger.debug(f"Autenticazione utente {email}")
+
+    email = "niccolo.ragazzi@gandhimerano.com"
 
     userdata = User.load(where=Where("email").equals(email))
 

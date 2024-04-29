@@ -8,7 +8,6 @@ from pathlib import Path
 from json import load, dump
 import logging
 
-from dotenv import load_dotenv
 from beartype._decor.decormain import beartype
 from beartype.typing import List, Dict, Any
 
@@ -20,9 +19,6 @@ logger = logging.getLogger(__name__)
 
 ROOT_PATH = Path(__file__).parent.parent
 CONFIG_FILE = ROOT_PATH / "database" / "configurazione.json"
-
-
-load_dotenv(ROOT_PATH / ".env")
 
 
 def parsepath(pathstring: str) -> Path:
@@ -119,8 +115,83 @@ class Opzione:
                     f"Nel caricamento della configurazione, opzione con id {self.id} non ha un tipo valido ({self.tipo})"
                 )
 
-    def __repr__(self):
-        return self.valore
+    def __eq__(self, value: object) -> bool:
+        return self.valore == value
+
+    def __ne__(self, value: object) -> bool:
+        return self.valore != value
+
+    def __lt__(self, value: object) -> bool:
+        return self.valore < value
+
+    def __le__(self, value: object) -> bool:
+        return self.valore <= value
+
+    def __gt__(self, value: object) -> bool:
+        return self.valore > value
+
+    def __ge__(self, value: object) -> bool:
+        return self.valore >= value
+
+    def __mul__(self, value: object) -> int | float:
+        return self.valore * value
+
+    def __rmul__(self, value: object) -> int | float:
+        return value * self.valore
+
+    def __add__(self, value: object) -> int | float:
+        return self.valore + value
+
+    def __radd__(self, value: object) -> int | float:
+        return value + self.valore
+
+    def __sub__(self, value: object) -> int | float:
+        return self.valore - value
+
+    def __rsub__(self, value: object) -> int | float:
+        return value - self.valore
+
+    def __truediv__(self, value: object) -> int | float:
+        return self.valore / value
+
+    def __rtruediv__(self, value: object) -> int | float:
+        return value / self.valore
+
+    def __floordiv__(self, value: object) -> int:
+        return self.valore // value
+
+    def __rfloordiv__(self, value: object) -> int:
+        return value // self.valore
+
+    def __mod__(self, value: object) -> int:
+        return self.valore % value
+
+    def __rmod__(self, value: object) -> int:
+        return value % self.valore
+
+    def __pow__(self, value: object) -> int | float:
+        return self.valore**value
+
+    def __rpow__(self, value: object) -> int | float:
+        return value**self.valore
+
+    def __str__(self) -> str:
+        return str(self.valore)
+
+    def __repr__(self) -> str:
+        return str(self.valore)
+
+    def __bool__(self) -> bool:
+        return bool(self.valore)
+
+    def __int__(self) -> int:
+        return int(self.valore)
+
+    def __float__(self) -> float:
+        return float(self.valore)
+
+    def __len__(self) -> int:
+        return len(self.valore)
 
     @beartype
     def set(self, dati: Any, force: bool = False):

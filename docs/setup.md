@@ -7,13 +7,13 @@
   - flask-login
   - flask-socketio
   - flask-wtf
-  - oauthlib
   - beartype
   - apscheduler
   - pandas
   - openpyxl
   - xlsxwriter
   - python-magic
+  - oauthlib
   - google-auth
   - google-api-python-client
 - Pacchetti NPM
