@@ -1,4 +1,4 @@
-const ui_pulsante_help = document.querySelector('#pulsante-help')
+// const ui_pulsante_help = document.querySelector('#pulsante-help')
 const ui_help_container = document.querySelector('#help-container')
 const ui_pulsante_logout = document.querySelector('#pulsante-logout')
 const ui_logout_fun = document.querySelector("#logout-fun")  // logout overlay animation
@@ -58,9 +58,9 @@ function ui_refresh_sostituzioni() {
     s_richiedi_sostituzioni(filtri)
 }
 
-ui_pulsante_help.onclick = () => {
-    ui_help_container.classList.remove("hidden")
-}
+// ui_pulsante_help.onclick = () => {
+//     ui_help_container.classList.remove("hidden")
+// }
 
 // logout animation
 ui_pulsante_logout.onclick = (e) => {
