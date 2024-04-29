@@ -1,5 +1,7 @@
 socket = io("/impostazioni");
 
+let has_rebooted = false
+
 
 function ui_loading(title, description) {
     document.querySelector('#title').innerHTML = title
@@ -34,7 +36,9 @@ function update() {
     ui_loading("Aggiornamento in corso...", "Durata stimata: <10 secondi")
     socket.emit("update")
     setTimeout(() => {
-        ui_loading("Ancora ad aspettare?", "È possibile che ci sia stato un problema, ed il sistema non si sia aggiornato correttamente. Prego contattare il supporto.")
+        if (!has_rebooted) {
+            ui_loading("Ancora ad aspettare?", "È possibile che ci sia stato un problema, ed il sistema non si sia aggiornato correttamente. Prego contattare il supporto.")
+        }
     }, 15000)
 }
 
@@ -42,7 +46,9 @@ function reboot() {
     ui_loading("Riavvio in corso...", "")
     socket.emit("reboot")
     setTimeout(() => {
-        ui_loading("Ancora ad aspettare?", "È possibile che ci sia stato un problema, ed il sistema non si sia riavviato. Prego contattare il supporto.")
+        if (!has_rebooted) {
+            ui_loading("Ancora ad aspettare?", "È possibile che ci sia stato un problema, ed il sistema non si sia riavviato. Prego contattare il supporto.")
+        }
     }, 15000)
 }
 
@@ -65,6 +71,7 @@ socket.on("check update errore", (data) => {
 
 
 socket.io.on("reconnect", () => {
+    has_rebooted = true
     if (should_reboot) {
         ui_prompt("Riavvio completato.", "", "Vai al sito", null, "/")
     } else {
