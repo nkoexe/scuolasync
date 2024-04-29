@@ -147,8 +147,6 @@ def sso_login(request):
 def authenticate_user(email):
     logger.debug(f"Autenticazione utente {email}")
 
-    email = "niccolo.ragazzi@gandhimerano.com"
-
     userdata = User.load(where=Where("email").equals(email))
 
     if not userdata:
