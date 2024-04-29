@@ -60,7 +60,16 @@ def log():
 
     return (
         subprocess.check_output(
-            ["/usr/bin/journalctl", "-u", "sostituzioni", "-n", "1000", "--no-pager"],
+            [
+                "/usr/bin/journalctl",
+                "--output",
+                "cat",
+                "-u",
+                "sostituzioni",
+                "-n",
+                "2000",
+                "--no-pager",
+            ],
             stderr=subprocess.STDOUT,
         )
         .decode("utf-8")
