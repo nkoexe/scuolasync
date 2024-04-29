@@ -33,11 +33,17 @@ function ui_prompt(title, description, button_text, button_callback, href) {
 function update() {
     ui_loading("Aggiornamento in corso...", "Durata stimata: <10 secondi")
     socket.emit("update")
+    setTimeout(() => {
+        ui_loading("Ancora ad aspettare?", "È possibile che ci sia stato un problema, ed il sistema non si sia aggiornato correttamente. Prego contattare il supporto.")
+    }, 15000)
 }
 
 function reboot() {
     ui_loading("Riavvio in corso...", "")
     socket.emit("reboot")
+    setTimeout(() => {
+        ui_loading("Ancora ad aspettare?", "È possibile che ci sia stato un problema, ed il sistema non si sia riavviato. Prego contattare il supporto.")
+    }, 15000)
 }
 
 
@@ -77,8 +83,8 @@ socket.on("unauthorized", () => {
 if (should_reboot) {
     ui_prompt("Riavviare il sistema?", "", "Riavvia", reboot, null)
 } else {
-    socket.emit("check update")
     ui_loading("Controllo aggiornamenti...", "")
+    socket.emit("check update")
 }
 
 
