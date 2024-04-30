@@ -30,7 +30,7 @@ app.config["SECRET_KEY"] = configurazione.get("flasksecretkey") or token_hex(32)
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SECURE"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
-app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 60 * 60
+app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 6 * 60 * 60
 
 # Timeout della sessione, in minuti
 session_lifetime = configurazione.get("flasksessionlifetime")
