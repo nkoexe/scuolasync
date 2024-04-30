@@ -13,6 +13,19 @@ const ui_eventi_container = document.getElementById("eventi-container")
 const ui_eventi_lista = document.getElementById("eventi-lista")
 // const ui_eventi_messaggio_informativo = document.getElementById("eventi-messaggio-informativo")
 
+let altezza_container_eventi = 0
+let altezza_lista_eventi = 0
+let current_scroll_eventi = 0
+
+
+
+
+setInterval(() => {
+    current_scroll_eventi += altezza_container_eventi
+    if (current_scroll_eventi >= altezza_lista_eventi) { current_scroll_eventi = 0 }
+    ui_eventi_container.scroll({ top: current_scroll_eventi, behavior: "smooth" })
+}, 10000)
+
 function format_date(data_ora_inizio, data_ora_fine) {
     // format date objects to single string
     // if the year is the same do not display it
@@ -82,3 +95,10 @@ function ordina_eventi() {
         if (!a.urgente && !b.urgente) return a.data_ora_inizio - b.data_ora_inizio
     })
 }
+
+
+setInterval(() => {
+    current_scroll_eventi += altezza_container_eventi
+    if (current_scroll_eventi >= altezza_lista_eventi) { current_scroll_eventi = 0 }
+    ui_eventi_container.scroll({ top: current_scroll_eventi, behavior: "smooth" })
+}, 10000)
