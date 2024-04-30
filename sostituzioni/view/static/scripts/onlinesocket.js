@@ -84,6 +84,10 @@ socket.on("errore inserimento sostituzione", (msg) => {
     notyf.error(msg)
 })
 
+socket.on("errore modifica sostituzione", (msg) => {
+    notyf.error("Errore nella modifica della sostituzione")
+})
+
 socket.on("errore esportazione", (msg) => {
     notyf.error(msg)
 })

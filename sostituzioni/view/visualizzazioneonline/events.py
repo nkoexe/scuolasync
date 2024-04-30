@@ -164,6 +164,7 @@ def modifica_sostituzione(data):
     try:
         sostituzioni.modifica(data.get("id"), data.get("data"))
     except Exception as e:
+        logger.error(f"Errore durante la modifica della sostituzione: {e}")
         emit("errore modifica sostituzione", str(e))
         return
 
