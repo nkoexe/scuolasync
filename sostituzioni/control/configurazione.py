@@ -4,6 +4,7 @@ Gestione della configurazione del sistema tramite il file configurazione.json
 
 import os
 import subprocess
+from shutil import which
 from pathlib import Path
 from json import load, dump
 import logging
@@ -489,8 +490,12 @@ class Configurazione:
     def __init__(self):
         self.shell_commands = {}
 
+        git = which("git")
+        if git is None:
+            logger.error("Git non trovato.")
+
         if os.name == "nt":
-            self.shell_commands["update"] = ["git", "pull"]
+            self.shell_commands["update"] = [git, "pull"]
             self.shell_commands["reboot"] = [
                 "kill",
                 "-9",
@@ -501,32 +506,34 @@ class Configurazione:
                 "sostituzioni",
             ]
             self.shell_commands["get_version"] = [
-                "git",
+                git,
                 "rev-parse",
                 # "--short",
                 "HEAD",
             ]
             self.shell_commands["check_update"] = [
-                "git",
+                git,
                 "ls-remote",
                 "origin",
                 "main",
             ]
         else:
-            self.shell_commands["update"] = ["/usr/bin/git", "pull"]
+            systemctl = which("systemctl")
+
+            self.shell_commands["update"] = [git, "pull"]
             self.shell_commands["reboot"] = [
-                "/usr/bin/systemctl",
+                systemctl,
                 "restart",
                 "sostituzioni.service",
             ]
             self.shell_commands["get_version"] = [
-                "/usr/bin/git",
+                git,
                 "rev-parse",
                 # "--short",
                 "HEAD",
             ]
             self.shell_commands["check_update"] = [
-                "/usr/bin/git",
+                git,
                 "ls-remote",
                 "origin",
                 "main",
