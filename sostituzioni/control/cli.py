@@ -1,18 +1,18 @@
-import click
 from flask.cli import AppGroup
-from os import system
+import click
+import sqlite3
 
 from sostituzioni.control.configurazione import configurazione
 
 
 def crea_db(nome: str | None = None):
-    sqlpath = configurazione.get("scriptsdir").path / "creazione_database.sql"
     if not nome:
         nome = "database.db"
     elif "." not in nome:
         nome = nome + ".db"
 
     dbpath = configurazione.get("rootpath").path / "database" / nome
+    sqlpath = configurazione.get("scriptsdir").path / "creazione_database.sql"
 
     if dbpath.exists():
         print("Errore: Database con questo nome già esistente.")
@@ -20,23 +20,29 @@ def crea_db(nome: str | None = None):
 
     print("File database:", dbpath)
 
-    result = system(f'sqlite3 {dbpath.as_posix()} ".read {sqlpath.as_posix()}"')
+    # result = system(f'sqlite3 {dbpath.as_posix()} ".read {sqlpath.as_posix()}"')
 
-    if result != 0:
-        print("Errore nella creazione del database")
+    try:
+        conn = sqlite3.connect(dbpath.as_posix())
+        c = conn.cursor()
+        c.executescript(sqlpath.read_text())
+        conn.commit()
+        conn.close()
+    except sqlite3.Error as e:
+        print("Errore nella creazione del database:", e)
         return False
 
     return True
 
 
 def crea_db_utenti(nome: str | None = None):
-    sqlpath = configurazione.get("scriptsdir").path / "creazione_database_utenti.sql"
     if not nome:
         nome = "utenti.db"
     elif "." not in nome:
         nome = nome + ".db"
 
     dbpath = configurazione.get("rootpath").path / "database" / nome
+    sqlpath = configurazione.get("scriptsdir").path / "creazione_database_utenti.sql"
 
     if dbpath.exists():
         print("Errore: Database con questo nome già esistente.")
@@ -44,10 +50,14 @@ def crea_db_utenti(nome: str | None = None):
 
     print("File database:", dbpath)
 
-    result = system(f'sqlite3 {dbpath.as_posix()} ".read {sqlpath.as_posix()}"')
-
-    if result != 0:
-        print("Errore nella creazione del database")
+    try:
+        conn = sqlite3.connect(dbpath.as_posix())
+        c = conn.cursor()
+        c.executescript(sqlpath.read_text())
+        conn.commit()
+        conn.close()
+    except sqlite3.Error as e:
+        print("Errore nella creazione del database:", e)
         return False
 
     return True
@@ -82,19 +92,22 @@ def imposta_principale_utenti(nome: str | None = None):
 
 
 def inserisci_db(nome: str | None = None):
-    sqlpath = configurazione.get("scriptsdir").path / "inserimento_dati_test.sql"
-
     if not nome:
         nome = "database.db"
     elif "." not in nome:
         nome = nome + ".db"
 
     dbpath = configurazione.get("rootpath").path / "database" / nome
+    sqlpath = configurazione.get("scriptsdir").path / "inserimento_dati_test.sql"
 
-    result = system(f'sqlite3 {dbpath.as_posix()} ".read {sqlpath.as_posix()}"')
-
-    if result != 0:
-        print("Errore nell'inserimento dei dati di test.")
+    try:
+        conn = sqlite3.connect(dbpath.as_posix())
+        c = conn.cursor()
+        c.executescript(sqlpath.read_text())
+        conn.commit()
+        conn.close()
+    except sqlite3.Error as e:
+        print("Errore nell'inserimento dei dati di test:", e)
         return False
 
     return True
@@ -122,10 +135,14 @@ def inserisci_db_utenti(nome: str | None = None):
 
     dbpath = configurazione.get("rootpath").path / "database" / nome
 
-    result = system(f'sqlite3 {dbpath.as_posix()} ".read {sqlpath.as_posix()}"')
-
-    if result != 0:
-        print("Errore nell'inserimento dei dati di test.")
+    try:
+        conn = sqlite3.connect(dbpath.as_posix())
+        c = conn.cursor()
+        c.executescript(sqlpath.read_text())
+        conn.commit()
+        conn.close()
+    except sqlite3.Error as e:
+        print("Errore nell'inserimento dei dati di test:", e)
         return False
 
     return True
