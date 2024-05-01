@@ -3,7 +3,6 @@ Gestione della configurazione del sistema tramite il file configurazione.json
 """
 
 import os
-import re
 import subprocess
 from pathlib import Path
 from json import load, dump
@@ -22,6 +21,7 @@ ROOT_PATH = Path(__file__).parent.parent
 CONFIG_FILE = ROOT_PATH / "database" / "configurazione.json"
 
 
+@beartype
 def parsepath(pathstring: str) -> Path:
     pathstring = pathstring.replace("%ROOT%", str(ROOT_PATH))
 
@@ -486,7 +486,7 @@ class Opzione:
 
 class Configurazione:
     @beartype
-    def __init__(self, file: Path = CONFIG_FILE):
+    def __init__(self):
         self.shell_commands = {}
 
         if os.name == "nt":
@@ -532,6 +532,7 @@ class Configurazione:
                 "main",
             ]
 
+    def load(self, file: Path = CONFIG_FILE):
         with open(file, encoding="utf-8") as configfile:
             logger.debug("Caricamento file di configurazione..")
             self.data = load(configfile)
@@ -555,7 +556,7 @@ class Configurazione:
 
         # Aggiorna il percorso base di sistema e quello del file di configurazione
         self.set("rootpath", [0, str(ROOT_PATH)], force=True)
-        self.set("configpath", [0, str(CONFIG_FILE)], force=True)
+        self.set("configpath", [0, str(file)], force=True)
 
         # Carica il dato di versione del sistema
         v = (
@@ -660,3 +661,6 @@ class Configurazione:
 
 
 configurazione = Configurazione()
+
+if "SOSTITUZIONI_SETUP" not in os.environ:
+    configurazione.load()
