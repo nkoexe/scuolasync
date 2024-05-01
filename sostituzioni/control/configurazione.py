@@ -493,6 +493,7 @@ class Configurazione:
         git = which("git")
         if git is None:
             logger.error("Git non trovato.")
+        git = str(git)
 
         if os.name == "nt":
             self.shell_commands["update"] = [git, "pull"]
