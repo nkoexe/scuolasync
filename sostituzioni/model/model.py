@@ -4,7 +4,6 @@ descr
 
 from beartype._decor.decormain import beartype
 from datetime import datetime
-from time import time
 import logging
 
 from sostituzioni.lib.searchablelist import SearchableList
@@ -215,7 +214,8 @@ class Sostituzioni(SearchableList):
         )
 
         for sostituzione in self:
-            self.aggiungi_a_indice(sostituzione)
+            if not sostituzione.cancellato:
+                self.aggiungi_a_indice(sostituzione)
 
         self.check_errori()
 
