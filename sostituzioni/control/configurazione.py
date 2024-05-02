@@ -490,13 +490,11 @@ class Configurazione:
     def __init__(self):
         self.shell_commands = {}
 
-        git = which("git")
-        if git is None:
+        if which("git") is None:
             logger.error("Git non trovato.")
-        git = str(git)
 
         if os.name == "nt":
-            self.shell_commands["update"] = [git, "pull"]
+            self.shell_commands["update"] = ["git", "pull"]
             self.shell_commands["reboot"] = [
                 "kill",
                 "-9",
@@ -507,34 +505,35 @@ class Configurazione:
                 "sostituzioni",
             ]
             self.shell_commands["get_version"] = [
-                git,
+                "git",
                 "rev-parse",
                 # "--short",
                 "HEAD",
             ]
             self.shell_commands["check_update"] = [
-                git,
+                "git",
                 "ls-remote",
                 "origin",
                 "main",
             ]
         else:
-            systemctl = which("systemctl")
+            if which("systemctl") is None:
+                logger.error("Systemctl non trovato.")
 
-            self.shell_commands["update"] = [git, "pull"]
+            self.shell_commands["update"] = ["git", "pull"]
             self.shell_commands["reboot"] = [
-                systemctl,
+                "systemctl",
                 "restart",
                 "sostituzioni.service",
             ]
             self.shell_commands["get_version"] = [
-                git,
+                "git",
                 "rev-parse",
                 # "--short",
                 "HEAD",
             ]
             self.shell_commands["check_update"] = [
-                git,
+                "git",
                 "ls-remote",
                 "origin",
                 "main",
