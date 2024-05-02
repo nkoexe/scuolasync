@@ -3,8 +3,8 @@ Gestione della configurazione del sistema tramite il file configurazione.json
 """
 
 import os
-import re
 import subprocess
+from shutil import which
 from pathlib import Path
 from json import load, dump
 import logging
@@ -22,6 +22,7 @@ ROOT_PATH = Path(__file__).parent.parent
 CONFIG_FILE = ROOT_PATH / "database" / "configurazione.json"
 
 
+@beartype
 def parsepath(pathstring: str) -> Path:
     pathstring = pathstring.replace("%ROOT%", str(ROOT_PATH))
 
@@ -486,11 +487,16 @@ class Opzione:
 
 class Configurazione:
     @beartype
-    def __init__(self, file: Path = CONFIG_FILE):
+    def __init__(self):
         self.shell_commands = {}
 
+        git = which("git")
+        if git is None:
+            logger.error("Git non trovato.")
+        git = str(git)
+
         if os.name == "nt":
-            self.shell_commands["update"] = ["git", "pull"]
+            self.shell_commands["update"] = [git, "pull"]
             self.shell_commands["reboot"] = [
                 "kill",
                 "-9",
@@ -501,37 +507,40 @@ class Configurazione:
                 "sostituzioni",
             ]
             self.shell_commands["get_version"] = [
-                "git",
+                git,
                 "rev-parse",
                 # "--short",
                 "HEAD",
             ]
             self.shell_commands["check_update"] = [
-                "git",
+                git,
                 "ls-remote",
                 "origin",
                 "main",
             ]
         else:
-            self.shell_commands["update"] = ["/usr/bin/git", "pull"]
+            systemctl = which("systemctl")
+
+            self.shell_commands["update"] = [git, "pull"]
             self.shell_commands["reboot"] = [
-                "/usr/bin/systemctl",
+                systemctl,
                 "restart",
                 "sostituzioni.service",
             ]
             self.shell_commands["get_version"] = [
-                "/usr/bin/git",
+                git,
                 "rev-parse",
                 # "--short",
                 "HEAD",
             ]
             self.shell_commands["check_update"] = [
-                "/usr/bin/git",
+                git,
                 "ls-remote",
                 "origin",
                 "main",
             ]
 
+    def load(self, file: Path = CONFIG_FILE):
         with open(file, encoding="utf-8") as configfile:
             logger.debug("Caricamento file di configurazione..")
             self.data = load(configfile)
@@ -555,7 +564,7 @@ class Configurazione:
 
         # Aggiorna il percorso base di sistema e quello del file di configurazione
         self.set("rootpath", [0, str(ROOT_PATH)], force=True)
-        self.set("configpath", [0, str(CONFIG_FILE)], force=True)
+        self.set("configpath", [0, str(file)], force=True)
 
         # Carica il dato di versione del sistema
         v = (
@@ -660,3 +669,6 @@ class Configurazione:
 
 
 configurazione = Configurazione()
+
+if "SOSTITUZIONI_SETUP" not in os.environ:
+    configurazione.load()

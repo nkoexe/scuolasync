@@ -491,9 +491,9 @@ class Sostituzioni(SearchableList):
     def modifica(self, id: int, data: dict):
         # start_time = time()
 
-        sostituzione = self.get(id)
+        sostituzione: Sostituzione = self.get(id)
 
-        # print(f"find - {time() - start_time:.6f}")
+        self.rimuovi_da_indice(sostituzione)
 
         try:
             sostituzione.modifica(data)
@@ -505,11 +505,9 @@ class Sostituzioni(SearchableList):
 
         # print(f"modifica - {time() - start_time:.6f}")
 
-        self.rimuovi_altre_sovrapposizioni(sostituzione)
-
-        self.rimuovi_da_indice(sostituzione)
         self.aggiungi_a_indice(sostituzione)
 
+        self.rimuovi_altre_sovrapposizioni(sostituzione)
         self.check_errori(sostituzione)
 
         # print(f"errori - {time() - start_time:.6f}")

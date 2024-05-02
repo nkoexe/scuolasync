@@ -1,8 +1,8 @@
 # Preparazione ambiente
 
 - Python >=3.11
-- Pacchetti Python (installati con pip):
 
+- Pacchetti Python (installati con pip):
   - flask
   - flask-login
   - flask-socketio
@@ -12,13 +12,14 @@
   - pandas
   - openpyxl
   - xlsxwriter
-  - python-magic
+  - python-magic (ha bisogno di libmagic - todo implementare pylibmagic)
   - oauthlib
   - google-auth
   - google-api-python-client
-- Pacchetti NPM
 
+- Pacchetti NPM
   - html-minifier
   - csso
   - uglify-js
-- Accertarsi che il file di configurazione e il database siano correttamente posizionati (al momento il sistema non si avvia altrimenti)
+
+- eseguire python -m sostituzioni.setup

@@ -30,6 +30,9 @@ const ui_sostituzioni_container = document.getElementById("sostituzioni-lista-co
 const ui_sostituzioni_lista = document.getElementById("sostituzioni-lista")
 const ui_sostituzioni_messaggio_informativo = document.getElementById("sostituzioni-messaggio-informativo")
 
+let sostituzioni_elemento_scroll = 0
+let sostituzioni_indici_scroll = []
+
 
 function format_sostituzione_to_html(oggi, data, ora_inizio, ora_fine, ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
 	if (ora_predefinita == null) {
@@ -142,6 +145,33 @@ function refresh_sostituzioni() {
 			add_sostituzione_to_ui_list(oggi, element.data, element.ora_inizio, element.ora_fine, element.ora_predefinita, element.numero_aula, element.nome_classe, element.nome_docente, element.cognome_docente, element.note)
 		})
 	}
+
+
+	// Genera indici delle sostituzioni alle quali scrollare
+
+	// Scrolla sempre al primo elemento
+	sostituzioni_indici_scroll = [0]
+
+	// Altezza del container, nello schermo ci stanno soltanto un determinato numero di elementi
+	let container_height = ui_sostituzioni_container.offsetHeight
+	// L'elemento precedente che verrà utilizzato per calcolare esattamente la posizione y del prossimo scroll
+	// Per la seconda sostituzione alla quale scrollare, l'elemento precedente sarà il primo elemento della lista, quindi inizializza ora
+	let prev_scroll_element = ui_sostituzioni_lista.children[0]
+
+	// Per ogni altra sostituzione (dalla seconda in poi)
+	for (let index = 1; index < ui_sostituzioni_lista.children.length; index++) {
+		const element = ui_sostituzioni_lista.children[index]
+
+		// Per ottenere il prossimo elemento al quale scrollare, controlla che la sua posizione y + la sua altezza sia maggiore dello schermo,
+		// ovvero controlla che la sostituzione sia fuori dal bordo del container oppure tagliata a metà
+		if ((element.offsetTop + element.offsetHeight) > (container_height + prev_scroll_element.offsetTop)) {
+			// Aggiungi l'indice della sostituzione alla lista
+			sostituzioni_indici_scroll.push(index)
+			// Aggiorna l'elemento precedente in modo da poter calcolare il delta verticale
+			prev_scroll_element = element
+			// element.style.fontWeight = "bold" // test
+		}
+	}
 }
 
 function ordina_sostituzioni() {
@@ -153,3 +183,14 @@ function ordina_sostituzioni() {
 		return res
 	})
 }
+
+
+// Loop che scrolla la lista di sostituzioni
+setInterval(() => {
+	// Prossimo elemento della lista di indici
+	sostituzioni_elemento_scroll = (sostituzioni_elemento_scroll + 1) % sostituzioni_indici_scroll.length
+	// Trova la sostituzione tra gli elementi del DOM tramite l'indice fornito dalla lista
+	const element = ui_sostituzioni_lista.children[sostituzioni_indici_scroll[sostituzioni_elemento_scroll]]
+	// Scrolla l'elemento in posizione
+	element.scrollIntoView({ behavior: "smooth" })
+}, 12000)
