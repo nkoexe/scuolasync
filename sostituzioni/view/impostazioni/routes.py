@@ -67,7 +67,7 @@ def log():
                 "-u",
                 "sostituzioni",
                 "-n",
-                "2000",
+                "1000",
                 "--no-pager",
             ],
             stderr=subprocess.STDOUT,
