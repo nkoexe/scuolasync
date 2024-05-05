@@ -1,4 +1,4 @@
-from flask import render_template, request, send_file
+from flask import render_template, request, send_from_directory, url_for
 from datetime import datetime
 
 from sostituzioni.control.exporter import Exporter
@@ -94,3 +94,11 @@ def testone():
         sostituzioni.inserisci(sostituzione)
 
     return "ok"
+
+
+@online.route("/service-worker.js")
+@login_required
+def service_worker():
+    return send_from_directory(
+        str(configurazione.get("flaskstaticdir").path / "scripts"), "service-worker.js"
+    )

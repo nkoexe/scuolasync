@@ -1,4 +1,6 @@
 // const ui_pulsante_help = document.querySelector('#pulsante-help')
+let installPrompt = null;
+const ui_pulsante_installa = document.querySelector('#pulsante-installa')
 const ui_help_container = document.querySelector('#help-container')
 const ui_pulsante_logout = document.querySelector('#pulsante-logout')
 const ui_logout_fun = document.querySelector("#logout-fun")  // logout overlay animation
@@ -239,11 +241,36 @@ function mostra_context_menu(elemento) {
 }
 
 
-for (const element of document.getElementsByClassName("tooltip")) {
-    let rect = element.getBoundingClientRect();
+// PWA
 
-    if (rect.right > window.innerWidth) {
-        // move the tooltip to the left but leave the after element in its place
-        element.style.translate = "-" + (rect.width / 2 + (rect.right - window.innerWidth)) + "px" + " 0";
+navigator.serviceWorker && navigator.serviceWorker.register("service-worker.js")
+    .then((registration) => {
+    })
+    .catch((err) => {
+    });
+
+
+window.onbeforeinstallprompt = function (e) {
+    installPrompt = e;
+    e.preventDefault()
+    ui_pulsante_installa.removeAttribute("hidden");
+    if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
+        ui_pulsante_installa.querySelector("span").innerHTML = "install_mobile";
+    } else {
+        ui_pulsante_installa.querySelector("span").innerHTML = "install_desktop";
     }
+}
+
+ui_pulsante_installa.onclick = (e) => {
+    if (!installPrompt) {
+        return;
+    }
+
+    installPrompt.prompt();
+    installPrompt.userChoice.then((choiceResult) => {
+        // if (choiceResult.outcome === 'accepted') {
+        //     location.reload();
+        // }
+    });
+    installPrompt = null;
 }

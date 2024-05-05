@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="view-transition" content="same-origin" />
   <title>{{title}}</title>
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap">
@@ -31,6 +32,7 @@
     <div id="header-separator"></div>
     <h1 id="header-titolo">{{title}}</h1>
     <div id="header-pulsanti">
+      <button id="pulsante-installa" class="pulsante-header" hidden><span class="material-symbols-rounded" data-tooltip="Installa Applicazione"></span></button>
       {% if utente.permessi.impostazioni.write %}
       <!-- <button id="pulsante-help" class="pulsante-header"><span class="material-symbols-rounded" data-tooltip="Aiuto">help</span></button> -->
       <a class="pulsante-header" href="{{ url_for('impostazioni.main')}}"><span class="material-symbols-rounded" data-tooltip="Impostazioni">settings</span></a>
