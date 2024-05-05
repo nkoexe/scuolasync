@@ -9,8 +9,13 @@
     "background_color": "#c00f19",
     "icons": [
         {
-            "src": "icons/pwa.png",
+            "src": "icons/pwa500.png",
             "sizes": "500x500",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/pwa256.png",
+            "sizes": "256x256",
             "type": "image/png"
         }
     ]

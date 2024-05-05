@@ -268,9 +268,9 @@ ui_pulsante_installa.onclick = (e) => {
 
     installPrompt.prompt();
     installPrompt.userChoice.then((choiceResult) => {
-        // if (choiceResult.outcome === 'accepted') {
-        //     location.reload();
-        // }
+        if (choiceResult.outcome === 'accepted') {
+            location.reload();
+        }
     });
     installPrompt = null;
 }
