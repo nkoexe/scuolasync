@@ -17,6 +17,18 @@
             "src": "icons/pwa256.png",
             "sizes": "256x256",
             "type": "image/png"
+        },
+        {
+            "src": "icons/pwa500maskable.png",
+            "sizes": "500x500",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/pwa256maskable.png",
+            "sizes": "256x256",
+            "type": "image/png",
+            "purpose": "maskable"
         }
     ]
 }
