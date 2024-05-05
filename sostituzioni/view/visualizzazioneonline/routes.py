@@ -1,4 +1,4 @@
-from flask import render_template, request, send_from_directory, url_for
+from flask import render_template, send_file, send_from_directory
 from datetime import datetime
 
 from sostituzioni.control.exporter import Exporter
