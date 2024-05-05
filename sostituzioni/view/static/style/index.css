@@ -21,13 +21,20 @@ body {
     height: 100%;
 }
 
-a {
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.notizia a,
+.evento a {
     position: relative;
     text-decoration: none;
     color: #0074D9;
-  }
+}
 
-  a::before {
+.notizia a::before,
+.evento a::before {
     content: '';
     position: absolute;
     bottom: 0;
@@ -36,17 +43,13 @@ a {
     height: 2px;
     background-color: #0074D9;
     transition: width 0.3s;
-  }
+}
 
-  a:hover::before {
+.notizia a:hover::before,
+.evento a:hover::before {
     left: 0;
     right: auto;
     width: 100%;
-  }
-
-ul {
-    list-style-type: none;
-    padding: 0;
 }
 
 .checkbox {
