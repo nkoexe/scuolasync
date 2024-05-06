@@ -253,7 +253,7 @@ navigator.serviceWorker && navigator.serviceWorker.register("service-worker.js")
 window.onbeforeinstallprompt = function (e) {
     installPrompt = e;
     e.preventDefault()
-    ui_pulsante_installa.removeAttribute("hidden");
+    ui_pulsante_installa.classList.remove("hidden");
     if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
         ui_pulsante_installa.querySelector("span").innerHTML = "install_mobile";
     } else {
