@@ -4,6 +4,11 @@ from sostituzioni.view import app
 from sostituzioni.model.auth import current_user
 
 
+@app.route("/offline")
+def offline():
+    return render_template("offline.html")
+
+
 @app.errorhandler(404)
 def not_found(e):
     if current_user.is_authenticated:

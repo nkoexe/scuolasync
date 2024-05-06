@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>offline</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap">
+  <link rel="stylesheet" href="{{url_for('static', filename='style/colori.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='style/offline.css')}}">
+  <link rel="icon" href="{{url_for('static', filename='icons/favicon.ico')}}">
+</head>
+
+<body>
+  <!-- <div id="logo-container">
+    <img id="logo" src="{{url_for('static', filename='images/logo.png')}}" alt="logo">
+  </div> -->
+  <div id="main-container">
+    <div id="text-container">
+      <h1>Sei Offline<span>//</span></h1>
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener('online', () => {
+      location.reload();
+    });
+
+    function reconnect() {
+      fetch('/')
+        .then((response) => {
+          if (response.ok) {
+            location.reload()
+          }
+        })
+        .catch(() => { })
+        .finally(() => {
+          setTimeout(reconnect, 3000)
+        })
+    }
+  </script>
+</body>
+
+</html>
