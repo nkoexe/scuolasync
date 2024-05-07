@@ -1,10 +1,7 @@
-# Installazione
+---
+description: Landing page
+layout: landing
+---
 
-## Requisiti
+# ScuolaSync
 
-* Un computer
-
-## Procedimento
-
-* Step 1
-* Step 2
