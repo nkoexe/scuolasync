@@ -28,28 +28,21 @@ ul {
 
 .notizia a,
 .evento a {
-    position: relative;
-    text-decoration: none;
     color: #0074D9;
+    text-decoration: none;
+    background-image: linear-gradient(to right, #0074D9, #0074D9);
+    background-size: 0 2px;
+    background-position: 100% 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.3s;
 }
 
-.notizia a::before,
-.evento a::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 0;
-    height: 2px;
-    background-color: #0074D9;
-    transition: width 0.3s;
-}
 
-.notizia a:hover::before,
-.evento a:hover::before {
-    left: 0;
-    right: auto;
-    width: 100%;
+.notizia a:hover,
+.evento a:hover {
+    background-size: 100% 2px;
+    background-position: 0 100%;
+
 }
 
 .checkbox {
