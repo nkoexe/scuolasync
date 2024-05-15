@@ -7,7 +7,8 @@ from sostituzioni.view.visualizzazionefisica import fisica
 
 @fisica.route("/")
 def index():
-    if request.args.get("code") in configurazione.get("displayauthcodes"):
+    authcodes = configurazione.get("displayauthcodes")
+    if request.args.get("code") in authcodes or not authcodes:
         return render_template("display.html", configurazione=configurazione)
 
     return redirect(url_for("auth.login"))
