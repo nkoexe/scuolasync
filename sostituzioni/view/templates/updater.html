@@ -41,33 +41,6 @@
   <script>
     const version = "{{version}}"
     const should_reboot = {{ reboot | tojson }}
-    /*
-    function checkserver() {
-        fetch('/version')
-            .then((response) => {
-                if (response.ok) {
-                    return response.text()
-                }
-            })
-            .then((new_version) => {
-                if (version != new_version) {
-                    document.querySelector('#success-link').href = '/'
-                    document.querySelector('#title').innerHTML = '{{operazione}} completato.'
-                    document.querySelector('#loading-container').style.opacity = '0'
-                    setTimeout(() => {
-                        document.querySelector('#button').classList.add('active')
-                        document.querySelector('#button-text-container').style.opacity = '1'
-                    }, 500)
- 
-                } else {
-                    setTimeout(checkserver, 1000)
-                }
-            })
-            .catch(() => {
-                setTimeout(checkserver, 1000)
-            })
-    }
-    checkserver() */
   </script>
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <script src="{{ url_for('static', filename='scripts/updater.js') }}"></script>
