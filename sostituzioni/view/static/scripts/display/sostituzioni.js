@@ -193,4 +193,4 @@ setInterval(() => {
 	const element = ui_sostituzioni_lista.children[sostituzioni_indici_scroll[sostituzioni_elemento_scroll]]
 	// Scrolla l'elemento in posizione
 	element.scrollIntoView({ behavior: "smooth" })
-}, 12000)
+}, 10000)
