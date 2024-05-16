@@ -43,7 +43,7 @@ blabla
 
 ### Esecuzione allo startup
 
-Creare il file kiosk.sh\
+Creare il file `kiosk.sh`\
 La posizione del file nel sistema è irrilevante, l'importante è ricordarsela per la creazione dello script successivo.
 
 ```bash
@@ -70,9 +70,9 @@ Renderlo eseguibile
 chmod +x kiosk.sh
 ```
 
-Creare il file in /etc/systemd/system/kiosk.service\
-Questo file di configurazione avvia lo scritp kiosk.sh all'avvio del \
-Importante: Inserire il percorso corretto del file kiosk.sh, e modificare gli attributi User e Group per riflettere lo username effettivo.
+Creare il file in `/etc/systemd/system/kiosk.service`\
+Questo file di configurazione avvia lo script `kiosk.sh` all'avvio del sistema\
+Importante: Inserire il percorso corretto del file `kiosk.sh`, e modificare gli attributi `User` e `Group` per riflettere lo username effettivo.
 
 ```systemd
 [Unit]
