@@ -19,6 +19,21 @@ body {
     background-color: #C00F19;
 }
 
+a {
+    color: #0074D9;
+    text-decoration: none;
+    background-image: linear-gradient(to right, #0074D9, #0074D9);
+    background-size: 0 2px;
+    background-position: 100% 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.3s;
+}
+
+a:hover {
+    background-size: 100% 2px;
+    background-position: 0 100%;
+}
+
 #main-container {
     display: flex;
     flex-direction: column;
