@@ -55,6 +55,9 @@ function refresh_notizie() {
             scroll_notizie()
         }
     }
+
+    // Ricarica i dati di scroll delle sostituizioni dato che il container viene ristretto / allargato
+    genera_indici_scroll_sostituzioni()
 }
 
 function scroll_notizie() {

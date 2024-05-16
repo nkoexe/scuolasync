@@ -146,7 +146,20 @@ function refresh_sostituzioni() {
 		})
 	}
 
+	genera_indici_scroll_sostituzioni()
+}
 
+function ordina_sostituzioni() {
+	sostituzioni_visualizzate.sort((a, b) => {
+		res = compara_docente(b, a)
+		if (res == 0) { res = compara_data(a, b) }
+		if (res == 0) { res = compara_classe(a, b) }
+		if (res == 0) { res = compara_aula(a, b) }
+		return res
+	})
+}
+
+function genera_indici_scroll_sostituzioni() {
 	// Genera indici delle sostituzioni alle quali scrollare
 
 	// Scrolla sempre al primo elemento
@@ -172,16 +185,6 @@ function refresh_sostituzioni() {
 			// element.style.fontWeight = "bold" // test
 		}
 	}
-}
-
-function ordina_sostituzioni() {
-	sostituzioni_visualizzate.sort((a, b) => {
-		res = compara_docente(b, a)
-		if (res == 0) { res = compara_data(a, b) }
-		if (res == 0) { res = compara_classe(a, b) }
-		if (res == 0) { res = compara_aula(a, b) }
-		return res
-	})
 }
 
 
