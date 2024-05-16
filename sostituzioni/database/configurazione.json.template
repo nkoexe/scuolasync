@@ -34,8 +34,8 @@
       "nascosto": false,
       "tipo": "testo",
       "lunghezza_massima": 30,
-      "default": "Gestione Digitale",
-      "valore": "Calendario Eventi"
+      "default": "ScuolaSync",
+      "valore": "ScuolaSync"
     },
     "sysstate": {
       "titolo": "Stato del sistema",
@@ -50,7 +50,7 @@
         "In Sviluppo"
       ],
       "default": 0,
-      "valore": 2
+      "valore": 0
     },
     "maintenancemsg": {
       "titolo": "Messaggio di manutenzione",
@@ -107,8 +107,8 @@
         -1,
         null
       ],
-      "default": 60,
-      "valore": 60
+      "default": 180,
+      "valore": 180
     },
     "flasksecretkey": {
       "titolo": "Secret key",
