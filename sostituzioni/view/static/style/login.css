@@ -16,21 +16,6 @@ body {
     background-color: #C00F19;
 }
 
-#login-container a {
-    color: #0074D9;
-    text-decoration: none;
-    background-image: linear-gradient(to right, #0074D9, #0074D9);
-    background-size: 0 2px;
-    background-position: 100% 100%;
-    background-repeat: no-repeat;
-    transition: background-size 0.3s;
-}
-
-#login-container a:hover {
-    background-size: 100% 2px;
-    background-position: 0 100%;
-}
-
 #main-container {
     position: relative;
     display: flex;
@@ -168,6 +153,21 @@ body {
 
 #notes-frame p {
     font-size: 16px;
+}
+
+#notes-frame a {
+    color: #0074D9;
+    text-decoration: none;
+    background-image: linear-gradient(to right, #0074D9, #0074D9);
+    background-size: 0 2px;
+    background-position: 100% 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.3s;
+}
+
+#notes-frame a:hover {
+    background-size: 100% 2px;
+    background-position: 0 100%;
 }
 
 #pulsanti-legali {
