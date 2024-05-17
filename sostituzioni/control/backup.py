@@ -142,7 +142,7 @@ def service_account_login():
     )
 
     drive_service = googleapiclient.discovery.build(
-        "drive", "v3", credentials=credentials
+        "drive", "v3", credentials=credentials, cache_discovery=False
     )
 
     return drive_service
