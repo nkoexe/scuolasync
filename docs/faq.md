@@ -2,7 +2,7 @@
 description: Domande frequenti.
 ---
 
-# FAQ
+# ⁉️ FAQ
 
 ### Come faccio a fare questo?
 

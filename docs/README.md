@@ -13,5 +13,5 @@ layout:
     visible: true
 ---
 
-# ScuolaSync
+# ⭐ ScuolaSync
 

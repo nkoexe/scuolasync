@@ -37,12 +37,10 @@ ul {
     transition: background-size 0.3s;
 }
 
-
 .notizia a:hover,
 .evento a:hover {
     background-size: 100% 2px;
     background-position: 0 100%;
-
 }
 
 .checkbox {
