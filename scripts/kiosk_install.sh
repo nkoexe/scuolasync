@@ -18,7 +18,9 @@ apt-get install \
 /sbin/useradd -m sostituzioni -g sostituzioni -s /bin/bash
 
 # imposta permessi
-chown -R sostituzioni:sostituzioni /home/sostituzioni
+# fix per chromium che altrimenti ci sputa
+# sarebbe meglio utilizzare chown e dare i permessi all'utente, ma chown non funziona subito dopo aver creato l'utente, todo trovare fix
+chmod -R 777 /home/sostituzioni/.config
 
 # rimuovi console virtuale
 cat > /etc/X11/xorg.conf << EOF
