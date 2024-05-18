@@ -16,6 +16,9 @@ apt-get install \
 # crea utente
 /sbin/useradd -m sostituzioni -g sostituzioni -s /bin/bash
 
+# imposta permessi
+chown -R sostituzioni:sostituzioni /home/sostituzioni
+
 # rimuovi console virtuale
 cat > /etc/X11/xorg.conf << EOF
 Section "ServerFlags"
@@ -55,26 +58,36 @@ xset s noblank
 xset s off
 xset -dpms
 
+# Chiudi sessione con Ctrl-Alt-Backspace
+setxkbmap -option terminate:ctrl_alt_bksp
+
 # nascondi il cursore
 unclutter -idle 0.1 -root &
 
-# setup e aggiornamento display
-xrandr --auto
+while :
+do
+  # setup e aggiornamento display
+  xrandr --auto
 
-# rimuovi flag di chromium per non far mostrare dialoghi
-sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/sostituzioni/.config/chromium/Default/Preferences
-sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/sostituzioni/.config/chromium/Default/Preferences
+  # rimuovi flag di chromium per non far mostrare dialoghi
+  sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/sostituzioni/.config/chromium/Default/Preferences
+  sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/sostituzioni/.config/chromium/Default/Preferences
 
-# avvia chromium in modalità kiosk a schermo intero
-# chromium \
-#   --no-first-run \
-#   --start-maximized \
-#   --noerrdialogs \
-#   --disable-translate \
-#   --disable-infobars \
-#   --disable-suggestions-service \
-#   --disable-save-password-bubble \
-#   --disable-session-crashed-bubble \
-#   --kiosk \$url
-# sleep 5
+  # avvia chromium in modalità kiosk a schermo intero
+  chromium \\
+    --no-first-run \\
+    --start-maximized \\
+    --noerrdialogs \\
+    --disable-translate \\
+    --disable-infobars \\
+    --disable-suggestions-service \\
+    --disable-save-password-bubble \\
+    --disable-session-crashed-bubble \\
+    --kiosk \$url
+
+  # delay per il riavvio in caso di errore o chiusura manuale
+  sleep 5
+done &
 EOF
+
+echo "Installazione completata! Riavviare il sistema per avviare il kiosk."
