@@ -66,15 +66,15 @@ sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/sostituzioni/.con
 sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/sostituzioni/.config/chromium/Default/Preferences
 
 # avvia chromium in modalità kiosk a schermo intero
-chromium \
-  --no-first-run \
-  --start-maximized \
-  --noerrdialogs \
-  --disable-translate \
-  --disable-infobars \
-  --disable-suggestions-service \
-  --disable-save-password-bubble \
-  --disable-session-crashed-bubble \
-  --kiosk \$url
-sleep 5
+# chromium \
+#   --no-first-run \
+#   --start-maximized \
+#   --noerrdialogs \
+#   --disable-translate \
+#   --disable-infobars \
+#   --disable-suggestions-service \
+#   --disable-save-password-bubble \
+#   --disable-session-crashed-bubble \
+#   --kiosk \$url
+# sleep 5
 EOF
