@@ -37,14 +37,13 @@ read -p "Inserire l'url di base del sito (senza https://): " url
 # creazione script di avvio openbox
 mkdir -p /home/sostituzioni/.config/openbox
 
-cat > /home/kiosk/.config/openbox/autostart << EOF
+cat > /home/sostituzioni/.config/openbox/autostart << EOF
 #!/bin/bash
 
 # ---- variabili -----
 
 # codice di autorizzazione definito nelle impostazioni del sito
 code=""
-# rimpiazzare URL con l'effettivo url del sito
 url="https://$url/display?code=\$code"
 
 # --------------------
@@ -57,29 +56,23 @@ xset -dpms
 # nascondi il cursore
 unclutter -idle 0.1 -root &
 
-while :
-do
-  # setup e aggiornamento display
-  xrandr --auto
+# setup e aggiornamento display
+xrandr --auto
 
-  # rimuovi flag di chromium per non far mostrare dialoghi
-  sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/\$USER/.config/chromium/Default/Preferences
-  sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/\$USER/.config/chromium/Default/Preferences
+# rimuovi flag di chromium per non far mostrare dialoghi
+sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/sostituzioni/.config/chromium/Default/Preferences
+sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/sostituzioni/.config/chromium/Default/Preferences
 
-  # avvia chromium in modalità kiosk a schermo intero
-  chromium \
-    --no-first-run \
-    --start-maximized \
-    --noerrdialogs \
-    --disable-translate \
-    --disable-infobars \
-    --disable-suggestions-service \
-    --disable-save-password-bubble \
-    --disable-session-crashed-bubble \
-    --incognito \
-    --kiosk "https://neave.tv/"
-  sleep 5
-done &
+# avvia chromium in modalità kiosk a schermo intero
+chromium \
+  --no-first-run \
+  --start-maximized \
+  --noerrdialogs \
+  --disable-translate \
+  --disable-infobars \
+  --disable-suggestions-service \
+  --disable-save-password-bubble \
+  --disable-session-crashed-bubble \
+  --kiosk "https://neave.tv/"
+sleep 5
 EOF
-
-echo "Done!"
