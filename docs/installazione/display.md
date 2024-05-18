@@ -19,6 +19,16 @@ cosa importante è impostare i codici di sicurezza
 
 ## Procedimento
 
+### Installazione automatica
+
+```
+su root
+```
+
+```
+wget https://raw.githubusercontent.com/nkoexe/sostituzioni/main/scripts/kiosk_install.sh; sh kiosk-install.sh
+```
+
 
 
 ### Installazione sistema operativo
@@ -79,9 +89,8 @@ blabla
 Creare il file `kiosk.sh`\
 La posizione del file nel sistema è irrilevante, l'importante è ricordarsela, servirà in futuro.
 
-```bash
-#!/bin/bash
-
+<pre class="language-bash"><code class="lang-bash"><strong>#!/bin/bash
+</strong>
 # ---- variabili -----
 
 # codice di autorizzazione definito nelle impostazioni del sito
@@ -97,15 +106,15 @@ xset s off
 xset -dpms
 
 # nascondi il cursore
-unclutter -idle 0.5 -root &
+unclutter -idle 0.5 -root &#x26;
 
 # rimuovi flag di chromium per non far mostrare dialoghi
 sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/$USER/.config/chromium/Default/Preferences
 sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/$USER/.config/chromium/Default/Preferences
 
 # avvia chromium in modalità kiosk a schermo intero
-/usr/bin/chromium-browser --noerrdialogs --disable-infobars --kiosk $url &
-```
+/usr/bin/chromium-browser --noerrdialogs --disable-infobars --kiosk $url &#x26;
+</code></pre>
 
 
 
