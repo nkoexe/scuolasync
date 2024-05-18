@@ -32,6 +32,8 @@ EOF
 
 # input da utente del sito web
 read -p "Inserire l'url di base del sito (senza https://): " url
+# input da utente per il codice di autorizzazione
+read -p "Inserire il codice di autorizzazione (oppure premere invio per non utilizzarlo): " code
 
 
 # creazione script di avvio openbox
@@ -43,7 +45,7 @@ cat > /home/sostituzioni/.config/openbox/autostart << EOF
 # ---- variabili -----
 
 # codice di autorizzazione definito nelle impostazioni del sito
-code=""
+code="$code"
 url="https://$url/display?code=\$code"
 
 # --------------------
@@ -73,6 +75,6 @@ chromium \
   --disable-suggestions-service \
   --disable-save-password-bubble \
   --disable-session-crashed-bubble \
-  --kiosk "https://neave.tv/"
+  --kiosk \$url
 sleep 5
 EOF
