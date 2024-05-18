@@ -6,7 +6,8 @@ apt-get install \
   xorg \
   lightdm \
   openbox \
-	unclutter \
+  sed \
+  unclutter \
   chromium \
   -y
 
