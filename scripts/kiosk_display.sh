@@ -4,12 +4,7 @@
 displays=$(xrandr | grep " connected" | cut -d" " -f1)
 
 # Find the biggest resolution available among all connected displays
-biggest_resolution=$(xrandr | grep -oP '\d+x\d+(?=\s+\d+.\d+\s+\d+\.\d+\*)' | sort -nr | head -n 1)
-
-if [ -z "$biggest_resolution" ]; then
-  echo "No resolutions found."
-  exit 1
-fi
+biggest_resolution=$(xdpyinfo | awk '/dimensions/{print $2}' | sort -nr | head -n 1)
 
 # Set the resolution for all displays
 for display in $displays; do
