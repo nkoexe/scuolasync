@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Get a list of connected displays and their resolutions
-displays=$(xrandr | grep " connected" | awk '{print $1, $3}')
+# Get a list of connected displays
+displays=$(xrandr | grep " connected" | cut -d ' ' -f1)
 
 # Find the display with the highest width
 highest_width=0
@@ -12,20 +12,17 @@ for display in $displays; do
   
   if [[ $width -gt $highest_width ]]; then
     highest_width=$width
-    primary_display=${display%% *}
+    primary_display="$display"
   fi
 done
 
 # Loop through displays and set configurations
-for display in $displays;
-do
-  display_name=${display%% *}
-  
+for display in $displays; do
   # Set the display with highest width as primary
-  if [[ "$display_name" == "$primary_display" ]]; then
-    xrandr --output $display_name --auto --primary
+  if [[ "$display" == "$primary_display" ]]; then
+    xrandr --output "$display" --auto --primary
   else
     # Mirror other displays to the primary display
-    xrandr --output $display_name --same-as $primary_display
+    xrandr --output "$display" --same-as "$primary_display"
   fi
 done
