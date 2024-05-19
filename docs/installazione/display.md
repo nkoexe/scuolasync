@@ -17,29 +17,35 @@ cosa importante è impostare i codici di sicurezza
 * un cervello
 * display
 
-## Procedimento
 
-### Installazione automatica
 
-```
-su root
-```
-
-```
-wget https://raw.githubusercontent.com/nkoexe/sostituzioni/main/scripts/kiosk_install.sh; sh kiosk-install.sh
-```
+## Impostazione Codice di Autenticazione
 
 
 
-### Installazione sistema operativo
+
+
+## Installazione Sistema Operativo
 
 Debian
 
 Chiavetta usb, installazione, internet
 
-Autologin (?)
+Installare versione minimale, solo sistema base
 
-Rimuovi sospensione automatica: crea il file `/etc/systemd/sleep.conf.d/nosuspend.conf`
+Nella selezione di software da installare, installare soltanto i software standard di sistema, mentre togliere la spunta da ambiente desktop debian e gnome
+
+riavviare
+
+eseguire il login
+
+
+
+### Configurazione di sistema
+
+#### Prevenire la sospensione automatica
+
+Crea il file `/etc/systemd/sleep.conf.d/nosuspend.conf`
 
 ```
 [Sleep]
@@ -62,6 +68,34 @@ HandleLidSwitchDocked=ignore
 
 
 
+## Installazione Software
+
+### Installazione automatica
+
+Assicurarsi di eseguire lo script da una shell con accesso Root.
+
+```
+su root
+```
+
+
+
+Questo script installa i software necessari, crea un utente 'sostituzioni' e configura lo startup automatico.
+
+```
+wget https://raw.githubusercontent.com/nkoexe/sostituzioni/main/scripts/kiosk_install.sh; sh kiosk-install.sh
+```
+
+Se viene chiesto quale gestore di login usare, selezionare `lightdm`
+
+Inserire l'url del sito senza https e il codice di autenticazione
+
+
+
+
+
+### Installazione manuale
+
 Aggiorna il sistema
 
 <pre class="language-sh"><code class="lang-sh">sudo apt update
@@ -73,18 +107,79 @@ Aggiorna il sistema
 Installazione dei software necessari
 
 ```bash
-sudo apt install unclutter sed chromium-browser
+sudo apt install xorg lightdm openbox sed unclutter chromium
 ```
 
 
 
-### Impostazione codice di autenticazione
+Creazione file di configurazione di lightdm per il login automatico all'accensione\
+`/etc/lightdm/lightdm.conf`\
+Impostare `UTENTE` allo username effettivo.
 
-blabla
+```
+[SeatDefaults]
+autologin-user=UTENTE
+user-session=openbox
+```
 
 
 
-### Esecuzione allo startup
+Creare il file di startup di Openbox in `~/.config/openbox/autostart`\
+Questo script verrà eseguito all'accensione, avvia chromium\
+Rimpiazzare URL con l'effettivo url del sito, e assicurarsi di inserire il codice di autenticazione definito prima.
+
+```bash
+#!/bin/bash
+
+# ---- variabili -----
+
+# codice di autorizzazione definito nelle impostazioni del sito
+code=""
+url="https://URL/display?code=\$code"
+
+# --------------------
+
+# mantieni lo schermo attivo
+xset s noblank
+xset s off
+xset -dpms
+
+# Chiudi sessione con Ctrl-Alt-Backspace
+setxkbmap -option terminate:ctrl_alt_bksp
+
+# nascondi il cursore
+unclutter -idle 0.1 -root &
+
+while :
+do
+  # setup e aggiornamento display
+  xrandr --auto
+
+  # rimuovi flag di chromium per non far mostrare dialoghi
+  sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/sostituzioni/.config/chromium/Default/Preferences
+  sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/sostituzioni/.config/chromium/Default/Preferences
+
+  # avvia chromium in modalità kiosk a schermo intero
+  chromium \\
+    --no-first-run \\
+    --start-maximized \\
+    --noerrdialogs \\
+    --disable-translate \\
+    --disable-infobars \\
+    --disable-suggestions-service \\
+    --disable-save-password-bubble \\
+    --disable-session-crashed-bubble \\
+    --kiosk \$url
+
+  # delay per il riavvio in caso di errore o chiusura manuale
+  sleep 5
+done &
+```
+
+\
+
+
+
 
 Creare il file `kiosk.sh`\
 La posizione del file nel sistema è irrilevante, l'importante è ricordarsela, servirà in futuro.
@@ -115,56 +210,6 @@ sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/$USER/.config/chrom
 # avvia chromium in modalità kiosk a schermo intero
 /usr/bin/chromium-browser --noerrdialogs --disable-infobars --kiosk $url &#x26;
 </code></pre>
-
-
-
-Renderlo eseguibile
-
-```bash
-chmod +x kiosk.sh
-```
-
-
-
-Creare il file in `/etc/systemd/system/kiosk.service`\
-Questo file di configurazione avvia lo script `kiosk.sh` all'avvio del sistema\
-Importante: Inserire il percorso corretto del file `kiosk.sh`, e modificare gli attributi `User` e `Group` per riflettere lo username effettivo.
-
-```systemd
-[Unit]
-Description=Kiosk ScuolaSync
-Wants=graphical.target
-After=graphical.target
-
-[Service]
-Type=simple
-ExecStart=/bin/bash /home/utente/kiosk.sh
-Restart=always
-User=utente
-Group=utente
-
-[Install]
-WantedBy=graphical.target
-```
-
-
-
-Abilitare il servizio allo startup
-
-```sh
-sudo systemctl daemon-reload
-sudo systemctl enable kiosk.service
-```
-
-
-
-Sarà possibile controllare i log per eventuali errori dello script con:
-
-```sh
-journalctl -u kiosk.service
-```
-
-
 
 
 
