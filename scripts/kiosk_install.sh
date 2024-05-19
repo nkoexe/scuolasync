@@ -12,16 +12,16 @@ apt-get install \
   -y
 
 # crea gruppo
-/sbin/groupadd sostituzioni
+/sbin/groupadd scuolasync
 
 # crea utente
-/sbin/useradd -m sostituzioni -g sostituzioni -s /bin/bash
+/sbin/useradd -m scuolasync -g scuolasync -s /bin/bash
 
 # imposta permessi
 # fix per chromium che altrimenti ci sputa
 # sarebbe meglio utilizzare chown e dare i permessi all'utente, ma chown non funziona subito dopo aver creato l'utente, todo trovare fix
-mkdir -p /home/sostituzioni/.config/chromium
-chmod -R 777 /home/sostituzioni/.config/chromium
+mkdir -p /home/scuolasync/.config/chromium
+chmod -R 777 /home/scuolasync/.config/chromium
 
 # rimuovi console virtuale
 cat > /etc/X11/xorg.conf << EOF
@@ -33,7 +33,7 @@ EOF
 # crea configurazione lightdm
 cat > /etc/lightdm/lightdm.conf << EOF
 [SeatDefaults]
-autologin-user=sostituzioni
+autologin-user=scuolasync
 user-session=openbox
 EOF
 
@@ -44,9 +44,9 @@ read -p "Inserire il codice di autorizzazione (oppure premere invio per non util
 
 
 # creazione script di avvio openbox
-mkdir -p /home/sostituzioni/.config/openbox
+mkdir -p /home/scuolasync/.config/openbox
 
-cat > /home/sostituzioni/.config/openbox/autostart << EOF
+cat > /home/scuolasync/.config/openbox/autostart << EOF
 #!/bin/bash
 
 # ---- variabili -----
@@ -74,8 +74,8 @@ do
   xrandr --auto
 
   # rimuovi flag di chromium per non far mostrare dialoghi
-  sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/sostituzioni/.config/chromium/Default/Preferences
-  sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/sostituzioni/.config/chromium/Default/Preferences
+  sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/scuolasync/.config/chromium/Default/Preferences
+  sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/scuolasync/.config/chromium/Default/Preferences
 
   # avvia chromium in modalità kiosk a schermo intero
   chromium \\
