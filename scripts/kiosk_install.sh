@@ -20,7 +20,8 @@ apt-get install \
 # imposta permessi
 # fix per chromium che altrimenti ci sputa
 # sarebbe meglio utilizzare chown e dare i permessi all'utente, ma chown non funziona subito dopo aver creato l'utente, todo trovare fix
-chmod -R 777 /home/sostituzioni/.config
+mkdir -p /home/sostituzioni/.config/chromium
+chmod -R 777 /home/sostituzioni/.config/chromium
 
 # rimuovi console virtuale
 cat > /etc/X11/xorg.conf << EOF
