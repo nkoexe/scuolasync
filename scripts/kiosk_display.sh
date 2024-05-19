@@ -3,18 +3,8 @@
 # Get a list of connected displays
 displays=$(xrandr | grep " connected" | cut -d ' ' -f1)
 
-# Find the display with the highest width
-highest_width=0
-primary_display=""
-for display in $displays; do
-  # Extract width from resolution string (e.g., 1920x1080)
-  width=${display#*x}
-  
-  if [[ $width -gt $highest_width ]]; then
-    highest_width=$width
-    primary_display="$display"
-  fi
-done
+#first display is primary
+primary_display=${displays[0]}
 
 # Loop through displays and set configurations
 for display in $displays; do
