@@ -16,6 +16,10 @@ body {
     background-color: #C00F19;
 }
 
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
 #main-container {
     position: relative;
     display: flex;
@@ -104,7 +108,7 @@ body {
     max-height: 70vh;
     width: 60vh;
     max-width: 90%;
-    background: white;
+    backdrop-filter: blur(10px);
     box-shadow: 0 3px 5px #00000069, 0px 5px 15px #0000007c;
     border-radius: 3vh;
     transition: box-shadow .3s;
@@ -112,16 +116,32 @@ body {
     z-index: 20;
 }
 
+#title-frame {
+    display: flex;
+}
+
 #logo {
-    height: 18vh;
-    margin-top: 4vh;
+    margin: auto 0;
+    height: 10vh;
     object-fit: contain;
     user-select: none;
     -webkit-user-drag: none;
 }
 
-#title-frame {
-    text-align: center;
+#title-separator {
+    margin: auto 4vh;
+    height: 5vh;
+    width: 0.5vh;
+    min-width: 0.5vh;
+    border-radius: 1.5vw;
+    background-color: #232323;
+}
+
+#title {
+    font-size: 5vh;
+    font-weight: 500;
+    margin: auto 0;
+    color: #232323;
 }
 
 #loginbutton-frame {
@@ -200,10 +220,29 @@ body {
 @media (max-width: 600px) {
     #login-container {
         box-shadow: none;
+        margin: 0;
+        width: 100%;
+        max-height: 80vh;
+        max-width: unset;
+        backdrop-filter: none;
+    }
+
+    #title-frame {
+        flex-direction: column;
+        gap: 3vh
     }
 
     #logo {
-        margin-top: 0;
+        margin: auto;
+    }
+
+    #title-separator {
+        display: none;
+    }
+
+    #title {
+        margin: auto;
+        text-align: center;
     }
 
     #pulsanti-legali {

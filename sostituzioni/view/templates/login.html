@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 
 <head>
   <meta charset="UTF-8" />
@@ -9,7 +9,7 @@
   <title>{{title}} | Gandhi Merano</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/login.css') }}">
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
 </head>
@@ -29,14 +29,12 @@
     <div id="login-container">
       <div id="title-frame">
         <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Gandhi">
-        <!-- <div>I.I.S.S "Gandhi" - Merano</div> -->
-        <!-- <h1>Gestione digitale</h1> -->
-        <!-- <h1>Benvenuto</h1> -->
+        <div id="title-separator"></div>
+        <h1 id="title">{{title}}</h1>
       </div>
       <div id="loginbutton-frame">
         <a href="{{ url_for('auth.googlessoredirect') }}" id="button-accedi">Accedi</a>
       </div>
-
       <div id="notes-frame">
         <p>{{ paragraph | safe }}</p>
         {% if supportemail %}
@@ -45,8 +43,6 @@
       </div>
     </div>
     <div id="pulsanti-legali">
-      <!-- <a href="/crediti">Crediti</a>
-      <span class="separator">·</span> -->
       <a href="/privacy">Privacy & Cookies</a>
       <span class="separator">·</span>
       <a href="/licenze">Licenze & Crediti</a>

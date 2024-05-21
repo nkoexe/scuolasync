@@ -45,6 +45,7 @@ ul {
 
 a {
     text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 #main-frame {
