@@ -152,6 +152,14 @@ a {
     color: #232323;
 }
 
+#header-separator {
+    margin-top: 3vh;
+    height: 2px;
+    width: 100%;
+    border-radius: 2px;
+    background-color: #232323;
+}
+
 #loginbutton-frame {
     flex: 1;
     display: flex;
@@ -250,6 +258,10 @@ a {
     #title {
         margin: auto;
         text-align: center;
+    }
+
+    #header-separator {
+        display: none;
     }
 
     #pulsanti-legali {
