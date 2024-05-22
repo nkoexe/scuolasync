@@ -118,11 +118,15 @@ a {
 
 #title-frame {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+
 }
 
 #logo {
     margin: auto 0;
-    height: 10vh;
+    width: 14vh;
     object-fit: contain;
     user-select: none;
     -webkit-user-drag: none;
@@ -137,10 +141,14 @@ a {
     background-color: #232323;
 }
 
+#title-container {
+    margin: auto 0;
+}
+
 #title {
+    display: inline-block;
     font-size: 5vh;
     font-weight: 500;
-    margin: auto 0;
     color: #232323;
 }
 
@@ -165,7 +173,6 @@ a {
 #button-accedi:hover {
     box-shadow: 0 7px 14px #00000040, 0 5px 5px #00000038;
 }
-
 
 #button-accedi:active {
     scale: 0.95;

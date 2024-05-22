@@ -30,8 +30,11 @@
       <div id="title-frame">
         <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Gandhi">
         <div id="title-separator"></div>
-        <h1 id="title">{{title}}</h1>
+        <div id="title-container">
+          <h1 id="title">{{title}}</h1>
+        </div>
       </div>
+      <div id="header-separator"></div>
       <div id="loginbutton-frame">
         <a href="{{ url_for('auth.googlessoredirect') }}" id="button-accedi">Accedi</a>
       </div>
