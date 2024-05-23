@@ -18,7 +18,7 @@
   <div id="main-container">
     <div id="design"></div>
     <div id="content">
-      <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}">
+      <!-- <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}"> -->
       {% with messages = get_flashed_messages() %}
       {% if messages %}
       <div id="messages-container">
@@ -30,8 +30,8 @@
       {% endwith %}
       <div id="login-container">
         <div id="title-frame">
-          <!-- <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Gandhi"> -->
-          <!-- <div id="title-separator"></div> -->
+          <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Gandhi">
+          <div id="title-separator"></div>
           <h1 id="title">{{title}}</h1>
         </div>
         <!-- <div id="header-separator"></div> -->
