@@ -143,7 +143,7 @@ a {
 
 #title-separator {
     margin: auto 4vh;
-    height: 5vh;
+    height: 8vh;
     width: 0.5vh;
     min-width: 0.5vh;
     border-radius: 1.5vw;
@@ -157,13 +157,13 @@ a {
     color: #232323;
 }
 
-#header-separator {
+/* #header-separator {
     margin-top: 3vh;
     height: 2px;
     width: 100%;
     border-radius: 2px;
     background-color: #232323;
-}
+} */
 
 #loginbutton-frame {
     flex: 1;
