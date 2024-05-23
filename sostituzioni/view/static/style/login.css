@@ -126,7 +126,7 @@ a {
 
 #logo {
     margin: auto 0;
-    width: 14vh;
+    width: 12vh;
     object-fit: contain;
     user-select: none;
     -webkit-user-drag: none;
