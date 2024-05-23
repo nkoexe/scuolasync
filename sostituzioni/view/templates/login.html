@@ -17,38 +17,39 @@
 <body background="#C00F19">
   <div id="main-container">
     <div id="design"></div>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <div id="messages-container">
-      {% for message in messages %}
-      <div><span class="icon">!</span>{{message}}</div>
-      {% endfor %}
-    </div>
-    {% endif %}
-    {% endwith %}
-    <div id="login-container">
-      <div id="title-frame">
-        <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Gandhi">
-        <div id="title-separator"></div>
-        <div id="title-container">
+    <div id="content">
+      <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}">
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <div id="messages-container">
+        {% for message in messages %}
+        <div><span class="icon">!</span>{{message}}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endwith %}
+      <div id="login-container">
+        <div id="title-frame">
+          <!-- <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Gandhi"> -->
+          <!-- <div id="title-separator"></div> -->
           <h1 id="title">{{title}}</h1>
         </div>
+        <!-- <div id="header-separator"></div> -->
+        <div id="loginbutton-frame">
+          <a href="{{ url_for('auth.googlessoredirect') }}" id="button-accedi">Accedi</a>
+        </div>
+        <div id="notes-frame">
+          <p>{{ paragraph | safe }}</p>
+          {% if supportemail %}
+          <p>Non riesci ad accedere? <a href="mailto:{{supportemail}}">Segnala un problema</a>.</p>
+          {% endif %}
+        </div>
       </div>
-      <!-- <div id="header-separator"></div> -->
-      <div id="loginbutton-frame">
-        <a href="{{ url_for('auth.googlessoredirect') }}" id="button-accedi">Accedi</a>
+      <div id="pulsanti-legali">
+        <a href="/privacy">Privacy & Cookies</a>
+        <span class="separator">·</span>
+        <a href="/licenze">Licenze & Crediti</a>
       </div>
-      <div id="notes-frame">
-        <p>{{ paragraph | safe }}</p>
-        {% if supportemail %}
-        <p>Non riesci ad accedere? <a href="mailto:{{supportemail}}">Segnala un problema</a>.</p>
-        {% endif %}
-      </div>
-    </div>
-    <div id="pulsanti-legali">
-      <a href="/privacy">Privacy & Cookies</a>
-      <span class="separator">·</span>
-      <a href="/licenze">Licenze & Crediti</a>
     </div>
   </div>
 </body>
