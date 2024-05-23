@@ -27,7 +27,7 @@ def login():
         return redirect(url_for("online.index"))
 
     # 3 lines of development speedup, remove in production pls ty
-    from sostituzioni.model.auth import authenticate_user
+    # from sostituzioni.model.auth import authenticate_user
 
     # authenticate_user("niccolo.ragazzi@gandhimerano.com")
     # authenticate_user("bidelleria@gandhimerano.com")
