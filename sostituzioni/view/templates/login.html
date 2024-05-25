@@ -19,7 +19,6 @@
   <div id="main-container">
     <div id="design"></div>
     <div id="content">
-      <!-- <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}"> -->
       {% with messages = get_flashed_messages() %}
       {% if messages %}
       <div id="messages-container">
@@ -33,11 +32,10 @@
         <div id="title-frame">
           <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Gandhi">
           <div id="title-separator"></div>
-          <h1 id="title"><span>Scuola</span><svg viewBox="-10 -10 100 140">
-              <path d="M73.463 7c-24 9.667-70.6 31.8-65 43 7 14 41-8 53 9 9.6 13.6-31.333 40.333-53 52" />
+          <h1 id="title"><span>Scuola</span><svg id="title-wacky-s" viewBox="-10 -10 120 150">
+              <path d="M85.5 7C85.5 7 27 31.5 26.5 53C26 74.5 77 47.5 77 68C77 88.5 25.6667 118.833 4 130.5" />
             </svg><span>ync</span></h1>
         </div>
-        <!-- <div id="header-separator"></div> -->
         <div id="loginbutton-frame">
           <a href="{{ url_for('auth.googlessoredirect') }}" id="button-accedi">Accedi</a>
         </div>

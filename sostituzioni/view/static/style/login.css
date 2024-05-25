@@ -69,17 +69,6 @@ a {
     flex-direction: column;
 }
 
-/* #logo {
-    position: absolute;
-    top: 15%;
-    right: 5%;
-    height: 70%;
-    object-fit: contain;
-    opacity: 0.2;
-    animation: fadein 0.8s;
-    z-index: 15;
-} */
-
 #messages-container {
     margin: auto;
     margin-bottom: 10px;
@@ -117,9 +106,8 @@ a {
     width: 60vh;
     max-height: 70vh;
     max-width: 90%;
-    background-color: #ffffff33;
     backdrop-filter: blur(10px);
-    box-shadow: 0 3px 6px #00000080, 0px 10px 20px #00000080;
+    box-shadow: 0 4px 8px #00000050, 0px 6px 12px #00000050, 0px 10px 20px #00000050;
     border-radius: 3vh;
     animation: fadein 0.8s;
     z-index: 20;
@@ -152,31 +140,20 @@ a {
 
 #title {
     font-size: 5vh;
-    font-weight: 700;
-    letter-spacing: -0.3vh;
+    font-weight: 400;
+    letter-spacing: -0.1vh;
     color: #232323;
+    text-wrap: nowrap;
 }
 
-#title span {
-    font-family: 'Bodoni Moda', serif;
-}
-
-h1 svg {
-    margin: 0 -1vh -1vh 0;
-    height: 6vh;
+#title-wacky-s {
+    margin: 0 -1.3vh -1.7vh -1.3vh;
+    height: 7vh;
     fill: none;
     stroke: #C00F19;
-    stroke-width: 2.5vh;
-    stroke-linecap: round;
+    stroke-width: 10%;
+    /* stroke-linecap: round; */
 }
-
-/* #header-separator {
-    margin-top: 3vh;
-    height: 2px;
-    width: 100%;
-    border-radius: 2px;
-    background-color: #232323;
-} */
 
 #loginbutton-frame {
     flex: 1;
@@ -261,26 +238,8 @@ h1 svg {
         backdrop-filter: none;
     }
 
-    #title-frame {
-        flex-direction: column;
-        gap: 3vh
-    }
-
     #logo {
-        margin: auto;
-    }
-
-    #title-separator {
-        display: none;
-    }
-
-    #title {
-        margin: auto;
-        text-align: center;
-    }
-
-    #header-separator {
-        display: none;
+        width: 20%;
     }
 
     #pulsanti-legali {
@@ -293,6 +252,17 @@ h1 svg {
     }
 
     #pulsanti-legali .separator {
+        display: none;
+    }
+}
+
+@media (max-width: 400px) {
+    #title-frame {
+        flex-direction: column;
+        gap: 3vh;
+    }
+
+    #title-separator {
         display: none;
     }
 }
