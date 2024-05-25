@@ -152,8 +152,22 @@ a {
 
 #title {
     font-size: 5vh;
-    font-weight: 500;
+    font-weight: 700;
+    letter-spacing: -0.3vh;
     color: #232323;
+}
+
+#title span {
+    font-family: 'Bodoni Moda', serif;
+}
+
+h1 svg {
+    margin: 0 -1vh -1vh 0;
+    height: 6vh;
+    fill: none;
+    stroke: #C00F19;
+    stroke-width: 2.5vh;
+    stroke-linecap: round;
 }
 
 /* #header-separator {
