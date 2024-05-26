@@ -146,6 +146,13 @@ a {
     text-wrap: nowrap;
 }
 
+/* S è selezionabile ma nascosta */ 
+#title-hidden-s {
+    display: inline-block;
+    width: 0.001px;
+    opacity: 0;
+}
+
 #title-wacky-s {
     margin: 0 -1.3vh -1.7vh -1.3vh;
     height: 7vh;
