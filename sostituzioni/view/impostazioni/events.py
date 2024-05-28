@@ -1,6 +1,7 @@
 import logging
 import subprocess
 import os
+import re
 from datetime import datetime, timedelta
 from flask_socketio import emit
 
@@ -106,23 +107,67 @@ def reboot():
 @login_required
 @role_required("impostazioni.write")
 def modifica_utente(dati):
+    """
+    dati = {
+        "email": <email> (str),
+        "new_email": <email> (str),
+        "ruolo": visualizzatore | editor | amministratore (str),
+    }
+    """
+
+    email = dati["email"].lower().strip()
+    new_email = dati["new_email"].lower().strip()
+    ruolo = dati["ruolo"]
+
+    if email == current_user.email:
+        emit(
+            "modifica utente errore",
+            {
+                "email": email,
+                "error": "Non è possibile modificare l'utente attualmente in uso. Eseguire il login con un altro account.",
+            },
+        )
+        return
+
+    if new_email == "":
+        emit(
+            "modifica utente errore",
+            {"email": email, "error": "Inserire un indirizzo email."},
+        )
+        return
+
+    # Se l'email è la stessa, l'utente sta cercando di modificare il ruolo
+    if utenti.get(new_email) and new_email != email:
+        emit(
+            "modifica utente errore",
+            {"email": email, "error": "Questo indirizzo email è già in uso."},
+        )
+        return
+
+    if not re.match(r"^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$", new_email):
+        emit(
+            "modifica utente errore",
+            {"email": email, "error": f"L'indirizzo '{new_email}' non è valido."},
+        )
+        return
+
     # inserimento nuovo utente
-    if dati["email"] == "":
+    if email == "":
         try:
-            utente = Utente(dati["new_email"], dati["ruolo"])
+            utente = Utente(new_email, ruolo)
             utente.inserisci()
             utenti.append(utente)
         except ValueError as e:
-            emit("modifica utente errore", {"email": dati["email"], "error": str(e)})
+            emit("modifica utente errore", {"email": email, "error": str(e)})
             return
 
     # modifica utente esistente
     else:
         try:
-            utente = utenti.get(dati["email"])
-            utente.modifica({"email": dati["new_email"], "ruolo": dati["ruolo"]})
+            utente = utenti.get(email)
+            utente.modifica({"email": new_email, "ruolo": ruolo})
         except ValueError as e:
-            emit("modifica utente errore", {"email": dati["email"], "error": str(e)})
+            emit("modifica utente errore", {"email": email, "error": str(e)})
             return
 
     emit("modifica utente successo", dati)
@@ -134,6 +179,16 @@ def modifica_utente(dati):
 def elimina_utente(email):
     if email == "":
         emit("elimina utente successo", "")
+        return
+
+    if email == current_user.email:
+        emit(
+            "elimina utente errore",
+            {
+                "email": email,
+                "error": "Non è possibile eliminare l'utente attualmente in uso. Eseguire il login con un altro account.",
+            },
+        )
         return
 
     utente = utenti.get(email)

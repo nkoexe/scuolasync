@@ -1534,13 +1534,6 @@ class Utente(ElementoDatabase):
     @beartype
     @email.setter
     def email(self, new: str):
-        if "@" not in new or "." not in new:
-            raise ValueError(f"Email {new} non valida")
-        if len(new) > 80:
-            raise ValueError(f"Email {new} troppo lunga")
-        if len(new) < 5:
-            raise ValueError(f"Email {new} troppo corta")
-
         self._email = new
 
     @property
