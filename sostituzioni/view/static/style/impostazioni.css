@@ -18,6 +18,7 @@
     box-sizing: border-box;
     margin: 0;
     font-family: 'Gabarito', sans-serif;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .hidden {
@@ -45,7 +46,6 @@ ul {
 
 a {
     text-decoration: none;
-    -webkit-tap-highlight-color: transparent;
 }
 
 #main-frame {
@@ -464,4 +464,34 @@ input[type="file"]+label:hover {
     border-radius: 100%;
     box-shadow: 0px -5px 15px #00000088;
     z-index: 90;
+}
+
+@media (max-width: 600px) {
+    #main-container {
+        margin-top: 30px;
+    }
+
+    #link-container {
+        margin-top: 30px;
+        padding: 0 20px;
+    }
+
+    .link-gestione {
+        padding: 30px 10px;
+        flex-direction: column;
+        border-radius: 2rem;
+    }
+
+    .link-gestione h2 {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .link-gestione .icon {
+        font-size: 40px;
+    }
+
+    .link-gestione .icon-open-new {
+        display: none;
+    }
 }
