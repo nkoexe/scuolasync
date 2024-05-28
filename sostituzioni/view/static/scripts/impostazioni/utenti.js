@@ -1,5 +1,6 @@
 const utente_template = `<div class="opzione-utente" data-email="{email}">
 <input class="input-email-utente" type="text" placeholder="Email" required minlength="5" maxlength="80" autocomplete="off" value="{email}" oninput="modificato('{email}')">
+<div class="operazioni-utente">
 <div class="container-selezione">
   <select class="selezione-ruolo-utente" name="ruolo" onchange="modificato('{email}')">
     <option {amministratore} value="amministratore">Amministratore</option>
@@ -9,6 +10,7 @@ const utente_template = `<div class="opzione-utente" data-email="{email}">
 </div>
 <button class="material-symbols-rounded pulsante-elimina-utente" onclick="ui_elimina_utente('{email}')">delete</button>
 <button class="material-symbols-rounded pulsante-conferma-modifiche-utente hidden" onclick="ui_conferma_modifiche('{email}')">check_circle</button>
+</div>
 </div>`
 
 const ui_lista_utenti = document.querySelector("#lista-utenti")

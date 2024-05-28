@@ -53,17 +53,17 @@ a {
     font-size: 30px;
 }
 
-#lista-utenti input {
+#lista-utenti .input-email-utente {
     background-color: var(--color-opzioni);
     border: none;
 }
 
-#lista-utenti .opzione-utente {
+.opzione-utente {
     position: relative;
     padding-bottom: 2px;
 }
 
-#lista-utenti .opzione-utente::after {
+.opzione-utente::after {
     content: "";
     position: absolute;
     bottom: 1px;
@@ -79,12 +79,14 @@ a {
     gap: 10px;
 }
 
-.opzione-utente *:not(.container-selezione) {
-    border: var(--border-opzione);
+.operazioni-utente {
+    display: flex;
+    gap: 10px;
 }
 
 .opzione-utente .selezione-ruolo-utente {
     width: 200px;
+    border: var(--border-opzione);
 }
 
 .opzione-utente .selezione-ruolo-utente:has(:first-child:checked),
@@ -95,6 +97,7 @@ a {
 .opzione-utente button {
     cursor: pointer;
     padding: 7px;
+    border: var(--border-opzione);
     border-radius: 5px;
 }
 
@@ -166,4 +169,29 @@ a {
 #popup-conferma-pulsante-primario {
     background-color: var(--color-danger);
     color: var(--color-danger-fg);
+}
+
+@media (max-width: 700px) {
+    .opzione-utente {
+        flex-direction: column;
+        gap: 0;
+        padding-bottom: 30px;
+    }
+
+    .opzione-utente::after {
+        margin-bottom: 15px;
+        width: 100%;
+    }
+
+    #container-utenti .input-email-utente {
+        background: var(--color-background-opzione);
+        border: var(--border-opzione);
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .operazioni-utente {
+        width: 100%;
+        justify-content: space-between;
+    }
 }
