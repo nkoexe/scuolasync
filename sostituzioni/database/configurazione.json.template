@@ -28,7 +28,7 @@
   "opzioni": {
     "systitle": {
       "titolo": "Nome del sistema",
-      "descrizione": "Titolo del sistema da mostrare nel header della pagina principale.",
+      "descrizione": "Titolo mostrato nell'intestazione della pagina principale.",
       "sezione": "sistema",
       "disabilitato": false,
       "nascosto": false,
