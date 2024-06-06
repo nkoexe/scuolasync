@@ -38,6 +38,11 @@ class Docente(Docente):
         self.cancellato = cancellato
 
 
+class NotaStandard(NotaStandard):
+    def __init__(self, testo: str):
+        self.testo = testo
+
+
 class Sostituzione(Sostituzione):
     def __init__(
         self,

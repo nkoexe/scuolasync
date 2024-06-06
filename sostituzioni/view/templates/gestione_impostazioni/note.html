@@ -1,0 +1,27 @@
+{% extends "gestione_impostazioni/base.html" %}
+
+{% block title %}Gestione Note Standard{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style/gestione_impostazioni/note.css') }}">
+{% endblock %}
+
+{% block body %}
+<div id="main-frame">
+  <div id="main-container">
+    <div id="container-utenti" class="opzione gestione-dati-container">
+      <div class="gestione-dati-nuovo-container">
+        <div class="pulsante gestione-dati-pulsante-nuovo" onclick="nuova_nota()"><span class="icon material-symbols-rounded">add</span><span>Aggiungi Nota</span></div>
+      </div>
+      <div id="lista-note" class="gestione-dati-lista"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  let note = {{ note | tojson }}
+</script>
+<script src="{{ url_for('static', filename='scripts/gestione_impostazioni/note.js') }}" defer></script>
+{% endblock %}

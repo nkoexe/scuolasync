@@ -646,13 +646,30 @@ class NotaStandard(ElementoDatabaseConStorico):
     def __repr__(self) -> str:
         return "Nota standard " + self.numero
 
-    @beartype
-    def modifica(self, testo: str | None = None):
-        if not testo:
-            logger.warning("Nessun parametro passato ad notastandard.modifica")
+    def inserisci(self):
+        return self.DATABASE.insert(
+            self.TABLENAME,
+            testo=self.testo,
+        )
+
+    def modifica(self, dati: dict):
+        if not self.id:
             return
 
-        self.testo = testo
+        if "testo" in dati:
+            self.testo = dati["testo"]
+
+        return self.aggiorna()
+
+    def aggiorna(self):
+        if not self.id:
+            return
+
+        return self.DATABASE.update(
+            self.TABLENAME,
+            Where("id").equals(self.id),
+            testo=self.testo,
+        )
 
     @property
     def testo(self):

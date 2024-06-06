@@ -8,7 +8,7 @@ from flask_socketio import emit
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.control.cron import scheduler
 from sostituzioni.control.importer import Docenti
-from sostituzioni.model.model import Utente
+from sostituzioni.model.model import Utente, NotaStandard
 from sostituzioni.model.auth import (
     login_required,
     role_required,
@@ -248,3 +248,47 @@ def elimina_tutti_utenti_annulla():
 
 
 # //////////////////////////////
+
+
+@socketio.on("modifica nota", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def modifica_nota(dati):
+    """
+    dati = {
+        "testo": (str),
+        "new_testo": (str)
+    }
+    """
+
+    testo = dati["testo"].strip()
+    new_testo = dati["new_testo"].strip()
+
+    if new_testo == "":
+        emit(
+            "modifica nota errore",
+            {"testo": testo, "error": "Inserire un testo valido"},
+        )
+        return
+
+    # todo: controllo che il testo non sia già presente
+
+    # inserimento nuova nota
+    if testo == "":
+        try:
+            nota = NotaStandard(new_testo)
+            nota.inserisci()
+        except Exception as e:
+            emit("modifica nota errore", {"testo": testo, "error": str(e)})
+            return
+
+    # modifica nota esistente
+    else:
+        try:
+            nota = NotaStandard.trova(testo)
+            nota.modifica({"testo": new_testo})
+        except Exception as e:
+            emit("modifica nota errore", {"testo": testo, "error": str(e)})
+            return
+
+    emit("modifica nota successo", dati)
