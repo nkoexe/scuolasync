@@ -1,0 +1,19 @@
+.opzione-docente {
+  position: relative;
+  padding-bottom: 2px;
+  display: flex;
+  gap: 10px;
+}
+
+.nome-docente {
+  display: flex;
+  background-color: var(--color-background-opzione);
+  border: var(--border-opzione);
+  border-radius: 10px;
+  flex: 1;
+}
+
+.nome-docente input {
+  border: none;
+  background-color: transparent;
+}

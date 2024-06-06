@@ -15,24 +15,8 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/header.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/impostazioni.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='style/gestione_impostazioni.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/gestione_impostazioni/base.css') }}">
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
-  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-  <script src="{{ url_for('static', filename='scripts/impostazioni.js') }}" defer></script>
-  <script src="{{ url_for('static', filename='scripts/impostazioni/popup.js') }}" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js" onload="notyf = new Notyf({duration: 3000, types: [
-    {
-      type: 'info',
-      background: '#ffa726',
-      icon: {
-        className: 'material-symbols-rounded',
-        tagName: 'span',
-        text: 'info',
-        color: 'white'
-      },
-    },
-  ],
-})" defer></script>
   {% block head %}
   {% endblock %}
 </head>
@@ -49,7 +33,34 @@
     </div>
   </div>
   {% block body %}
-
+  {% endblock %}
+  <div id="popup-conferma-container" class="hidden">
+    <div id="popup-conferma">
+      <div id="pulsante-chiudi-popup-conferma" onclick="nascondi_popup_conferma()"><span class="material-symbols-rounded">close</span></div>
+      <h2 id="popup-conferma-titolo"></h2>
+      <p id="popup-conferma-descrizione"></p>
+      <div id="popup-conferma-pulsanti">
+        <div id="popup-conferma-pulsante-secondario" class="pulsante"></div>
+        <div id="popup-conferma-pulsante-primario" class="pulsante"></div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" async onload="socket = io('/impostazioni');"></script>
+  <script src="{{ url_for('static', filename='scripts/gestione_impostazioni/popup.js') }}" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js" onload="notyf = new Notyf({duration: 3000, types: [
+    {
+      type: 'info',
+      background: '#ffa726',
+      icon: {
+        className: 'material-symbols-rounded',
+        tagName: 'span',
+        text: 'info',
+        color: 'white'
+      },
+    },
+  ],
+})" defer></script>
+  {% block scripts %}
   {% endblock %}
 </body>
 

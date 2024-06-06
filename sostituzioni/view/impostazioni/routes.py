@@ -2,6 +2,7 @@ from flask import render_template
 
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.model.auth import login_required, role_required, utenti
+from sostituzioni.model.model import Docente, NotaStandard
 from sostituzioni.view.impostazioni import impostazioni
 
 
@@ -20,7 +21,46 @@ def main():
 @role_required("impostazioni.write")
 def gestione_utenti():
     lista_utenti = [(u.email, u.ruolo.nome) for u in utenti]
-    return render_template("gestione_utenti.html", utenti=lista_utenti)
+    return render_template("gestione_impostazioni/utenti.html", utenti=lista_utenti)
+
+
+@impostazioni.route("/impostazioni/docenti")
+@login_required
+@role_required("impostazioni.write")
+def gestione_docenti():
+    lista_docenti = [
+        (d["nome"], d["cognome"]) for d in Docente.load() if not d["cancellato"]
+    ]
+    return render_template("gestione_impostazioni/docenti.html", docenti=lista_docenti)
+
+
+@impostazioni.route("/impostazioni/classi")
+@login_required
+@role_required("impostazioni.write")
+def gestione_classi():
+    return render_template("gestione_impostazioni/classi.html")
+
+
+@impostazioni.route("/impostazioni/aule")
+@login_required
+@role_required("impostazioni.write")
+def gestione_aule():
+    return render_template("gestione_impostazioni/aule.html")
+
+
+@impostazioni.route("/impostazioni/ore")
+@login_required
+@role_required("impostazioni.write")
+def gestione_ore():
+    return render_template("gestione_impostazioni/ore.html")
+
+
+@impostazioni.route("/impostazioni/note")
+@login_required
+@role_required("impostazioni.write")
+def gestione_note():
+    note = [n["testo"] for n in NotaStandard.load()]
+    return render_template("gestione_impostazioni/note.html", note=note)
 
 
 @impostazioni.route("/reboot")

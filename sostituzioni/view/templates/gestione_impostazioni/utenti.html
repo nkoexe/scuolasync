@@ -1,16 +1,15 @@
-{% from "macro/impostazioni.html" import opzione_utente %}
-{% extends "gestione_impostazioni_base.html" %}
+{% extends "gestione_impostazioni/base.html" %}
 
 {% block title %}Gestione Utenti{% endblock %}
 
 {% block head %}
-<script src="{{ url_for('static', filename='scripts/impostazioni/utenti.js') }}" defer></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='style/gestione_impostazioni/utenti.css') }}">
 {% endblock %}
 
 {% block body %}
 <div id="main-frame">
   <div id="main-container">
-    <div class="opzione">
+    <!-- <div class="opzione">
       <h5 class="opzione-titolo">Importa utenti da file</h5>
       <p class="opzione-descrizione">(NON ANCORA IMPLEMENTATO) Usare preferibilmente file esportati dai gruppi Google. Accettati formati XSLX e CSV, con l'email nella colonna 'Member Email'. Il nome del file dovrebbe assomigliare a questo: 'Members_xxxxxxxxxxxxxxxx_01012023_000000.csv.xlsx'</p>
       <div class="opzione-file">
@@ -19,12 +18,12 @@
         <button onclick="importa_utenti()" class="pulsante">Importa</button>
         <span id="import-utenti-selected-file-label"></span>
       </div>
-    </div>
-    <div id="container-utenti" class="opzione">
-      <div id="nuovo-utente-container">
-        <div class="pulsante" onclick="nuovo_utente()"><span class="icon material-symbols-rounded">add</span><span>Nuovo Utente</span></div>
+    </div> -->
+    <div id="container-utenti" class="opzione gestione-dati-container">
+      <div class="gestione-dati-nuovo-container">
+        <div class="pulsante gestione-dati-pulsante-nuovo" onclick="nuovo_utente()"><span class="icon material-symbols-rounded">add</span><span>Nuovo Utente</span></div>
       </div>
-      <div id="lista-utenti"></div>
+      <div id="lista-utenti" class="gestione-dati-lista"></div>
     </div>
     <div class="opzione">
       <h5 class="opzione-titolo">Elimina tutti gli utenti</h5>
@@ -32,19 +31,12 @@
       <div class="pulsante" onclick="ui_elimina_tutti_utenti()"><span class="icon material-symbols-rounded">delete</span><span>Elimina</span></div>
     </div>
   </div>
-  <div id="popup-conferma-container" class="hidden">
-    <div id="popup-conferma">
-      <div id="pulsante-chiudi-popup-conferma" onclick="nascondi_popup_conferma()"><span class="material-symbols-rounded">close</span></div>
-      <h2 id="popup-conferma-titolo"></h2>
-      <p id="popup-conferma-descrizione"></p>
-      <div id="popup-conferma-pulsanti">
-        <div id="popup-conferma-pulsante-secondario" class="pulsante"></div>
-        <div id="popup-conferma-pulsante-primario" class="pulsante"></div>
-      </div>
-    </div>
-  </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
 <script>
   let utenti = {{ utenti | tojson }}
 </script>
+<script src="{{ url_for('static', filename='scripts/gestione_impostazioni/utenti.js') }}" defer></script>
 {% endblock %}

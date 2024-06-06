@@ -1,0 +1,42 @@
+{% extends "gestione_impostazioni/base.html" %}
+
+{% block title %}Gestione Docenti{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style/gestione_impostazioni/docenti.css') }}">
+{% endblock %}
+
+{% block body %}
+<div id="main-frame">
+  <div id="main-container">
+    <!-- <div class="opzione">
+      <h5 class="opzione-titolo">Importa docenti da file</h5>
+      <p class="opzione-descrizione">(NON ANCORA IMPLEMENTATO) Usare preferibilmente file esportati dai gruppi Google. Accettati formati XSLX e CSV, con l'email nella colonna 'Member Email'. Il nome del file dovrebbe assomigliare a questo: 'Members_xxxxxxxxxxxxxxxx_01012023_000000.csv.xlsx'</p>
+      <div class="opzione-file">
+        <input type="file" id="import-utenti-filepicker">
+        <label for="import-utenti-filepicker" class="material-symbols-rounded pulsante">upload_file</label>
+        <button onclick="importa_utenti()" class="pulsante">Importa</button>
+        <span id="import-utenti-selected-file-label"></span>
+      </div>
+    </div> -->
+    <div id="container-docenti" class="opzione gestione-dati-container">
+      <div id="nuovo-docente-container" class="gestione-dati-nuovo-container">
+        <div class="pulsante gestione-dati-pulsante-nuovo" onclick="nuovo_docente()"><span class="icon material-symbols-rounded">add</span><span>Nuovo Docente</span></div>
+      </div>
+      <div id="lista-docenti" class="gestione-dati-lista"></div>
+    </div>
+    <div class="opzione">
+      <h5 class="opzione-titolo">Elimina tutti i docenti</h5>
+      <p class="opzione-descrizione">Elimina tutti i docenti del sistema tranne quello in uso al momento. Questa azione non è reversibile.</p>
+      <div class="pulsante" onclick="ui_elimina_tutti_docenti()"><span class="icon material-symbols-rounded">delete</span><span>Elimina</span></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  let docenti = {{ docenti | tojson }};
+</script>
+<script src="{{ url_for('static', filename='scripts/gestione_impostazioni/docenti.js') }}" defer></script>
+{% endblock %}

@@ -70,7 +70,9 @@ a {
 }
 
 /* TEMP */
-#link-container a:not(#link-gestione-utenti) {
+#link-gestione-classi,
+#link-gestione-aule,
+#link-gestione-ore-predefinite {
     pointer-events: none;
     color: #ffffff77;
 }

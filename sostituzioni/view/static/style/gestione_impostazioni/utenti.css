@@ -1,0 +1,57 @@
+.opzione-utente {
+  position: relative;
+  padding-bottom: 2px;
+  display: flex;
+  gap: 10px;
+}
+
+.opzione-utente::after {
+  content: "";
+  position: absolute;
+  bottom: 1px;
+  background-color: black;
+  width: 70%;
+  height: 1px;
+  margin-top: 1px;
+  z-index: 30;
+}
+
+.gestione-dati-lista .input-email-utente {
+  background-color: var(--color-opzioni);
+  border: none;
+}
+
+.opzione-utente .selezione-ruolo-utente {
+  width: 200px;
+  border: var(--border-opzione);
+}
+
+.opzione-utente .selezione-ruolo-utente:has(:first-child:checked),
+.opzione-utente .selezione-ruolo-utente:has(:nth-child(2):checked) {
+  font-weight: bold;
+}
+
+@media (max-width: 700px) {
+  .opzione-utente {
+    flex-direction: column;
+    gap: 0;
+    padding-bottom: 30px;
+  }
+
+  .opzione-utente::after {
+    margin-bottom: 15px;
+    width: 100%;
+  }
+
+  .gestione-dati-container .input-email-utente {
+    background: var(--color-background-opzione);
+    border: var(--border-opzione);
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .operazioni-dato {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

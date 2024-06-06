@@ -41,7 +41,7 @@ a {
     margin-left: 0;
 }
 
-#container-utenti .pulsante {
+.gestione-dati-container .pulsante {
     font-size: 24px;
     padding: 15px 20px;
     margin: 0 0 30px 20px;
@@ -49,64 +49,28 @@ a {
     color: var(--color-accent-text);
 }
 
-#container-utenti .pulsante .icon {
+.gestione-dati-container .pulsante .icon {
     font-size: 30px;
 }
 
-#lista-utenti .input-email-utente {
-    background-color: var(--color-opzioni);
-    border: none;
-}
-
-.opzione-utente {
-    position: relative;
-    padding-bottom: 2px;
-}
-
-.opzione-utente::after {
-    content: "";
-    position: absolute;
-    bottom: 1px;
-    background-color: black;
-    width: 70%;
-    height: 1px;
-    margin-top: 1px;
-    z-index: 30;
-}
-
-.opzione-utente {
+.operazioni-dato {
     display: flex;
     gap: 10px;
 }
 
-.operazioni-utente {
-    display: flex;
-    gap: 10px;
-}
-
-.opzione-utente .selezione-ruolo-utente {
-    width: 200px;
-    border: var(--border-opzione);
-}
-
-.opzione-utente .selezione-ruolo-utente:has(:first-child:checked),
-.opzione-utente .selezione-ruolo-utente:has(:nth-child(2):checked) {
-    font-weight: bold;
-}
-
-.opzione-utente button {
+.operazioni-dato button {
     cursor: pointer;
     padding: 7px;
     border: var(--border-opzione);
     border-radius: 5px;
 }
 
-.opzione-utente .pulsante-elimina-utente {
+.pulsante-elimina-dato {
     background-color: var(--color-danger);
     color: var(--color-danger-fg);
 }
 
-.opzione-utente .pulsante-conferma-modifiche-utente {
+.pulsante-conferma-modifiche-dato {
     background-color: var(--color-confirm);
     color: var(--color-confirm-fg);
 }
@@ -127,8 +91,8 @@ a {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    max-width: 400px;
-    padding: 20px;
+    max-width: 500px;
+    padding: 40px 50px;
     border-radius: 1rem;
     background-color: var(--color-background);
     box-shadow: 0 2px 5px var(--color-shadow), 0 10px 20px var(--color-shadow);
@@ -140,8 +104,8 @@ a {
     position: absolute;
     top: 0;
     right: 0;
-    width: 50px;
-    height: 35px;
+    width: 70px;
+    height: 45px;
     border-top-right-radius: 1rem;
     cursor: pointer;
 }
@@ -156,42 +120,22 @@ a {
     user-select: none;
 }
 
+#popup-conferma-titolo {
+    font-size: 30px;
+    font-weight: bold;
+}
+
 #popup-conferma-pulsanti {
-    margin-top: 10px;
+    margin-top: 30px;
     display: flex;
-    gap: 20px;
 }
 
 #popup-conferma-pulsanti .pulsante {
     margin: auto;
+    padding: 20px 40px;
 }
 
 #popup-conferma-pulsante-primario {
     background-color: var(--color-danger);
     color: var(--color-danger-fg);
-}
-
-@media (max-width: 700px) {
-    .opzione-utente {
-        flex-direction: column;
-        gap: 0;
-        padding-bottom: 30px;
-    }
-
-    .opzione-utente::after {
-        margin-bottom: 15px;
-        width: 100%;
-    }
-
-    #container-utenti .input-email-utente {
-        background: var(--color-background-opzione);
-        border: var(--border-opzione);
-        width: 100%;
-        margin-bottom: 5px;
-    }
-
-    .operazioni-utente {
-        width: 100%;
-        justify-content: space-between;
-    }
 }
