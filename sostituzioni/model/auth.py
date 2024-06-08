@@ -145,9 +145,9 @@ def sso_login(request):
 def authenticate_user(email):
     logger.debug(f"Autenticazione utente {email}")
 
-    userdata = User.load(where=Where("email").equals(email))
+    allowed = email in utenti.keys()
 
-    if not userdata:
+    if not allowed:
         logger.info(
             f"Utente {email} ha cercato di effettuare l'accesso, non autorizzato"
         )
