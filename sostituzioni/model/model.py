@@ -33,9 +33,18 @@ class Docente(Docente):
         cancellato: bool = False,
     ):
         self.nome = nome
-        self.nome = nome
         self.cognome = cognome
         self.cancellato = cancellato
+        self.in_database = False
+
+        dati = self.load(nome, cognome)
+        if dati:
+            self.in_database = True
+            self.cancellato = dati[0]["cancellato"]
+
+    def elimina(self, mantieni_in_storico: bool = True):
+        super().elimina(mantieni_in_storico)
+        self.in_database = False
 
 
 class NotaStandard(NotaStandard):

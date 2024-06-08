@@ -1,15 +1,34 @@
-const docente_template = `<div class="opzione-docente" data-nome="{nome}" data-cognome="{cognome}">
-<div class="nome-docente">
-<input class="input-cognome-docente" type="text" placeholder="Cognome" required minlength="1" maxlength="80" autocomplete="off" value="{cognome}" oninput="modificato('{nome}', '{cognome}')">
-<input class="input-nome-docente" type="text" placeholder="Nome" required minlength="1" maxlength="80" autocomplete="off" value="{nome}" oninput="modificato('{nome}', '{cognome}')">
+const docente_template = `<div class="nome-docente">
+<input class="input-cognome-docente" type="text" placeholder="Cognome" required minlength="1" maxlength="80" autocomplete="off" value="{cognome}">
+<input class="input-nome-docente" type="text" placeholder="Nome" required minlength="1" maxlength="80" autocomplete="off" value="{nome}">
 </div>
 <div class="operazioni-dato">
-<button class="material-symbols-rounded pulsante-elimina-dato" onclick="ui_elimina_docente('{nome}', '{cognome}')">delete</button>
-<button class="material-symbols-rounded pulsante-conferma-modifiche-dato hidden" onclick="ui_conferma_modifiche('{nome}', '{cognome}')">check_circle</button>
-</div>
+<button class="material-symbols-rounded pulsante-elimina-dato">delete</button> 
+<button class="material-symbols-rounded pulsante-conferma-modifiche-dato hidden">check_circle</button>
 </div>`
 
 const ui_lista_docenti = document.querySelector("#lista-docenti")
+
+function crea_elemento(nome, cognome) {
+  const element = document.createElement("div")
+  element.classList.add("opzione-docente")
+  element.dataset.nome = nome
+  element.dataset.cognome = cognome
+  element.innerHTML = docente_template.replaceAll("{nome}", nome).replaceAll("{cognome}", cognome)
+
+  const input_nome = element.querySelector(".input-nome-docente")
+  input_nome.value = nome
+  input_nome.oninput = () => modificato(nome, cognome)
+
+  const input_cognome = element.querySelector(".input-cognome-docente")
+  input_cognome.value = cognome
+  input_cognome.oninput = () => modificato(nome, cognome)
+
+  element.querySelector(".pulsante-elimina-dato").onclick = () => ui_elimina_docente(nome, cognome)
+  element.querySelector(".pulsante-conferma-modifiche-dato").onclick = () => ui_conferma_modifiche(nome, cognome)
+
+  return element
+}
 
 docenti.sort((a, b) => {
   if (a[1] == b[1])
@@ -19,22 +38,27 @@ docenti.sort((a, b) => {
 })
 
 docenti.forEach(docenti => {
-  ui_lista_docenti.innerHTML += docente_template.replaceAll("{nome}", docenti[0]).replaceAll("{cognome}", docenti[1])
+  const element = crea_elemento(docenti[0], docenti[1])
+  ui_lista_docenti.appendChild(element)
 })
 
 function modificato(nome, cognome) {
-  let element = document.querySelector(`[data-nome="${nome}"][data-cognome="${cognome}"]`)
+  const element = Array.from(document.querySelectorAll(".opzione-docente"))
+    .find(element => element.dataset.nome === nome && element.dataset.cognome === cognome)
+
   element.querySelector(".pulsante-elimina-dato").classList.add("hidden")
   element.querySelector(".pulsante-conferma-modifiche-dato").classList.remove("hidden")
 }
 
 function ui_conferma_modifiche(nome, cognome) {
-  let element = document.querySelector(`[data-nome="${nome}"][data-cognome="${cognome}"]`)
+  const element = Array.from(document.querySelectorAll(".opzione-docente"))
+    .find(element => element.dataset.nome === nome && element.dataset.cognome === cognome)
+
   let new_nome = element.querySelector(".input-nome-docente").value
   let new_cognome = element.querySelector(".input-cognome-docente").value
 
-  new_nome = new_nome.replace(/\s/g, "")
-  new_cognome = new_cognome.replace(/\s/g, "")
+  new_nome = new_nome.trim()
+  new_cognome = new_cognome.trim()
 
   if (new_nome === "") {
     notyf.error("Inserire un nome valido")
@@ -61,7 +85,8 @@ function ui_conferma_modifiche(nome, cognome) {
 
 function ui_elimina_docente(nome, cognome) {
   if (nome == "" || cognome == "") {
-    let element = document.querySelector(`[data-nome="${nome}"][data-cognome="${cognome}"]`)
+    const element = Array.from(document.querySelectorAll(".opzione-docente"))
+      .find(element => element.dataset.nome === nome && element.dataset.cognome === cognome)
     element.remove()
     return
   }
@@ -82,18 +107,20 @@ function nuovo_docente() {
     return
   }
 
-  ui_lista_docenti.innerHTML = docente_template.replaceAll("{nome}", "").replaceAll("{cognome}", "") + ui_lista_docenti.innerHTML;
-  document.querySelector(".input-cognome-docente").focus()
+  const empty_element = crea_elemento("", "")
+  ui_lista_docenti.insertAdjacentElement("afterbegin", empty_element)
+  empty_element.querySelector(".input-nome-docente").focus()
 }
 
 //----------------------------------
 
 
 socket.on("modifica docente successo", (data) => {
-  let element = document.querySelector(`[data-nome="${data.nome}"][data-cognome="${data.cognome}"]`)
-  let new_element = docente_template.replaceAll("{nome}", data.new_nome).replaceAll("{cognome}", data.new_cognome)
+  const element = Array.from(document.querySelectorAll(".opzione-docente"))
+    .find(element => element.dataset.nome === data.nome && element.dataset.cognome === data.cognome)
+  const new_element = crea_elemento(data.new_nome, data.new_cognome)
 
-  element.outerHTML = new_element
+  element.replaceWith(new_element)
 
   if (data.nome == "" || data.cognome == "") {
     // nuovo docente
@@ -113,7 +140,8 @@ socket.on("modifica docente successo", (data) => {
 })
 
 socket.on("modifica docente errore", (data) => {
-  let element = document.querySelector(`[data-nome="${data.nome}"][data-cognome="${data.cognome}"]`)
+  const element = Array.from(document.querySelectorAll(".opzione-docente"))
+    .find(element => element.dataset.nome === data.nome && element.dataset.cognome === data.cognome)
   element.querySelector(".input-nome-docente").disabled = false
   element.querySelector(".input-cognome-docente").disabled = false
 
@@ -124,12 +152,13 @@ socket.on("modifica docente errore", (data) => {
   }
 })
 
-socket.on("elimina docente successo", (nome, cognome) => {
-  let index = docenti.findIndex(docente => docente[0] === nome && docente[1] === cognome)
+socket.on("elimina docente successo", (data) => {
+  let index = docenti.findIndex(docente => docente[0] === data.nome && docente[1] === data.cognome)
   if (index == -1) return;
   docenti.splice(index, 1)
 
-  let element = document.querySelector(`[data-nome="${nome}"][data-cognome="${cognome}"]`)
+  const element = Array.from(document.querySelectorAll(".opzione-docente"))
+    .find(element => element.dataset.nome === data.nome && element.dataset.cognome === data.cognome)
   element.remove()
 
   notyf.success("Docente eliminato con successo")

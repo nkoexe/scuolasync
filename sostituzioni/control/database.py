@@ -164,7 +164,8 @@ class Database:
             self.connection = None
         # logger.debug("Connection to database closed successfully")
 
-    def execute(self, query: str, values: list | None = None):
+    @beartype
+    def execute(self, query: str, values: Any | None = None):
         logger.debug("Executing query " + query + " - " + str(values))
         try:
             if values is not None:
@@ -225,19 +226,21 @@ class Database:
 
         return rows
 
+    @beartype
     def get_one(
         self,
         table: str,
         columns: str | tuple = "*",
         where: Where | None = None,
         load_lists: bool = True,
-    ) -> SearchableList:
+    ) -> dict | None:
         data = self.get(table, columns, where, None, 1, load_lists)
 
         if len(data) > 0:
             return data[0]
         return None
 
+    @beartype
     def load_lists(self, table_name: str, rows: SearchableList):
         """
         Carica liste da diverse tabelle
@@ -378,6 +381,8 @@ class ElementoDatabase:
 
     #     return data
 
+    @staticmethod
+    @beartype
     def load(
         item,
         columns: str | tuple = "*",
@@ -393,7 +398,9 @@ class ElementoDatabase:
     def elimina(self):
         self.DATABASE.delete(self.TABLENAME, Where(self.KEY).equals(self.id))
 
-    def trova(item, value: any = None, where: Where | None = None):
+    @staticmethod
+    @beartype
+    def trova(item, value: Any = None, where: Where | None = None):
         """
         Funzione usata nell'inserimento di dati per verificare che
         l'elemento esiste nella relativa tabella, caricandone la chiave.
@@ -449,9 +456,11 @@ class Aula(ElementoDatabaseConStorico):
     TABLENAME = "aula"
     KEY = "numero"
 
+    @staticmethod
     def load():
         return ElementoDatabase.load(Aula)
 
+    @staticmethod
     @beartype
     def trova(numero: str):
         return ElementoDatabase.trova(Aula, numero)
@@ -538,8 +547,32 @@ class Docente(ElementoDatabaseConStorico):
     TABLENAME = "docente"
     KEY = ("nome", "cognome")
 
-    def load():
-        return ElementoDatabase.load(Docente)
+    @staticmethod
+    @beartype
+    def load(nome: str | None = None, cognome: str | None = None):
+        if nome is None and cognome is None:
+            return ElementoDatabase.load(Docente)
+
+        if nome is None:
+            return ElementoDatabase.load(
+                Docente, where=Where("cognome").equals(cognome)
+            )
+
+        if cognome is None:
+            return ElementoDatabase.load(Docente, where=Where("nome").equals(nome))
+
+        return ElementoDatabase.load(
+            Docente, where=Where("nome").equals(nome).AND("cognome").equals(cognome)
+        )
+
+    @staticmethod
+    @beartype
+    def trova(cognome_nome: str):
+        return ElementoDatabase.trova(
+            Docente,
+            cognome_nome,
+            where=Where("(cognome || ' ' || nome)").LIKE(cognome_nome.lower()),
+        )
 
     def inserisci(self):
         return self.DATABASE.insert(
@@ -550,19 +583,46 @@ class Docente(ElementoDatabaseConStorico):
         )
 
     @beartype
-    def trova(cognome_nome: str):
-        return ElementoDatabase.trova(
-            Docente,
-            cognome_nome,
-            where=Where("(cognome || ' ' || nome)").LIKE(cognome_nome.lower()),
+    def modifica(self, dati: dict):
+        # todo: terribile, utilizzare id per docenti
+        self.old_nome = self.nome
+        self.old_cognome = self.cognome
+
+        if "nome" in dati:
+            self.nome = dati["nome"]
+
+        if "cognome" in dati:
+            self.cognome = dati["cognome"]
+
+        return self.aggiorna()
+
+    @beartype
+    def aggiorna(self):
+        print(self.cancellato)
+        return self.DATABASE.update(
+            self.TABLENAME,
+            Where("nome").equals(self.old_nome).AND("cognome").equals(self.old_cognome),
+            nome=self.nome,
+            cognome=self.cognome,
+            cancellato=self.cancellato,
         )
 
-    # @beartype
-    # def __init__(self, nome: str, cognome: str, cancellato: bool):
-    #     super(Docente, self).__init__(cancellato)
+    @beartype
+    def elimina(self, mantieni_in_storico: bool = True):
+        self.cancellato = True
 
-    #     self._nome = nome
-    #     self._cognome = cognome
+        if mantieni_in_storico:
+            return self.DATABASE.update(
+                self.TABLENAME,
+                Where("nome").equals(self.nome).AND("cognome").equals(self.cognome),
+                cancellato=True,
+            )
+
+        else:
+            self.DATABASE.delete(
+                self.TABLENAME,
+                Where("nome").equals(self.nome).AND("cognome").equals(self.cognome),
+            )
 
     @property
     def nome(self):
@@ -587,6 +647,7 @@ class OraPredefinita(ElementoDatabase):
     TABLENAME = "ora_predefinita"
     KEY = "numero"
 
+    @staticmethod
     def load():
         return ElementoDatabase.load(OraPredefinita)
 
@@ -630,9 +691,11 @@ class NotaStandard(ElementoDatabaseConStorico):
     TABLENAME = "nota_standard"
     KEY = "testo"
 
+    @staticmethod
     def load():
         return ElementoDatabase.load(NotaStandard)
 
+    @staticmethod
     def trova(testo: str):
         return ElementoDatabase.trova(NotaStandard, testo)
 
@@ -756,6 +819,7 @@ class Sostituzione(ElementoDatabaseConStorico):
         # self.ora_fine = dati["ora_fine"]
         # self.note = dati["note"]
 
+    @staticmethod
     @beartype
     def load(filtri: Where | dict | None = None):
         if isinstance(filtri, Where):
@@ -1122,6 +1186,8 @@ class Evento(ElementoDatabaseConStorico):
     TABLENAME = "evento"
     KEY = "id"
 
+    @staticmethod
+    @beartype
     def load(filtri: Where | dict | None = None):
         if filtri is None:
             # carica gli eventi futuri non cancellati
@@ -1289,6 +1355,7 @@ class Notizia(ElementoDatabaseConStorico):
     TABLENAME = "notizia"
     KEY = "id"
 
+    @staticmethod
     @beartype
     def load(filtri: Where | dict | None = None):
         if filtri is None:
@@ -1351,6 +1418,7 @@ class Notizia(ElementoDatabaseConStorico):
 
         self.id = id
 
+    @beartype
     def modifica(self, dati: dict):
         if not self.id:
             return
@@ -1456,6 +1524,7 @@ class Ruolo(ElementoDatabase):
     TABLENAME = "ruolo"
     KEY = "nome"
 
+    @staticmethod
     def load(*args, **kwargs):
         return ElementoDatabase.load(Ruolo, *args, **kwargs)
 
@@ -1514,6 +1583,7 @@ class Utente(ElementoDatabase):
 
         return self.email
 
+    @beartype
     def modifica(self, dati: dict):
         if "email" in dati:
             self.email = dati["email"]
