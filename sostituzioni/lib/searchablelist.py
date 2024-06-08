@@ -85,11 +85,7 @@ class SearchableList(List):
                     )
 
     def keys(self):
-        id_list = []
-        for element in self:
-            id_list.append(getattr(element, self.key))
-
-        return id_list
+        return [getattr(element, self.key) for element in self]
 
 
 class Test:
