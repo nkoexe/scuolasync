@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 
 ROOT_PATH = Path(__file__).parent.parent
 CONFIG_FILE = ROOT_PATH / "database" / "configurazione.json"
+CONFIG_TEMPLATE = ROOT_PATH / "database" / "configurazione.json.template"
 
 
 @beartype
@@ -39,10 +40,13 @@ class Sezione:
         self.id = id
         self.titolo: str = dati.get("titolo", "")
         self.descrizione: str = dati.get("descrizione", "")
-        self.opzioni: List[Opzione] = []
 
     def __repr__(self):
         return "Sezione" + self.id
+
+    def aggiorna(self, template):
+        self.titolo = template.titolo
+        self.descrizione = template.descrizione
 
 
 class Opzione:
@@ -162,6 +166,38 @@ class Opzione:
                 logger.error(
                     f"Nel caricamento della configurazione, opzione con id {self.id} non ha un tipo valido ({self.tipo})"
                 )
+
+    def aggiorna(self, template):
+        self.titolo = template.titolo
+        self.descrizione = template.descrizione
+        self.sezione = template.sezione
+        self.disabilitato = template.disabilitato
+        self.nascosto = template.nascosto
+        self.tipo = template.tipo
+        self.default = template.default
+
+        match self.tipo:
+            case self.TESTO:
+                self.lunghezza_massima = template.lunghezza_massima
+
+            case self.NUMERO:
+                self.intervallo = template.intervallo
+
+            case self.NUMERO_UNITA:
+                self.intervallo = template.intervallo
+                self.scelte_unita = template.scelte_unita
+                self.unita_default = template.unita_default
+                self.unita = template.unita
+
+            case self.SELEZIONE:
+                self.scelte = template.scelte
+
+            case self.PERCORSO:
+                self.scelte_radice = template.scelte_radice
+                self.radice = template.radice
+
+            case self.LISTA:
+                self.tipo_valori = template.tipo_valori
 
     def __eq__(self, value: object) -> bool:
         return self.valore == value
@@ -547,7 +583,7 @@ class Configurazione:
 
         # Todo: controllare validità file
 
-        self.sezioni = []
+        self.sezioni = SearchableList()
         self.opzioni = SearchableList()
 
         for sectionid, sectiondata in self.data.get("sezioni").items():
@@ -572,6 +608,24 @@ class Configurazione:
             .strip()
         )
         self.set("version", v, force=True)
+
+    def applica_aggiornamenti(self):
+        configurazione_template = Configurazione()
+        configurazione_template.load(CONFIG_TEMPLATE)
+
+        for sezione_template in configurazione_template.sezioni:
+            if sezione_template.id in self.sezioni.keys():
+                self.sezioni.get(sezione_template.id).aggiorna(sezione_template)
+            else:
+                self.sezioni.append(sezione_template)
+
+        for opzione_template in configurazione_template.opzioni:
+            if opzione_template.id in self.opzioni.keys():
+                self.opzioni.get(opzione_template.id).aggiorna(opzione_template)
+            else:
+                self.opzioni.append(opzione_template)
+
+        del configurazione_template
 
     def __repr__(self):
         return "Configurazione Sistema"
@@ -671,3 +725,4 @@ configurazione = Configurazione()
 
 if "SOSTITUZIONI_SETUP" not in os.environ:
     configurazione.load()
+    configurazione.applica_aggiornamenti()
