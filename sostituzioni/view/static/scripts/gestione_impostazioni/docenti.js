@@ -109,7 +109,7 @@ function nuovo_docente() {
 
   const empty_element = crea_elemento("", "")
   ui_lista_docenti.insertAdjacentElement("afterbegin", empty_element)
-  empty_element.querySelector(".input-nome-docente").focus()
+  empty_element.querySelector(".input-cognome-docente").focus()
 }
 
 //----------------------------------
@@ -145,7 +145,7 @@ socket.on("modifica docente errore", (data) => {
   element.querySelector(".input-nome-docente").disabled = false
   element.querySelector(".input-cognome-docente").disabled = false
 
-  if (data.nome == "" || data.cognome == "") {
+  if (data.nome == "" && data.cognome == "") {
     notyf.error("Errore nell'inserimento del docente: " + data.error)
   } else {
     notyf.error("Errore nella modifica del docente: " + data.error)

@@ -146,7 +146,7 @@ class Database:
                     self.path
                 )  # check_same_thread=False ?
                 # logger.debug("Database connection established.")
-                self.connection.execute("PRAGMA foreign_keys = 1")
+                # self.connection.execute("PRAGMA foreign_keys = 1")
                 self.connection.row_factory = sqlite3.Row
 
                 self.cursor = self.connection.cursor()
@@ -437,6 +437,18 @@ class ElementoDatabaseConStorico(ElementoDatabase):
         else:
             self.DATABASE.delete(self.TABLENAME, Where("id").equals(self.id))
 
+    @beartype
+    def elimina_tutti(self, mantieni_in_storico: bool = True):
+        if mantieni_in_storico:
+            self.DATABASE.update(
+                self.TABLENAME,
+                Where("cancellato").equals(False),
+                cancellato=True,
+            )
+
+        else:
+            self.DATABASE.delete(self.TABLENAME, Where("cancellato").equals(False))
+
     @property
     def cancellato(self):
         return self._cancellato
@@ -625,7 +637,7 @@ class Docente(ElementoDatabaseConStorico):
         )
 
     @beartype
-    def elimina(self, mantieni_in_storico: bool = True):
+    def elimina(self, mantieni_in_storico: bool = False):
         self.cancellato = True
 
         if mantieni_in_storico:
@@ -639,6 +651,21 @@ class Docente(ElementoDatabaseConStorico):
             self.DATABASE.delete(
                 self.TABLENAME,
                 Where("nome").equals(self.nome).AND("cognome").equals(self.cognome),
+            )
+
+    @staticmethod
+    @beartype
+    def elimina_tutti(mantieni_in_storico: bool = False):
+        if mantieni_in_storico:
+            Docente.DATABASE.update(
+                Docente.TABLENAME,
+                Where("cancellato").equals(False),
+                cancellato=True,
+            )
+
+        else:
+            Docente.DATABASE.delete(
+                Docente.TABLENAME, Where("cancellato").equals(False)
             )
 
     @property

@@ -282,7 +282,12 @@ def modifica_docente(dati):
         )
         return
 
-    # todo: controllo che il nome e il cognome non siano già presenti
+    if Docente.trova(new_cognome + " " + new_nome):
+        emit(
+            "modifica docente errore",
+            {"nome": nome, "cognome": cognome, "error": "Questo docente esiste già"},
+        )
+        return
 
     # inserimento nuovo docente
     if nome == "":
@@ -342,42 +347,38 @@ def elimina_docente(nome, cognome):
     emit("elimina docente successo", {"nome": nome, "cognome": cognome})
 
 
-# @socketio.on("elimina tutti utenti", namespace="/impostazioni")
-# @login_required
-# @role_required("impostazioni.write")
-# def elimina_tutti_utenti():
-#     def actually_elimina(email_da_mantenere: list):
-#         try:
-#             # elimina tutti gli utenti dal database
-#             Utente.elimina_tutti(email_da_mantenere)
-#             # rigenera la lista di utenti
-#             load_utenti()
-#         except Exception as e:
-#             logger.error(f"Errore durante l'eliminazione di tutti gli utenti: {e}")
+@socketio.on("elimina tutti docenti", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def elimina_tutti_docenti():
+    def actually_elimina():
+        try:
+            Docente.elimina_tutti()
+        except Exception as e:
+            logger.error(f"Errore durante l'eliminazione di tutti i docenti: {e}")
 
-#     scheduler.add_job(
-#         actually_elimina,
-#         "date",
-#         run_date=datetime.now() + timedelta(seconds=10),
-#         args=[[current_user.email]],
-#         id="eliminazione_utenti",
-#         replace_existing=True,
-#         max_instances=1,
-#     )
+    scheduler.add_job(
+        actually_elimina,
+        "date",
+        run_date=datetime.now() + timedelta(seconds=10),
+        id="eliminazione_docenti",
+        replace_existing=True,
+        max_instances=1,
+    )
 
-#     emit("elimina tutti utenti in corso", 10)
-#     logger.debug(
-#         "Eliminazione di tutti gli utenti iniziata. L'utente ha 10 secondi per annullare l'operazione"
-#     )
+    emit("elimina tutti docenti in corso", 10)
+    logger.debug(
+        "Eliminazione di tutti i docenti iniziata. L'utente ha 10 secondi per annullare l'operazione"
+    )
 
 
-# @socketio.on("elimina tutti utenti annulla", namespace="/impostazioni")
-# @login_required
-# @role_required("impostazioni.write")
-# def elimina_tutti_utenti_annulla():
-#     scheduler.remove_job("eliminazione_utenti")
-#     emit("elimina tutti utenti annulla successo", "")
-#     logger.debug("Eliminazione di tutti gli utenti annullata.")
+@socketio.on("elimina tutti docenti annulla", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def elimina_tutti_docenti_annulla():
+    scheduler.remove_job("eliminazione_docenti")
+    emit("elimina tutti docenti annulla successo", "")
+    logger.debug("Eliminazione di tutti i docenti annullata.")
 
 
 # //////////////////////////////

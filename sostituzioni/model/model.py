@@ -42,7 +42,7 @@ class Docente(Docente):
             self.in_database = True
             self.cancellato = dati[0]["cancellato"]
 
-    def elimina(self, mantieni_in_storico: bool = True):
+    def elimina(self, mantieni_in_storico: bool = False):
         super().elimina(mantieni_in_storico)
         self.in_database = False
 
