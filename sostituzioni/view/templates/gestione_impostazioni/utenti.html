@@ -24,6 +24,10 @@
         <div class="gestione-dati-nuovo-container">
           <button class="pulsante gestione-dati-pulsante-nuovo" onclick="nuovo_utente()"><span class="icon material-symbols-rounded">add</span><span>Nuovo Utente</span></button>
         </div>
+        <div id="cerca-utente-container" class="gestione-dati-cerca-container">
+          <input type="text" id="cerca-utente-input" placeholder="Cerca" oninput="cerca_utente()">
+          <button class="gestione-dati-pulsante-cerca" onclick="cerca_utente()"><span class="icon material-symbols-rounded">search</span></button>
+        </div>
       </div>
       <div id="lista-utenti" class="gestione-dati-lista"></div>
     </div>

@@ -59,6 +59,19 @@ a {
     justify-content: space-between;
 }
 
+.gestione-dati-cerca-container {
+    display: flex;
+    align-items: center;
+    border-bottom: var(--border-opzione);
+}
+
+.gestione-dati-cerca-container input,
+.gestione-dati-cerca-container button {
+    border: none;
+    background-color: transparent;
+    color: var(--color-text-opzione);
+}
+
 .gestione-dati-lista {
     margin-top: 30px;
 }

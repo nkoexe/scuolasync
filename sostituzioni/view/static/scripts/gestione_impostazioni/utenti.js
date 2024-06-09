@@ -14,6 +14,7 @@ const utente_template = `<div class="opzione-utente" data-email="{email}">
 </div>`
 
 const ui_lista_utenti = document.querySelector("#lista-utenti")
+const ui_cerca_utente = document.querySelector("#cerca-utente-input")
 
 utenti.sort((a, b) => {
   if (a[1] == b[1])
@@ -40,6 +41,25 @@ utenti.forEach(utente => {
     .replace("{editor}", utente[1] == "editor" ? "selected" : "")
     .replace("{visualizzatore}", utente[1] == "visualizzatore" ? "selected" : "")
 })
+
+function cerca_utente() {
+  let query = ui_cerca_utente.value.toLowerCase()
+
+  if (query == "") {
+    ui_lista_utenti.querySelectorAll(".opzione-utente").forEach(element => {
+      element.classList.remove("hidden")
+    })
+    return
+  }
+
+  ui_lista_utenti.querySelectorAll(".opzione-utente").forEach(element => {
+    if (element.querySelector(".input-email-utente").value.toLowerCase().includes(query)) {
+      element.classList.remove("hidden")
+    } else {
+      element.classList.add("hidden")
+    }
+  })
+}
 
 function modificato(email) {
   let element = document.querySelector(`[data-email="${email}"]`)
