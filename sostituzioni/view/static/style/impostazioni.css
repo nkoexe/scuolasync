@@ -224,7 +224,7 @@ a {
     font-size: large;
     cursor: pointer;
     user-select: none;
-    transition: all 0.1s;
+    transition: all 0.15s;
 }
 
 .pulsante:not(:disabled):hover {
