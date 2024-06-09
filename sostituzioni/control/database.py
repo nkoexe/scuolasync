@@ -736,22 +736,26 @@ class NotaStandard(ElementoDatabaseConStorico):
     KEY = "testo"
 
     @staticmethod
-    def load():
-        return ElementoDatabase.load(NotaStandard)
+    def load(filtri: Where | dict | None = None):
+        where = None
+
+        if isinstance(filtri, Where):
+            where = filtri
+
+        elif isinstance(filtri, dict):
+            testo: str = filtri.get("testo", None)
+
+            if testo:
+                where = Where("testo").equals(testo)
+
+        return ElementoDatabase.load(NotaStandard, where=where)
 
     @staticmethod
     def trova(testo: str):
         return ElementoDatabase.trova(NotaStandard, testo)
 
-    # @beartype
-    # def __init__(self, numero: str, piano: str, cancellato: bool):
-    #     super(Aula, self).__init__(cancellato)
-
-    #     self.numero = numero
-    #     self.piano = piano
-
     def __repr__(self) -> str:
-        return "Nota standard " + self.numero
+        return "Nota standard " + self.testo
 
     def inserisci(self):
         return self.DATABASE.insert(
@@ -760,23 +764,22 @@ class NotaStandard(ElementoDatabaseConStorico):
         )
 
     def modifica(self, dati: dict):
-        if not self.id:
-            return
-
+        # todo: stessa roba qui, terribile. usare id.
+        self.old_testo = self.testo
         if "testo" in dati:
             self.testo = dati["testo"]
 
         return self.aggiorna()
 
     def aggiorna(self):
-        if not self.id:
-            return
-
         return self.DATABASE.update(
             self.TABLENAME,
-            Where("id").equals(self.id),
+            Where("testo").equals(self.old_testo),
             testo=self.testo,
         )
+
+    def elimina(self):
+        self.DATABASE.delete(self.TABLENAME, Where("testo").equals(self.testo))
 
     @property
     def testo(self):

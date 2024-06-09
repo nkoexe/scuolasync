@@ -405,7 +405,12 @@ def modifica_nota(dati):
         )
         return
 
-    # todo: controllo che il testo non sia già presente
+    if NotaStandard.trova(new_testo):
+        emit(
+            "modifica nota errore",
+            {"testo": testo, "error": "Questa nota esiste già"},
+        )
+        return
 
     # inserimento nuova nota
     if testo == "":
@@ -419,10 +424,35 @@ def modifica_nota(dati):
     # modifica nota esistente
     else:
         try:
-            nota = NotaStandard.trova(testo)
+            nota = NotaStandard(testo)
             nota.modifica({"testo": new_testo})
         except Exception as e:
             emit("modifica nota errore", {"testo": testo, "error": str(e)})
             return
 
     emit("modifica nota successo", dati)
+
+
+@socketio.on("elimina nota", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def elimina_nota(testo):
+    if testo == "":
+        emit("elimina nota successo", "")
+        return
+
+    nota = NotaStandard(testo)
+
+    if not nota:
+        emit("elimina nota errore", {"testo": testo, "error": "Nota non trovata"})
+        return
+
+    try:
+        nota.elimina()
+    except Exception as e:
+        emit("elimina nota errore", {"testo": testo, "error": str(e)})
+        return
+
+    logger.debug(f"nota {testo} eliminata")
+
+    emit("elimina nota successo", testo)

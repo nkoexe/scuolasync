@@ -1,0 +1,6 @@
+.opzione-nota {
+  position: relative;
+  padding-bottom: 2px;
+  display: flex;
+  gap: 10px;
+}

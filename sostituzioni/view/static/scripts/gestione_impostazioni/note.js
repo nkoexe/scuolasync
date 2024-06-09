@@ -1,32 +1,48 @@
-const nota_template = `<div class="opzione-nota" data-testo="{testo}">
-<input class="input-testo-nota" type="text" placeholder="Testo della nota" required minlength="1" maxlength="100" autocomplete="off" value="{testo}" oninput="modificato('{testo}')">
+const nota_template = `<input class="input-testo-nota" type="text" placeholder="Testo della nota" required minlength="1" maxlength="100" autocomplete="off" value="">
 <div class="operazioni-dato">
-<button class="material-symbols-rounded pulsante-elimina-dato" onclick="ui_elimina_nota('{testo}')">delete</button>
-<button class="material-symbols-rounded pulsante-conferma-modifiche-dato hidden" onclick="ui_conferma_modifiche('{testo}')">check_circle</button>
-</div>
+<button class="material-symbols-rounded pulsante-elimina-dato">delete</button>
+<button class="material-symbols-rounded pulsante-conferma-modifiche-dato hidden">check_circle</button>
 </div>`
 
 const ui_lista_note = document.querySelector("#lista-note")
+
+function crea_elemento(testo) {
+  const element = document.createElement("div")
+  element.classList.add("opzione-nota")
+  element.dataset.testo = testo
+  element.innerHTML = nota_template.replaceAll("{testo}", testo)
+
+  const input_testo = element.querySelector(".input-testo-nota")
+  input_testo.value = testo
+  input_testo.oninput = () => modificato(testo)
+
+  element.querySelector(".pulsante-elimina-dato").onclick = () => ui_elimina_nota(testo)
+  element.querySelector(".pulsante-conferma-modifiche-dato").onclick = () => ui_conferma_modifiche(testo)
+
+  return element
+}
 
 note.sort((a, b) => {
   return a.localeCompare(b)
 })
 
 note.forEach(nota => {
-  ui_lista_note.innerHTML += nota_template.replaceAll("{testo}", nota)
+  ui_lista_note.appendChild(crea_elemento(nota))
 })
 
 function modificato(testo) {
-  let element = document.querySelector(`[data-testo="${testo}"]`)
+  const element = Array.from(document.querySelectorAll(".opzione-nota"))
+    .find(element => element.dataset.testo === testo)
   element.querySelector(".pulsante-elimina-dato").classList.add("hidden")
   element.querySelector(".pulsante-conferma-modifiche-dato").classList.remove("hidden")
 }
 
 function ui_conferma_modifiche(testo) {
-  let element = document.querySelector(`[data-testo="${testo}"]`)
+  const element = Array.from(document.querySelectorAll(".opzione-nota"))
+    .find(element => element.dataset.testo === testo)
   let new_testo = element.querySelector(".input-testo-nota").value
 
-  new_testo = new_testo.replace(/\s/g, "")
+  new_testo = new_testo.trim()
 
   if (new_testo === "") {
     notyf.error("Inserire un testo valido")
@@ -48,7 +64,8 @@ function ui_conferma_modifiche(testo) {
 
 function ui_elimina_nota(testo) {
   if (testo == "") {
-    let element = document.querySelector(`[data-testo="${testo}"]`)
+    const element = Array.from(document.querySelectorAll(".opzione-nota"))
+      .find(element => element.dataset.testo === testo)
     element.remove()
     return
   }
@@ -65,9 +82,9 @@ function nuova_nota() {
     return
   }
 
-  ui_lista_note.innerHTML = nota_template.replaceAll("{testo}", "") + ui_lista_note.innerHTML;
-
-  document.querySelector(".input-testo-nota").focus()
+  const empty_element = crea_elemento("")
+  ui_lista_note.insertAdjacentElement("afterbegin", empty_element)
+  empty_element.querySelector(".input-testo-nota").focus()
 }
 
 
@@ -75,10 +92,10 @@ function nuova_nota() {
 
 
 socket.on("modifica nota successo", (data) => {
-  let element = document.querySelector(`[data-testo="${data.testo}"]`)
-  let new_element = nota_template.replaceAll("{testo}", data.new_testo)
+  const element = Array.from(document.querySelectorAll(".opzione-nota"))
+    .find(element => element.dataset.testo === data.testo)
 
-  element.outerHTML = new_element
+  element.replaceWith(crea_elemento(data.new_testo))
 
   if (data.testo == "") {
     // nuovo nota
@@ -97,7 +114,8 @@ socket.on("modifica nota successo", (data) => {
 })
 
 socket.on("modifica nota errore", (data) => {
-  let element = document.querySelector(`[data-testo="${data.testo}"]`)
+  const element = Array.from(document.querySelectorAll(".opzione-nota"))
+    .find(element => element.dataset.testo === data.testo)
   element.querySelector(".input-testo-nota").disabled = false
 
   if (data.testo == "") {
@@ -112,7 +130,8 @@ socket.on("elimina nota successo", (testo) => {
   if (index == -1) return;
   note.splice(index, 1)
 
-  let element = document.querySelector(`[data-testo="${testo}"]`)
+  const element = Array.from(document.querySelectorAll(".opzione-nota"))
+    .find(element => element.dataset.testo === testo)
   element.remove()
 
   notyf.success("Nota eliminata con successo")

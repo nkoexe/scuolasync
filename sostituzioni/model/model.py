@@ -50,6 +50,15 @@ class Docente(Docente):
 class NotaStandard(NotaStandard):
     def __init__(self, testo: str):
         self.testo = testo
+        self.in_database = False
+
+        dati = self.load({"testo": testo})
+        if dati:
+            self.in_database = True
+
+    def elimina(self):
+        super().elimina()
+        self.in_database = False
 
 
 class Sostituzione(Sostituzione):
