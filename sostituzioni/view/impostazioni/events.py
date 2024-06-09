@@ -302,7 +302,6 @@ def modifica_docente(dati):
             docente = Docente(nome, cognome)
             docente.modifica({"cognome": new_cognome, "nome": new_nome})
         except Exception as e:
-            print(e)
             emit(
                 "modifica docente errore",
                 {"nome": nome, "cognome": cognome, "error": str(e)},

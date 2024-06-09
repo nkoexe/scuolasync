@@ -37,7 +37,7 @@ class Docente(Docente):
         self.cancellato = cancellato
         self.in_database = False
 
-        dati = self.load(nome, cognome)
+        dati = self.load({"nome": nome, "cognome": cognome})
         if dati:
             self.in_database = True
             self.cancellato = dati[0]["cancellato"]

@@ -549,21 +549,39 @@ class Docente(ElementoDatabaseConStorico):
 
     @staticmethod
     @beartype
-    def load(nome: str | None = None, cognome: str | None = None):
-        if nome is None and cognome is None:
-            return ElementoDatabase.load(Docente)
+    def load(filtri: Where | dict | None = None):
+        where = None
 
-        if nome is None:
-            return ElementoDatabase.load(
-                Docente, where=Where("cognome").equals(cognome)
-            )
+        if isinstance(filtri, Where):
+            where = filtri
 
-        if cognome is None:
-            return ElementoDatabase.load(Docente, where=Where("nome").equals(nome))
+        elif isinstance(filtri, dict):
+            nome = filtri.get("nome", None)
+            cognome = filtri.get("cognome", None)
+            cancellato = filtri.get("cancellato", False)
 
-        return ElementoDatabase.load(
-            Docente, where=Where("nome").equals(nome).AND("cognome").equals(cognome)
-        )
+            if nome:
+                where = Where("nome").equals(nome)
+
+            if cognome:
+                if where:
+                    where = where.AND("cognome").equals(cognome)
+                else:
+                    where = Where("cognome").equals(cognome)
+
+            # L'attributo cancellato è usato solo per visualizzare solo anche i docenti cancellati
+            # Se non viene specificato, vengono caricati solo i docenti non cancellati
+            if not cancellato:
+                if where:
+                    where = where.AND("cancellato").equals(False)
+                else:
+                    where = Where("cancellato").equals(False)
+
+        else:
+            # default sono i docenti non cancellati
+            where = Where("cancellato").equals(False)
+
+        return ElementoDatabase.load(Docente, where=where)
 
     @staticmethod
     @beartype
@@ -598,7 +616,6 @@ class Docente(ElementoDatabaseConStorico):
 
     @beartype
     def aggiorna(self):
-        print(self.cancellato)
         return self.DATABASE.update(
             self.TABLENAME,
             Where("nome").equals(self.old_nome).AND("cognome").equals(self.old_cognome),
