@@ -149,3 +149,14 @@ a {
     background-color: var(--color-danger);
     color: var(--color-danger-fg);
 }
+
+@media (max-width: 600px) {
+    .gestione-dati-header {
+        padding: 0;
+        gap: 10px;
+    }
+
+    .gestione-dati-pulsante-nuovo span:last-child {
+        display: none;
+    }
+}
