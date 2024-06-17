@@ -99,7 +99,7 @@ socket.on("modifica nota successo", (data) => {
 
   if (data.testo == "") {
     // nuovo nota
-    note.push([data.new_testo])
+    note.push(data.new_testo)
   } else {
     // modifica nota esistente
     let index = note.findIndex(nota => nota === data.testo)
