@@ -8,7 +8,7 @@ from flask_socketio import emit
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.control.cron import scheduler
 from sostituzioni.control.importer import Docenti
-from sostituzioni.model.model import Docente, NotaStandard, Utente
+from sostituzioni.model.model import Aula, Docente, NotaStandard, Utente
 from sostituzioni.model.auth import (
     login_required,
     role_required,
@@ -136,7 +136,9 @@ def modifica_utente(dati):
         )
         return
 
-    # Se l'email è la stessa, l'utente sta cercando di modificare il ruolo
+    # Se l'email inserita è diversa da quella attualmente in uso e questa esiste
+    # già nel database, avvisare, ma se le mail sono le stesse allora l'utente
+    # sta cercando di modificare il ruolo
     if utenti.get(new_email) and new_email != email:
         emit(
             "modifica utente errore",
@@ -443,7 +445,7 @@ def elimina_nota(testo):
 
     nota = NotaStandard(testo)
 
-    if not nota:
+    if not nota.in_database:
         emit("elimina nota errore", {"testo": testo, "error": "Nota non trovata"})
         return
 
@@ -456,3 +458,87 @@ def elimina_nota(testo):
     logger.debug(f"nota {testo} eliminata")
 
     emit("elimina nota successo", testo)
+
+
+# //////////////////////////////
+
+
+@socketio.on("modifica aula", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def modifica_aula(dati):
+    """
+    dati = {
+        "numero_aula": (str),
+        "new_numero_aula": (str),
+        "new_piano_aula": (str)
+    }
+    """
+
+    numero_aula = dati["numero_aula"].strip()
+    new_numero_aula = dati["new_numero_aula"].strip()
+    new_piano_aula = dati["new_piano_aula"].strip()
+
+    if new_piano_aula == "":
+        new_piano_aula = 0
+
+    if new_numero_aula == "":
+        emit(
+            "modifica aula errore",
+            {"numero_aula": numero_aula, "error": "Inserire un valido numero di aula"},
+        )
+        return
+
+    if Aula.trova(new_numero_aula) and new_numero_aula != numero_aula:
+        emit(
+            "modifica aula errore",
+            {"numero_aula": numero_aula, "error": "Questa aula esiste già"},
+        )
+        return
+
+    # inserimento nuova aula
+    if numero_aula == "":
+        try:
+            aula = Aula(new_numero_aula, new_piano_aula)
+            aula.inserisci()
+        except Exception as e:
+            emit("modifica aula errore", {"numero_aula": numero_aula, "error": str(e)})
+            return
+    else:
+        try:
+            aula = Aula(numero_aula)
+            aula.modifica({"numero": new_numero_aula, "piano": new_piano_aula})
+        except Exception as e:
+            print(e)
+            emit("modifica aula errore", {"numero_aula": numero_aula, "error": str(e)})
+            return
+
+    emit("modifica aula successo", dati)
+
+
+@socketio.on("elimina aula", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def elimina_aula(numero_aula):
+    if numero_aula == "":
+        emit("elimina aula successo", "")
+        return
+
+    aula = Aula(numero_aula)
+
+    if not aula.in_database:
+        emit(
+            "elimina aula errore",
+            {"numero_aula": numero_aula, "error": "Aula non trovata"},
+        )
+        return
+
+    try:
+        aula.elimina()
+    except Exception as e:
+        emit("elimina aula errore", {"numero_aula": numero_aula, "error": str(e)})
+        return
+
+    logger.debug(f"aula {numero_aula} eliminata")
+
+    emit("elimina aula successo", numero_aula)

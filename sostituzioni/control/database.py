@@ -469,35 +469,99 @@ class Aula(ElementoDatabaseConStorico):
     KEY = "numero"
 
     @staticmethod
-    def load():
-        return ElementoDatabase.load(Aula)
+    def load(filtri: Where | dict | None = None):
+        where = None
+
+        if isinstance(filtri, Where):
+            where = filtri
+
+        elif isinstance(filtri, dict):
+            numero = filtri.get("numero", None)
+            piano = filtri.get("piano", None)
+            cancellato = filtri.get("cancellato", False)
+
+            if numero:
+                where = Where("numero").equals(numero)
+
+            if piano:
+                if where:
+                    where = where.AND("piano").equals(piano)
+                else:
+                    where = Where("piano").equals(piano)
+
+            # L'attributo cancellato è usato per visualizzare anche i cancellati
+            # Se non viene specificato, vengono caricati solo i non cancellati
+            if not cancellato:
+                if where:
+                    where = where.AND("cancellato").equals(False)
+                else:
+                    where = Where("cancellato").equals(False)
+
+        else:
+            # default sono le aule non cancellate
+
+            where = Where("cancellato").equals(False)
+
+        return ElementoDatabase.load(Aula, where=where, order_by="numero")
 
     @staticmethod
     @beartype
     def trova(numero: str):
         return ElementoDatabase.trova(Aula, numero)
 
-    # @beartype
-    # def __init__(self, numero: str, piano: str, cancellato: bool):
-    #     super(Aula, self).__init__(cancellato)
+    def inserisci(self):
+        return self.DATABASE.insert(
+            self.TABLENAME,
+            numero=self.numero,
+            piano=self.piano,
+            cancellato=self.cancellato,
+        )
 
-    #     self.numero = numero
-    #     self.piano = piano
+    @beartype
+    def modifica(self, dati: dict):
+        old_numero = self.numero
+
+        if "numero" in dati:
+            self.numero = dati["numero"]
+
+        if "piano" in dati:
+            self.piano = dati["piano"]
+
+        return self.DATABASE.update(
+            self.TABLENAME,
+            Where("numero").equals(old_numero),
+            numero=self.numero,
+            piano=self.piano,
+        )
+
+    def aggiorna(self):
+        return self.DATABASE.update(
+            self.TABLENAME,
+            Where("numero").equals(self.numero),
+            numero=self.numero,
+            piano=self.piano,
+            cancellato=self.cancellato
+        )
+
+    @beartype
+    def elimina(self, mantieni_in_storico: bool = False):
+        self.cancellato = True
+
+        if mantieni_in_storico:
+            return self.DATABASE.update(
+                self.TABLENAME,
+                Where("numero").equals(self.numero),
+                cancellato=True,
+            )
+
+        else:
+            self.DATABASE.delete(
+                self.TABLENAME,
+                Where("numero").equals(self.numero),
+            )
 
     def __repr__(self) -> str:
         return "Aula " + self.numero
-
-    @beartype
-    def modifica(self, numero: str | None = None, piano: str | None = None):
-        if not any((numero, piano)):
-            logger.warning("Nessun parametro passato ad aula.modifica")
-            return
-
-        if numero:
-            self.numero = numero
-
-        if piano:
-            self.piano = piano
 
     @property
     def numero(self):
@@ -615,8 +679,8 @@ class Docente(ElementoDatabaseConStorico):
     @beartype
     def modifica(self, dati: dict):
         # todo: terribile, utilizzare id per docenti
-        self.old_nome = self.nome
-        self.old_cognome = self.cognome
+        old_nome = self.nome
+        old_cognome = self.cognome
 
         if "nome" in dati:
             self.nome = dati["nome"]
@@ -624,13 +688,19 @@ class Docente(ElementoDatabaseConStorico):
         if "cognome" in dati:
             self.cognome = dati["cognome"]
 
-        return self.aggiorna()
+        return self.DATABASE.update(
+            self.TABLENAME,
+            Where("nome").equals(old_nome).AND("cognome").equals(old_cognome),
+            nome=self.nome,
+            cognome=self.cognome,
+            cancellato=self.cancellato,
+        )
 
     @beartype
     def aggiorna(self):
         return self.DATABASE.update(
             self.TABLENAME,
-            Where("nome").equals(self.old_nome).AND("cognome").equals(self.old_cognome),
+            Where("nome").equals(self.nome).AND("cognome").equals(self.cognome),
             nome=self.nome,
             cognome=self.cognome,
             cancellato=self.cancellato,
@@ -765,16 +835,20 @@ class NotaStandard(ElementoDatabaseConStorico):
 
     def modifica(self, dati: dict):
         # todo: stessa roba qui, terribile. usare id.
-        self.old_testo = self.testo
+        old_testo = self.testo
         if "testo" in dati:
             self.testo = dati["testo"]
 
-        return self.aggiorna()
+        return self.DATABASE.update(
+            self.TABLENAME,
+            Where("testo").equals(old_testo),
+            testo=self.testo,
+        )
 
     def aggiorna(self):
         return self.DATABASE.update(
             self.TABLENAME,
-            Where("testo").equals(self.old_testo),
+            Where("testo").equals(self.testo),
             testo=self.testo,
         )
 

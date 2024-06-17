@@ -1,0 +1,29 @@
+{% extends "gestione_impostazioni/base.html" %}
+
+{% block title %}Gestione Aule{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style/gestione_impostazioni/aule.css') }}">
+{% endblock %}
+
+{% block body %}
+<div id="main-frame">
+  <div id="main-container">
+    <div id="container-aule" class="opzione gestione-dati-container">
+      <div class="gestione-dati-header">
+        <div class="gestione-dati-nuovo-container">
+          <button class="pulsante gestione-dati-pulsante-nuovo" onclick="nuova_aula()"><span class="icon material-symbols-rounded">add</span><span>Aggiungi Aula</span></button>
+        </div>
+      </div>
+      <div id="lista-aule" class="gestione-dati-lista"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  let aule = {{ aule | tojson }}
+</script>
+<script src="{{ url_for('static', filename='scripts/gestione_impostazioni/aule.js') }}" defer></script>
+{% endblock %}

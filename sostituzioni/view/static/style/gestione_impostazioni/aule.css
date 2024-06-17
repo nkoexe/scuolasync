@@ -1,0 +1,16 @@
+.opzione-aula {
+  position: relative;
+  padding-bottom: 2px;
+  display: flex;
+  gap: 10px;
+}
+
+.aula {
+  display: flex;
+  gap: 5px;
+  flex: 1;
+}
+
+.input-piano-aula {
+  width: auto !important;
+}
