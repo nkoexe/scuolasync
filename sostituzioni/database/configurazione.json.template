@@ -39,7 +39,7 @@
     },
     "sysstate": {
       "titolo": "Stato del sistema",
-      "descrizione": "Utilizzare la modalità "In Produzione" per l'utilizzo regolare. Utilizzare modalità "In Manutenzione" per il debug del sistema.",
+      "descrizione": "Utilizzare la modalità \"In Produzione\" per l'utilizzo regolare. Utilizzare modalità \"In Manutenzione\" per il debug del sistema.",
       "sezione": "sistema",
       "disabilitato": false,
       "nascosto": false,
@@ -253,7 +253,7 @@
     },
     "backupserviceaccountkey": {
       "titolo": "Chiave account di servizio",
-      "descrizione": "File JSON utilizzato per accedere all'account di servizio che gestisce i backup sulla cartella Drive condivisa. Le impostazioni dell'account di servizio sono visualizzabili nella pagina \"Credenziali\" del progetto Google Cloud Console del sistema.", 
+      "descrizione": "File JSON utilizzato per accedere all'account di servizio che gestisce i backup sulla cartella Drive condivisa. Le impostazioni dell'account di servizio sono visualizzabili nella pagina \"Credenziali\" del progetto Google Cloud Console del sistema.",
       "sezione": "backup",
       "disabilitato": false,
       "nascosto": false,
