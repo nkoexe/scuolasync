@@ -321,6 +321,21 @@
       "default": "scripts/",
       "valore": "scripts/"
     },
+    "docsdir": {
+      "titolo": "Directory dei file di documentazione",
+      "descrizione": "Documentazione per l'installazione e l'utilizzo del sistema.",
+      "sezione": "percorsi",
+      "disabilitato": true,
+      "nascosto": true,
+      "tipo": "percorso",
+      "radice": 1,
+      "scelte_radice": [
+        "/",
+        "%ROOT%"
+      ],
+      "default": "../docs/",
+      "valore": "../docs/"
+    },
     "databasepath": {
       "titolo": "Posizione database",
       "descrizione": "Percorso nel quale si trova il database del sistema.",

@@ -16,6 +16,7 @@ socketio = SocketIO(app, manage_session=False)
 
 from sostituzioni.view.errorhandlers import routes
 import sostituzioni.view.legal
+import sostituzioni.view.docs
 
 logger.debug("Importing blueprints..")
 from sostituzioni.view.impostazioni import impostazioni as impostazioni_blueprint

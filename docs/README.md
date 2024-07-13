@@ -1,17 +1,3 @@
----
-description: Landing page
-layout:
-  title:
-    visible: true
-  description:
-    visible: true
-  tableOfContents:
-    visible: true
-  outline:
-    visible: false
-  pagination:
-    visible: true
----
-
 # ⭐ ScuolaSync
 
+Sistema per la gestione di sostituzioni, eventi e notizie scolastiche.

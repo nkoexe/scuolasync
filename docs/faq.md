@@ -1,8 +1,7 @@
----
-description: Domande frequenti.
----
-
 # ⁉️ FAQ
+
+Domande frequenti.
+
 
 ### Come faccio a fare questo?
 
