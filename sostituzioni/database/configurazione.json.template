@@ -2,7 +2,7 @@
   "sezioni": {
     "sistema": {
       "titolo": "Sistema",
-      "descrizione": "Impostazioni generali di sistema, tecniche e informative."
+      "descrizione": "Impostazioni generali di sistema."
     },
     "login": {
       "titolo": "Autenticazione",
@@ -10,11 +10,11 @@
     },
     "visualizzazioneonline": {
       "titolo": "Visualizzazione Online",
-      "descrizione": "Configurazione di impostazioni legate alla visualizzazione degli elementi nell'interfaccia online: preferenze visive, colori, dimensioni font."
+      "descrizione": "Visualizzazione degli elementi nell'interfaccia online: preferenze visive, messaggi informativi."
     },
     "visualizzazionefisica": {
       "titolo": "Visualizzazione Fisica",
-      "descrizione": "Preferenze ed opzioni della visualizzazione su display."
+      "descrizione": "Preferenze della visualizzazione su display."
     },
     "backup": {
       "titolo": "Backup",
@@ -22,7 +22,7 @@
     },
     "percorsi": {
       "titolo": "Configurazione e Database",
-      "descrizione": "Configurazione di directory e percorsi di file utilizzati dal sistema. Include posizione del file di configurazione, del database, ed informazioni sulla collocazione del sistema nel server."
+      "descrizione": "Configurazione di directory e percorsi di file utilizzati dal sistema."
     }
   },
   "opzioni": {
@@ -39,7 +39,7 @@
     },
     "sysstate": {
       "titolo": "Stato del sistema",
-      "descrizione": "Utilizzare la modalità in produzione per l'utilizzo regolare. Utilizzare modalità di manutenzione per il debug del sistema.",
+      "descrizione": "Utilizzare la modalità "In Produzione" per l'utilizzo regolare. Utilizzare modalità "In Manutenzione" per il debug del sistema.",
       "sezione": "sistema",
       "disabilitato": false,
       "nascosto": false,
@@ -64,7 +64,7 @@
       "valore": "Sistema attualmente in manutenzione, grazie per la pazienza."
     },
     "supportemail": {
-      "titolo": "Email di Supporto",
+      "titolo": "Email di supporto",
       "descrizione": "Email alla quale gli utenti scriveranno per problemi tecnici, richieste di accesso, ecc.",
       "sezione": "sistema",
       "disabilitato": false,
@@ -87,7 +87,7 @@
     },
     "flasksessionlifetime": {
       "titolo": "Durata della sessione",
-      "descrizione": "Durata della sessione in minuti, dopodiché bisognerà eseguire nuovamente il login. Impostare a -1 per disabilitare il logout automatico.",
+      "descrizione": "Minuti di inattività dopo i quali bisognerà eseguire nuovamente il login. Impostare a -1 per disabilitare il logout automatico.",
       "sezione": "login",
       "disabilitato": false,
       "nascosto": false,
@@ -101,7 +101,7 @@
     },
     "flasksecretkey": {
       "titolo": "Secret key",
-      "descrizione": "La chiave di sicurezza del sistema, utilizzata per gestire le sessioni. Se questo campo è vuoto, verrà utilizzata una chiave casuale. (Consigliato di lasciare vuoto per migliore sicurezza)",
+      "descrizione": "La chiave di sicurezza del sistema, utilizzata per gestire le sessioni. Se questo campo è vuoto, verrà utilizzata una chiave casuale. Consigliato di <u>lasciare vuoto per migliore sicurezza</u>",
       "sezione": "login",
       "disabilitato": false,
       "nascosto": false,
@@ -162,7 +162,7 @@
       "nascosto": false,
       "tipo": "testo",
       "lunghezza_massima": null,
-      "default": "Nessuna sostituzione per i filtri impostati.",
+      "default": "Nessuna sostituzione per i filtri impostati. :(",
       "valore": "Nessuna sostituzione per i filtri impostati :("
     },
     "controlloerroriauleescluse": {
@@ -209,7 +209,7 @@
     },
     "displayauthcodes": {
       "titolo": "Codici di autorizzazione",
-      "descrizione": "Il display dovrà mandare uno di questi codici per poter stabilire un collegamento.",
+      "descrizione": "Il display dovrà inviare uno di questi codici per poter stabilire un collegamento.",
       "sezione": "visualizzazionefisica",
       "disabilitato": false,
       "nascosto": false,
@@ -253,7 +253,7 @@
     },
     "backupserviceaccountkey": {
       "titolo": "Chiave account di servizio",
-      "descrizione": "File JSON che il sistema utilizza per accedere all'account di servizio che gestisce i backup sulla cartella Drive condivisa. Le impostazioni dell'account di servizio sono visualizzabili nella pagina \"Credenziali\" del progetto Google Cloud Console del sistema.",
+      "descrizione": "File JSON utilizzato per accedere all'account di servizio che gestisce i backup sulla cartella Drive condivisa. Le impostazioni dell'account di servizio sono visualizzabili nella pagina \"Credenziali\" del progetto Google Cloud Console del sistema.", 
       "sezione": "backup",
       "disabilitato": false,
       "nascosto": false,
@@ -293,7 +293,7 @@
     },
     "configpath": {
       "titolo": "Percorso file di configurazione",
-      "descrizione": "Posizione del file JSON delle impostazioni del sistema, quello che si sta modificando in questo momento.",
+      "descrizione": "Posizione del file JSON delle impostazioni del sistema.",
       "sezione": "percorsi",
       "disabilitato": true,
       "nascosto": false,
