@@ -1,5 +1,5 @@
 const classe_template = `<div class="classe">
-<input class="input-nome-classe" type="text" placeholder="Nome della classe" required minlength="1" maxlength="100" autocomplete="off" value="">
+<input class="input-nome-classe" type="text" placeholder="Classe" required minlength="1" maxlength="100" autocomplete="off" value="">
 <div class="selezione-aula">
   <div class="selezione">
     <input type="text" class="input-aula selezione-input" placeholder="Aula" />
@@ -47,6 +47,10 @@ classi.forEach(classe => {
   let q = `.opzione-classe[data-nome_classe='${classe[0]}'] .selezione-aula`
   const selezione_aula = new Selezione({ query: q, lista: aule })
   selezione_aula.valore = classe[1][0]
+  selezione_aula.callback = (valore) => {
+    if (valore == classe[1][0]) return;
+    modificato(classe[0])
+  }
 })
 
 function modificato(nome_classe) {
@@ -63,56 +67,62 @@ function ui_conferma_modifiche(nome_classe) {
   let new_nome_classe = element.querySelector(".input-nome-classe").value
   let new_aula = element.querySelector(".input-aula").value
 
-  new_numero_aula = new_numero_aula.trim()
-  new_piano_aula = new_piano_aula.trim()
+  new_nome_classe = new_nome_classe.trim()
+  new_aula = new_aula.trim()
 
-  if (new_numero_aula === "") {
-    notyf.error("Inserire un valido numero di aula")
+  if (new_nome_classe === "") {
+    notyf.error("Inserire una classe valida")
     return
   }
 
-  if (new_piano_aula === "") {
-    notyf.error("Inserire un valido piano")
+  if (new_aula === "") {
+    notyf.error("Inserire un'aula valida")
     return
   }
 
   // nessuna modifica
-  if (new_numero_aula === numero_aula && new_piano_aula === aule.find(aula => aula[0] === numero_aula)[1]) {
+  if (new_nome_classe === classe[0] && new_aula === classe[1][0]) {
     element.querySelector(".pulsante-elimina-dato").classList.remove("hidden")
     element.querySelector(".pulsante-conferma-modifiche-dato").classList.add("hidden")
-    element.querySelector(".input-numero-aula").value = numero_aula
+    element.querySelector(".input-nome-classe").value = classe[0]
     return
   }
 
-  element.querySelector(".input-numero-aula").disabled = true
-  element.querySelector(".input-piano-aula").disabled = true
+  element.querySelector(".input-nome-classe").disabled = true
+  element.querySelector(".input-aula").disabled = true
 
-  socket.emit("modifica aula", { numero_aula: numero_aula, new_numero_aula: new_numero_aula, new_piano_aula: new_piano_aula })
+  socket.emit("modifica classe", { nome_classe: classe[0], new_nome_classe: new_nome_classe, new_aula: new_aula })
 }
 
-function ui_elimina_aula(numero_aula) {
-  if (numero_aula == "") {
-    const element = document.querySelector(".opzione-aula[data-numero_aula='']")
+function ui_elimina_classe(nome_classe) {
+  if (nome_classe == "") {
+    const element = document.querySelector(".opzione-classe[data-nome_classe='']")
     element.remove()
     return
   }
 
-  mostra_popup_conferma({ titolo: "Elimina Aula", descrizione: "Sei sicuro di voler eliminare l'aula <strong>" + numero_aula + "</strong>?", numero_aula: numero_aula, callback: () => { elimina_aula(numero_aula) } })
+  mostra_popup_conferma({ titolo: "Elimina Classe", descrizione: "Sei sicuro di voler eliminare la classe <strong>" + nome_classe + "</strong>?", callback: () => { elimina_classe(nome_classe) } })
 }
 
-function elimina_aula(numero_aula) {
-  socket.emit("elimina aula", numero_aula)
+function elimina_classe(nome_classe) {
+  socket.emit("elimina classe", nome_classe)
 }
 
-function nuova_aula() {
-  if (document.querySelector('[data-numero_aula=""]')) {
-    document.querySelector(".input-numero-aula").focus()
+function nuova_classe() {
+  if (document.querySelector('[data-nome_classe=""]')) {
+    document.querySelector(".input-nome-classe").focus()
     return
   }
 
   const empty_element = crea_elemento(["", ""])
-  ui_lista_aule.insertAdjacentElement("afterbegin", empty_element)
-  empty_element.querySelector(".input-numero-aula").focus()
+  ui_lista_classi.insertAdjacentElement("afterbegin", empty_element)
+
+  const selezione_aula = new Selezione({ query: ".opzione-classe[data-nome_classe=''] .selezione-aula", lista: aule })
+  selezione_aula.callback = (valore) => {
+    if (!valore) return;
+    modificato("")
+  }
+  empty_element.querySelector(".input-nome-classe").focus()
 }
 
 
