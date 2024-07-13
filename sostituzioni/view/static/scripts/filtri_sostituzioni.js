@@ -1,6 +1,6 @@
 class Filtro extends Selezione {
-    constructor({ id, ordinamento, filtra_lista, render, select_on_keydown, autocomplete }) {
-        super({ id: id, callback: refresh_sostituzioni, filtra_lista: filtra_lista, render: render, select_on_keydown: select_on_keydown, autocomplete: autocomplete })
+    constructor({ query, ordinamento, filtra_lista, render, select_on_keydown, autocomplete }) {
+        super({ query: query, callback: refresh_sostituzioni, filtra_lista: filtra_lista, render: render, select_on_keydown: select_on_keydown, autocomplete: autocomplete })
 
         this.ordinamento = ordinamento
         this.ordinamento = (typeof this.ordinamento === "undefined") ? true : this.ordinamento
@@ -71,11 +71,11 @@ function sostituzioni_applica_filtri() {
     }
 }
 
-let sostituzioni_filtro_ora = new Filtro({ id: "sostituzioni-filtro-ora", filtra_lista: prendi_ora, render: element => element.length == 1 ? element + "a ora" : element, autocomplete: true })
-let sostituzioni_filtro_classe = new Filtro({ id: "sostituzioni-filtro-classe", filtra_lista: prendi_nome })
-let sostituzioni_filtro_aula = new Filtro({ id: "sostituzioni-filtro-aula", filtra_lista: prendi_numero })
-let sostituzioni_filtro_docente = new Filtro({ id: "sostituzioni-filtro-docente", filtra_lista: prendi_cognome_nome })
-let sostituzioni_filtro_note = new Filtro({ id: "sostituzioni-filtro-note", ordinamento: false, select_on_keydown: true })
+let sostituzioni_filtro_ora = new Filtro({ query: "#sostituzioni-filtro-ora", filtra_lista: prendi_ora, render: element => element.length == 1 ? element + "a ora" : element, autocomplete: true })
+let sostituzioni_filtro_classe = new Filtro({ query: "#sostituzioni-filtro-classe", filtra_lista: prendi_nome })
+let sostituzioni_filtro_aula = new Filtro({ query: "#sostituzioni-filtro-aula", filtra_lista: prendi_numero })
+let sostituzioni_filtro_docente = new Filtro({ query: "#sostituzioni-filtro-docente", filtra_lista: prendi_cognome_nome })
+let sostituzioni_filtro_note = new Filtro({ query: "#sostituzioni-filtro-note", ordinamento: false, select_on_keydown: true })
 
 
 // ---------------------

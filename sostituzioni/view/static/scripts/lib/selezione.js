@@ -1,10 +1,13 @@
-class Selezione {
-    constructor({ id, lista, callback, filtra_lista, render, select_on_exit, select_on_keydown, autocomplete }) {
-        this.id = id.replaceAll('-', '_')
+let objectID = 0
 
-        this.ui_container = document.getElementById(id)
-        this.ui_input = this.ui_container.getElementsByClassName('selezione-input')[0]
-        this.ui_dropdown = this.ui_container.getElementsByClassName('selezione-dropdown')[0]
+class Selezione {
+    constructor({ query, lista, callback, filtra_lista, render, select_on_exit, select_on_keydown, autocomplete }) {
+        objectID += 1
+        this.id = objectID
+
+        this.ui_container = document.querySelector(query)
+        this.ui_input = this.ui_container.querySelector('.selezione-input')
+        this.ui_dropdown = this.ui_container.querySelector('.selezione-dropdown')
         this.ui_lista = this.ui_dropdown.children[0]
         this.select_on_exit = select_on_exit == undefined ? true : select_on_exit
         this.select_on_keydown = select_on_keydown == undefined ? false : select_on_keydown
@@ -12,10 +15,6 @@ class Selezione {
 
         this.lista_elementi  // fuzzyset obj
         this.lista_visualizzati
-
-        if (lista instanceof Array) {
-            this.aggiorna(lista)
-        }
 
         this.current_index = 0
         this.selected = null  // actual value - set to null while editing
@@ -32,6 +31,10 @@ class Selezione {
 
         if (render) {
             this.render = render
+        }
+
+        if (lista instanceof Array) {
+            this.aggiorna(lista)
         }
 
         this.ui_input.onfocus = (event) => {
@@ -81,7 +84,7 @@ class Selezione {
                     if (this.lista_visualizzati.length == 0) break
                     event.preventDefault()
                     if (this.current_index !== -1) {
-                        let prev_ui_element = document.getElementById('lista_' + this.id + this.current_index)
+                        let prev_ui_element = document.getElementById('ls_' + this.id + "_" + this.current_index)
                         prev_ui_element.classList.remove('lista_current')
                     } else this.current_index = 0
                     this.current_index = (this.current_index + this.lista_visualizzati.length - 1) % this.lista_visualizzati.length
@@ -93,11 +96,11 @@ class Selezione {
                     if (this.lista_visualizzati.length == 0) break
                     event.preventDefault()
                     if (this.current_index !== -1) {
-                        let prev_ui_element = document.getElementById('lista_' + this.id + this.current_index)
+                        let prev_ui_element = document.getElementById('ls_' + this.id + "_" + this.current_index)
                         prev_ui_element.classList.remove('lista_current')
                     }
                     this.current_index = (this.current_index + 1) % this.lista_visualizzati.length
-                    ui_element = document.getElementById('lista_' + this.id + this.current_index)
+                    ui_element = document.getElementById('ls_' + this.id + "_" + this.current_index)
                     ui_element.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" })
                     ui_element.classList.add('lista_current')
                     break
@@ -152,7 +155,7 @@ class Selezione {
         this.ui_lista.innerHTML = ''
         for (let index = 0; index < this.lista_visualizzati.length; index++) {
             let elem = document.createElement("li");
-            elem.id = 'lista_' + this.id + index
+            elem.id = 'ls_' + this.id + "_" + index
             elem.innerHTML = `<span>${this.render(this.lista_visualizzati[index])}</span>`
             elem.onmousedown = () => { this.seleziona(this.lista_visualizzati[index]) }
             this.ui_lista.appendChild(elem)
