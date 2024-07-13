@@ -25,6 +25,25 @@ from sostituzioni.control.database import (
 logger = logging.getLogger(__name__)
 
 
+class Classe(Classe):
+    def __init__(
+        self,
+        nome: str | None = None,
+        aule_ospitanti: list | None = None,
+        cancellato: bool = False,
+    ):
+        self.nome = nome
+        self.aule_ospitanti = aule_ospitanti
+        self.cancellato = cancellato
+        self.in_database = False
+
+        dati = self.load({"nome": nome})
+        if dati:
+            self.in_database = True
+            self.aule_ospitanti = dati[0]["aule_ospitanti"]
+            self.cancellato = dati[0]["cancellato"]
+
+
 class Aula(Aula):
     def __init__(
         self,

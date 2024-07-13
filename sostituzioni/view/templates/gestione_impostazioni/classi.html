@@ -1,0 +1,33 @@
+{% extends "gestione_impostazioni/base.html" %}
+
+{% block title %}Gestione Classi{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style/selezione.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/gestione_impostazioni/classi.css') }}">
+{% endblock %}
+
+{% block body %}
+<div id="main-frame">
+  <div id="main-container">
+    <div id="container-classi" class="opzione gestione-dati-container">
+      <div class="gestione-dati-header">
+        <div class="gestione-dati-nuovo-container">
+          <button class="pulsante gestione-dati-pulsante-nuovo" onclick="nuova_classe()"><span class="icon material-symbols-rounded">add</span><span>Aggiungi Classe</span></button>
+        </div>
+      </div>
+      <div id="lista-classi" class="gestione-dati-lista"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  let classi = {{ classi | tojson }}
+  let aule = {{ aule | tojson }}
+</script>
+<script src="{{ url_for('static', filename='scripts/lib/fuzzyset.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/lib/selezione.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/gestione_impostazioni/classi.js') }}" defer></script>
+{% endblock %}

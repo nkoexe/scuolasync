@@ -1,0 +1,41 @@
+.gestione-dati-lista {
+  margin-top: 50px;
+}
+
+.opzione-classe {
+  position: relative;
+  padding-bottom: 2px;
+  display: flex;
+  gap: 10px;
+}
+
+.classe {
+  display: flex;
+  gap: 5px;
+  flex: 1;
+}
+
+.input-aula {
+  width: auto !important;
+}
+
+.selezione-aula {
+  position: relative;
+}
+
+.opzione-classe:first-child .classe::after {
+  content: "Nome Classe";
+}
+
+.opzione-classe:first-child .selezione-aula::after {
+  content: "Aula Predefinita";
+}
+
+.opzione-classe:first-child .classe::after,
+.opzione-classe:first-child .selezione-aula::after {
+  position: absolute;
+  bottom: 105%;
+  left: 5px;
+  font-style: italic;
+  color: #00000099;
+}

@@ -2,7 +2,7 @@ from flask import render_template
 
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.model.auth import login_required, role_required, utenti
-from sostituzioni.model.model import Aula, Docente, NotaStandard
+from sostituzioni.model.model import Classe, Aula, Docente, NotaStandard
 from sostituzioni.view.impostazioni import impostazioni
 
 
@@ -38,7 +38,13 @@ def gestione_docenti():
 @login_required
 @role_required("impostazioni.write")
 def gestione_classi():
-    return render_template("gestione_impostazioni/classi.html")
+    lista_classi = [
+        (c["nome"], c["aule_ospitanti"]) for c in Classe.load() if not c["cancellato"]
+    ]
+    lista_aule = [a["numero"] for a in Aula.load() if not a["cancellato"]]
+    return render_template(
+        "gestione_impostazioni/classi.html", classi=lista_classi, aule=lista_aule
+    )
 
 
 @impostazioni.route("/impostazioni/aule")

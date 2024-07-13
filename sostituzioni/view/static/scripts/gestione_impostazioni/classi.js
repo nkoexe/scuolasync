@@ -1,53 +1,67 @@
-const aula_template = `<div class="aula">
-<input class="input-numero-aula" type="text" placeholder="Numero dell'aula" required minlength="1" maxlength="100" autocomplete="off" value="">
-<input class="input-piano-aula" type="text" placeholder="Piano" required minlength="1" maxlength="100" autocomplete="off" value="">
+const classe_template = `<div class="classe">
+<input class="input-nome-classe" type="text" placeholder="Nome della classe" required minlength="1" maxlength="100" autocomplete="off" value="">
+<div class="selezione-aula">
+  <div class="selezione">
+    <input type="text" class="input-aula selezione-input" placeholder="Aula" />
+    <div class="selezione-dropdown">
+      <ul></ul>
+    </div>
+  </div>
+</div>
 </div>
 <div class="operazioni-dato">
 <button class="material-symbols-rounded pulsante-elimina-dato">delete</button>
 <button class="material-symbols-rounded pulsante-conferma-modifiche-dato hidden">check_circle</button>
 </div>`
 
-const ui_lista_aule = document.querySelector("#lista-aule")
+const ui_lista_classi = document.querySelector("#lista-classi")
 
-function crea_elemento(aula) {
+function crea_elemento(classe) {
   const element = document.createElement("div")
-  element.classList.add("opzione-aula")
-  element.dataset.numero_aula = aula[0]
-  element.innerHTML = aula_template
+  element.classList.add("opzione-classe")
+  element.dataset.nome_classe = classe[0]
+  element.innerHTML = classe_template
 
-  const input_numero_aula = element.querySelector(".input-numero-aula")
-  input_numero_aula.value = aula[0]
-  input_numero_aula.oninput = () => modificato(aula[0])
-  const input_piano_aula = element.querySelector(".input-piano-aula")
-  input_piano_aula.value = aula[1]
-  input_piano_aula.oninput = () => modificato(aula[0])
+  const input_nome_classe = element.querySelector(".input-nome-classe")
+  input_nome_classe.value = classe[0]
+  input_nome_classe.oninput = () => modificato(classe[0])
 
-  element.querySelector(".pulsante-elimina-dato").onclick = () => ui_elimina_aula(aula[0])
-  element.querySelector(".pulsante-conferma-modifiche-dato").onclick = () => ui_conferma_modifiche(aula[0])
+  // const input_aula = element.querySelector(".input-aula")
+  // input_aula.value = classe[1].length == 0 ? "" : classe[1][0]
+  // input_aula.oninput = () => modificato(classe[0])
+
+  element.querySelector(".pulsante-elimina-dato").onclick = () => ui_elimina_classe(classe[0])
+  element.querySelector(".pulsante-conferma-modifiche-dato").onclick = () => ui_conferma_modifiche(classe[0])
 
   return element
 }
 
-aule.sort((a, b) => {
+classi.sort((a, b) => {
   return a[0].localeCompare(b[0])
 })
 
-aule.forEach(aula => {
-  ui_lista_aule.appendChild(crea_elemento(aula))
+classi.forEach(classe => {
+  ui_lista_classi.appendChild(crea_elemento(classe))
+})
+classi.forEach(classe => {
+  let q = `.opzione-classe[data-nome_classe='${classe[0]}'] .selezione-aula`
+  const selezione_aula = new Selezione({ query: q, lista: aule })
+  selezione_aula.valore = classe[1][0]
 })
 
-function modificato(numero_aula) {
-  const element = Array.from(document.querySelectorAll(".opzione-aula"))
-    .find(element => element.dataset.numero_aula === numero_aula)
+function modificato(nome_classe) {
+  const element = Array.from(document.querySelectorAll(".opzione-classe"))
+    .find(element => element.dataset.nome_classe === nome_classe)
+
   element.querySelector(".pulsante-elimina-dato").classList.add("hidden")
   element.querySelector(".pulsante-conferma-modifiche-dato").classList.remove("hidden")
 }
 
-function ui_conferma_modifiche(numero_aula) {
-  const element = Array.from(document.querySelectorAll(".opzione-aula"))
-    .find(element => element.dataset.numero_aula === numero_aula)
-  let new_numero_aula = element.querySelector(".input-numero-aula").value
-  let new_piano_aula = element.querySelector(".input-piano-aula").value
+function ui_conferma_modifiche(nome_classe) {
+  const element = Array.from(document.querySelectorAll(".opzione-classe"))
+    .find(element => element.dataset.nome_classe === nome_classe)
+  let new_nome_classe = element.querySelector(".input-nome-classe").value
+  let new_aula = element.querySelector(".input-aula").value
 
   new_numero_aula = new_numero_aula.trim()
   new_piano_aula = new_piano_aula.trim()
