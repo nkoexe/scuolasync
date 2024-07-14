@@ -1,24 +1,121 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 
 <head>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta charset="UTF-8" />
-  <!-- load based on prefers-color-scheme -->
-  <link rel="stylesheet" media="(prefers-color-scheme: light)" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
-  <link rel="stylesheet" media="(prefers-color-scheme: dark)" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/dark.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap">
+  <link rel="stylesheet" media="(prefers-color-scheme: dark)" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css" />
+  <link rel="stylesheet" media="(prefers-color-scheme: light)" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css" />
+  <link rel="stylesheet" href="https://unpkg.com/docsify-toc@1.0.0/dist/toc.css">
+  <link rel="shortcut icon" href="/static/icons/favicon.ico">
 </head>
 
 <body>
-  <div id="app">loading...</div>
+  <div id="app"></div>
+  <style>
+    :root {
+      --mono-hue: 0;
+      --mono-saturation: 0%;
+      --theme-color: #c00f19;
+
+      --border-radius-s: 5px;
+      --border-radius-m: 10px;
+      --border-radius-l: 20px;
+
+      --base-font-family: "Gabarito", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      --base-font-size: 18px;
+
+      --cover-margin: 0 10px;
+      --cover-max-width: 100%;
+      --cover-text-align: left;
+      --cover-blockquote-color: var(--base-color);
+
+      --cover-background-image: radial-gradient(ellipse at left top, var(--mono-tint2) -10%, transparent 100%), linear-gradient(to bottom, var(--mono-tint3) -20%, transparent 80%), radial-gradient(ellipse at right top, var(--theme-color) 10%, transparent 80%);
+
+      --cover-background-position: right;
+
+      --cover-button-box-shadow: 0 2px 6px var(--mono-shade3);
+      --cover-button-box-shadow--hover: 0 5px 15px var(--mono-shade3);
+      --cover-button-transition: all var(--duration-fast) ease-out;
+
+
+      --sidebar-name-font-size: 30px;
+      --sidebar-link-transition: all 0.2s;
+      --sidebar-toggle-offset-top: calc(100% - (var(--sidebar-toggle-height)));
+
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: var(--mono-tint2);
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: var(--mono-tint3);
+    }
+
+    .cover-main {
+      width: 100%;
+    }
+
+    .cover-main svg {
+      max-width: min(50em, 100%);
+      height: auto;
+    }
+
+    .cover-main svg #scuola,
+    .cover-main svg #ync {
+      fill: var(--base-color);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .app-name {
+        filter: hue-rotate(0.5turn) brightness(1.7) invert(1);
+      }
+    }
+
+    .page_toc {
+      margin-top: 30px;
+    }
+
+    .page_toc ul {
+      margin-left: 10px;
+    }
+
+    a {
+      transition: all 0.2s;
+    }
+
+    .page_toc a span {
+      padding: 5px;
+      color: var(--base-color) !important;
+      transition: color 0.2s ease-in-out;
+    }
+
+    .page_toc a:hover span {
+      color: var(--theme-color) !important;
+    }
+  </style>
   <script>
     window.$docsify = {
+      logo: '/media/scuolasync.svg',
       name: 'ScuolaSync',
       repo: 'https://github.com/nkoexe/sostituzioni',
       coverpage: true,
       loadSidebar: true,
-      auto2top: true,
       nativeEmoji: true,
       themeColor: '#c00f19',
       search: {
@@ -27,11 +124,30 @@
         noData: 'Nessun risultato!',
         hideOtherSidebarContent: false,
       },
-
+      copyCode: {
+        buttonText: 'Copia',
+        errorText: 'Errore',
+        successText: 'Copiato!',
+      },
+      pagination: {
+        previousText: 'Precedente',
+        nextText: 'Successivo',
+        crossChapter: true,
+        crossChapterText: true,
+      },
+      toc: {
+        scope: '.markdown-section',
+        headings: 'h1, h2, h3, h4, h5, h6',
+        title: 'Indice',
+      },
     };
   </script>
-  <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/js/docsify-themeable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <!-- <script src="https://unpkg.com/docsify-toc@1.0.0/dist/toc.js"></script> -->
 </body>
 
 </html>

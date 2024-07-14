@@ -38,7 +38,7 @@ eseguire il login
 
 Crea il file `/etc/systemd/sleep.conf.d/nosuspend.conf`
 
-```
+```conf
 [Sleep]
 AllowSuspend=no
 AllowHibernation=no
@@ -49,7 +49,7 @@ AllowHybridSleep=no
 Se utilizzando un laptop, previeni la sospensione quando si abbassa lo schermo.
 Modifica il file `/etc/systemd/logind.conf`:
 
-```
+```conf
 [Login]
 HandleLidSwitch=ignore
 HandleLidSwitchDocked=ignore
@@ -61,13 +61,13 @@ HandleLidSwitchDocked=ignore
 
 Assicurarsi di eseguire lo script da una shell con accesso Root.
 
-```
+```sh
 su root
 ```
 
 Questo script installa i software necessari, crea un utente 'sostituzioni' e configura lo startup automatico.
 
-```
+```sh
 wget https://raw.githubusercontent.com/nkoexe/sostituzioni/main/scripts/kiosk_install.sh; sh kiosk-install.sh
 ```
 
@@ -79,13 +79,13 @@ Inserire l'url del sito senza https e il codice di autenticazione
 
 Aggiorna il sistema
 
-<pre class="language-sh"><code class="lang-sh">sudo apt update
-<strong>sudo apt upgrade
-</strong></code></pre>
+```sh
+sudo apt update
+```
 
 Installazione dei software necessari
 
-```bash
+```sh
 sudo apt install xorg lightdm openbox sed unclutter chromium
 ```
 
@@ -93,7 +93,7 @@ Creazione file di configurazione di lightdm per il login automatico all'accensio
 `/etc/lightdm/lightdm.conf`
 Impostare `UTENTE` allo username effettivo.
 
-```
+```conf
 [SeatDefaults]
 autologin-user=UTENTE
 user-session=openbox
@@ -151,13 +151,12 @@ do
 done &
 ```
 
-\
 
 Creare il file `kiosk.sh`
 La posizione del file nel sistema è irrilevante, l'importante è ricordarsela, servirà in futuro.
 
-<pre class="language-bash"><code class="lang-bash"><strong>#!/bin/bash
-</strong>
+```bash
+#!/bin/bash
 # ---- variabili -----
 
 # codice di autorizzazione definito nelle impostazioni del sito
@@ -181,4 +180,4 @@ sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/$USER/.config/chrom
 
 # avvia chromium in modalità kiosk a schermo intero
 /usr/bin/chromium-browser --noerrdialogs --disable-infobars --kiosk $url &
-</code></pre>
+```
