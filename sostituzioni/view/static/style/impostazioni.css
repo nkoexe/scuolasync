@@ -70,8 +70,7 @@ a {
 }
 
 /* TEMP */
-#link-gestione-ore-predefinite,
-#link-gestione-classi {
+#link-gestione-ore-predefinite {
     pointer-events: none;
     color: #ffffff77;
 }
