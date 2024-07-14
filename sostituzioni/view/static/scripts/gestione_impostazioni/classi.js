@@ -129,53 +129,60 @@ function nuova_classe() {
 //----------------------------------
 
 
-socket.on("modifica aula successo", (data) => {
-  const element = Array.from(document.querySelectorAll(".opzione-aula"))
-    .find(element => element.dataset.numero_aula === data.numero_aula)
-  element.querySelector(".input-numero-aula").disabled = false
-  element.querySelector(".input-piano-aula").disabled = false
+socket.on("modifica classe successo", (data) => {
+  const element = Array.from(document.querySelectorAll(".opzione-classe"))
+    .find(element => element.dataset.nome_classe === data.nome_classe)
 
-  const aula = [data.new_numero_aula, data.new_piano_aula]
+  element.querySelector(".input-nome-classe").disabled = false
+  element.querySelector(".input-aula").disabled = false
 
-  element.replaceWith(crea_elemento(aula))
+  const classe = [data.new_nome_classe, data.new_aula]
 
-  if (data.numero_aula == "") {
-    // nuova aula
-    aule.push(aula)
+  element.replaceWith(crea_elemento(classe))
+  const selezione_aula = new Selezione({ query: ".opzione-classe[data-nome_classe='" + data.nome_classe + "'] .selezione-aula", lista: aule })
+  selezione_aula.callback = (valore) => {
+    if (valore == classe[1][0]) return;
+    modificato(classe[0])
+  }
+  selezione_aula.valore = classe[1][0]
+
+  if (data.nome_classe == "") {
+    // nuova classe
+    classi.push(classe)
   } else {
-    // modifica aula esistente
-    let index = aule.findIndex(aula => aula[0] === data.numero_aula)
-    aule[index] = aula
+    // modifica classe esistente
+    let index = classi.findIndex(classe => classe[0] === data.nome_classe)
+    classi[index] = classe
   }
 
-  if (data.numero_aula == "") {
-    notyf.success("Aula inserita con successo")
+  if (data.nome_classe == "") {
+    notyf.success("Classe inserita con successo")
   } else {
-    notyf.success("Aula modificata con successo")
-  }
-})
-
-socket.on("modifica aula errore", (data) => {
-  const element = Array.from(document.querySelectorAll(".opzione-aula"))
-    .find(element => element.dataset.numero_aula === data.numero_aula)
-  element.querySelector(".input-numero-aula").disabled = false
-  element.querySelector(".input-piano-aula").disabled = false
-
-  if (data.numero_aula == "") {
-    notyf.error("Errore nell'inserimento dell'aula: " + data.error)
-  } else {
-    notyf.error("Errore nella modifica dell'aula: " + data.error)
+    notyf.success("Classe modificata con successo")
   }
 })
 
-socket.on("elimina aula successo", (numero_aula) => {
-  let index = aule.findIndex(aula => aula[0] === numero_aula)
+socket.on("modifica classe errore", (data) => {
+  const element = Array.from(document.querySelectorAll(".opzione-classe"))
+    .find(element => element.dataset.nome_classe === data.nome_classe)
+  element.querySelector(".input-nome-classe").disabled = false
+  element.querySelector(".input-aula").disabled = false
+
+  if (data.nome_classe == "") {
+    notyf.error("Errore nell'inserimento della classe: " + data.error)
+  } else {
+    notyf.error("Errore nella modifica della classe: " + data.error)
+  }
+})
+
+socket.on("elimina classe successo", (nome_classe) => {
+  let index = classi.findIndex(classe => classe[0] === nome_classe)
   if (index == -1) return;
-  aule.splice(index, 1)
+  classi.splice(index, 1)
 
-  const element = Array.from(document.querySelectorAll(".opzione-aula"))
-    .find(element => element.dataset.numero_aula === numero_aula)
+  const element = Array.from(document.querySelectorAll(".opzione-classe"))
+    .find(element => element.dataset.nome_classe === nome_classe)
   element.remove()
 
-  notyf.success("Aula eliminata con successo")
+  notyf.success("Classe eliminata con successo")
 })
