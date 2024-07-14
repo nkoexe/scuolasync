@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap">
   <link rel="stylesheet" media="(prefers-color-scheme: dark)" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css" />
   <link rel="stylesheet" media="(prefers-color-scheme: light)" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css" />
-  <link rel="stylesheet" href="https://unpkg.com/docsify-toc@1.0.0/dist/toc.css">
   <link rel="shortcut icon" href="/static/icons/favicon.ico">
 </head>
 
@@ -35,7 +34,6 @@
       --cover-blockquote-color: var(--base-color);
 
       --cover-background-image: radial-gradient(ellipse at left top, var(--mono-tint2) -10%, transparent 100%), linear-gradient(to bottom, var(--mono-tint3) -20%, transparent 80%), radial-gradient(ellipse at right top, var(--theme-color) 10%, transparent 80%);
-
       --cover-background-position: right;
 
       --cover-button-box-shadow: 0 2px 6px var(--mono-shade3);
@@ -47,6 +45,10 @@
       --sidebar-link-transition: all 0.2s;
       --sidebar-toggle-offset-top: calc(100% - (var(--sidebar-toggle-height)));
 
+      --search-input-transition: all 0.2s;
+
+      --pagination-chevron-height: 1em;
+      --pagination-label-font-size: var(--font-size-s);
     }
 
     ::-webkit-scrollbar {
@@ -86,28 +88,6 @@
         filter: hue-rotate(0.5turn) brightness(1.7) invert(1);
       }
     }*/
-
-    .page_toc {
-      margin-top: 30px;
-    }
-
-    .page_toc ul {
-      margin-left: 10px;
-    }
-
-    a {
-      transition: all 0.2s;
-    }
-
-    .page_toc a span {
-      padding: 5px;
-      color: var(--base-color) !important;
-      transition: color 0.2s ease-in-out;
-    }
-
-    .page_toc a:hover span {
-      color: var(--theme-color) !important;
-    }
   </style>
   <script>
     window.$docsify = {
@@ -145,7 +125,6 @@
   <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
-  <!-- <script src="https://unpkg.com/docsify-toc@1.0.0/dist/toc.js"></script> -->
 </body>
 
 </html>

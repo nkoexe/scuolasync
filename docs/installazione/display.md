@@ -65,7 +65,7 @@ Assicurarsi di eseguire lo script da una shell con accesso Root.
 su root
 ```
 
-Questo script installa i software necessari, crea un utente 'sostituzioni' e configura lo startup automatico.
+Questo script installa i software necessari, crea un utente 'scuolasync' e configura lo startup automatico.
 
 ```sh
 wget https://raw.githubusercontent.com/nkoexe/sostituzioni/main/scripts/kiosk_install.sh; sh kiosk-install.sh
@@ -110,7 +110,7 @@ Rimpiazzare URL con l'effettivo url del sito, e assicurarsi di inserire il codic
 
 # codice di autorizzazione definito nelle impostazioni del sito
 code=""
-url="https://URL/display?code=\$code"
+url="https://URL/display?code=$code"
 
 # --------------------
 
@@ -131,8 +131,8 @@ do
   xrandr --auto
 
   # rimuovi flag di chromium per non far mostrare dialoghi
-  sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/sostituzioni/.config/chromium/Default/Preferences
-  sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/sostituzioni/.config/chromium/Default/Preferences
+  sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/UTENTE/.config/chromium/Default/Preferences
+  sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/UTENTE/.config/chromium/Default/Preferences
 
   # avvia chromium in modalità kiosk a schermo intero
   chromium \\
