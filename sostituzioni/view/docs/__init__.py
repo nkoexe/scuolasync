@@ -11,6 +11,11 @@ def docs():
     return send_from_directory(docsdir, "index.html")
 
 
+@app.route("/docs/<path:path>/sidebar.md")
+def docs_sidebar(path):
+    return send_from_directory(docsdir, "sidebar.md")
+
+
 @app.route("/docs/<path:path>")
 def docs_file(path):
     return send_from_directory(docsdir, path)

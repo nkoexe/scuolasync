@@ -42,8 +42,8 @@
       --cover-button-box-shadow--hover: 0 5px 15px var(--mono-shade3);
       --cover-button-transition: all var(--duration-fast) ease-out;
 
-
-      --sidebar-name-font-size: 30px;
+      --sidebar-name-color: var(--heading-color);
+      --sidebar-name-font-size: 36px;
       --sidebar-link-transition: all 0.2s;
       --sidebar-toggle-offset-top: calc(100% - (var(--sidebar-toggle-height)));
 
@@ -81,11 +81,11 @@
       fill: var(--base-color);
     }
 
-    @media (prefers-color-scheme: dark) {
+    /* @media (prefers-color-scheme: dark) {
       .app-name {
         filter: hue-rotate(0.5turn) brightness(1.7) invert(1);
       }
-    }
+    }*/
 
     .page_toc {
       margin-top: 30px;
@@ -111,13 +111,11 @@
   </style>
   <script>
     window.$docsify = {
-      logo: '/media/scuolasync.svg',
       name: 'ScuolaSync',
-      repo: 'https://github.com/nkoexe/sostituzioni',
+      repo: 'nkoexe/sostituzioni',
       coverpage: true,
-      loadSidebar: true,
+      loadSidebar: "sidebar.md",
       nativeEmoji: true,
-      themeColor: '#c00f19',
       search: {
         paths: 'auto',
         placeholder: 'Cerca',
@@ -142,9 +140,9 @@
       },
     };
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/js/docsify-themeable.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
   <!-- <script src="https://unpkg.com/docsify-toc@1.0.0/dist/toc.js"></script> -->
