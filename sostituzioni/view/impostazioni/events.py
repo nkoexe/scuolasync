@@ -8,7 +8,7 @@ from flask_socketio import emit
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.control.cron import scheduler
 from sostituzioni.control.importer import Docenti
-from sostituzioni.model.model import Aula, Docente, NotaStandard, Utente
+from sostituzioni.model.model import Aula, Classe, Docente, NotaStandard, Utente
 from sostituzioni.model.auth import (
     login_required,
     role_required,
@@ -542,3 +542,99 @@ def elimina_aula(numero_aula):
     logger.debug(f"aula {numero_aula} eliminata")
 
     emit("elimina aula successo", numero_aula)
+
+
+# //////////////////////////////
+
+
+@socketio.on("modifica classe", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def modifica_classe(dati):
+    """
+    dati = {
+        "nome": (str),
+        "new_nome": (str),
+        "new_aule": (list),
+    }
+    """
+
+    nome = dati["nome"].strip()
+    new_nome = dati["new_nome"].strip()
+    aule_ospitanti = dati["new_aule"]
+
+    if new_nome == "":
+        emit(
+            "modifica classe errore",
+            {"nome": nome, "error": "Inserire un nome valido"},
+        )
+        return
+
+    if not isinstance(aule_ospitanti, list):
+        emit(
+            "modifica classe errore",
+            {"nome": nome, "error": "Inserire una lista di aule valide"},
+        )
+        return
+
+    if Classe.trova(new_nome) and new_nome != nome:
+        emit(
+            "modifica classe errore",
+            {"nome": nome, "error": "Questa classe esiste già"},
+        )
+        return
+
+    # inserimento nuova classe
+    if nome == "":
+        try:
+            classe = Classe(new_nome, aule_ospitanti)
+            classe.inserisci()
+        except Exception as e:
+            emit(
+                "modifica classe errore",
+                {"nome": nome, "error": str(e)},
+            )
+            return
+
+    # modifica classe esistente
+    else:
+        try:
+            classe = Classe(nome)
+            classe.modifica({"nome": new_nome, "aule_ospitanti": aule_ospitanti})
+        except Exception as e:
+            emit(
+                "modifica classe errore",
+                {"nome": nome, "error": str(e)},
+            )
+            return
+
+    emit("modifica classe successo", dati)
+
+
+@socketio.on("elimina classe", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def elimina_classe(nome_classe):
+    if nome_classe == "":
+        emit("elimina classe successo", "")
+        return
+
+    classe = Classe(nome_classe)
+
+    if not classe.in_database:
+        emit(
+            "elimina classe errore",
+            {"nome_classe": nome_classe, "error": "Classe non trovata"},
+        )
+        return
+
+    try:
+        classe.elimina()
+    except Exception as e:
+        emit(
+            "elimina classe errore",
+            {"nome_classe": nome_classe, "error": str(e)},
+        )
+        return
+
+    emit("elimina classe successo", nome_classe)

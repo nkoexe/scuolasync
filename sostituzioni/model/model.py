@@ -28,8 +28,8 @@ logger = logging.getLogger(__name__)
 class Classe(Classe):
     def __init__(
         self,
-        nome: str | None = None,
-        aule_ospitanti: list | None = None,
+        nome: str = "",
+        aule_ospitanti: list = [],
         cancellato: bool = False,
     ):
         self.nome = nome
@@ -43,11 +43,15 @@ class Classe(Classe):
             self.aule_ospitanti = dati[0]["aule_ospitanti"]
             self.cancellato = dati[0]["cancellato"]
 
+    def elimina(self, mantieni_in_storico: bool = False):
+        super().elimina(mantieni_in_storico)
+        self.in_database = False
+
 
 class Aula(Aula):
     def __init__(
         self,
-        numero: str | None = None,
+        numero: str = "",
         piano: str = "0",
         cancellato: bool = False,
     ):
@@ -62,12 +66,16 @@ class Aula(Aula):
             self.piano = dati[0]["piano"]
             self.cancellato = dati[0]["cancellato"]
 
+    def elimina(self, mantieni_in_storico: bool = False):
+        super().elimina(mantieni_in_storico)
+        self.in_database = False
+
 
 class Docente(Docente):
     def __init__(
         self,
-        nome: str | None = None,
-        cognome: str | None = None,
+        nome: str = "",
+        cognome: str = "",
         cancellato: bool = False,
     ):
         self.nome = nome

@@ -67,16 +67,17 @@ function ui_conferma_modifiche(nome_classe) {
   let new_nome_classe = element.querySelector(".input-nome-classe").value
   let new_aula = element.querySelector(".input-aula").value
 
+  let classe
+  if (nome_classe == "") {
+    classe = ["", []]
+  } else {
+    classe = classi.find(classe => classe[0] === nome_classe)
+  }
   new_nome_classe = new_nome_classe.trim()
   new_aula = new_aula.trim()
 
   if (new_nome_classe === "") {
     notyf.error("Inserire una classe valida")
-    return
-  }
-
-  if (new_aula === "") {
-    notyf.error("Inserire un'aula valida")
     return
   }
 
@@ -91,7 +92,7 @@ function ui_conferma_modifiche(nome_classe) {
   element.querySelector(".input-nome-classe").disabled = true
   element.querySelector(".input-aula").disabled = true
 
-  socket.emit("modifica classe", { nome_classe: classe[0], new_nome_classe: new_nome_classe, new_aula: new_aula })
+  socket.emit("modifica classe", { nome: classe[0], new_nome: new_nome_classe, new_aule: [new_aula] })
 }
 
 function ui_elimina_classe(nome_classe) {
@@ -131,31 +132,31 @@ function nuova_classe() {
 
 socket.on("modifica classe successo", (data) => {
   const element = Array.from(document.querySelectorAll(".opzione-classe"))
-    .find(element => element.dataset.nome_classe === data.nome_classe)
+    .find(element => element.dataset.nome_classe === data.nome)
 
   element.querySelector(".input-nome-classe").disabled = false
   element.querySelector(".input-aula").disabled = false
 
-  const classe = [data.new_nome_classe, data.new_aula]
+  const classe = [data.new_nome, data.new_aule]
 
   element.replaceWith(crea_elemento(classe))
-  const selezione_aula = new Selezione({ query: ".opzione-classe[data-nome_classe='" + data.nome_classe + "'] .selezione-aula", lista: aule })
+  const selezione_aula = new Selezione({ query: ".opzione-classe[data-nome_classe='" + data.new_nome + "'] .selezione-aula", lista: aule })
   selezione_aula.callback = (valore) => {
     if (valore == classe[1][0]) return;
     modificato(classe[0])
   }
   selezione_aula.valore = classe[1][0]
 
-  if (data.nome_classe == "") {
+  if (data.nome == "") {
     // nuova classe
     classi.push(classe)
   } else {
     // modifica classe esistente
-    let index = classi.findIndex(classe => classe[0] === data.nome_classe)
+    let index = classi.findIndex(classe => classe[0] === data.nome)
     classi[index] = classe
   }
 
-  if (data.nome_classe == "") {
+  if (data.nome == "") {
     notyf.success("Classe inserita con successo")
   } else {
     notyf.success("Classe modificata con successo")
@@ -164,7 +165,7 @@ socket.on("modifica classe successo", (data) => {
 
 socket.on("modifica classe errore", (data) => {
   const element = Array.from(document.querySelectorAll(".opzione-classe"))
-    .find(element => element.dataset.nome_classe === data.nome_classe)
+    .find(element => element.dataset.nome_classe === data.nome)
   element.querySelector(".input-nome-classe").disabled = false
   element.querySelector(".input-aula").disabled = false
 
@@ -185,4 +186,17 @@ socket.on("elimina classe successo", (nome_classe) => {
   element.remove()
 
   notyf.success("Classe eliminata con successo")
+})
+
+socket.on("elimina classe errore", (data) => {
+  const element = Array.from(document.querySelectorAll(".opzione-classe"))
+    .find(element => element.dataset.nome_classe === data.nome_classe)
+  element.querySelector(".input-nome-classe").disabled = false
+  element.querySelector(".input-aula").disabled = false
+
+  if (data.nome_classe == "") {
+    notyf.error("Errore nell'eliminazione della classe: " + data.error)
+  } else {
+    notyf.error("Errore nella eliminazione della classe: " + data.error)
+  }
 })

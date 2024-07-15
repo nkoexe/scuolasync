@@ -540,7 +540,7 @@ class Aula(ElementoDatabaseConStorico):
             Where("numero").equals(self.numero),
             numero=self.numero,
             piano=self.piano,
-            cancellato=self.cancellato
+            cancellato=self.cancellato,
         )
 
     @beartype
@@ -586,19 +586,100 @@ class Classe(ElementoDatabaseConStorico):
     TABLENAME = "classe"
     KEY = "nome"
 
-    def load():
-        return ElementoDatabase.load(Classe)
+    @staticmethod
+    @beartype
+    def load(filtri: Where | dict | None = None):
+        where = None
+
+        if isinstance(filtri, Where):
+            where = filtri
+
+        elif isinstance(filtri, dict):
+            nome = filtri.get("nome", None)
+            cancellato = filtri.get("cancellato", False)
+
+            if nome:
+                where = Where("nome").equals(nome)
+
+            if not cancellato:
+                if where:
+                    where = where.AND("cancellato").equals(False)
+                else:
+                    where = Where("cancellato").equals(False)
+
+        else:
+            # default sono le classi non cancellate
+            where = Where("cancellato").equals(False)
+
+        return ElementoDatabase.load(Classe, where=where, order_by="nome")
 
     @beartype
     def trova(nome: str):
         return ElementoDatabase.trova(Classe, nome)
 
-    # @beartype
-    # def __init__(self, nome: str, aule_ospitanti: List[Aula], cancellato: bool):
-    #     super(Classe, self).__init__(cancellato)
+    def inserisci(self):
+        self.DATABASE.insert(
+            self.TABLENAME,
+            nome=self.nome,
+            cancellato=self.cancellato,
+        )
 
-    #     self.nome = nome
-    #     self.aule_ospitanti = aule_ospitanti
+        if self.aule_ospitanti:
+            for i in range(len(self.aule_ospitanti)):
+                self.DATABASE.insert(
+                    "aula_ospita_classe",
+                    numero_aula=self.aule_ospitanti[i],
+                    nome_classe=self.nome,
+                    predefinito=(i == 0),
+                )
+
+        return True
+
+    @beartype
+    def modifica(self, dati: dict):
+        old_nome = self.nome
+
+        if "nome" in dati:
+            self.nome = dati["nome"]
+
+        if "aule_ospitanti" in dati:
+            self.aule_ospitanti = dati["aule_ospitanti"]
+
+        self.DATABASE.update(
+            self.TABLENAME, Where("nome").equals(old_nome), nome=self.nome
+        )
+        self.DATABASE.delete(
+            "aula_ospita_classe", Where("nome_classe").equals(old_nome)
+        )
+        for i in range(len(self.aule_ospitanti)):
+            self.DATABASE.insert(
+                "aula_ospita_classe",
+                numero_aula=self.aule_ospitanti[i],
+                nome_classe=self.nome,
+                predefinito=(i == 0),
+            )
+
+        return True
+
+    @beartype
+    def elimina(self, mantieni_in_storico: bool = False):
+        self.cancellato = True
+
+        if mantieni_in_storico:
+            self.DATABASE.update(
+                self.TABLENAME, Where("nome").equals(self.nome), cancellato=True
+            )
+            self.DATABASE.delete(
+                "aula_ospita_classe", Where("nome_classe").equals(self.nome)
+            )
+
+        else:
+            self.DATABASE.delete(self.TABLENAME, Where("nome").equals(self.nome))
+            self.DATABASE.delete(
+                "aula_ospita_classe", Where("nome_classe").equals(self.nome)
+            )
+
+        return True
 
     @property
     def nome(self):
@@ -606,7 +687,7 @@ class Classe(ElementoDatabaseConStorico):
 
     @beartype
     @nome.setter
-    def nome(self, new):
+    def nome(self, new: str):
         self._nome = new
 
     @property
@@ -615,7 +696,7 @@ class Classe(ElementoDatabaseConStorico):
 
     @beartype
     @aule_ospitanti.setter
-    def aule_ospitanti(self, new):
+    def aule_ospitanti(self, new: list):
         self._aule_ospitanti = new
 
 
