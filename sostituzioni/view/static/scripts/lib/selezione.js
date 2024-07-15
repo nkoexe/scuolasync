@@ -109,7 +109,7 @@ class Selezione {
                     if (this.current_index !== -1) {
                         this.seleziona(this.lista_visualizzati[this.current_index])
                     } else {
-                        this.seleziona(this.ui_input.value)
+                        this.ui_input.onblur()
                     }
                     this.ui_input.blur()
                     break
