@@ -88,7 +88,7 @@ class Selezione {
                         prev_ui_element.classList.remove('lista_current')
                     } else this.current_index = 0
                     this.current_index = (this.current_index + this.lista_visualizzati.length - 1) % this.lista_visualizzati.length
-                    ui_element = document.getElementById('lista_' + this.id + this.current_index)
+                    ui_element = document.getElementById('ls_' + this.id + "_" + this.current_index)
                     ui_element.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" })
                     ui_element.classList.add('lista_current')
                     break
