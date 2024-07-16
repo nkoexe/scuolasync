@@ -15,6 +15,10 @@
         <div class="gestione-dati-nuovo-container">
           <button class="pulsante gestione-dati-pulsante-nuovo" onclick="nuova_aula()"><span class="icon material-symbols-rounded">add</span><span>Aggiungi Aula</span></button>
         </div>
+        <div id="cerca-aula-container" class="gestione-dati-cerca-container">
+          <input type="text" id="cerca-aula-input" placeholder="Cerca" oninput="cerca_aula()">
+          <button class="gestione-dati-pulsante-cerca" onclick="cerca_aula()"><span class="icon material-symbols-rounded">search</span></button>
+        </div>
       </div>
       <div id="lista-aule" class="gestione-dati-lista"></div>
     </div>

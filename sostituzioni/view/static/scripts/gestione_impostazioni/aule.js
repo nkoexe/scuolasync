@@ -14,6 +14,7 @@ const aula_template = `<div class="aula">
 <button class="material-symbols-rounded pulsante-conferma-modifiche-dato hidden">check_circle</button>
 </div>`
 
+const ui_cerca_aula = document.querySelector("#cerca-aula-input")
 const ui_lista_aule = document.querySelector("#lista-aule")
 let lista_selezioni_piano = []
 let lista_tag_piani = new Set()
@@ -28,7 +29,6 @@ function crea_elemento(aula) {
   input_numero_aula.value = aula[0]
   input_numero_aula.oninput = () => modificato(aula[0])
   const input_piano_aula = element.querySelector(".input-piano")
-  // input_piano_aula.value = aula[1]
   input_piano_aula.oninput = () => modificato(aula[0])
 
   element.querySelector(".pulsante-elimina-dato").onclick = () => ui_elimina_aula(aula[0])
@@ -54,6 +54,28 @@ aule.forEach(aula => {
   }
   lista_selezioni_piano.push(selezione_piano)
 })
+
+function cerca_aula() {
+  let query = ui_cerca_aula.value.toLowerCase()
+
+  if (query == "") {
+    ui_lista_aule.querySelectorAll(".opzione-aula").forEach(element => {
+      element.classList.remove("hidden")
+    })
+    return
+  }
+
+  ui_lista_aule.querySelectorAll(".opzione-aula").forEach(element => {
+    const aula = element.querySelector(".input-numero-aula").value.toLowerCase()
+    const piano = element.querySelector(".input-piano").value.toLowerCase()
+    if ((aula + " " + piano).includes(query) || (piano + " " + aula).includes(query)) {
+      element.classList.remove("hidden")
+    } else {
+      element.classList.add("hidden")
+    }
+  })
+}
+
 
 function modificato(numero_aula) {
   const element = Array.from(document.querySelectorAll(".opzione-aula"))

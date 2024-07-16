@@ -14,6 +14,7 @@ const classe_template = `<div class="classe">
 <button class="material-symbols-rounded pulsante-conferma-modifiche-dato hidden">check_circle</button>
 </div>`
 
+const ui_cerca_classe = document.querySelector("#cerca-classe-input")
 const ui_lista_classi = document.querySelector("#lista-classi")
 
 function crea_elemento(classe) {
@@ -52,6 +53,29 @@ classi.forEach(classe => {
     modificato(classe[0])
   }
 })
+
+function cerca_classe() {
+  const query = document.querySelector("#cerca-classe-input").value.toLowerCase()
+
+  if (query == "") {
+    ui_lista_classi.querySelectorAll(".opzione-classe").forEach(element => {
+      element.classList.remove("hidden")
+    })
+    return
+  }
+
+  ui_lista_classi.querySelectorAll(".opzione-classe").forEach(element => {
+    const nome_classe = element.querySelector(".input-nome-classe").value.toLowerCase()
+    const nome_classe_nowhitespace = nome_classe.replace(/\s/g, "")
+    const aula = element.querySelector(".input-aula").value.toLowerCase()
+    if (nome_classe_nowhitespace.includes(query) || nome_classe.includes(query) || aula.startsWith(query)) {
+      element.classList.remove("hidden")
+    } else {
+      element.classList.add("hidden")
+    }
+  })
+}
+
 
 function modificato(nome_classe) {
   const element = Array.from(document.querySelectorAll(".opzione-classe"))

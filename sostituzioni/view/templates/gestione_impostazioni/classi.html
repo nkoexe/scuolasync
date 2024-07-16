@@ -15,6 +15,10 @@
         <div class="gestione-dati-nuovo-container">
           <button class="pulsante gestione-dati-pulsante-nuovo" onclick="nuova_classe()"><span class="icon material-symbols-rounded">add</span><span>Aggiungi Classe</span></button>
         </div>
+        <div id="cerca-classe-container" class="gestione-dati-cerca-container">
+          <input type="text" id="cerca-classe-input" placeholder="Cerca" oninput="cerca_classe()">
+          <button class="gestione-dati-pulsante-cerca" onclick="cerca_classe()"><span class="icon material-symbols-rounded">search</span></button>
+        </div>
       </div>
       <div id="lista-classi" class="gestione-dati-lista"></div>
     </div>
