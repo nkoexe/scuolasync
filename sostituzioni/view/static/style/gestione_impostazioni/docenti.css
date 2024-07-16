@@ -13,7 +13,29 @@
   flex: 1;
 }
 
+.nome-docente div {
+  flex: 1;
+  position: relative;
+}
+
 .nome-docente input {
   border: none;
   background-color: transparent;
+}
+
+.opzione-docente:first-child .input-nome-docente-container::after {
+  content: "Nome";
+}
+
+.opzione-docente:first-child .input-cognome-docente-container::after {
+  content: "Cognome";
+}
+
+.opzione-docente:first-child .input-nome-docente-container::after,
+.opzione-docente:first-child .input-cognome-docente-container::after {
+  position: absolute;
+  bottom: 105%;
+  left: 5px;
+  font-style: italic;
+  color: #00000099;
 }

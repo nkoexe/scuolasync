@@ -74,11 +74,12 @@ a {
 .gestione-dati-header {
     padding: 0 20px;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
 }
 
 .gestione-dati-cerca-container {
+    margin-bottom: 3px;
     display: flex;
     align-items: center;
     border-bottom: var(--border-opzione);
@@ -91,8 +92,12 @@ a {
     color: var(--color-text-opzione);
 }
 
+.gestione-dati-cerca-container button {
+    padding: 5px;
+}
+
 .gestione-dati-lista {
-    margin-top: 30px;
+    margin-top: 70px;
 }
 
 .operazioni-dato {

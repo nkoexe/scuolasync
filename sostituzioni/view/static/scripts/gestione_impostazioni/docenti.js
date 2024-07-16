@@ -1,6 +1,10 @@
 const docente_template = `<div class="nome-docente">
+<div class="input-cognome-docente-container">
 <input class="input-cognome-docente" type="text" placeholder="Cognome" required minlength="1" maxlength="80" autocomplete="off" value="">
+</div>
+<div class="input-nome-docente-container">
 <input class="input-nome-docente" type="text" placeholder="Nome" required minlength="1" maxlength="80" autocomplete="off" value="">
+</div>
 </div>
 <div class="operazioni-dato">
 <button class="material-symbols-rounded pulsante-elimina-dato">delete</button> 

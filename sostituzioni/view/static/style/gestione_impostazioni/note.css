@@ -4,3 +4,12 @@
   display: flex;
   gap: 10px;
 }
+
+.opzione-nota:first-child::after {
+  content: "Testo Nota";
+  position: absolute;
+  bottom: 105%;
+  left: 5px;
+  font-style: italic;
+  color: #00000099;
+}
