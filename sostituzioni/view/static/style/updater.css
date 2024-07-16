@@ -41,10 +41,32 @@ a {
     display: flex;
 }
 
-#version span {
+#version>span {
     margin-top: auto;
 }
 
+#version a {
+    position: relative;
+    color: black;
+    transition: all 0.2s;
+}
+
+#version a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 2px;
+    background-color: #c00f19;
+    transition: width 0.3s;
+}
+
+#version a:hover::after {
+    left: 0;
+    right: auto;
+    width: 100%;
+}
 
 #description {
     flex: 1;
