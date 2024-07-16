@@ -1,5 +1,5 @@
 const aula_template = `<div class="aula">
-<input class="input-numero-aula" type="text" placeholder="Numero dell'aula" required minlength="1" maxlength="100" autocomplete="off" value="">
+<input class="input-numero-aula" type="text" placeholder="Numero Aula" required minlength="1" maxlength="100" autocomplete="off" value="">
 <div class="selezione-piano">
   <div class="selezione">
     <input type="text" class="input-piano selezione-input" placeholder="Piano" />

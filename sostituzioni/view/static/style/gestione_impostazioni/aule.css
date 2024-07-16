@@ -1,3 +1,7 @@
+.gestione-dati-lista {
+  margin-top: 50px;
+}
+
 .opzione-aula {
   position: relative;
   padding-bottom: 2px;
@@ -9,4 +13,25 @@
   display: flex;
   gap: 5px;
   flex: 1;
+}
+
+.selezione-piano {
+  position: relative;
+}
+
+.opzione-aula:first-child .aula::after {
+  content: "Numero Aula";
+}
+
+.opzione-aula:first-child .selezione-piano::after {
+  content: "Piano";
+}
+
+.opzione-aula:first-child .aula::after,
+.opzione-aula:first-child .selezione-piano::after {
+  position: absolute;
+  bottom: 105%;
+  left: 5px;
+  font-style: italic;
+  color: #00000099;
 }
