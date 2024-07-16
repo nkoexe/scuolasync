@@ -47,13 +47,16 @@ function format_sostituzione_to_html(oggi, data, ora_inizio, ora_fine, ora_prede
 	let piano_aula = ""
 	if (numero_aula == null) { numero_aula = "" }
 	else {
-		piano_aula = aule.find(aula => aula.numero === numero_aula).piano
-		if (piano_aula == null) { piano_aula = "" }
-		else if (piano_aula == "-1") { piano_aula = "Seminterrato" }
-		else if (piano_aula == "0") { piano_aula = "Terra" }
-		else if (piano_aula == "1") { piano_aula = "Primo" }
-		else if (piano_aula == "2") { piano_aula = "Secondo" }
-		else if (piano_aula == "3") { piano_aula = "Terzo" }
+		const aula = aule.find(aula => aula.numero === numero_aula)
+		if (aula) {
+			if (aula.piano == "-1") { piano_aula = "Seminterrato" }
+			else if (aula.piano == "0") { piano_aula = "Terra" }
+			else if (aula.piano == "1") { piano_aula = "Primo" }
+			else if (aula.piano == "2") { piano_aula = "Secondo" }
+			else if (aula.piano == "3") { piano_aula = "Terzo" }
+			else if (aula.piano == "4") { piano_aula = "Quarto" }
+			else if (aula.piano == "5") { piano_aula = "Quinto" }
+		}
 	}
 
 	// Converte da unix timestamp a dd/mm/yyyy
