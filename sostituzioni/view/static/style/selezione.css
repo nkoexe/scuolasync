@@ -30,3 +30,7 @@
 .selezione-dropdown li span {
   margin: auto 0;
 }
+
+.selezione-dropdown:has(ul:empty) {
+  display: none !important;
+}
