@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{title}}</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap">
+  <link rel="icon" href="{{url_for('static', filename='icons/favicon.ico')}}">
+</head>
+
+<body>
+  <style>
+    * {
+      font-family: 'Gabarito', Helvetica, Arial, sans-serif;
+      box-sizing: border-box;
+      min-width: 0;
+      min-height: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      position: relative;
+      color: #bb545d;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    a::before {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      right: -4px;
+      width: 0;
+      height: 4px;
+      background-color: #bb545d;
+      transition: width 0.25s;
+    }
+
+    a:hover::before {
+      left: -4px;
+      right: auto;
+      width: calc(100% + 8px);
+    }
+
+    #main-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background-color: #101010;
+      overflow: hidden;
+    }
+
+    #error-code {
+      position: absolute;
+      margin: 0;
+      top: -15vw;
+      left: -5%;
+      font-size: 50vw;
+      font-weight: 900;
+      color: #3b3b3b;
+      mask-image: linear-gradient(to bottom, white, transparent 70%);
+    }
+
+    #text-container {
+      position: absolute;
+      bottom: 15%;
+      left: 5%;
+      padding-right: 5%;
+      color: #d0d0d0;
+      margin-bottom: 0.5em;
+    }
+
+    #error-title {
+      font-size: 5rem;
+      margin: 0;
+    }
+
+    #error-description {
+      font-size: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      #error-code {
+        font-size: 50vh;
+        rotate: 90deg;
+        top: 10%;
+        left: -20vh;
+      }
+  </style>
+  <div id="main-container">
+    <div id="error-code">{{code}}</div>
+    <div id="text-container">
+      <h1 id="error-title">{{title}}</h1>
+      <p id="error-description">{{description | safe}}</p>
+    </div>
+  </div>
+
+  {% if offline %}
+  <script>
+    if (window.navigator.onLine) {
+      document.getElementById('error-title').innerHTML = "Server offline."
+      document.getElementById('error-description').innerHTML = "Impossibile connettersi al sistema. "
+    }
+    window.addEventListener('online', () => {
+      location.reload();
+    });
+
+    function reconnect() {
+      fetch('/')
+        .then((response) => {
+          if (response.ok) {
+            location.reload()
+          }
+        })
+        .catch(() => { })
+        .finally(() => {
+          setTimeout(reconnect, 3000)
+        })
+    }
+    //reconnect()
+  </script>
+  {% endif %}
+</body>
+
+</html>
