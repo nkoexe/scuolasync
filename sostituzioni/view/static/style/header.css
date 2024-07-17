@@ -89,20 +89,6 @@
     }
 }
 
-@keyframes slide-in-from-right {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-}
-
-@keyframes fade-out {
-    to {
-        /* transform: translateX(-100%); */
-        opacity: 0;
-    }
-}
-
 ::view-transition-old(header-titolo) {
     height: 100%;
     width: initial;

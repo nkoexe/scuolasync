@@ -27,10 +27,6 @@ a {
     text-decoration: none;
 }
 
-.gestione-dati-container {
-    /* view-transition-name: gestione-dati; */
-}
-
 #main-container>.opzione {
     margin: 20px 0;
 }
@@ -50,16 +46,13 @@ a {
     padding: 15px 20px;
     background-color: var(--color-accent);
     color: var(--color-accent-text);
-    view-transition-name: gestione-dati;
 }
 
 .gestione-dati-pulsante-nuovo .icon {
     font-size: 30px;
-    view-transition-name: gestione-dati-icon;
 }
 
 .gestione-dati-pulsante-nuovo .text {
-    view-transition-name: gestione-dati-text;
 }
 
 .gestione-dati-header {
@@ -188,4 +181,12 @@ a {
     .gestione-dati-pulsante-nuovo .text {
         display: none;
     }
+}
+
+::view-transition-old(content) {
+    animation-name: slide-out-to-left;
+}
+
+::view-transition-new(content) {
+    animation-name: slide-in-from-right;
 }

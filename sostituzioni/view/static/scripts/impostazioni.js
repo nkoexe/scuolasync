@@ -125,23 +125,3 @@ socket.on("applica impostazioni errore", (errore) => {
 socket.on("applica impostazioni successo", (data) => {
   location.reload();
 })
-
-window.addEventListener('pageswap', async (e) => {
-  if (e.viewTransition) {
-    const targetUrl = new URL(e.activation.entry.url);
-
-    if (targetUrl.pathname.startsWith('/impostazioni')) {
-      const element = document.querySelector('.link-gestione:focus');
-      const elementicon = element.querySelector('.icon');
-      const elementtext = element.querySelector('h2');
-
-      element.style.viewTransitionName = 'gestione-dati';
-      elementicon.style.viewTransitionName = 'gestione-dati-icon';
-      elementtext.style.viewTransitionName = 'gestione-dati-text';
-
-      // await e.viewTransition.finished;
-
-      // element.style.viewTransitionName = '';
-    }
-  }
-});

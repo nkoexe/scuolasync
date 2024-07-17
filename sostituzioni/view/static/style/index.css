@@ -1044,3 +1044,21 @@ input[type='radio'] {
         margin-right: auto;
     }
 }
+
+::view-transition-old(content) {
+    height: initial;
+    width: initial;
+    animation: 0.3s cubic-bezier(.2, 1, .4, 1) slide-out-to-left;
+}
+
+::view-transition-old(footer) {
+    height: initial;
+    width: initial;
+    animation: 0.3s cubic-bezier(.2, 1, .4, 1) slide-down;
+}
+
+::view-transition-old(footer-shadow) {
+    height: initial;
+    width: initial;
+    animation: 0.3s cubic-bezier(.2, 1, .4, 1) slide-down;
+}
