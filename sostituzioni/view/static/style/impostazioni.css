@@ -14,6 +14,10 @@
     --border-opzione: 1px solid #b2b2b2;
 }
 
+@view-transition {
+    navigation: auto;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -46,6 +50,24 @@ ul {
 
 a {
     text-decoration: none;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-scrollbar);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-scrollbar-hover);
 }
 
 #main-frame {

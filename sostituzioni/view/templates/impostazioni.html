@@ -19,11 +19,9 @@ opzione_percorso with context %}
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/header.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/impostazioni.css') }}">
-  <script src="{{ url_for('static', filename='scripts/impostazioni.js') }}" defer></script>
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
 </head>
 
@@ -153,7 +151,8 @@ opzione_percorso with context %}
     </div>
     <button id="pulsante-applica" class="pulsante pulsante-footer" onclick="applica()" disabled>Applica</button>
   </div>
-  </form>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="{{ url_for('static', filename='scripts/impostazioni.js') }}"></script>
 </body>
 
 </html>

@@ -34,6 +34,7 @@
     font-weight: normal;
     margin: auto 10px;
     text-wrap: nowrap;
+    view-transition-name: header-titolo;
 }
 
 #header-pulsanti {
@@ -86,4 +87,30 @@
     #header-separator {
         display: none;
     }
+}
+
+@keyframes slide-in-from-right {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+@keyframes fade-out {
+    to {
+        /* transform: translateX(-100%); */
+        opacity: 0;
+    }
+}
+
+::view-transition-old(header-titolo) {
+    height: 100%;
+    width: initial;
+    animation: 0.3s cubic-bezier(.3, 1, 0, 1) fade-out;
+}
+
+::view-transition-new(header-titolo) {
+    height: 100%;
+    width: initial;
+    animation: 0.3s cubic-bezier(.2, 1, .4, 1) slide-in-from-right;
 }
