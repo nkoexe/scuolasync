@@ -2,7 +2,7 @@ from flask import render_template
 
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.model.auth import login_required, role_required, utenti
-from sostituzioni.model.model import Classe, Aula, Docente, NotaStandard
+from sostituzioni.model.model import Classe, Aula, Docente, OraPredefinita, NotaStandard
 from sostituzioni.view.impostazioni import impostazioni
 
 
@@ -59,7 +59,11 @@ def gestione_aule():
 @login_required
 @role_required("impostazioni.write")
 def gestione_ore():
-    return render_template("gestione_impostazioni/ore.html")
+    lista_ore = [
+        (o["numero"], [o["ora_inizio_default"], o["ora_fine_default"]])
+        for o in OraPredefinita.load()
+    ]
+    return render_template("gestione_impostazioni/ore.html", ore=lista_ore)
 
 
 @impostazioni.route("/impostazioni/note")

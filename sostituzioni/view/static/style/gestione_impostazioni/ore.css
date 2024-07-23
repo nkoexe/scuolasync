@@ -1,0 +1,97 @@
+.opzione-ora {
+  position: relative;
+  padding-bottom: 2px;
+  display: flex;
+  gap: 10px;
+}
+
+.input-numero-ora {
+  min-width: 120px;
+  flex: 1;
+}
+
+.orario {
+  position: relative;
+  max-width: 260px;
+  min-width: 200px;
+  flex: 1;
+  display: flex;
+  padding: 0 1rem;
+  background-color: var(--color-background-opzione);
+  border: var(--border-opzione);
+  border-radius: 1rem;
+}
+
+.orario input {
+  width: 90px;
+  font-size: 18px;
+  /* padding: 5px; */
+  background-color: var(--color-background-opzione);
+  border: none;
+}
+
+.orario .separator {
+  position: relative;
+  height: 100%;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.opzione-ora:first-child::after,
+.opzione-ora:first-child .orario::after,
+.opzione-ora:first-child .orario .separator::after {
+  position: absolute;
+  bottom: 105%;
+  left: 5px;
+  font-style: italic;
+  color: #00000099;
+}
+
+
+.opzione-ora:first-child::after {
+  content: "Numero Ora Predefinita";
+  width: max-content;
+  /* max-width: 120px; */
+}
+
+.opzione-ora:first-child .orario::after {
+  content: "Ora Inizio";
+}
+
+
+.opzione-ora:first-child .orario .separator::after {
+  content: "Ora Fine";
+  left: 100%;
+  width: max-content;
+}
+
+@media (max-width: 600px) {
+  .opzione-ora:first-child::after {
+    max-width: 120px;
+  }
+}
+
+@media (max-width: 450px) {
+  .opzione-ora {
+    display: grid;
+    grid-template-columns: 1fr 40px;
+    gap: 5px;
+    border-bottom: 2px solid #00000099;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+  }
+
+  .input-numero-ora {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+
+  .opzione-ora:first-child::after,
+  .opzione-ora:first-child .orario::after,
+  .opzione-ora:first-child .orario .separator::after {
+    display: none;
+  }
+}

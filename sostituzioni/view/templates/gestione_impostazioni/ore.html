@@ -1,0 +1,29 @@
+{% extends "gestione_impostazioni/base.html" %}
+
+{% block title %}Gestione Ore Predefinite{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style/gestione_impostazioni/ore.css') }}">
+{% endblock %}
+
+{% block body %}
+<div id="main-frame">
+  <div id="main-container">
+    <div id="container-ore" class="opzione gestione-dati-container">
+      <div class="gestione-dati-header">
+        <div class="gestione-dati-nuovo-container">
+          <button class="pulsante gestione-dati-pulsante-nuovo" onclick="nuova_ora()"><span class="icon material-symbols-rounded">add</span><span class="text">Aggiungi Orario</span></button>
+        </div>
+      </div>
+      <div id="lista-ore" class="gestione-dati-lista"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  let ore = {{ ore | tojson }}
+</script>
+<script src="{{ url_for('static', filename='scripts/gestione_impostazioni/ore.js') }}" defer></script>
+{% endblock %}
