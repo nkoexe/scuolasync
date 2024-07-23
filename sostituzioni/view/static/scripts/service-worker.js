@@ -1,4 +1,4 @@
-const CACHE_NAME = 'scuolasync_offline_v2';
+const CACHE_NAME = 'scuolasync_offline_v2.11';
 const OFFLINE_URL = '/offline';
 
 // Install event handler (caches the offline page)

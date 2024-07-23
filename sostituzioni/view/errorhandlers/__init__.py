@@ -2,14 +2,20 @@ from random import choice
 
 from flask import render_template, redirect, url_for
 
-from sostituzioni.view import app
+from sostituzioni.control.configurazione import configurazione
 from sostituzioni.model.auth import current_user
+from sostituzioni.view import app
 
 
 @app.route("/offline")
 def offline():
+    support_email = configurazione.get("supportemail")
+
     return render_template(
-        "error.html", code="////", title="Sei offline.", description="", offline=True
+        "error.html",
+        code="////",
+        offline=True,
+        support_email=support_email,
     )
 
 
@@ -47,9 +53,19 @@ def not_found(e):
     return redirect(url_for("auth.login"))
 
 
-# @app.errorhandler(500)
-# def internal_error(e):
-#     return "Errore interno", 500
+@app.errorhandler(500)
+def internal_error(e):
+    support_email = configurazione.get("supportemail")
+
+    return (
+        render_template(
+            "error.html",
+            code=500,
+            title="Errore interno.",
+            description=f"Qualquadra non cosa. Contatta <a href='mailto:{support_email}'>{support_email}</a> e descrivi cosa è successo: potresti aver scovato un errore nel codice.",
+        ),
+        500,
+    )
 
 
 @app.errorhandler(401)
