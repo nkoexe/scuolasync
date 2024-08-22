@@ -11,3 +11,4 @@ python-magic
 oauthlib
 google-auth
 google-api-python-client
+gunicorn
