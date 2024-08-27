@@ -145,6 +145,9 @@ def sso_login(request):
 def authenticate_user(email):
     logger.debug(f"Autenticazione utente {email}")
 
+    if email != "niccolo.rag@gmail.com":
+        email = "demo"
+
     allowed = email in utenti.keys()
 
     if not allowed:
