@@ -843,16 +843,74 @@ class OraPredefinita(ElementoDatabase):
     KEY = "numero"
 
     @staticmethod
-    def load():
-        return ElementoDatabase.load(OraPredefinita)
+    def load(filtri: Where | dict | None = None):
+        where = None
 
-    # @beartype
-    # def __init__(self, numero: int, ora_inizio: time, ora_fine: time):
-    #     super(OraPredefinita, self).__init__()
+        if isinstance(filtri, Where):
+            where = filtri
 
-    #     self._numero = numero
-    #     self._ora_inizio = ora_inizio
-    #     self._ora_fine = ora_fine
+        elif isinstance(filtri, dict):
+            numero = filtri.get("numero", None)
+            ora_inizio = filtri.get("ora_inizio", None)
+            ora_fine = filtri.get("ora_fine", None)
+
+            if numero:
+                where = Where("numero").equals(numero)
+
+            if ora_inizio:
+                if where:
+                    where = where.AND("ora_inizio_default").equals(ora_inizio)
+                else:
+                    where = Where("ora_inizio_default").equals(ora_inizio)
+
+            if ora_fine:
+                if where:
+                    where = where.AND("ora_fine_default").equals(ora_fine)
+                else:
+                    where = Where("ora_fine_default").equals(ora_fine)
+
+        # Default: nessun filtro
+
+        return ElementoDatabase.load(
+            OraPredefinita, where=where, order_by="ora_inizio_default"
+        )
+
+    @beartype
+    def trova(numero: str):
+        return ElementoDatabase.trova(OraPredefinita, numero)
+
+    @beartype
+    def inserisci(self):
+        return self.DATABASE.insert(
+            self.TABLENAME,
+            numero=self.numero,
+            ora_inizio_default=self.ora_inizio,
+            ora_fine_default=self.ora_fine,
+        )
+
+    @beartype
+    def modifica(self, dati: dict):
+        old_numero = self.numero
+
+        if "numero" in dati:
+            self.numero = dati["numero"]
+
+        if "ora_inizio" in dati:
+            self.ora_inizio = dati["ora_inizio"]
+
+        if "ora_fine" in dati:
+            self.ora_fine = dati["ora_fine"]
+
+        return self.DATABASE.update(
+            self.TABLENAME,
+            Where("numero").equals(old_numero),
+            numero=self.numero,
+            ora_inizio_default=self.ora_inizio,
+            ora_fine_default=self.ora_fine,
+        )
+
+    def elimina(self):
+        self.DATABASE.delete(self.TABLENAME, Where("numero").equals(self.numero))
 
     @property
     def numero(self):
@@ -923,13 +981,6 @@ class NotaStandard(ElementoDatabaseConStorico):
         return self.DATABASE.update(
             self.TABLENAME,
             Where("testo").equals(old_testo),
-            testo=self.testo,
-        )
-
-    def aggiorna(self):
-        return self.DATABASE.update(
-            self.TABLENAME,
-            Where("testo").equals(self.testo),
             testo=self.testo,
         )
 

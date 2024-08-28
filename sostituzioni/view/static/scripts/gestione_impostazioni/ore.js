@@ -63,6 +63,14 @@ function ui_conferma_modifiche(ora) {
     notyf.error("Inserire un numero o testo per l'ora.")
     return
   }
+  if (new_ora_inizio === "") {
+    notyf.error("Inserire un orario valido per l'ora inizio.")
+    return
+  }
+  if (new_ora_fine === "") {
+    notyf.error("Inserire un orario valido per l'ora fine.")
+    return
+  }
 
   // nessuna modifica
   if (new_ora === ora[0] && new_ora_inizio === ora[1][0] && new_ora_fine === ora[1][1]) {
@@ -109,6 +117,7 @@ function nuova_ora() {
 
 
 socket.on("modifica nota successo", (data) => {
+  console.log(data)
   const element = Array.from(document.querySelectorAll(".opzione-nota"))
     .find(element => element.dataset.testo === data.testo)
 
