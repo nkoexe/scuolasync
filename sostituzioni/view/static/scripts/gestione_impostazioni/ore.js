@@ -133,7 +133,6 @@ socket.on("modifica ora successo", (data) => {
   if (data.numero == "") {
     // nuova ora
     ore.push(ora)
-    ui_lista_ore.appendChild(element)
   } else {
     // modifica ora esistente
     let index = ore.findIndex(ora => ora[0] === data.numero)
