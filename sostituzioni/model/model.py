@@ -108,8 +108,8 @@ class OraPredefinita(OraPredefinita):
             self.ora_inizio = dati[0]["ora_inizio_default"]
             self.ora_fine = dati[0]["ora_fine_default"]
 
-    def elimina(self, mantieni_in_storico: bool = False):
-        super().elimina(mantieni_in_storico)
+    def elimina(self):
+        super().elimina()
         self.in_database = False
 
 

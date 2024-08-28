@@ -703,7 +703,6 @@ def modifica_ora(dati):
         try:
             ora = OraPredefinita(new_numero, new_ora_inizio, new_ora_fine)
             ora.inserisci()
-            print(ora)
         except Exception as e:
             emit("modifica ora errore", {"numero": numero, "error": str(e)})
             return
@@ -724,3 +723,28 @@ def modifica_ora(dati):
             return
 
     emit("modifica ora successo", dati)
+
+
+@socketio.on("elimina ora", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def elimina_ora(numero):
+    if numero == "":
+        emit("elimina ora successo", "")
+        return
+
+    ora = OraPredefinita(numero)
+
+    if not ora.in_database:
+        emit("elimina ora errore", {"numero": numero, "error": "Ora non trovata"})
+        return
+
+    try:
+        ora.elimina()
+    except Exception as e:
+        emit("elimina ora errore", {"numero": numero, "error": str(e)})
+        return
+
+    logger.debug(f"ora {numero} eliminata")
+
+    emit("elimina ora successo", numero)

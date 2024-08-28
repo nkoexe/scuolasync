@@ -14,7 +14,7 @@ const ui_lista_ore = document.querySelector("#lista-ore")
 function crea_elemento(ora) {
   const element = document.createElement("div")
   element.classList.add("opzione-ora")
-  element.dataset.numero = ora[0.]
+  element.dataset.numero = ora[0]
   element.innerHTML = ora_template
 
   const input_ora = element.querySelector(".input-numero-ora")
@@ -35,8 +35,9 @@ function crea_elemento(ora) {
   return element
 }
 
+// sort by ora inizio
 ore.sort((a, b) => {
-  return a[0].localeCompare(b[0])
+  return a[1][0].localeCompare(b[1][0])
 })
 
 ore.forEach(nota => {
@@ -69,6 +70,11 @@ function ui_conferma_modifiche(ora) {
   }
   if (new_ora_fine === "") {
     notyf.error("Inserire un orario valido per l'ora fine.")
+    return
+  }
+
+  if (new_ora_inizio >= new_ora_fine) {
+    notyf.error("L'ora di fine non può essere anteriore all'ora di inizio.")
     return
   }
 
@@ -116,53 +122,55 @@ function nuova_ora() {
 //----------------------------------
 
 
-socket.on("modifica nota successo", (data) => {
-  console.log(data)
-  const element = Array.from(document.querySelectorAll(".opzione-nota"))
-    .find(element => element.dataset.testo === data.testo)
+socket.on("modifica ora successo", (data) => {
+  const element = Array.from(document.querySelectorAll(".opzione-ora"))
+    .find(element => element.dataset.numero === data.numero)
 
-  element.replaceWith(crea_elemento(data.new_testo))
+  const ora = [data.new_numero, [data.new_ora_inizio, data.new_ora_fine]]
 
-  if (data.testo == "") {
-    // nuovo nota
-    note.push(data.new_testo)
+  element.replaceWith(crea_elemento(ora))
+
+  if (data.numero == "") {
+    // nuova ora
+    ore.push(ora)
+    ui_lista_ore.appendChild(element)
   } else {
-    // modifica nota esistente
-    let index = note.findIndex(nota => nota === data.testo)
-    note[index] = data.new_testo
+    // modifica ora esistente
+    let index = ore.findIndex(ora => ora[0] === data.numero)
+    ore[index] = ora
   }
 
-  if (data.testo == "") {
-    notyf.success("Nota inserita con successo")
+  if (data.numero == "") {
+    notyf.success("Ora inserita con successo")
   } else {
-    notyf.success("Nota modificata con successo")
-  }
-})
-
-socket.on("modifica nota errore", (data) => {
-  const element = Array.from(document.querySelectorAll(".opzione-nota"))
-    .find(element => element.dataset.testo === data.testo)
-  element.querySelector(".input-testo-nota").disabled = false
-
-  if (data.testo == "") {
-    notyf.error("Errore nell'inserimento della nota: " + data.error)
-  } else {
-    notyf.error("Errore nella modifica della nota: " + data.error)
+    notyf.success("Ora modificata con successo")
   }
 })
 
-socket.on("elimina nota successo", (testo) => {
-  let index = note.findIndex(nota => nota === testo)
-  if (index == -1) return;
-  note.splice(index, 1)
+socket.on("modifica ora errore", (data) => {
+  const element = Array.from(document.querySelectorAll(".opzione-ora"))
+    .find(element => element.dataset.numero === data.numero)
+  element.querySelector(".input-numero-ora").disabled = false
 
-  const element = Array.from(document.querySelectorAll(".opzione-nota"))
-    .find(element => element.dataset.testo === testo)
+  if (data.numero == "") {
+    notyf.error("Errore nell'inserimento dell'ora: " + data.error)
+  } else {
+    notyf.error("Errore nella modifica dell'ora: " + data.error)
+  }
+})
+
+socket.on("elimina ora successo", (numero) => {
+  let index = ore.findIndex(ora => ora[0] === numero)
+  if (index == -1) return
+  ore.splice(index, 1)
+
+  const element = Array.from(document.querySelectorAll(".opzione-ora"))
+    .find(element => element.dataset.numero === numero)
   element.remove()
 
-  notyf.success("Nota eliminata con successo")
+  notyf.success("Ora eliminata con successo")
 })
 
-socket.on("elimina nota errore", (data) => {
-  notyf.error("Errore nell'eliminazione della nota: " + data.error)
+socket.on("elimina ora errore", (data) => {
+  notyf.error("Errore nell'eliminazione dell'ora: " + data.error)
 })
