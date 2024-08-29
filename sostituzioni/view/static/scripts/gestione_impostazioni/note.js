@@ -1,7 +1,7 @@
 const nota_template = `<input class="input-testo-nota" type="text" placeholder="Testo della nota" required minlength="1" maxlength="100" autocomplete="off" value="">
 <div class="operazioni-dato">
 <button class="material-symbols-rounded pulsante-elimina-dato">delete</button>
-<button class="material-symbols-rounded pulsante-conferma-modifiche-dato hidden">check_circle</button>
+<button class="material-symbols-rounded pulsante-conferma-modifiche-dato">save</button>
 </div>`
 
 const ui_lista_note = document.querySelector("#lista-note")
@@ -33,8 +33,7 @@ note.forEach(nota => {
 function modificato(testo) {
   const element = Array.from(document.querySelectorAll(".opzione-nota"))
     .find(element => element.dataset.testo === testo)
-  element.querySelector(".pulsante-elimina-dato").classList.add("hidden")
-  element.querySelector(".pulsante-conferma-modifiche-dato").classList.remove("hidden")
+  element.classList.add("modificato")
 }
 
 function ui_conferma_modifiche(testo) {
@@ -51,8 +50,7 @@ function ui_conferma_modifiche(testo) {
 
   // nessuna modifica
   if (new_testo === testo) {
-    element.querySelector(".pulsante-elimina-dato").classList.remove("hidden")
-    element.querySelector(".pulsante-conferma-modifiche-dato").classList.add("hidden")
+    element.classList.remove("modificato")
     element.querySelector(".input-testo-nota").value = testo
     return
   }

@@ -13,3 +13,7 @@
   font-style: italic;
   color: #00000099;
 }
+
+.modificato .input-testo-nota {
+  background-color: var(--color-gestionedati-modificato);
+}

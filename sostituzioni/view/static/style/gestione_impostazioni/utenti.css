@@ -25,10 +25,6 @@
   border: none;
 }
 
-.modificato .input-email-utente {
-  background-color: var(--color-gestionedati-modificato) !important;
-}
-
 .opzione-utente .selezione-ruolo-utente {
   width: 200px;
   border: var(--border-opzione);
@@ -38,6 +34,12 @@
 .opzione-utente .selezione-ruolo-utente:has(:nth-child(2):checked) {
   font-weight: bold;
 }
+
+.modificato .input-email-utente,
+.modificato .selezione-ruolo-utente {
+  background-color: var(--color-gestionedati-modificato) !important;
+}
+
 
 @media (max-width: 700px) {
   .opzione-utente {
