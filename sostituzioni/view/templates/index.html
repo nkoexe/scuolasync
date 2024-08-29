@@ -34,6 +34,7 @@
     <div id="header-separator"></div>
     <h1 id="header-titolo">{{title}}</h1>
     <div id="header-pulsanti">
+      <a class="pulsante-header" href="{{ url_for('fisica.index') }}"><span class="material-symbols-rounded" data-tooltip="Visualizza display di demo">smart_display</span></a>
       <button id="pulsante-installa" class="pulsante-header hidden"><span class="material-symbols-rounded" data-tooltip="Installa Applicazione"></span></button>
       {% if utente.permessi.impostazioni.write %}
       <!-- <button id="pulsante-help" class="pulsante-header"><span class="material-symbols-rounded" data-tooltip="Aiuto">help</span></button> -->
