@@ -93,6 +93,26 @@ class Docente(Docente):
         self.in_database = False
 
 
+class OraPredefinita(OraPredefinita):
+    def __init__(self, numero: str, ora_inizio: str = "", ora_fine: str = ""):
+        self.numero = numero
+        self.ora_inizio = ora_inizio
+        self.ora_fine = ora_fine
+        self.in_database = False
+
+        dati = self.load(
+            {"numero": numero, "ora_inizio": ora_inizio, "ora_fine": ora_fine}
+        )
+        if dati:
+            self.in_database = True
+            self.ora_inizio = dati[0]["ora_inizio_default"]
+            self.ora_fine = dati[0]["ora_fine_default"]
+
+    def elimina(self):
+        super().elimina()
+        self.in_database = False
+
+
 class NotaStandard(NotaStandard):
     def __init__(self, testo: str):
         self.testo = testo

@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS nota_standard (
 
 CREATE TABLE IF NOT EXISTS ora_predefinita (
     numero VARCHAR(20) PRIMARY KEY,
-    ora_inizio_default TIME NOT NULL UNIQUE CHECK (length (ora_inizio_default) = 5),
-    ora_fine_default TIME NOT NULL UNIQUE CHECK (length (ora_fine_default) = 5)
+    ora_inizio_default TIME NOT NULL CHECK (length (ora_inizio_default) = 5),
+    ora_fine_default TIME NOT NULL CHECK (length (ora_fine_default) = 5)
 );
 
 CREATE TABLE IF NOT EXISTS docente (

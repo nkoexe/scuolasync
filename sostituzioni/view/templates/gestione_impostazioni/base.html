@@ -45,7 +45,7 @@
       </div>
     </div>
   </div>
-  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" async onload="socket = io('/impostazioni');"></script>
+  <script src="{{ url_for('static', filename='scripts/lib/socket.io.min.js') }}" onload="socket = io('/impostazioni');"></script>
   <script src="{{ url_for('static', filename='scripts/gestione_impostazioni/popup.js') }}" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js" onload="notyf = new Notyf({duration: 3000, types: [
     {

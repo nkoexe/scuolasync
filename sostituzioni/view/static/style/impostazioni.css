@@ -92,13 +92,6 @@ a {
     gap: 10px;
 }
 
-/* TEMP */
-#link-gestione-ore-predefinite {
-    pointer-events: none;
-    color: #ffffff77;
-}
-
-
 .link-gestione {
     position: relative;
     display: flex;
