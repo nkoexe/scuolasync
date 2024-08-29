@@ -26,8 +26,13 @@
   width: 90px;
   font-size: 18px;
   /* padding: 5px; */
-  background-color: var(--color-background-opzione);
+  background-color: transparent;
   border: none;
+}
+
+.modificato .input-numero-ora,
+.modificato .orario {
+  background-color: var(--color-gestionedati-modificato);
 }
 
 .orario .separator {

@@ -6,7 +6,7 @@ const ora_template = `<input class="input-numero-ora" type="text" placeholder="N
 </div>
 <div class="operazioni-dato">
 <button class="material-symbols-rounded pulsante-elimina-dato">delete</button>
-<button class="material-symbols-rounded pulsante-conferma-modifiche-dato hidden">check_circle</button>
+<button class="material-symbols-rounded pulsante-conferma-modifiche-dato">save</button>
 </div>`
 
 const ui_lista_ore = document.querySelector("#lista-ore")
@@ -47,8 +47,7 @@ ore.forEach(nota => {
 function modificato(ora) {
   const element = Array.from(document.querySelectorAll(".opzione-ora"))
     .find(element => element.dataset.numero === ora[0])
-  element.querySelector(".pulsante-elimina-dato").classList.add("hidden")
-  element.querySelector(".pulsante-conferma-modifiche-dato").classList.remove("hidden")
+  element.classList.add("modificato")
 }
 
 function ui_conferma_modifiche(ora) {
@@ -80,8 +79,7 @@ function ui_conferma_modifiche(ora) {
 
   // nessuna modifica
   if (new_ora === ora[0] && new_ora_inizio === ora[1][0] && new_ora_fine === ora[1][1]) {
-    element.querySelector(".pulsante-elimina-dato").classList.remove("hidden")
-    element.querySelector(".pulsante-conferma-modifiche-dato").classList.add("hidden")
+    element.classList.remove("modificato")
     element.querySelector(".input-numero-ora").value = ora[0]
     return
   }
