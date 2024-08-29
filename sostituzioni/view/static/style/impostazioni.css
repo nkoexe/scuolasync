@@ -387,6 +387,16 @@ input[type="file"]+label:hover {
     gap: 10px;
 }
 
+.opzione-file-dropzone {
+    width: 100%;
+    background-color: var(--color-background-opzione);
+    border: var(--border-opzione);
+    border-radius: 5px;
+    font-size: 25px;
+    cursor: pointer;
+    box-shadow: none;
+}
+
 /* Selezione unità del numero */
 .opzione-numero-unita .container-selezione {
     min-width: 100px;

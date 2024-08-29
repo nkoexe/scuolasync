@@ -8,7 +8,7 @@ const docente_template = `<div class="nome-docente">
 </div>
 <div class="operazioni-dato">
 <button class="material-symbols-rounded pulsante-elimina-dato">delete</button> 
-<button class="material-symbols-rounded pulsante-conferma-modifiche-dato hidden">check_circle</button>
+<button class="material-symbols-rounded pulsante-conferma-modifiche-dato">save</button>
 </div>`
 
 const ui_cerca_docente = document.querySelector("#cerca-docente-input")
@@ -77,8 +77,7 @@ function cerca_docente() {
 function modificato(nome, cognome) {
   const element = lista_elementi.find(element => element.dataset.nome === nome && element.dataset.cognome === cognome)
 
-  element.querySelector(".pulsante-elimina-dato").classList.add("hidden")
-  element.querySelector(".pulsante-conferma-modifiche-dato").classList.remove("hidden")
+  element.classList.add("modificato")
 }
 
 function ui_conferma_modifiche(nome, cognome) {
@@ -102,8 +101,7 @@ function ui_conferma_modifiche(nome, cognome) {
 
   // nessuna modifica
   if (new_nome === nome && new_cognome === cognome) {
-    element.querySelector(".pulsante-elimina-dato").classList.remove("hidden")
-    element.querySelector(".pulsante-conferma-modifiche-dato").classList.add("hidden")
+    element.classList.remove("modificato")
     return
   }
 
@@ -223,3 +221,53 @@ socket.on("elimina tutti docenti in corso", (data) => {
 socket.on("elimina tutti docenti annulla successo", () => {
   notyf.success("Eliminazione annullata.")
 })
+
+
+//----------------------------------
+
+const docenti_filepicker = document.querySelector("#import-docenti-filepicker")
+const docenti_selected_file_label = document.querySelector("#import-docenti-selected-file-label")
+
+docenti_filepicker.onchange = () => {
+  if (docenti_filepicker.value == "") {
+    docenti_selected_file_label.innerHTML = ""
+  } else {
+    docenti_selected_file_label.innerHTML = docenti_filepicker.files[0].name
+  }
+}
+const import_docenti_dropzone = document.querySelector("#import-docenti-dropzone")
+
+import_docenti_dropzone.ondrop = (e) => {
+  e.preventDefault();
+  import_docenti_dropzone.classList.remove("filehover")
+
+  let file = e.dataTransfer.files[0]
+  docenti_filepicker.files = e.dataTransfer.files
+
+}
+
+import_docenti_dropzone.ondragover = (e) => {
+  e.preventDefault();
+}
+
+import_docenti_dropzone.ondragenter = (e) => {
+  e.preventDefault();
+  import_docenti_dropzone.classList.add("filehover")
+}
+
+import_docenti_dropzone.ondragleave = (e) => {
+  import_docenti_dropzone.classList.remove("filehover")
+}
+
+function importa_docenti() {
+  if (docenti_filepicker.files.length == 0) {
+    alert("Seleziona un file");
+  }
+
+  let file = docenti_filepicker.files[0]
+  let reader = new FileReader();
+  reader.readAsArrayBuffer(file);
+  reader.onload = () => {
+    socket.emit("importa docenti", reader.result);
+  }
+}
