@@ -225,25 +225,27 @@ socket.on("elimina tutti docenti annulla successo", () => {
 
 //----------------------------------
 
+
+const import_docenti_dropzone = document.querySelector("#import-docenti-dropzone")
 const docenti_filepicker = document.querySelector("#import-docenti-filepicker")
-const docenti_selected_file_label = document.querySelector("#import-docenti-selected-file-label")
+const docenti_selected_file_label = document.querySelector("#import-docenti-selected-file-name")
 
 docenti_filepicker.onchange = () => {
   if (docenti_filepicker.value == "") {
-    docenti_selected_file_label.innerHTML = ""
+    docenti_filepicker.classList.remove("fileselected")
   } else {
+    docenti_filepicker.classList.add("fileselected")
     docenti_selected_file_label.innerHTML = docenti_filepicker.files[0].name
   }
 }
-const import_docenti_dropzone = document.querySelector("#import-docenti-dropzone")
 
 import_docenti_dropzone.ondrop = (e) => {
+  console.log(e.dataTransfer.files)
   e.preventDefault();
   import_docenti_dropzone.classList.remove("filehover")
 
-  let file = e.dataTransfer.files[0]
   docenti_filepicker.files = e.dataTransfer.files
-
+  docenti_filepicker.onchange()
 }
 
 import_docenti_dropzone.ondragover = (e) => {
