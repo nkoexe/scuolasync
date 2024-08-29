@@ -11,7 +11,7 @@ const classe_template = `<div class="classe">
 </div>
 <div class="operazioni-dato">
 <button class="material-symbols-rounded pulsante-elimina-dato">delete</button>
-<button class="material-symbols-rounded pulsante-conferma-modifiche-dato hidden">check_circle</button>
+<button class="material-symbols-rounded pulsante-conferma-modifiche-dato">save</button>
 </div>`
 
 const ui_cerca_classe = document.querySelector("#cerca-classe-input")
@@ -81,8 +81,7 @@ function modificato(nome_classe) {
   const element = Array.from(document.querySelectorAll(".opzione-classe"))
     .find(element => element.dataset.nome_classe === nome_classe)
 
-  element.querySelector(".pulsante-elimina-dato").classList.add("hidden")
-  element.querySelector(".pulsante-conferma-modifiche-dato").classList.remove("hidden")
+  element.classList.add("modificato")
 }
 
 function ui_conferma_modifiche(nome_classe) {
@@ -107,8 +106,7 @@ function ui_conferma_modifiche(nome_classe) {
 
   // nessuna modifica
   if (new_nome_classe === classe[0] && new_aula === classe[1][0]) {
-    element.querySelector(".pulsante-elimina-dato").classList.remove("hidden")
-    element.querySelector(".pulsante-conferma-modifiche-dato").classList.add("hidden")
+    element.classList.remove("modificato")
     element.querySelector(".input-nome-classe").value = classe[0]
     return
   }
