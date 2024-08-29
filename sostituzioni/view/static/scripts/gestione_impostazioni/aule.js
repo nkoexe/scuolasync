@@ -11,7 +11,7 @@ const aula_template = `<div class="aula">
 </div>
 <div class="operazioni-dato">
 <button class="material-symbols-rounded pulsante-elimina-dato">delete</button>
-<button class="material-symbols-rounded pulsante-conferma-modifiche-dato hidden">check_circle</button>
+<button class="material-symbols-rounded pulsante-conferma-modifiche-dato">save</button>
 </div>`
 
 const ui_cerca_aula = document.querySelector("#cerca-aula-input")
@@ -80,8 +80,7 @@ function cerca_aula() {
 function modificato(numero_aula) {
   const element = Array.from(document.querySelectorAll(".opzione-aula"))
     .find(element => element.dataset.numero_aula === numero_aula)
-  element.querySelector(".pulsante-elimina-dato").classList.add("hidden")
-  element.querySelector(".pulsante-conferma-modifiche-dato").classList.remove("hidden")
+  element.classList.add("modificato")
 }
 
 function ui_conferma_modifiche(numero_aula) {
@@ -110,8 +109,7 @@ function ui_conferma_modifiche(numero_aula) {
 
   // nessuna modifica
   if (new_numero_aula === numero_aula && new_piano_aula === aule.find(aula => aula[0] === numero_aula)[1]) {
-    element.querySelector(".pulsante-elimina-dato").classList.remove("hidden")
-    element.querySelector(".pulsante-conferma-modifiche-dato").classList.add("hidden")
+    element.classList.remove("modificato")
     element.querySelector(".input-numero-aula").value = numero_aula
     return
   }

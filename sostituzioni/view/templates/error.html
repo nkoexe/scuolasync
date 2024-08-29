@@ -119,6 +119,20 @@
       document.title = "ScuolaSync - Server offline"
       document.getElementById('error-title').innerHTML = "Server offline."
       document.getElementById('error-description').innerHTML = "Impossibile connettersi al sistema. Esso potrebbe essere in manutenzione, ma se il problema persiste potresti aver scovato un problema: contatta <a href='mailto:{{support_email}}'>{{support_email}}</a>."
+
+      function reconnect() {
+        fetch('/')
+          .then((response) => {
+            if (response.ok) {
+              location.reload()
+            }
+          })
+          .catch(() => { })
+          .finally(() => {
+            setTimeout(reconnect, 3000)
+          })
+      }
+      reconnect()
     } else {
       document.title = "ScuolaSync - Offline"
       document.getElementById('error-title').innerHTML = "Sei offline."
@@ -128,19 +142,6 @@
       });
     }
 
-    function reconnect() {
-      fetch('/')
-        .then((response) => {
-          if (response.ok) {
-            location.reload()
-          }
-        })
-        .catch(() => { })
-        .finally(() => {
-          setTimeout(reconnect, 3000)
-        })
-    }
-    reconnect()
   </script>
   {% endif %}
 </body>

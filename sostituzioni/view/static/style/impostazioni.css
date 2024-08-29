@@ -92,13 +92,6 @@ a {
     gap: 10px;
 }
 
-/* TEMP */
-#link-gestione-ore-predefinite {
-    pointer-events: none;
-    color: #ffffff77;
-}
-
-
 .link-gestione {
     position: relative;
     display: flex;
@@ -333,7 +326,7 @@ input[type="file"] {
     display: none;
 }
 
-input[type="file"]+label {
+/* input[type="file"]+label {
     padding: 15px;
     margin-left: 15px;
     color: var(--color-text-opzione);
@@ -343,16 +336,16 @@ input[type="file"]+label {
     font-size: 25px;
     cursor: pointer;
     box-shadow: none;
-}
+} */
 
-input[type="file"]+label:hover {
+/* input[type="file"]+label:hover {
     background-color: #ececec;
     box-shadow: none !important;
-}
+} */
 
-#import-docenti-selected-file-label {
+/* #import-docenti-selected-file-label {
     margin: auto 10px;
-}
+} */
 
 
 /* SELEZIONE */
@@ -392,6 +385,65 @@ input[type="file"]+label:hover {
 .opzione-file {
     display: flex;
     gap: 10px;
+}
+
+.opzione-file-dropzone {
+    width: 100%;
+    height: 150px;
+    padding: 20px;
+    color: #00000099;
+    background-color: var(--color-opzioni);
+    border: var(--border-opzione);
+    border-style: dashed;
+    border-width: 2px;
+    border-radius: 5px;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.opzione-file-dropzone:has(.fileselected) {
+    display: none;
+}
+
+.opzione-file-dropzone label {
+    padding: 20px;
+    cursor: pointer;
+}
+
+.opzione-file-dropzone label:hover {
+    text-decoration: underline;
+}
+
+.opzione-file-dropzone.filehover {
+    background-color: #00000015;
+    border-color: #00000062;
+    box-shadow: 0 0 10px #00000043;
+}
+
+.opzione-file-dropzone.filehover label {
+    pointer-events: none;
+}
+
+.import-selected-file {
+    display: none;
+    padding: 5px 0 5px 15px;
+    border: var(--border-opzione);
+    border-radius: 10px;
+}
+
+.import-selected-file-name {
+    /* font-family: monospace; */
+    padding: 5px 10px;
+    margin-left: 5px;
+    border-radius: 10px;
+    background-color: var(--color-gestionedati-modificato);
+}
+
+.opzione-file:has(.fileselected) .import-selected-file {
+    display: block;
 }
 
 /* Selezione unità del numero */

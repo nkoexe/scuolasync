@@ -15,6 +15,11 @@
   position: relative;
 }
 
+.modificato .input-numero-aula,
+.modificato .input-piano {
+  background-color: var(--color-gestionedati-modificato);
+}
+
 .opzione-aula:first-child .aula::after {
   content: "Numero Aula";
 }

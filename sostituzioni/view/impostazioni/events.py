@@ -8,7 +8,14 @@ from flask_socketio import emit
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.control.cron import scheduler
 from sostituzioni.control.importer import Docenti
-from sostituzioni.model.model import Aula, Classe, Docente, NotaStandard, Utente
+from sostituzioni.model.model import (
+    Aula,
+    Classe,
+    Docente,
+    OraPredefinita,
+    NotaStandard,
+    Utente,
+)
 from sostituzioni.model.auth import (
     login_required,
     role_required,
@@ -638,3 +645,106 @@ def elimina_classe(nome_classe):
         return
 
     emit("elimina classe successo", nome_classe)
+
+
+# //////////////////////////////
+
+
+@socketio.on("modifica ora", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def modifica_ora(dati):
+    """
+    dati = {
+        "numero": (str),
+        "new_numero": (str),
+        "new_ora_inizio": (str),
+        "new_ora_fine": (str)
+    }
+    """
+
+    print(dati)
+
+    numero = dati["numero"].strip()
+    new_numero = dati["new_numero"].strip()
+    new_ora_inizio = dati["new_ora_inizio"].strip()
+    new_ora_fine = dati["new_ora_fine"].strip()
+
+    if not new_numero:
+        emit(
+            "modifica ora errore",
+            {"numero": numero, "error": "Inserire un numero valido"},
+        )
+        return
+
+    if not new_ora_inizio:
+        emit(
+            "modifica ora errore",
+            {"numero": numero, "error": "Inserire un orario valido"},
+        )
+        return
+
+    if not new_ora_fine:
+        emit(
+            "modifica ora errore",
+            {"numero": numero, "error": "Inserire un orario valido"},
+        )
+        return
+
+    if new_numero != numero and OraPredefinita.trova(new_numero):
+        emit(
+            "modifica ora errore",
+            {"numero": numero, "error": "Questa ora predefinita esiste già"},
+        )
+        return
+
+    # inserimento nuova ora
+    if numero == "":
+        try:
+            ora = OraPredefinita(new_numero, new_ora_inizio, new_ora_fine)
+            ora.inserisci()
+        except Exception as e:
+            emit("modifica ora errore", {"numero": numero, "error": str(e)})
+            return
+
+    # modifica ora esistente
+    else:
+        try:
+            ora = OraPredefinita(numero)
+            ora.modifica(
+                {
+                    "numero": new_numero,
+                    "ora_inizio": new_ora_inizio,
+                    "ora_fine": new_ora_fine,
+                }
+            )
+        except Exception as e:
+            emit("modifica ora errore", {"numero": numero, "error": str(e)})
+            return
+
+    emit("modifica ora successo", dati)
+
+
+@socketio.on("elimina ora", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def elimina_ora(numero):
+    if numero == "":
+        emit("elimina ora successo", "")
+        return
+
+    ora = OraPredefinita(numero)
+
+    if not ora.in_database:
+        emit("elimina ora errore", {"numero": numero, "error": "Ora non trovata"})
+        return
+
+    try:
+        ora.elimina()
+    except Exception as e:
+        emit("elimina ora errore", {"numero": numero, "error": str(e)})
+        return
+
+    logger.debug(f"ora {numero} eliminata")
+
+    emit("elimina ora successo", numero)

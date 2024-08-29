@@ -9,23 +9,25 @@
 {% block body %}
 <div id="main-frame">
   <div id="main-container">
-    <!-- <div class="opzione">
+    <div class="opzione">
       <h5 class="opzione-titolo">Importa docenti da file</h5>
-      <p class="opzione-descrizione">(NON ANCORA IMPLEMENTATO) Usare preferibilmente file esportati dai gruppi Google. Accettati formati XSLX e CSV, con l'email nella colonna 'Member Email'. Il nome del file dovrebbe assomigliare a questo: 'Members_xxxxxxxxxxxxxxxx_01012023_000000.csv.xlsx'</p>
+      <p class="opzione-descrizione">Usare file esportati dai gruppi Google. Accettati formati XSLX e CSV.</p>
+      <!-- <p class="opzione-descrizione">Usare file esportati dai gruppi Google. Accettati formati XSLX e CSV, con l'email nella colonna 'Member Email'. Il nome del file dovrebbe assomigliare a questo: 'Members_xxxxxxxxxxxxxxxx_01012023_000000.csv.xlsx'</p> -->
       <div class="opzione-file">
-        <input type="file" id="import-utenti-filepicker">
-        <label for="import-utenti-filepicker" class="material-symbols-rounded pulsante">upload_file</label>
-        <button onclick="importa_utenti()" class="pulsante">Importa</button>
-        <span id="import-utenti-selected-file-label"></span>
+        <div id="import-docenti-dropzone" class="opzione-file-dropzone">
+          <input type="file" id="import-docenti-filepicker" accept=".csv,.xlsx">
+          <label for="import-docenti-filepicker"><span>Selezione un file o trascinalo qui</span></label>
+        </div>
+        <!-- todo pulsante conferma e pulsante cancella file -->
+        <span id="import-docenti-selected-file" class="import-selected-file">File selezionato: <span id="import-docenti-selected-file-name" class="import-selected-file-name"></span></span>
       </div>
-    </div> -->
+    </div>
     <div id="container-docenti" class="opzione gestione-dati-container">
       <div class="gestione-dati-header">
         <div id="nuovo-docente-container" class="gestione-dati-nuovo-container">
           <button class="pulsante gestione-dati-pulsante-nuovo" onclick="nuovo_docente()"><span class="icon material-symbols-rounded">add</span><span class="text">Nuovo Docente</span></button>
         </div>
         <div id="cerca-docente-container" class="gestione-dati-cerca-container">
-          <!-- <span class="icon material-symbols-rounded">search</span> -->
           <input type="text" id="cerca-docente-input" placeholder="Cerca" oninput="cerca_docente()">
           <button class="gestione-dati-pulsante-cerca" onclick="cerca_docente()"><span class="icon material-symbols-rounded">search</span></button>
         </div>

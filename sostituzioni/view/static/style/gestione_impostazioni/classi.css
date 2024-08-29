@@ -15,6 +15,11 @@
   width: auto !important;
 }
 
+.modificato .input-nome-classe,
+.modificato .input-aula {
+  background-color: var(--color-gestionedati-modificato) !important;
+}
+
 .selezione-aula {
   position: relative;
 }

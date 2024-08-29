@@ -52,8 +52,7 @@ a {
     font-size: 30px;
 }
 
-.gestione-dati-pulsante-nuovo .text {
-}
+.gestione-dati-pulsante-nuovo .text {}
 
 .gestione-dati-header {
     padding: 0 20px;
@@ -102,8 +101,17 @@ a {
 }
 
 .pulsante-conferma-modifiche-dato {
+    display: none;
     background-color: var(--color-confirm);
     color: var(--color-confirm-fg);
+}
+
+.gestione-dati-lista .modificato .pulsante-elimina-dato {
+    display: none;
+}
+
+.gestione-dati-lista .modificato .pulsante-conferma-modifiche-dato {
+    display: block;
 }
 
 #popup-conferma-container {

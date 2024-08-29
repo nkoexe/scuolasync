@@ -9,7 +9,7 @@ const utente_template = `<div class="opzione-utente" data-email="{email}">
   </select>
 </div>
 <button class="material-symbols-rounded pulsante-elimina-dato" onclick="ui_elimina_utente('{email}')">delete</button>
-<button class="material-symbols-rounded pulsante-conferma-modifiche-dato hidden" onclick="ui_conferma_modifiche('{email}')">check_circle</button>
+<button class="material-symbols-rounded pulsante-conferma-modifiche-dato" onclick="ui_conferma_modifiche('{email}')">save</button>
 </div>
 </div>`
 
@@ -63,8 +63,7 @@ function cerca_utente() {
 
 function modificato(email) {
   let element = document.querySelector(`[data-email="${email}"]`)
-  element.querySelector(".pulsante-elimina-dato").classList.add("hidden")
-  element.querySelector(".pulsante-conferma-modifiche-dato").classList.remove("hidden")
+  element.classList.add("modificato")
 }
 
 function ui_conferma_modifiche(email) {
@@ -81,8 +80,7 @@ function ui_conferma_modifiche(email) {
 
   // nessuna modifica
   if (new_email === email && new_ruolo === utenti.find(utente => utente[0] === email)[1]) {
-    element.querySelector(".pulsante-elimina-dato").classList.remove("hidden")
-    element.querySelector(".pulsante-conferma-modifiche-dato").classList.add("hidden")
+    element.classList.remove("modificato")
     element.querySelector(".input-email-utente").value = email
     return
   }
