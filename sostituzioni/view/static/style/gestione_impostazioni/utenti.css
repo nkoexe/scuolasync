@@ -25,6 +25,10 @@
   border: none;
 }
 
+.modificato .input-email-utente {
+  background-color: var(--color-gestionedati-modificato) !important;
+}
+
 .opzione-utente .selezione-ruolo-utente {
   width: 200px;
   border: var(--border-opzione);
