@@ -1,11 +1,14 @@
 from pathlib import Path
+from io import BytesIO
 import pandas as pd
 import magic
+from beartype import beartype
 
 from sostituzioni.model.model import Docente, Utente, Ruolo
 
 
 class Docenti:
+    @beartype
     def from_file(filepath: Path | str):
         if isinstance(filepath, str):
             filepath = Path(filepath)
@@ -15,27 +18,69 @@ class Docenti:
 
         return Docenti.from_buffer(filepath.read_bytes())
 
-    def from_buffer(buffer: bytes):
+    @beartype
+    def from_buffer(buffer: bytes | BytesIO, file_type: str | None = None):
         data = None
 
-        match magic.from_buffer(buffer, mime=True):
-            case "text/csv":
-                data = pd.read_csv(buffer)
-            case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-                data = pd.read_excel(buffer)
-            case _:
-                # tenta comunque di aprirlo yolo
-                data = pd.read_excel(buffer)
-                if data is None:
-                    data = pd.read_csv(buffer)
-                if data is None:
-                    raise ValueError(
-                        f"File di tipo {magic.from_buffer(buffer, mime=True)} non supportato"
-                    )
+        if isinstance(buffer, bytes):
+            buffer = BytesIO(buffer)
 
-        for index, row in data.iterrows():
-            nome, cognome, sure = Docenti.parse_nome_cognome(row["Member Name"])
-            Docente(nome, cognome).inserisci()
+        if file_type is None:
+            match magic.from_buffer(buffer, mime=True):
+                case "text/csv":
+                    file_type = "csv"
+                case (
+                    "application/vnd.ms-excel"
+                    | "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                ):
+                    file_type = "xlsx"
+                case (
+                    "application/vnd.oasis.opendocument.spreadsheet"
+                ):
+                    file_type = "ods"
+
+        if file_type == "csv":
+            data = pd.read_csv(buffer)
+        elif file_type == "xlsx":
+            data = pd.read_excel(buffer)
+        elif file_type == "ods":
+            data = pd.read_excel(buffer, engine="odf")
+        else:
+            # tenta comunque di aprirlo yolo
+            data = pd.read_excel(buffer)
+            if data is None:
+                data = pd.read_csv(buffer)
+            if data is None:
+                raise ValueError(f"File di tipo {file_type} non supportato")
+
+        col_nome = None
+        col_cognome = None
+
+        for nome in ["Nome", "Name", "Member Name"]:
+            if nome in data.columns:
+                col_nome = nome
+                break
+
+        for cognome in ["Cognome", "Surname", "Member Surname"]:
+            if cognome in data.columns:
+                col_cognome = cognome
+                break
+
+        if col_nome and col_cognome:
+            for index, row in data.iterrows():
+                nome = row[col_nome]
+                cognome = row[col_cognome]
+                Docente(nome, cognome).inserisci()
+
+        elif col_nome:
+            for index, row in data.iterrows():
+                nome, cognome, sure = Docenti.parse_nome_cognome(row[col_nome])
+                Docente(nome, cognome).inserisci()
+
+        else:
+            raise ValueError("Nessuna colonna di nome o cognome trovata")
+
+        return True
 
     def parse_nome_cognome(nome_cognome: str) -> tuple[str, str, bool]:
         """

@@ -427,24 +427,56 @@ input[type="file"] {
     pointer-events: none;
 }
 
-.import-selected-file {
+.import-selected-file-container {
     display: none;
+    gap: 20px
+}
+
+.opzione-file:has(.fileselected) .import-selected-file-container {
+    display: flex;
+}
+
+.import-selected-file {
+    height: fit-content;
     padding: 5px 0 5px 15px;
     border: var(--border-opzione);
     border-radius: 10px;
 }
 
 .import-selected-file-name {
-    /* font-family: monospace; */
     padding: 5px 10px;
     margin-left: 5px;
     border-radius: 10px;
     background-color: var(--color-gestionedati-modificato);
 }
 
-.opzione-file:has(.fileselected) .import-selected-file {
-    display: block;
+.import-file-pulsante {
+    padding: 0 5px;
+    margin: 0 5px;
+    background: transparent;
+    border: var(--border-opzione);
+    border-color: transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.1s;
 }
+
+.import-file-pulsante:hover {
+    border-color: #0000002d;
+}
+
+.import-file-pulsante-x {
+    color: var(--color-error);
+}
+
+.import-file-pulsante-v {
+    color: var(--color-success);
+}
+
+.import-file-pulsante .icon {
+    line-height: normal;
+}
+
 
 /* Selezione unità del numero */
 .opzione-numero-unita .container-selezione {

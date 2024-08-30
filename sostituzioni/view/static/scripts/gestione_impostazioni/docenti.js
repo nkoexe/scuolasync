@@ -261,15 +261,37 @@ import_docenti_dropzone.ondragleave = (e) => {
   import_docenti_dropzone.classList.remove("filehover")
 }
 
+function cancella_importa_docenti() {
+  docenti_filepicker.value = ""
+  docenti_filepicker.classList.remove("fileselected")
+}
+
 function importa_docenti() {
   if (docenti_filepicker.files.length == 0) {
     alert("Seleziona un file");
+    return;
   }
 
   let file = docenti_filepicker.files[0]
+  if (file.type != "text/csv" && file.type != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+    alert("Seleziona un file CSV o XLSX");
+    return;
+  }
+
   let reader = new FileReader();
   reader.readAsArrayBuffer(file);
   reader.onload = () => {
-    socket.emit("importa docenti", reader.result);
+    socket.emit("importa docenti", { type: file.type, data: reader.result });
   }
+
+  document.querySelector("#import-docenti-selected").style.opacity = ".5"
 }
+
+socket.on("importa docenti risultato", (data) => {
+  if (data) {
+    location.reload()
+  } else {
+    notyf.error("Errore nell'importazione del file")
+    document.querySelector("#import-docenti-selected").style.opacity = "1"
+  }
+})

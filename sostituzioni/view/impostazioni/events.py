@@ -43,13 +43,6 @@ def applica(dati):
     emit("applica impostazioni successo")
 
 
-@socketio.on("importa docenti", namespace="/impostazioni")
-@login_required
-@role_required("impostazioni.write")
-def importa_docenti(file_bytearray):
-    Docenti.from_buffer(file_bytearray)
-
-
 # //////////////////////////////
 
 
@@ -388,6 +381,16 @@ def elimina_tutti_docenti_annulla():
     scheduler.remove_job("eliminazione_docenti")
     emit("elimina tutti docenti annulla successo", "")
     logger.debug("Eliminazione di tutti i docenti annullata.")
+
+
+@socketio.on("importa docenti", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def importa_docenti(data):
+    file_type = data["type"]
+    file_bytearray = data["data"]
+    res = Docenti.from_buffer(file_bytearray, file_type)
+    emit("importa docenti risultato", res)
 
 
 # //////////////////////////////

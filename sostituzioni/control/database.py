@@ -806,18 +806,8 @@ class Docente(ElementoDatabaseConStorico):
 
     @staticmethod
     @beartype
-    def elimina_tutti(mantieni_in_storico: bool = False):
-        if mantieni_in_storico:
-            Docente.DATABASE.update(
-                Docente.TABLENAME,
-                Where("cancellato").equals(False),
-                cancellato=True,
-            )
-
-        else:
-            Docente.DATABASE.delete(
-                Docente.TABLENAME, Where("cancellato").equals(False)
-            )
+    def elimina_tutti():
+        Docente.DATABASE.delete(Docente.TABLENAME, Where("cancellato").equals(False))
 
     @property
     def nome(self):
