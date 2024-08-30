@@ -1,0 +1,17 @@
+flask
+flask-login
+flask-socketio
+flask-wtf
+beartype
+apscheduler
+pandas
+openpyxl
+xlsxwriter
+odspy
+pylibmagic
+python-magic
+oauthlib
+google-auth
+google-api-python-client
+gunicorn
+gevent
