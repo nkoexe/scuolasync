@@ -39,11 +39,11 @@ class Docenti:
                 ):
                     file_type = "ods"
 
-        if file_type == "csv":
+        if file_type == "csv" or file_type == "text/csv":
             data = pd.read_csv(buffer)
-        elif file_type == "xlsx":
+        elif file_type == "xlsx" or file_type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" or file_type == "application/vnd.ms-excel":
             data = pd.read_excel(buffer)
-        elif file_type == "ods":
+        elif file_type == "ods" or file_type == "application/vnd.oasis.opendocument.spreadsheet":
             data = pd.read_excel(buffer, engine="odf")
         else:
             # tenta comunque di aprirlo yolo

@@ -273,8 +273,8 @@ function importa_docenti() {
   }
 
   let file = docenti_filepicker.files[0]
-  if (file.type != "text/csv" && file.type != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
-    alert("Seleziona un file CSV o XLSX");
+  if (("text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.ms-excel", "application/vnd.oasis.opendocument.spreadsheet").indexOf(file.type) == -1) {
+    alert("Seleziona un file CSV, XLSX o ODS");
     return;
   }
 
