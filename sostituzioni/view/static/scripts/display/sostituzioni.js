@@ -26,9 +26,10 @@ const ui_sostituzione_html_template = `
 </li>`
 
 
-const ui_sostituzioni_container = document.getElementById("sostituzioni-lista-container")
-const ui_sostituzioni_lista = document.getElementById("sostituzioni-lista")
-const ui_sostituzioni_messaggio_informativo = document.getElementById("sostituzioni-messaggio-informativo")
+const ui_sostituzioni_container = document.querySelector("#sostituzioni-lista-container")
+const ui_sostituzioni_lista = document.querySelector("#sostituzioni-lista")
+const ui_sostituzioni_messaggio_informativo = document.querySelector("#sostituzioni-messaggio-informativo")
+const ui_sostituzioni_pagine = document.querySelector("#sostituzioni-pagine")
 
 let sostituzioni_elemento_scroll = 0
 let sostituzioni_indici_scroll = []
@@ -154,6 +155,16 @@ function refresh_sostituzioni() {
 	}
 
 	genera_indici_scroll_sostituzioni()
+
+	ui_sostituzioni_pagine.innerHTML = ""
+	for (let i = 0; i < sostituzioni_indici_scroll.length; i++) {
+		const element = document.createElement("div")
+		element.classList.add("sostituzioni-pagina")
+		if (i == sostituzioni_elemento_scroll) {
+			element.classList.add("current")
+		}
+		ui_sostituzioni_pagine.appendChild(element)
+	}
 }
 
 function ordina_sostituzioni() {
@@ -197,10 +208,14 @@ function genera_indici_scroll_sostituzioni() {
 
 // Loop che scrolla la lista di sostituzioni
 setInterval(() => {
+	// Rimuovi la classe "current" dall'indice della pagina attuale
+	ui_sostituzioni_pagine.children[sostituzioni_elemento_scroll].classList.remove("current")
 	// Prossimo elemento della lista di indici
 	sostituzioni_elemento_scroll = (sostituzioni_elemento_scroll + 1) % sostituzioni_indici_scroll.length
 	// Trova la sostituzione tra gli elementi del DOM tramite l'indice fornito dalla lista
 	const element = ui_sostituzioni_lista.children[sostituzioni_indici_scroll[sostituzioni_elemento_scroll]]
 	// Scrolla l'elemento in posizione
 	element.scrollIntoView({ behavior: "smooth" })
-}, 10000)
+	// Aggiunge la classe "current" all'indice della pagina attuale
+	ui_sostituzioni_pagine.children[sostituzioni_elemento_scroll].classList.add("current")
+}, 2000)
