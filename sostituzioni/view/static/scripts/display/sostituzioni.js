@@ -218,4 +218,4 @@ setInterval(() => {
 	element.scrollIntoView({ behavior: "smooth" })
 	// Aggiunge la classe "current" all'indice della pagina attuale
 	ui_sostituzioni_pagine.children[sostituzioni_elemento_scroll].classList.add("current")
-}, 2000)
+}, 10000)
