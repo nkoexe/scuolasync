@@ -98,13 +98,13 @@ a {
     max-width: 100%;
     border-radius: 70px;
     background-color: #c00f19;
-    transition: all 0.3s, box-shadow 0.8s;
+    transition: all 0.3s, box-shadow .5s ease-out;
     user-select: none;
 }
 
 #button.active {
-    width: 500px;
-    box-shadow: 0 5px 15px #00000080, 0 15px 30px #00000055;
+    width: min(500px, 100%);
+    box-shadow: 0 5px 10px #00000080, 0 15px 30px #00000055;
     cursor: pointer;
 }
 
@@ -142,6 +142,14 @@ a {
 @media (max-width: 500px) {
     #button-text-container-inner {
         font-size: 2rem;
+    }
+}
+
+@media (max-width: 350px) {
+    #button-text-container-inner {
+        width: 100%;
+        flex-direction: column;
+        text-align: center;
     }
 }
 
