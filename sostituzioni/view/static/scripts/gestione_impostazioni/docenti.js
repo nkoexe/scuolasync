@@ -235,7 +235,7 @@ docenti_filepicker.onchange = () => {
     docenti_filepicker.classList.remove("fileselected")
   } else {
     docenti_filepicker.classList.add("fileselected")
-    docenti_selected_file_label.innerHTML = docenti_filepicker.files[0].name
+    docenti_selected_file_label.innerText = docenti_filepicker.files[0].name
   }
 }
 
