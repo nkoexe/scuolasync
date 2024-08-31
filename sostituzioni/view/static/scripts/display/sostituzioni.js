@@ -115,10 +115,14 @@ function refresh_sostituzioni() {
 		// Se la sostituzione è di oggi, filtra solo le sostituzioni che iniziano dopo l'ora attuale
 		if (sostituzione.data * 1000 < now_timestamp) {
 			if (sostituzione.ora_predefinita) {
-				const [hour, minute] = (ore_predefinite.find(ora => ora.numero == sostituzione.ora_predefinita).ora_fine_default).split(":")
-				const timestamp = now.setHours(parseInt(hour), parseInt(minute))
-				if (timestamp - 5 * 60 * 1000 <= now_timestamp) { return false }
-
+				const ora_predefinita = ore_predefinite.find(ora => ora.numero == sostituzione.ora_predefinita)
+				if (ora_predefinita) {
+					const [hour, minute] = (ora_predefinita.ora_fine_default).split(":")
+					const timestamp = now.setHours(parseInt(hour), parseInt(minute))
+					if (timestamp - 5 * 60 * 1000 <= now_timestamp) { return false }
+				} else {
+					return false
+				}
 			} else if (sostituzione.ora_fine) {
 				const [hour, minute] = (sostituzione.ora_fine).split(":")
 				const timestamp = now.setHours(parseInt(hour), parseInt(minute))
