@@ -11,16 +11,26 @@ function compara_ora_inizio(a, b) {
 }
 
 function compara_ora_predefinita(a, b) {
-    if (a.ora_predefinita === null && b.ora_predefinita === null) {
+    if (typeof a.ora_predefinita === 'string' || typeof b.ora_predefinita === 'string') {
+        let ora_b = ore_predefinite.find(o => o.numero == b.ora_predefinita)
+        let ora_a = ore_predefinite.find(o => o.numero == a.ora_predefinita)
+        if (ora_b != null && ora_a != null) {
+            return ora_b.ora_inizio_default.localeCompare(ora_a.ora_inizio_default)
+        } else if (ora_b != null) {
+            return 1
+        } else if (ora_a != null) {
+            return -1
+        } else {
+            return 0
+        }
+    } else if (a.ora_predefinita === null && b.ora_predefinita === null) {
         return compara_ora_inizio(a, b)
     } else if (a.ora_predefinita === null) {
         return 1
     } else if (b.ora_predefinita === null) {
         return -1
-    } else if (typeof a.ora_predefinita === "string" || typeof b.ora_predefinita === "string") {
-        return b.ora_predefinita.localeCompare(a.ora_predefinita)
     } else {
-        return b.ora_predefinita - a.ora_predefinita
+        return 0
     }
 }
 
