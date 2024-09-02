@@ -4,10 +4,13 @@ let has_rebooted = false
 
 
 function ui_loading(title, description) {
+    let button = document.querySelector('#button')
+    button.classList.remove('active')
+    button.onclick = () => { }
+    button.onkeydown = () => { }
+    document.querySelector('#button-text').innerHTML = ''
     document.querySelector('#title').innerHTML = title
     document.querySelector('#description').innerHTML = description
-    document.querySelector('#button').classList.remove('active')
-    document.querySelector('#button').onclick = () => { }
     document.querySelector('#button-text-container').style.opacity = '0'
     setTimeout(() => {
         document.querySelector('#loading-container').style.opacity = '1'
@@ -21,13 +24,19 @@ function ui_prompt(title, description, button_text, button_callback, href) {
     document.querySelector('#loading-container').style.opacity = '0'
     document.querySelector('#button-text').innerHTML = button_text
     setTimeout(() => {
-        document.querySelector('#button').classList.add('active')
+        let button = document.querySelector('#button')
+        button.classList.add('active')
         document.querySelector('#button-text-container').style.opacity = '1'
         if (button_callback) {
-            document.querySelector('#button').onclick = button_callback
+            button.onclick = button_callback
+            button.onkeydown = (e) => {
+                if (e.key === 'Enter') {
+                    button_callback()
+                }
+            }
         }
         if (href) {
-            document.querySelector('#success-link').href = href
+            button.href = href
         }
     }, 500)
 }
@@ -93,31 +102,3 @@ if (should_reboot) {
     ui_loading("Controllo aggiornamenti...", "")
     socket.emit("check update")
 }
-
-
-// function checkserver() {
-//     fetch('/version')
-//         .then((response) => {
-//             if (response.ok) {
-//                 return response.text()
-//             }
-//         })
-//         .then((new_version) => {
-//             if (version != new_version) {
-//                 document.querySelector('#success-link').href = '/'
-//                 document.querySelector('#title').innerHTML = '{{operazione}} completato.'
-//                 document.querySelector('#loading-container').style.opacity = '0'
-//                 setTimeout(() => {
-//                     document.querySelector('#button').classList.add('active')
-//                     document.querySelector('#button-text-container').style.opacity = '1'
-//                 }, 500)
-
-//             } else {
-//                 setTimeout(checkserver, 1000)
-//             }
-//         })
-//         .catch(() => {
-//             setTimeout(checkserver, 1000)
-//         })
-// }
-// checkserver()

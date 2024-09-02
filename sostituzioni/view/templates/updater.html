@@ -23,27 +23,25 @@
       <p id="description"></p>
     </div>
     <div id="button-container">
-      <a id="success-link">
-        <div id="button">
-          <div id="button-text-container">
-            <div id="button-text-container-inner">
-              <span id="button-text"></span><span id="button-icon" class="material-symbols-rounded icon">arrow_forward</span>
-            </div>
+      <a id="button" tabindex="0">
+        <div id="button-text-container">
+          <div id="button-text-container-inner">
+            <span id="button-text"></span><span id="button-icon" class="material-symbols-rounded icon">arrow_forward</span>
           </div>
-          <div id="loading-container">
-            <div id="loading"></div>
-          </div>
+        </div>
+        <div id="loading-container">
+          <div id="loading"></div>
         </div>
       </a>
     </div>
   </div>
   <script>
-    const version = "{{version}}"
-    const should_reboot = {{ reboot | tojson }}
-    document.title = "{{'Reboot' if reboot else 'Update'}}"
+    const version = "{{version}}";
+    const should_reboot = {{ reboot | tojson }};
+    document.title = "{{'Reboot' if reboot else 'Update'}}";
   </script>
-  <script src="{{ url_for('static', filename='scripts/lib/socket.io.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='scripts/updater.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/lib/socket.io.min.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='scripts/updater.js') }}" defer></script>
 </body>
 
 </html>
