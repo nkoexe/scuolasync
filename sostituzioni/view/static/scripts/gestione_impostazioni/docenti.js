@@ -235,7 +235,7 @@ docenti_filepicker.onchange = () => {
     docenti_filepicker.classList.remove("fileselected")
   } else {
     docenti_filepicker.classList.add("fileselected")
-    docenti_selected_file_label.innerHTML = docenti_filepicker.files[0].name
+    docenti_selected_file_label.innerText = docenti_filepicker.files[0].name
   }
 }
 
@@ -261,15 +261,37 @@ import_docenti_dropzone.ondragleave = (e) => {
   import_docenti_dropzone.classList.remove("filehover")
 }
 
+function cancella_importa_docenti() {
+  docenti_filepicker.value = ""
+  docenti_filepicker.classList.remove("fileselected")
+}
+
 function importa_docenti() {
   if (docenti_filepicker.files.length == 0) {
     alert("Seleziona un file");
+    return;
   }
 
   let file = docenti_filepicker.files[0]
+  if (("text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.ms-excel", "application/vnd.oasis.opendocument.spreadsheet").indexOf(file.type) == -1) {
+    alert("Seleziona un file CSV, XLSX o ODS");
+    return;
+  }
+
   let reader = new FileReader();
   reader.readAsArrayBuffer(file);
   reader.onload = () => {
-    socket.emit("importa docenti", reader.result);
+    socket.emit("importa docenti", { type: file.type, data: reader.result });
   }
+
+  document.querySelector("#import-docenti-selected").style.opacity = ".5"
 }
+
+socket.on("importa docenti risultato", (data) => {
+  if (data) {
+    location.reload()
+  } else {
+    notyf.error("Errore nell'importazione del file")
+    document.querySelector("#import-docenti-selected").style.opacity = "1"
+  }
+})

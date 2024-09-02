@@ -22,13 +22,13 @@ def connect():
 
     logger.debug("Nuovo client connesso, invio dei dati iniziali.")
 
-    emit("lista sostituzioni", Sostituzione.load())
-    emit("lista eventi", Evento.load())
-    emit("lista notizie", Notizia.load())
+    emit("lista ore predefinite", OraPredefinita.load())
     emit("lista aule", Aula.load())
     emit("lista classi", Classe.load())
     emit("lista docenti", Docente.load())
-    emit("lista ore predefinite", OraPredefinita.load())
+    emit("lista eventi", Evento.load())
+    emit("lista notizie", Notizia.load())
+    emit("lista sostituzioni", Sostituzione.load())
 
 
 @socketio.on("richiesta sostituzioni", namespace="/display")

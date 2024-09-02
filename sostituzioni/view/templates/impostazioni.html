@@ -151,7 +151,7 @@ opzione_percorso with context %}
     </div>
     <button id="pulsante-applica" class="pulsante pulsante-footer" onclick="applica()" disabled>Applica</button>
   </div>
-  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="{{ url_for('static', filename='scripts/lib/socket.io.min.js') }}"></script>
   <script src="{{ url_for('static', filename='scripts/impostazioni.js') }}"></script>
 </body>
 

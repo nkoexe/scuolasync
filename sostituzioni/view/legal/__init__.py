@@ -16,6 +16,7 @@ def privacy():
     )
 
 
+@app.route("/license")
 @app.route("/licenze")
 def licenze():
     return render_template("licenze.html")

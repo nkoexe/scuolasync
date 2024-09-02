@@ -11,15 +11,20 @@
   <div id="main-container">
     <div class="opzione">
       <h5 class="opzione-titolo">Importa docenti da file</h5>
-      <p class="opzione-descrizione">Usare file esportati dai gruppi Google. Accettati formati XSLX e CSV.</p>
+      <p class="opzione-descrizione">Accettati file esportati da gruppi Google. Caricare un file CSV, XLSX o ODS.</p>
       <!-- <p class="opzione-descrizione">Usare file esportati dai gruppi Google. Accettati formati XSLX e CSV, con l'email nella colonna 'Member Email'. Il nome del file dovrebbe assomigliare a questo: 'Members_xxxxxxxxxxxxxxxx_01012023_000000.csv.xlsx'</p> -->
       <div class="opzione-file">
         <div id="import-docenti-dropzone" class="opzione-file-dropzone">
-          <input type="file" id="import-docenti-filepicker" accept=".csv,.xlsx">
-          <label for="import-docenti-filepicker"><span>Selezione un file o trascinalo qui</span></label>
+          <input type="file" id="import-docenti-filepicker" accept=".csv,.xlsx,.xls,.ods">
+          <label for="import-docenti-filepicker" tabindex="0"><span>Selezione un file o trascinalo qui</span></label>
         </div>
-        <!-- todo pulsante conferma e pulsante cancella file -->
-        <span id="import-docenti-selected-file" class="import-selected-file">File selezionato: <span id="import-docenti-selected-file-name" class="import-selected-file-name"></span></span>
+        <div id="import-docenti-selected" class="import-selected-file-container">
+          <span id="import-docenti-selected-file" class="import-selected-file">File selezionato: <span id="import-docenti-selected-file-name" class="import-selected-file-name"></span></span>
+          <div class="import-file-operazioni">
+            <button class="import-file-pulsante import-file-pulsante-x" onclick="cancella_importa_docenti()"><span class="icon material-symbols-rounded">close</span></button>
+            <button class="import-file-pulsante import-file-pulsante-v" onclick="importa_docenti()"><span class="icon material-symbols-rounded">check</span></button>
+          </div>
+        </div>
       </div>
     </div>
     <div id="container-docenti" class="opzione gestione-dati-container">
