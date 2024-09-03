@@ -75,18 +75,19 @@ ul {
     display: grid;
     /* usare percentuali esatte invece che 1fr per rendere statico il layout e far funzionare gli scroll */
     grid-template-columns: 20% 80%;
-    grid-template-rows: 20% 60% 10% 10%;
+    grid-template-rows: 20% 70% 10%;
+    transition: all .2s;
 }
 
 #main-container:has(#notizie-lista:empty) {
-    grid-template-rows: 20% 65% 0 15%;
-
+    grid-template-rows: 20% 80% 0;
 }
 
 .frame {
     /* border: 2px solid; */
     border-radius: 1vw;
     margin: 0.3vw;
+    transition: all .2s;
 }
 
 #ora-frame {
@@ -97,37 +98,7 @@ ul {
 }
 
 #qr-frame {
-    position: relative;
-    grid-area: 4/1/5/2;
-    padding: 0.5vw;
-    background-color: var(--color-eventi-bg);
-}
-
-#qr-frame img {
-    padding-left: 2vh;
-    height: 100%;
-    mix-blend-mode: multiply;
-}
-
-#qr-arrow {
-    position: absolute;
-    top: 2vh;
-    right: 12.5vh;
-    padding: 0;
-    font-size: 3vh;
-    color: #00000070;
-    transform: scaleX(-1) rotate(60deg);
-}
-
-#qr-description {
-    position: absolute;
-    top: 5vh;
-    right: 3vh;
-    rotate: -17deg;
-    font-family: "Pacifico", cursive;
-    font-size: 2vh;
-    line-height: 2vh;
-    color: #00000070;
+    display: none;
 }
 
 #eventi-frame {
@@ -144,7 +115,7 @@ ul {
 }
 
 #sostituzioni-frame {
-    grid-area: 1/2/5/3;
+    grid-area: 1/2/3/3;
     background-color: var(--color-sostituzioni-bg);
     display: flex;
     flex-direction: column;

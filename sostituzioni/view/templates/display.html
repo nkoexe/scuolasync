@@ -13,6 +13,9 @@
   <script src="{{ url_for('static', filename='scripts/lib/socket.io.min.js') }}"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/display.css') }}">
+  {% if configurazione.get('displayqrcode') %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/display_qr.css') }}">
+  {% endif %}
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
 </head>
 
