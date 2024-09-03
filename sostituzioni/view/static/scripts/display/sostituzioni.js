@@ -155,16 +155,6 @@ function refresh_sostituzioni() {
 	}
 
 	genera_indici_scroll_sostituzioni()
-
-	ui_sostituzioni_pagine.innerHTML = ""
-	for (let i = 0; i < sostituzioni_indici_scroll.length; i++) {
-		const element = document.createElement("div")
-		element.classList.add("sostituzioni-pagina")
-		if (i == sostituzioni_elemento_scroll) {
-			element.classList.add("current")
-		}
-		ui_sostituzioni_pagine.appendChild(element)
-	}
 }
 
 function ordina_sostituzioni() {
@@ -203,13 +193,28 @@ function genera_indici_scroll_sostituzioni() {
 			// element.style.fontWeight = "bold" // test
 		}
 	}
+
+	// Aggiorna gli indici di paginazione
+	ui_sostituzioni_pagine.innerHTML = ""
+	for (let i = 0; i < sostituzioni_indici_scroll.length; i++) {
+		const element = document.createElement("div")
+		element.classList.add("sostituzioni-pagina")
+		if (i == sostituzioni_elemento_scroll) {
+			element.classList.add("current")
+		}
+		ui_sostituzioni_pagine.appendChild(element)
+	}
 }
+
+new ResizeObserver(genera_indici_scroll_sostituzioni).observe(ui_sostituzioni_container)
 
 
 // Loop che scrolla la lista di sostituzioni
 setInterval(() => {
-	// Rimuovi la classe "current" dall'indice della pagina attuale
-	ui_sostituzioni_pagine.children[sostituzioni_elemento_scroll].classList.remove("current")
+	// Rimuovi la classe "current" dall'indice della pagina attuale, se presente
+	if (ui_sostituzioni_pagine.children[sostituzioni_elemento_scroll]) {
+		ui_sostituzioni_pagine.children[sostituzioni_elemento_scroll].classList.remove("current")
+	}
 	// Prossimo elemento della lista di indici
 	sostituzioni_elemento_scroll = (sostituzioni_elemento_scroll + 1) % sostituzioni_indici_scroll.length
 	// Trova la sostituzione tra gli elementi del DOM tramite l'indice fornito dalla lista
