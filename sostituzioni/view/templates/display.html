@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Display Aula Docenti</title>
+  <title>Display ScuolaSync</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap">
@@ -13,6 +13,9 @@
   <script src="{{ url_for('static', filename='scripts/lib/socket.io.min.js') }}"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/display.css') }}">
+  {% if configurazione.get('displayqrcode') %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/display_qr.css') }}">
+  {% endif %}
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
 </head>
 
@@ -29,7 +32,7 @@
         </div>
       </div>
       <div id="qr-frame" class="frame">
-        <img src="https://njco.dev/qr2.png" alt="QR Code">
+        <img src="{{url_for('fisica.generate_qrcode')}}" alt="QR Code">
         <span id="qr-arrow" class="material-symbols-rounded">switch_access_shortcut</span>
         <span id="qr-description">Controlla le<br>supplenze online!</span>
       </div>
