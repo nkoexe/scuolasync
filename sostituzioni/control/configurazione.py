@@ -556,27 +556,27 @@ class Configurazione:
             if which("systemctl") is None:
                 logger.error("Systemctl non trovato.")
 
-            # self.shell_commands["update"] = ["git", "pull"]
-            self.shell_commands["update"] = ["echo"]
+            self.shell_commands["update"] = ["git", "pull"]
+            # self.shell_commands["update"] = ["echo"]
             self.shell_commands["reboot"] = [
                 "systemctl",
                 "restart",
                 "sostituzioni.service",
             ]
-            # self.shell_commands["get_version"] = [
-            #     "git",
-            #     "rev-parse",
-            #     # "--short",
-            #     "HEAD",
-            # ]
-            self.shell_commands["get_version"] = ["echo", "demo"]
-            # self.shell_commands["check_update"] = [
-            #     "git",
-            #     "ls-remote",
-            #     "origin",
-            #     "demo",
-            # ]
-            self.shell_commands["check_update"] = ["echo", "demo"]
+            self.shell_commands["get_version"] = [
+                "git",
+                "rev-parse",
+                # "--short",
+                "HEAD",
+            ]
+            # self.shell_commands["get_version"] = ["echo", "demo"]
+            self.shell_commands["check_update"] = [
+                "git",
+                "ls-remote",
+                "origin",
+                "demo",
+            ]
+            # self.shell_commands["check_update"] = ["echo", "demo"]
 
     def load(self, file: Path = CONFIG_FILE):
         with open(file, encoding="utf-8") as configfile:
