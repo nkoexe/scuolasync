@@ -198,7 +198,6 @@ input[type='radio'] {
     font-size: 14px !important;
     text-align: center;
     transition: top 0s 0s, left 0s 0s, opacity .2s .2s;
-    /* transition-delay: 0.2s; */
     pointer-events: none;
 }
 
@@ -816,9 +815,9 @@ input[type='radio'] {
     display: none;
 }
 
-#sostituzioni-info-container .sostituzioni-info:not(:last-child)::after {
-    content: "•";
-    margin: 0 10px;
+#sostituzioni-info-container .sostituzioni-info:not(:first-child)::before {
+    content: "·";
+    margin: 0 12px;
 }
 
 /* HEADER EVENTI */

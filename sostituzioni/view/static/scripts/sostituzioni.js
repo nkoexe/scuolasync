@@ -160,6 +160,39 @@ async function refresh_sostituzioni(hard_refresh) {
 		ui_sostituzioni_messaggio_informativo.innerHTML = "<span>" + messaggio_nessuna_sostituzione + "</span>"
 		ui_sostituzioni_messaggio_informativo.classList.remove("hidden")
 	}
+
+	// Aggiorna info sostituzioni
+	let now = new Date()
+	now.setHours(0, 0, 0, 0)
+	now = now.getTime() / 1000
+
+	let sostituzioni_oggi = 0
+	let sostituzioni_nascoste = 0
+	let sostituzioni_incomplete = 0
+	let sostituzioni_errori = 0
+
+	for (const sostituzione of sostituzioni_visualizzate) {
+		if (sostituzione.data >= now && sostituzione.data < now + 24 * 60 * 60) {
+			sostituzioni_oggi++
+		}
+		if (!sostituzione.pubblicato) {
+			sostituzioni_nascoste++
+		}
+		if (sostituzione.incompleta) {
+			sostituzioni_incomplete++
+		}
+		if (sostituzione.sovrapposizioni) {
+			sostituzioni_errori++
+		}
+	}
+
+	document.querySelector("#sostituzioni-info-numero-totale").innerHTML = sostituzioni_visualizzate.length
+	document.querySelector("#sostituzioni-info-numero-oggi").innerHTML = sostituzioni_oggi
+	if (sostituzioni_write) {
+		document.querySelector("#sostituzioni-info-numero-nascoste").innerHTML = sostituzioni_nascoste == 0 ? '' : sostituzioni_nascoste
+		document.querySelector("#sostituzioni-info-numero-incomplete").innerHTML = sostituzioni_incomplete == 0 ? '' : sostituzioni_incomplete
+		document.querySelector("#sostituzioni-info-numero-errori").innerHTML = sostituzioni_errori == 0 ? '' : sostituzioni_errori
+	}
 }
 
 function ordina_sostituzioni() {
