@@ -529,6 +529,7 @@ class Opzione:
 class Configurazione:
     @beartype
     def __init__(self):
+        self.aggiornamento_disponibile = False
         self.shell_commands = {}
 
         if which("git") is None:
@@ -650,6 +651,33 @@ class Configurazione:
         self.opzioni.sort(key=lambda x: ordine_opzioni.index(x.id))
 
         del configurazione_template
+
+    def check_update(self):
+        rootpath = self.get("rootpath").path
+
+        # "/sostituzioni/sostituzioni", git è un livello più alto
+        repopath = rootpath.parent
+
+        try:
+            new_version = (
+                subprocess.run(
+                    self.shell_commands["check_update"],
+                    cwd=repopath,
+                    capture_output=True,
+                )
+                .stdout.decode("utf-8")
+                .split("\t")[0]
+                .strip()
+            )
+        except Exception as e:
+            logger.error(f"Errore durante il controllo dell'aggiornamento: {e}")
+            raise e
+
+        self.aggiornamento_disponibile = (
+            new_version != configurazione.get("version").valore
+        )
+
+        return self.aggiornamento_disponibile
 
     def __repr__(self):
         return "Configurazione Sistema"

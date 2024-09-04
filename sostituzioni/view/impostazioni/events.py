@@ -50,31 +50,12 @@ def applica(dati):
 @login_required
 @role_required("impostazioni.write")
 def check_update():
-    rootpath = configurazione.get("rootpath").path
-
-    # "/sostituzioni/sostituzioni", git è un livello più alto
-    repopath = rootpath.parent
 
     try:
-        new_version = (
-            subprocess.run(
-                configurazione.shell_commands["check_update"],
-                cwd=repopath,
-                capture_output=True,
-            )
-            .stdout.decode("utf-8")
-            .split("\t")[0]
-            .strip()
-        )
+        aggiornamento = configurazione.check_update()
     except Exception as e:
-        logger.error(f"Errore durante il controllo dell'aggiornamento: {e}")
         emit("check update errore", str(e))
         return
-
-    if new_version == configurazione.get("version").valore:
-        aggiornamento = False
-    else:
-        aggiornamento = True
 
     emit("check update successo", {"value": aggiornamento})
 
@@ -519,7 +500,6 @@ def modifica_aula(dati):
             aula = Aula(numero_aula)
             aula.modifica({"numero": new_numero_aula, "piano": new_piano_aula})
         except Exception as e:
-            print(e)
             emit("modifica aula errore", {"numero_aula": numero_aula, "error": str(e)})
             return
 
@@ -665,8 +645,6 @@ def modifica_ora(dati):
         "new_ora_fine": (str)
     }
     """
-
-    print(dati)
 
     numero = dati["numero"].strip()
     new_numero = dati["new_numero"].strip()

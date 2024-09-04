@@ -239,6 +239,7 @@
             <span class="sostituzioni-info"><span id="sostituzioni-info-numero-nascoste" class="sostituzioni-info-numero"></span> nascoste</span>
             <span class="sostituzioni-info"><span id="sostituzioni-info-numero-incomplete" class="sostituzioni-info-numero"></span> incomplete</span>
             <span class="sostituzioni-info"><span id="sostituzioni-info-numero-errori" class="sostituzioni-info-numero"></span> errori</span>
+            <span class="sostituzioni-info hidden" id="sostituzioni-info-aggiornamento"><a href="{{ url_for('impostazioni.update')}}">Aggiornamento disponibile!</a></span>
           </div>
         </div>
       </div>
@@ -387,6 +388,7 @@
   {% endif %}
   <script>
     const messaggio_nessuna_sostituzione = "{{ configurazione.get('nosostituzionimsg') }}"
+    const aggiornamento_disponibile = {{ configurazione.aggiornamento_disponibile | tojson }}
 
     const notizie_write = {{ utente.permessi.notizie.write | tojson }}
     const eventi_write = {{ utente.permessi.eventi.write | tojson }}

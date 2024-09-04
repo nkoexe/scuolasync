@@ -38,7 +38,8 @@ ul {
 }
 
 .notizia a,
-.evento a {
+.evento a,
+#sostituzioni-info-container a {
     color: #0074D9;
     text-decoration: none;
     background-image: linear-gradient(to right, #0074D9, #0074D9);
@@ -49,7 +50,8 @@ ul {
 }
 
 .notizia a:hover,
-.evento a:hover {
+.evento a:hover,
+#sostituzioni-info-container a:hover {
     background-size: 100% 2px;
     background-position: 0 100%;
 }
@@ -818,6 +820,10 @@ input[type='radio'] {
 #sostituzioni-info-container .sostituzioni-info:not(:first-child)::before {
     content: "·";
     margin: 0 12px;
+}
+
+#sostituzioni-info-container a {
+    color: inherit;
 }
 
 /* HEADER EVENTI */

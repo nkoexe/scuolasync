@@ -271,3 +271,8 @@ ui_sostituzioni_ordinamento_data.onclick = (e) => {
 	sostituzioni_data_verso_ordinamento *= -1
 	refresh_sostituzioni()
 }
+
+
+if (aggiornamento_disponibile) {
+	document.querySelector("#sostituzioni-info-aggiornamento").classList.remove("hidden")
+}
