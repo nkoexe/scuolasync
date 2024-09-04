@@ -16,6 +16,11 @@
     display: none !important;
 }
 
+:-moz-placeholder,
+::-moz-placeholder {
+    opacity: 1;
+}
+
 html,
 body {
     margin: 0;
