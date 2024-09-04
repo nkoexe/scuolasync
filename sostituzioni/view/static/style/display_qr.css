@@ -30,7 +30,7 @@
   right: 12.5vh;
   padding: 0;
   font-size: 3vh;
-  color: #00000070;
+  color: #9f9f9f;
   transform: scaleX(-1) rotate(60deg);
 }
 
@@ -47,7 +47,7 @@
   font-family: "Pacifico", cursive;
   font-size: 2vh;
   line-height: 2vh;
-  color: #00000070;
+  color: #9f9f9f;
 }
 
 #main-container {
