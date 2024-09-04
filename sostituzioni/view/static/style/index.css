@@ -197,9 +197,14 @@ input[type='radio'] {
     z-index: 110;
     font-size: 14px !important;
     text-align: center;
-    transition: opacity 0.2s;
-    transition-delay: 0.5s;
+    transition: top 0s 0s, left 0s 0s, opacity .2s .2s;
+    /* transition-delay: 0.2s; */
     pointer-events: none;
+}
+
+#tooltip.visible {
+    opacity: 1;
+    transition: top .2s 0s, left .2s 0s, opacity .2s .8s;
 }
 
 #tooltip-arrow {
@@ -484,10 +489,11 @@ input[type='radio'] {
 }
 
 #sostituzioni-main {
+    position: relative;
     flex: 1;
     overflow-x: auto;
     height: calc(100% - 80px);
-    padding: 0 0.5vw;
+    padding: 0 0.5vw 1.5em 0.5vw;
 }
 
 #sostituzioni-container {
@@ -495,7 +501,6 @@ input[type='radio'] {
     height: 100%;
     /* questo min-width è stato messo per mantenere spazio per la lettura chiara dei dati, */
 }
-
 
 /* FILTRI SOSTITUZIONI */
 #sostituzioni-filtri-container {
@@ -796,6 +801,25 @@ input[type='radio'] {
     border-right: 1px solid var(--color-sostituzioni-sovrapposizioni);
 }
 
+#sostituzioni-info-container {
+    position: absolute;
+    bottom: 3px;
+    right: 1vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    color: #757575;
+}
+
+#sostituzioni-info-container .sostituzioni-info:has(.sostituzioni-info-numero:empty) {
+    display: none;
+}
+
+#sostituzioni-info-container .sostituzioni-info:not(:last-child)::after {
+    content: "•";
+    margin: 0 10px;
+}
 
 /* HEADER EVENTI */
 #header-eventi {

@@ -37,11 +37,11 @@ function attach_tooltips() {
 
       tooltip.style.top = top + "px"
       tooltip.style.left = left + "px"
-      tooltip.style.opacity = "1"
+      tooltip.classList.add("visible")
       tooltip_arrow.style.translate = arrow_padding + "px" + " 0"
     }
     element.onmouseout = () => {
-      tooltip.style.opacity = "0"
+      tooltip.classList.remove("visible")
     }
   }
 }
