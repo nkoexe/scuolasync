@@ -86,6 +86,10 @@ async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora
 async function refresh_sostituzioni(hard_refresh) {
 	hard_refresh = typeof hard_refresh === 'boolean' ? hard_refresh : false
 
+	// Ordina e filtra
+	sostituzioni_applica_filtri()
+	ordina_sostituzioni()
+
 	if (hard_refresh) {
 		// Rimuovi completamente ogni dato e rigenera la lista. Per liste di grandi dimensioni, diventa un processo sostanzioso. Necessario al caricamento iniziale.
 
@@ -97,7 +101,13 @@ async function refresh_sostituzioni(hard_refresh) {
 
 		const htmlStrings = await Promise.all(promises);
 
-		ui_sostituzioni_lista.innerHTML = htmlStrings.join('');
+		if (sostituzioni_visualizzate.length > 100) {
+			ui_sostituzioni_lista.innerHTML = htmlStrings.slice(0, 30).join('');
+			await new Promise(resolve => setTimeout(resolve, 1))
+			ui_sostituzioni_lista.innerHTML += htmlStrings.slice(30).join('');
+		} else {
+			ui_sostituzioni_lista.innerHTML = htmlStrings.join('');
+		}
 
 		if (sostituzioni_write) {
 			for (const sostituzione of document.querySelectorAll(".sostituzione")) {
@@ -108,11 +118,8 @@ async function refresh_sostituzioni(hard_refresh) {
 		attach_tooltips()
 	}
 
-	// Ordina e filtra
-	// Non rigenerare la lista ma mostra soltanto le sostituzioni filtrate, le altre vengono nascoste
 
-	sostituzioni_applica_filtri()
-	ordina_sostituzioni()
+	// Non rigenerare la lista ma mostra soltanto le sostituzioni filtrate, le altre vengono nascoste
 
 	const elementsMap = new Map();
 	const elementsToShow = []
