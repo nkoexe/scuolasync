@@ -185,6 +185,7 @@ function ordina_sostituzioni() {
 			if (res == 0) { res = compara_docente(a, b) }
 			return res
 		})
+		sostituzioni_data_verso_ordinamento = -1
 	} else if (sostituzioni_filtro_classe.ordina) {
 		sostituzioni_visualizzate.sort((a, b) => {
 			res = compara_classe(a, b) * sostituzioni_filtro_classe.verso_ordinamento
@@ -192,6 +193,7 @@ function ordina_sostituzioni() {
 			if (res == 0) { res = compara_ora_predefinita(a, b) }
 			return res
 		})
+		sostituzioni_data_verso_ordinamento = -1
 	} else if (sostituzioni_filtro_aula.ordina) {
 		sostituzioni_visualizzate.sort((a, b) => {
 			res = compara_aula(a, b) * sostituzioni_filtro_aula.verso_ordinamento
@@ -199,6 +201,7 @@ function ordina_sostituzioni() {
 			if (res == 0) { res = compara_ora_predefinita(a, b) }
 			return res
 		})
+		sostituzioni_data_verso_ordinamento = -1
 	} else if (sostituzioni_filtro_docente.ordina) {
 		sostituzioni_visualizzate.sort((a, b) => {
 			res = compara_docente(a, b) * sostituzioni_filtro_docente.verso_ordinamento
@@ -206,6 +209,7 @@ function ordina_sostituzioni() {
 			if (res == 0) { res = compara_ora_predefinita(a, b) }
 			return res
 		})
+		sostituzioni_data_verso_ordinamento = -1
 	} else {
 
 		if (sostituzioni_data_verso_ordinamento === 1) {
