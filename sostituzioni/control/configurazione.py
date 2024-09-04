@@ -19,8 +19,13 @@ logger = logging.getLogger(__name__)
 
 
 ROOT_PATH = Path(__file__).parent.parent
-CONFIG_FILE = ROOT_PATH / "database" / "configurazione.json"
-CONFIG_TEMPLATE = ROOT_PATH / "database" / "configurazione.json.template"
+CONFIG_FILE = (
+    os.getenv("SCUOLASYNC_CONFIG") or ROOT_PATH / "database" / "configurazione.json"
+)
+CONFIG_TEMPLATE = (
+    os.getenv("SCUOLASYNC_CONFIG_TEMPLATE")
+    or ROOT_PATH / "database" / "configurazione.json.template"
+)
 
 
 @beartype
@@ -42,7 +47,7 @@ class Sezione:
         self.descrizione: str = dati.get("descrizione", "")
 
     def __repr__(self):
-        return "Sezione" + self.id
+        return "Sezione " + self.id
 
     def aggiorna(self, template):
         self.titolo = template.titolo
@@ -610,20 +615,39 @@ class Configurazione:
         self.set("version", v, force=True)
 
     def applica_aggiornamenti(self):
+        """
+        Funzione che viene eseguita allo startup, per aggiornare sezioni e opzioni
+        della configurazione locale con quelle del template.
+        """
+        # Carica la configurazione del template
         configurazione_template = Configurazione()
         configurazione_template.load(CONFIG_TEMPLATE)
 
         for sezione_template in configurazione_template.sezioni:
+            # Se la sezione è già presente nella configurazione locale
             if sezione_template.id in self.sezioni.keys():
+                # Aggiorna i dati della sezione
                 self.sezioni.get(sezione_template.id).aggiorna(sezione_template)
             else:
+                # Altrimenti aggiunge la nuova sezione
                 self.sezioni.append(sezione_template)
 
         for opzione_template in configurazione_template.opzioni:
+            # Se l'opzione è già presente nella configurazione locale
             if opzione_template.id in self.opzioni.keys():
+                # Aggiorna i dati dell'opzione come descrizione,
+                # nascosto ecc., ma non il suo valore
                 self.opzioni.get(opzione_template.id).aggiorna(opzione_template)
             else:
                 self.opzioni.append(opzione_template)
+
+        # Ordina le sezioni e le opzioni secondo l'ordine di template, dato che
+        # nella pagina online esse vengono mostrate secondo l'ordine del file
+        ordine_sezioni = configurazione_template.sezioni.keys()
+        ordine_opzioni = configurazione_template.opzioni.keys()
+
+        self.sezioni.sort(key=lambda x: ordine_sezioni.index(x.id))
+        self.opzioni.sort(key=lambda x: ordine_opzioni.index(x.id))
 
         del configurazione_template
 
