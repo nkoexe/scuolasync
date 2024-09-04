@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Pacifico");
 
 #qr-frame {
-  display: block;
   position: relative;
   grid-area: 3/1/4/2;
   padding: 0.5vw;
