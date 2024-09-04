@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/lib/notyf.min.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/header.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/impostazioni.css') }}">
@@ -47,7 +47,7 @@
   </div>
   <script src="{{ url_for('static', filename='scripts/lib/socket.io.min.js') }}" onload="socket = io('/impostazioni');"></script>
   <script src="{{ url_for('static', filename='scripts/gestione_impostazioni/popup.js') }}" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js" onload="notyf = new Notyf({duration: 3000, types: [
+  <script src="{{ url_for('static', filename='scripts/lib/notyf.min.js') }}" onload="notyf = new Notyf({duration: 3000, types: [
     {
       type: 'info',
       background: '#ffa726',
