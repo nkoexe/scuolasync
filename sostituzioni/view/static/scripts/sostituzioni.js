@@ -273,6 +273,6 @@ ui_sostituzioni_ordinamento_data.onclick = (e) => {
 }
 
 
-if (aggiornamento_disponibile) {
+if (typeof aggiornamento_disponibile !== 'undefined' && aggiornamento_disponibile) {
 	document.querySelector("#sostituzioni-info-aggiornamento").classList.remove("hidden")
 }

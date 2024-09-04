@@ -388,7 +388,9 @@
   {% endif %}
   <script>
     const messaggio_nessuna_sostituzione = "{{ configurazione.get('nosostituzionimsg') }}"
+    {% if utente.ruolo.nome == 'amministratore' %}
     const aggiornamento_disponibile = {{ configurazione.aggiornamento_disponibile | tojson }}
+    {% endif %}
 
     const notizie_write = {{ utente.permessi.notizie.write | tojson }}
     const eventi_write = {{ utente.permessi.eventi.write | tojson }}
