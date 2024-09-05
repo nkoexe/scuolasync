@@ -1065,6 +1065,10 @@ input[type='radio'] {
         margin: 0;
         border-radius: 0;
     }
+
+    #sostituzioni-info-container {
+        display: none;
+    }
 }
 
 /* Nascondi titolo sostituzioni solo se l'utente è amministratore o editor */
