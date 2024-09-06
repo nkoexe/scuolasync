@@ -143,33 +143,35 @@
         <div id="sostituzioni-main">
           <div id="sostituzioni-container">
             <div id="sostituzioni-filtri-container">
-              <div id="sostituzioni-filtro-data" tabindex="0">
-                <span id="sostituzioni-filtro-data-testo"><span>Data</span><span class="material-symbols-rounded icon">expand_more</span></span>
+              <div id="sostituzioni-filtro-data">
+                <button id="sostituzioni-filtro-data-pulsante">
+                  <span>Data</span><span class="material-symbols-rounded icon">chevron_right</span>
+                </button>
                 <div id="sostituzioni-ordinamento-data" class="sostituzioni-ordinamento">
                   <div class="sostituzioni-ordinamento-arrowup"></div>
                   <div class="sostituzioni-ordinamento-arrowdown selected"></div>
                 </div>
-                <div id="sostituzioni-filtro-data-expandible">
-                  <button id="sostituzioni-filtro-data-oggi" class="sostituzioni-filtro-data-opzione">Oggi</button>
-                  <button id="sostituzioni-filtro-data-domani" class="sostituzioni-filtro-data-opzione">Domani</button>
-                  <button id="sostituzioni-filtro-data-future" class="sostituzioni-filtro-data-opzione selected">Future</button>
-                  <input type="date" id="sostituzioni-filtro-data-data" class="sostituzioni-filtro-data-opzione">
-                  <select id="sostituzioni-filtro-data-mese" class="sostituzioni-filtro-data-opzione">
-                    <option value="8">Settembre</option>
-                    <option value="9">Ottobre</option>
-                    <option value="10">Novembre</option>
-                    <option value="11">Dicembre</option>
-                    <option value="0">Gennaio</option>
-                    <option value="1">Febbraio</option>
-                    <option value="2">Marzo</option>
-                    <option value="3">Aprile</option>
-                    <option value="4">Maggio</option>
-                    <option value="5">Giugno</option>
-                  </select>
-                  <button id="sostituzioni-filtro-data-tutte" class="sostituzioni-filtro-data-opzione">Tutte</button>
-                  <input type="checkbox" id="sostituzioni-filtro-nascosti" class="checkbox" checked hidden>
-                  <input type="checkbox" id="sostituzioni-filtro-eliminati" class="checkbox" hidden>
-                </div>
+              </div>
+              <div id="sostituzioni-filtro-data-expandible">
+                <button id="sostituzioni-filtro-data-oggi" class="sostituzioni-filtro-data-opzione">Oggi</button>
+                <button id="sostituzioni-filtro-data-domani" class="sostituzioni-filtro-data-opzione">Domani</button>
+                <button id="sostituzioni-filtro-data-future" class="sostituzioni-filtro-data-opzione selected">Future</button>
+                <input type="date" id="sostituzioni-filtro-data-data" class="sostituzioni-filtro-data-opzione">
+                <select id="sostituzioni-filtro-data-mese" class="sostituzioni-filtro-data-opzione">
+                  <option value="8">Settembre</option>
+                  <option value="9">Ottobre</option>
+                  <option value="10">Novembre</option>
+                  <option value="11">Dicembre</option>
+                  <option value="0">Gennaio</option>
+                  <option value="1">Febbraio</option>
+                  <option value="2">Marzo</option>
+                  <option value="3">Aprile</option>
+                  <option value="4">Maggio</option>
+                  <option value="5">Giugno</option>
+                </select>
+                <button id="sostituzioni-filtro-data-tutte" class="sostituzioni-filtro-data-opzione">Tutte</button>
+                <input type="checkbox" id="sostituzioni-filtro-nascosti" class="checkbox" checked hidden>
+                <input type="checkbox" id="sostituzioni-filtro-eliminati" class="checkbox" hidden>
               </div>
               <div id="sostituzioni-filtro-ora">
                 <div class="sostituzioni-filtri-ricerca">

@@ -82,21 +82,23 @@ let sostituzioni_filtro_note = new Filtro({ query: "#sostituzioni-filtro-note", 
 
 
 let sostituzioni_filtro_data_attivo = 'future'
-const ui_sostituzioni_filtro_data = document.getElementById("sostituzioni-filtro-data")
-const ui_sostituzioni_filtro_data_testo = document.getElementById("sostituzioni-filtro-data-testo")
-const ui_sostituzioni_filtro_data_expandible = document.getElementById("sostituzioni-filtro-data-expandible")
-const ui_sostituzioni_filtro_data_oggi = document.getElementById("sostituzioni-filtro-data-oggi")
-const ui_sostituzioni_filtro_data_domani = document.getElementById("sostituzioni-filtro-data-domani")
-const ui_sostituzioni_filtro_data_future = document.getElementById("sostituzioni-filtro-data-future")
-const ui_sostituzioni_filtro_data_data = document.getElementById("sostituzioni-filtro-data-data")
-const ui_sostituzioni_filtro_data_mese = document.getElementById("sostituzioni-filtro-data-mese")
-const ui_sostituzioni_filtro_data_tutte = document.getElementById("sostituzioni-filtro-data-tutte")
+const ui_sostituzioni_filtro_data = document.querySelector("#sostituzioni-filtro-data")
+const ui_sostituzioni_filtro_data_pulsante = document.querySelector("#sostituzioni-filtro-data-pulsante")
+const ui_sostituzioni_filtro_data_expandible = document.querySelector("#sostituzioni-filtro-data-expandible")
+const ui_sostituzioni_filtro_data_oggi = document.querySelector("#sostituzioni-filtro-data-oggi")
+const ui_sostituzioni_filtro_data_domani = document.querySelector("#sostituzioni-filtro-data-domani")
+const ui_sostituzioni_filtro_data_future = document.querySelector("#sostituzioni-filtro-data-future")
+const ui_sostituzioni_filtro_data_data = document.querySelector("#sostituzioni-filtro-data-data")
+const ui_sostituzioni_filtro_data_mese = document.querySelector("#sostituzioni-filtro-data-mese")
+const ui_sostituzioni_filtro_data_tutte = document.querySelector("#sostituzioni-filtro-data-tutte")
 
 
 function sostituzioni_filtra_data() {
   // funzione per generare i filtri con i quali caricare le sostituzioni
 
   ui_sostituzioni_filtro_data_rimuovi_selected()
+  ui_sostituzioni_filtro_data_expandible.classList.remove("active")
+  // ui_sostituzioni_filtro_data_expandible.classList.add("user_selected")
 
   let data_inizio, data_fine, filtri
 
@@ -207,7 +209,7 @@ function sostituzioni_filtra_data() {
 }
 
 
-ui_sostituzioni_filtro_data_testo.onclick = (e) => {
+ui_sostituzioni_filtro_data_pulsante.onclick = (e) => {
   if (ui_sostituzioni_filtro_data_expandible.classList.contains("active")) {
     ui_sostituzioni_filtro_data_expandible.classList.remove("active")
     return
