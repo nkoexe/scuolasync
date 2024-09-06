@@ -47,7 +47,7 @@
           <div id="header-eventi-pulsanti">
             <div id="eventi-filtro-data" data-tooltip="Filtro degli eventi per data<br>(non ancora implementato)"><span class="material-symbols-rounded">calendar_month</span></div>
             {% if utente.permessi.eventi.write %}
-            <div id="pulsante-nuovo-evento" class="pulsante pulsante-inserimento" onclick="mostra_nuovo_evento()"><span class="material-symbols-rounded">add</span></div>
+            <button id="pulsante-nuovo-evento" class="pulsante pulsante-inserimento" onclick="mostra_nuovo_evento()"><span class="material-symbols-rounded">add</span></button>
             {% endif %}
           </div>
         </div>
@@ -61,7 +61,7 @@
         <div id="header-notizie">
           <h2 id="header-notizie-titolo">Notizie</h2>
           {% if utente.permessi.notizie.write %}
-          <div id="pulsante-nuova-notizia" class="pulsante pulsante-inserimento" onclick="mostra_nuova_notizia()"><span class="material-symbols-rounded">add</span></div>
+          <button id="pulsante-nuova-notizia" class="pulsante pulsante-inserimento" onclick="mostra_nuova_notizia()"><span class="material-symbols-rounded">add</span></butto>
           {% endif %}
         </div>
         <div id="notizie-container">
@@ -77,7 +77,7 @@
           <div id="pulsanti-header-sostituzioni">
             {% if utente.permessi.sostituzioni.write %}
             <div id="container-esporta-sostituzioni">
-              <div id="pulsante-esporta-sostituzioni" class="pulsante-header-sostituzioni" data-tooltip="Esportazione dei dati"><span class="material-symbols-rounded">export_notes</span></div>
+              <button id="pulsante-esporta-sostituzioni" class="pulsante-header-sostituzioni" data-tooltip="Esportazione dei dati"><span class="material-symbols-rounded">export_notes</span></button>
               <div id="popup-esporta-sostituzioni" tabindex="0">
                 <div>
                   <h2>Esportazione Dati</h2>
@@ -134,10 +134,10 @@
               </div>
             </div>
             {% endif %}
-            <div id="pulsante-refresh-sostituzioni" class="pulsante-header-sostituzioni" onclick="ui_refresh_sostituzioni()" data-tooltip="Ricarica lista di sostituzioni"><span class="material-symbols-rounded">sync</span></div>
+            <button id="pulsante-refresh-sostituzioni" class="pulsante-header-sostituzioni" onclick="ui_refresh_sostituzioni()" data-tooltip="Ricarica lista di sostituzioni"><span class="material-symbols-rounded">sync</span></button>
           </div>
           {% if utente.permessi.sostituzioni.write %}
-          <div id="pulsante-nuova-sostituzione" class="pulsante pulsante-inserimento" onclick="mostra_nuova_sostituzione()"><span class="material-symbols-rounded icon">add</span><span class="text">Nuova</span></div>
+          <button id="pulsante-nuova-sostituzione" class="pulsante pulsante-inserimento" onclick="mostra_nuova_sostituzione()"><span class="material-symbols-rounded icon">add</span><span class="text">Nuova</span></button>
           {% endif %}
         </div>
         <div id="sostituzioni-main">

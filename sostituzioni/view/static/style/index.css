@@ -48,6 +48,7 @@ ul {
     background-position: 100% 100%;
     background-repeat: no-repeat;
     transition: background-size 0.3s;
+    cursor: pointer;
 }
 
 .notizia a:hover,
@@ -264,6 +265,8 @@ option:disabled {
 }
 
 #pulsanti-header-sostituzioni .pulsante-header-sostituzioni {
+    background-color: transparent;
+    border: none;
     cursor: pointer;
 }
 
@@ -429,6 +432,7 @@ option:disabled {
     box-shadow: 0 1px 3px var(--color-shadow), 0 1px 2px var(--color-shadow);
     transition: translate 0.2s, box-shadow 0.2s, scale 0.1s;
     user-select: none;
+    cursor: pointer;
 }
 
 .pulsante:hover {
@@ -544,6 +548,7 @@ option:disabled {
     border: none;
     padding-left: 10px;
     font-size: 16px;
+    cursor: pointer;
 }
 
 #sostituzioni-filtro-data-pulsante .icon {
@@ -595,6 +600,7 @@ option:disabled {
     margin-left: -50px;
     opacity: 0;
     transition: all .2s;
+    cursor: pointer;
 }
 
 .sostituzioni-filtro-data-opzione:hover {
@@ -686,6 +692,7 @@ input[type="date"].sostituzioni-filtro-data-opzione::before {
     justify-content: center;
     align-items: center;
     gap: 4px;
+    cursor: pointer;
 }
 
 /* Frecce di ordinamento */
