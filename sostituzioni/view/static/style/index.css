@@ -604,6 +604,11 @@ option:disabled {
     transition: all 0.3s;
 }
 
+#sostituzioni-filtro-data-pulsante:hover .icon {
+    translate: 2px 0;
+}
+
+
 #sostituzioni-filtri-container:has(#sostituzioni-filtro-data-expandible.active) #sostituzioni-filtro-data-pulsante .icon {
     transform: scaleX(-1);
     -moz-transform: scaleX(-1);
