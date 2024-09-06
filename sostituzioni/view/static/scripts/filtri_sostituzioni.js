@@ -97,8 +97,10 @@ function sostituzioni_filtra_data() {
   // funzione per generare i filtri con i quali caricare le sostituzioni
 
   ui_sostituzioni_filtro_data_rimuovi_selected()
-  ui_sostituzioni_filtro_data_expandible.classList.remove("active")
-  // ui_sostituzioni_filtro_data_expandible.classList.add("user_selected")
+
+  setTimeout(() => {
+    ui_sostituzioni_filtro_data_expandible.classList.remove("active")
+  }, 500);
 
   let data_inizio, data_fine, filtri
 
@@ -210,24 +212,7 @@ function sostituzioni_filtra_data() {
 
 
 ui_sostituzioni_filtro_data_pulsante.onclick = (e) => {
-  if (ui_sostituzioni_filtro_data_expandible.classList.contains("active")) {
-    ui_sostituzioni_filtro_data_expandible.classList.remove("active")
-    return
-  }
-
-  ui_sostituzioni_filtro_data.focus()
   ui_sostituzioni_filtro_data_expandible.classList.toggle("active")
-}
-
-ui_sostituzioni_filtro_data.onblur = (e) => {
-  if (e.relatedTarget && e.relatedTarget.closest("#sostituzioni-filtro-data-expandible")) {
-    e.preventDefault()
-    e.stopPropagation()
-    ui_sostituzioni_filtro_data.focus()
-    return
-  }
-
-  ui_sostituzioni_filtro_data_expandible.classList.remove("active")
 }
 
 function ui_sostituzioni_filtra_data() {
@@ -260,17 +245,17 @@ ui_sostituzioni_filtro_data_future.onclick = (e) => {
   ui_sostituzioni_filtra_data()
 }
 
-ui_sostituzioni_filtro_data_data.onclick =
-  ui_sostituzioni_filtro_data_data.onchange = (e) => {
-    sostituzioni_filtro_data_attivo = 'data'
-    ui_sostituzioni_filtra_data()
-  }
+// ui_sostituzioni_filtro_data_data.onclick =
+ui_sostituzioni_filtro_data_data.onchange = (e) => {
+  sostituzioni_filtro_data_attivo = 'data'
+  ui_sostituzioni_filtra_data()
+}
 
-ui_sostituzioni_filtro_data_mese.onclick =
-  ui_sostituzioni_filtro_data_mese.onchange = (e) => {
-    sostituzioni_filtro_data_attivo = 'mese'
-    ui_sostituzioni_filtra_data()
-  }
+// ui_sostituzioni_filtro_data_mese.onclick =
+ui_sostituzioni_filtro_data_mese.onchange = (e) => {
+  sostituzioni_filtro_data_attivo = 'mese'
+  ui_sostituzioni_filtra_data()
+}
 
 ui_sostituzioni_filtro_data_tutte.onclick = (e) => {
   sostituzioni_filtro_data_attivo = 'tutte'
@@ -278,4 +263,4 @@ ui_sostituzioni_filtro_data_tutte.onclick = (e) => {
 }
 
 ui_sostituzioni_filtro_data_data.valueAsDate = new Date()
-ui_sostituzioni_filtro_data_mese.value = new Date().getMonth()
+// ui_sostituzioni_filtro_data_mese.value = new Date().getMonth()
