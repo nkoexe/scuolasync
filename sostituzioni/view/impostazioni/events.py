@@ -50,15 +50,13 @@ def applica(dati):
 def carica_file(dati):
     logger.debug(f"ricevuto: {dati}")
 
-    ext = dati["name"].split(".")[-1]
-
     if dati["id"] == "schoolmainlogo":
-        file_name = "logo." + ext
+        file_name = "1_" + dati["name"]
         file_path = "images/" + file_name
         file = configurazione.get("flaskstaticdir").path / file_path
 
     elif dati["id"] == "schoolheaderlogo":
-        file_name = "logo_white." + ext
+        file_name = "2_" + dati["name"]
         file_path = "images/" + file_name
         file = configurazione.get("flaskstaticdir").path / file_path
 
