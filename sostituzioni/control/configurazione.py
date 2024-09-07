@@ -170,7 +170,7 @@ class Opzione:
                     )
 
             case self.FILE:
-                self.tipo_valori = 'percorso'
+                self.tipo_valori = "percorso"
                 self.path = Opzione(parent=self, dati=dati.get("path"))
                 self.valore = self.path
                 self.mime: str = dati.get("mime")
@@ -465,6 +465,16 @@ class Opzione:
                     opzione = Opzione(parent=self)
                     opzione.set(dato)
                     self.valore.append(opzione)
+
+                return True
+
+            case self.FILE:
+                if not isinstance(dati, str):
+                    raise TypeError(
+                        "Dati non validi, per file fornire un stringa per il percorso"
+                    )
+
+                self.path.set((0, dati))
 
                 return True
 

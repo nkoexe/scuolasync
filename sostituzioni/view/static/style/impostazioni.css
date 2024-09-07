@@ -394,6 +394,11 @@ input[type="file"] {
     gap: 10px;
 }
 
+.opzione-file.loading {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
 .opzione-file .img-container {
     position: relative;
     height: 150px;
@@ -425,7 +430,7 @@ input[type="file"] {
     color: var(--color-danger-fg);
 }
 
-.opzione-file .img-container .delete-file-button .icon{
+.opzione-file .img-container .delete-file-button .icon {
     font-size: 14px;
 }
 

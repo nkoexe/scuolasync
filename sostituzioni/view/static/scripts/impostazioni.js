@@ -31,10 +31,15 @@ function elimina_file(id) {
 
   let file_input = file_container.querySelector("#" + id + "-filepicker");
   file_input.value = "";
+
   file_input.onchange = () => {
-    console.log(file_input.files)
-    // file_input.classList.add("fileselected")
-    // file_container.querySelector("label").innerText = file_input.files[0].name
+    file_container.classList.add("loading");
+
+    let reader = new FileReader();
+    reader.readAsArrayBuffer(file_input.files[0]);
+    reader.onload = () => {
+      socket.emit("carica file", { "id": id, "name": file_input.files[0].name, "mime": file_input.files[0].type, "data": reader.result });
+    };
   }
 }
 
@@ -122,6 +127,11 @@ function applica() {
       let percorso = element.getElementsByTagName("input")[0];
       dati[element.id] = [radice.selectedIndex, percorso.value]
 
+    } else if (element.classList.contains("opzione-file")) {
+      // Se l'opzione è un file
+
+      let file = element.getElementsByTagName("input")[0];
+      dati[element.id] = file.files[0];
     }
   })
 
@@ -134,4 +144,20 @@ socket.on("applica impostazioni errore", (errore) => {
 
 socket.on("applica impostazioni successo", (data) => {
   location.reload();
+})
+
+socket.on("carica file successo", (data) => {
+  let file_container = document.getElementById(data.id);
+  file_container.classList.remove("loading");
+  file_container.querySelector(".opzione-file-dropzone").classList.add("hidden");
+  file_container.querySelector(".img-container").classList.remove("hidden");
+  file_container.querySelector(".img-container").querySelector("img").src = data.path;
+
+  if (data.id == "schoolmainlogo") {
+    notyf.success("Logo aggiornato con successo");
+  }
+})
+
+socket.on("carica file errore", (errore) => {
+  alert(errore);
 })

@@ -3,6 +3,7 @@ import subprocess
 import os
 import re
 from datetime import datetime, timedelta
+from flask import url_for
 from flask_socketio import emit
 
 from sostituzioni.control.configurazione import configurazione
@@ -41,6 +42,36 @@ def applica(dati):
         emit("applica impostazioni errore", str(e))
 
     emit("applica impostazioni successo")
+
+
+@socketio.on("carica file", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def carica_file(dati):
+    logger.debug(f"ricevuto: {dati}")
+
+    ext = dati["name"].split(".")[-1]
+
+    if dati["id"] == "schoolmainlogo":
+        file_name = "logo." + ext
+        file_path = "images/" + file_name
+        file = configurazione.get("flaskstaticdir").path / file_path
+
+    else:
+        emit("carica file errore", "id opzione non valido")
+        return
+
+    try:
+        file.write_bytes(dati["data"])
+        configurazione.set(dati["id"], file_path)
+    except ValueError as e:
+        emit("carica file errore", str(e))
+        return
+
+    emit(
+        "carica file successo",
+        {"id": dati["id"], "path": url_for("static", filename=file_path)},
+    )
 
 
 # //////////////////////////////
