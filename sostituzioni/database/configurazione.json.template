@@ -232,6 +232,34 @@
       "default": false,
       "valore": false
     },
+    "displaytemposcrolleventi": {
+      "titolo": "Intervallo di scorrimento eventi",
+      "descrizione": "Imposta il tempo, in secondi, dopo il quale la lista degli eventi passa automaticamente alla pagina successiva.",
+      "sezione": "visualizzazionefisica",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "numero",
+      "intervallo": [
+        1,
+        50
+      ],
+      "default": 10,
+      "valore": 10
+    },
+    "displaytemposcrollsostituzioni": {
+      "titolo": "Intervallo di scorrimento sostituzioni",
+      "descrizione": "Imposta il tempo, in secondi, dopo il quale la lista delle sostituzioni passa automaticamente alla pagina successiva.",
+      "sezione": "visualizzazionefisica",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "numero",
+      "intervallo": [
+        1,
+        50
+      ],
+      "default": 10,
+      "valore": 10
+    },
     "maxbackupdays": {
       "titolo": "Eliminazione automatica backup",
       "descrizione": "Il backup viene mantenuto per questo numero di giorni, dopodiché viene automaticamente eliminato. Impostare a -1 per disattivare l'eliminazione automatica. Per il calcolo, viene considerata la data dell'ultima modifica.",

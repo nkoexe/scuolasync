@@ -18,14 +18,6 @@ let altezza_lista_eventi = 0
 let current_scroll_eventi = 0
 
 
-
-
-setInterval(() => {
-    current_scroll_eventi += altezza_container_eventi
-    if (current_scroll_eventi >= altezza_lista_eventi) { current_scroll_eventi = 0 }
-    ui_eventi_container.scroll({ top: current_scroll_eventi, behavior: "smooth" })
-}, 10000)
-
 function format_date(data_ora_inizio, data_ora_fine) {
     // format date objects to single string
     // if the year is the same do not display it
@@ -101,4 +93,4 @@ setInterval(() => {
     current_scroll_eventi += altezza_container_eventi
     if (current_scroll_eventi >= altezza_lista_eventi) { current_scroll_eventi = 0 }
     ui_eventi_container.scroll({ top: current_scroll_eventi, behavior: "smooth" })
-}, 10000)
+}, tempo_scroll_eventi)
