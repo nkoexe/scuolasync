@@ -33,6 +33,11 @@ function elimina_file(id) {
   file_input.value = "";
 
   file_input.onchange = () => {
+    if (file_input.files[0].size > 1024 * 1024) {
+      notyf.error("Il file selezionato è troppo grande. Caricare un file di massimo 1MB.");
+      return;
+    }
+
     file_container.classList.add("loading");
 
     let reader = new FileReader();
@@ -155,6 +160,8 @@ socket.on("carica file successo", (data) => {
 
   if (data.id == "schoolmainlogo") {
     notyf.success("Logo aggiornato con successo");
+  } else if (data.id == "schoolheaderlogo") {
+    notyf.success("Logo intestazione aggiornato con successo");
   }
 })
 

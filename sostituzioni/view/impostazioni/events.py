@@ -57,6 +57,11 @@ def carica_file(dati):
         file_path = "images/" + file_name
         file = configurazione.get("flaskstaticdir").path / file_path
 
+    elif dati["id"] == "schoolheaderlogo":
+        file_name = "logo_white." + ext
+        file_path = "images/" + file_name
+        file = configurazione.get("flaskstaticdir").path / file_path
+
     else:
         emit("carica file errore", "id opzione non valido")
         return

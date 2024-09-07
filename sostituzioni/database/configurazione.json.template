@@ -50,7 +50,7 @@
     },
     "schoolmainlogo": {
       "titolo": "Logo dell'Istituto Scolastico",
-      "descrizione": "Specifica il logo principale dell'istituto scolastico a cui è associato il sistema.",
+      "descrizione": "Logo principale dell'istituto scolastico a cui è associato il sistema. Questo logo apparirà nella pagina di accesso.",
       "sezione": "sistema",
       "disabilitato": false,
       "nascosto": false,
@@ -62,6 +62,23 @@
         "radice": 0,
         "default": "images/logo.png",
         "valore": "images/logo.png"
+      },
+      "mime": "image/*"
+    },
+    "schoolheaderlogo": {
+      "titolo": "Logo Intestazione",
+      "descrizione": "Seleziona il logo che verrà visualizzato nell'intestazione della pagina principale e nelle pagine delle impostazioni.",
+      "sezione": "sistema",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "file",
+      "path": {
+        "scelte_radice": [
+          ""
+        ],
+        "radice": 0,
+        "default": "images/logo_white.png",
+        "valore": "images/logo_white.png"
       },
       "mime": "image/*"
     },

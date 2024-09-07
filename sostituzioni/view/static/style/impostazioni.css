@@ -409,6 +409,10 @@ input[type="file"] {
     background-color: var(--color-background-opzione);
 }
 
+.opzione-file#schoolheaderlogo .img-container {
+    background-color: var(--color-header-bg);
+}
+
 .opzione-file .img-container img {
     max-height: 100%;
     border-radius: 5px;

@@ -20,6 +20,7 @@ opzione_file with context %}
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/lib/notyf.min.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/header.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/impostazioni.css') }}">
@@ -30,7 +31,7 @@ opzione_file with context %}
   <div id="header-shadow"></div>
   <div id="header">
     <a id="header-logo-link" href="{{url_for('online.index')}}">
-      <img id="header-logo" src="{{ url_for('static', filename='images/logo_white.png') }}" alt="Logo Scuola">
+      <img id="header-logo" src="{{ url_for('static', filename=configurazione.get('schoolheaderlogo')) }}" alt="Logo scuola">
     </a>
     <div id="header-separator"></div>
     <h1 id="header-titolo">Impostazioni</h1>
@@ -151,6 +152,7 @@ opzione_file with context %}
     </div>
     <button id="pulsante-applica" class="pulsante pulsante-footer" onclick="applica()" disabled>Applica</button>
   </div>
+  <script src="{{ url_for('static', filename='scripts/lib/notyf.min.js') }}" defer onload="notyf = new Notyf({duration: 3000})"></script>
   <script src="{{ url_for('static', filename='scripts/lib/socket.io.min.js') }}"></script>
   <script src="{{ url_for('static', filename='scripts/impostazioni.js') }}"></script>
 </body>
