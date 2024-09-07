@@ -37,6 +37,17 @@
       "default": "ScuolaSync",
       "valore": "ScuolaSync"
     },
+    "schoolname": {
+      "titolo": "Nome dell'Istituto Scolastico",
+      "descrizione": "Specifica il nome dell'istituto scolastico a cui è associato il sistema.",
+      "sezione": "sistema",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "testo",
+      "lunghezza_massima": 30,
+      "default": "",
+      "valore": ""
+    },
     "sysstate": {
       "titolo": "Stato del sistema",
       "descrizione": "Utilizzare la modalità \"In Produzione\" per l'utilizzo regolare. Utilizzare modalità \"In Manutenzione\" per il debug del sistema.",
@@ -152,7 +163,7 @@
       "tipo": "testo",
       "lunghezza_massima": null,
       "default": "L'accesso al sistema è eseguito tramite l'account Google appartenente al tuo istituto scolastico.",
-      "valore": "L'accesso al sistema è eseguito tramite l'account Google appartenente al tuo istituto scolastico.<br>Assicurati di selezionare il tuo account <i>@gandhimerano.com</i>"
+      "valore": "L'accesso al sistema è eseguito tramite l'account Google appartenente al tuo istituto scolastico."
     },
     "nosostituzionimsg": {
       "titolo": "Errore nessuna sostituzione",

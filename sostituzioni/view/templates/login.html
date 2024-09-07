@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#C00F19" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
   <meta name="view-transition" content="same-origin" />
-  <title>{{title}} | Gandhi Merano</title>
+  <title>{{configurazione.get("systitle")}} | {{configurazione.get('schoolname')}}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap">
@@ -40,9 +40,9 @@
           <a href="{{ url_for('auth.googlessoredirect') }}" id="button-accedi">Accedi</a>
         </div>
         <div id="notes-frame">
-          <p>{{ paragraph | safe }}</p>
-          {% if supportemail %}
-          <p>Non riesci ad accedere? <a href="mailto:{{supportemail}}">Segnala un problema</a>.</p>
+          <p>{{ configurazione.get("loginpageparagraph") | safe }}</p>
+          {% if configurazione.get("supportemail") %}
+          <p>Non riesci ad accedere? <a href="mailto:{{configurazione.get("supportemail")}}">Segnala un problema</a>.</p>
           {% endif %}
         </div>
       </div>

@@ -1,3 +1,4 @@
+
 const ui_sostituzione_html_template = `
 <li>
 <div class="sostituzione {oggi}">
