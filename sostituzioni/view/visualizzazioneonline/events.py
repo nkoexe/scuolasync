@@ -64,19 +64,18 @@ def richiesta_sostituzioni(filtri: dict | None = None):
     """
 
     # start_time = time()
+    logger.debug(f"Ricevuto segnale richiesta sostituzioni con filtri: {filtri}")
 
     #! fix temporaneo finché non si implementa il filtro per le sostituzioni non pubblicate
     if isinstance(filtri, dict):
         filtri["non_pubblicato"] = True
 
-    logger.debug(f"Ricevuto segnale richiesta sostituzioni con filtri: {filtri}")
-
-    # Check se l'utente ha permessi per visualizzare dati speciali.
-    # Il filtro per data è accessibile da tutti
-    if "cancellato" in filtri and not current_user.permessi.sostituzioni.write:
-        filtri.pop("cancellato")
-    if "non_pubblicato" in filtri and not current_user.permessi.sostituzioni.write:
-        filtri.pop("non_pubblicato")
+        # Check se l'utente ha permessi per visualizzare dati speciali.
+        # Il filtro per data è accessibile da tutti
+        if "cancellato" in filtri and not current_user.permessi.sostituzioni.write:
+            filtri.pop("cancellato")
+        if "non_pubblicato" in filtri and not current_user.permessi.sostituzioni.write:
+            filtri.pop("non_pubblicato")
 
     emit("lista sostituzioni", sostituzioni.filtra(filtri))
 
