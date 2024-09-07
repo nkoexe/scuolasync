@@ -92,7 +92,7 @@ opzione_percorso with context %}
                 {% if opzione.sezione == sezione.id %}
                 <li>
                   <h5 class="opzione-titolo">{{opzione.titolo}}</h5>
-                  <p class="opzione-descrizione">{{opzione.descrizione}}</p>
+                  <p class="opzione-descrizione">{{opzione.descrizione | safe}}</p>
                   {% if opzione.tipo == opzione.TESTO %}
                   {{ opzione_testo(opzione) }}
                   {% elif opzione.tipo == opzione.NUMERO %}
