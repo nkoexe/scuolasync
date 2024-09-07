@@ -54,3 +54,16 @@
   <input type="text" value="{{opzione.valore}}" oninput="modificato({{opzione.id}})" {% if opzione.disabilitato %}disabled{% endif %} />
 </div>
 {% endmacro %}
+
+{% macro opzione_file(opzione) %}
+<div id="{{opzione.id}}" class="opzione opzione-file">
+  <div class="img-container">
+    <img src="{{url_for('static', filename=opzione.valore)}}" alt="{{opzione.valore}}">
+    <button class="delete-file-button {% if opzione.disabilitato %}hidden{% endif %}" onclick="elimina_file('{{opzione.id}}')"><span class="icon material-symbols-rounded">close</span></button>
+  </div>
+  <div class="opzione-file-dropzone hidden">
+    <input type="file" id="{{opzione.id}}-filepicker" accept="{{opzione.mime}}">
+    <label for="{{opzione.id}}-filepicker" tabindex="0"><span>Selezione un file o trascinalo qui</span></label>
+  </div>
+</div>
+{% endmacro %}

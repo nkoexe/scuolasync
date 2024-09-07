@@ -5,7 +5,8 @@ opzione_numero_unita,
 opzione_checkbox,
 opzione_colorpicker,
 opzione_selezione,
-opzione_percorso with context %}
+opzione_percorso,
+opzione_file with context %}
 <!DOCTYPE html>
 <html lang="it">
 
@@ -87,8 +88,7 @@ opzione_percorso with context %}
             <div class="opzioni-container">
               <ul class="opzioni-lista">
                 {% for opzione in configurazione.opzioni %}
-                {% if not opzione.nascosto %}
-                {% if opzione.sezione == sezione.id %}
+                {% if (not opzione.nascosto) and (opzione.sezione == sezione.id) %}
                 <li>
                   <h5 class="opzione-titolo">{{opzione.titolo}}</h5>
                   <p class="opzione-descrizione">{{opzione.descrizione | safe}}</p>
@@ -116,10 +116,11 @@ opzione_percorso with context %}
                   {{ opzione_percorso(elemento) }}
                   {% endif %}
                   {% endfor %}
+                  {% elif opzione.tipo == opzione.FILE %}
+                  {{ opzione_file(opzione) }}
                   {% endif %}
                 </li>
                 <div class="opzioni-separator"></div>
-                {% endif %}
                 {% endif %}
                 {% endfor %}
                 {% if sezione.id == 'docenti' %}

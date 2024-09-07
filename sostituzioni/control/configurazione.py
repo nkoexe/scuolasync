@@ -31,6 +31,7 @@ CONFIG_TEMPLATE = (
 @beartype
 def parsepath(pathstring: str) -> Path:
     pathstring = pathstring.replace("%ROOT%", str(ROOT_PATH))
+    # pathstring = pathstring.replace("%STATIC%", configurazione.get("flaskstaticdir"))
 
     return Path(pathstring)
 
@@ -67,6 +68,7 @@ class Opzione:
     SELEZIONE = "selezione"
     PERCORSO = "percorso"
     LISTA = "lista"
+    FILE = "file"
 
     @beartype
     def __init__(
@@ -167,6 +169,12 @@ class Opzione:
                         Opzione(parent=self, dati=dati_lista, index=index)
                     )
 
+            case self.FILE:
+                self.tipo_valori = 'percorso'
+                self.path = Opzione(parent=self, dati=dati.get("path"))
+                self.valore = self.path
+                self.mime: str = dati.get("mime")
+
             case _:
                 logger.error(
                     f"Nel caricamento della configurazione, opzione con id {self.id} non ha un tipo valido ({self.tipo})"
@@ -179,30 +187,39 @@ class Opzione:
         self.disabilitato = template.disabilitato
         self.nascosto = template.nascosto
         self.tipo = template.tipo
-        self.default = template.default
 
         match self.tipo:
             case self.TESTO:
+                self.default = template.default
                 self.lunghezza_massima = template.lunghezza_massima
 
             case self.NUMERO:
+                self.default = template.default
                 self.intervallo = template.intervallo
 
             case self.NUMERO_UNITA:
+                self.default = template.default
                 self.intervallo = template.intervallo
                 self.scelte_unita = template.scelte_unita
                 self.unita_default = template.unita_default
                 self.unita = template.unita
 
             case self.SELEZIONE:
+                self.default = template.default
                 self.scelte = template.scelte
 
             case self.PERCORSO:
+                self.default = template.default
                 self.scelte_radice = template.scelte_radice
                 self.radice = template.radice
 
             case self.LISTA:
+                self.default = template.default
                 self.tipo_valori = template.tipo_valori
+
+            case self.FILE:
+                self.path = template.path
+                self.mime = template.mime
 
     def __eq__(self, value: object) -> bool:
         return self.valore == value
@@ -522,6 +539,10 @@ class Opzione:
                     valori.append(dato)
 
                 dati["valore"] = valori
+
+            case self.FILE:
+                dati["path"] = self.path.esporta()
+                dati["mime"] = self.mime
 
         return dati
 

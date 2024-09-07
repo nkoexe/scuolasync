@@ -48,6 +48,23 @@
       "default": "",
       "valore": ""
     },
+    "schoolmainlogo": {
+      "titolo": "Logo dell'Istituto Scolastico",
+      "descrizione": "Specifica il logo principale dell'istituto scolastico a cui è associato il sistema.",
+      "sezione": "sistema",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "file",
+      "path": {
+        "scelte_radice": [
+          ""
+        ],
+        "radice": 0,
+        "default": "images/logo.png",
+        "valore": "images/logo.png"
+      },
+      "mime": "image/*"
+    },
     "sysstate": {
       "titolo": "Stato del sistema",
       "descrizione": "Utilizzare la modalità \"In Produzione\" per l'utilizzo regolare. Utilizzare modalità \"In Manutenzione\" per il debug del sistema.",

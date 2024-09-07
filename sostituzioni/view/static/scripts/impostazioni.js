@@ -24,13 +24,51 @@ for (let index = 0; index < sezioni.length; index++) {
 //////////////////////////////
 
 
+function elimina_file(id) {
+  let file_container = document.getElementById(id);
+  file_container.querySelector(".img-container").classList.add("hidden");
+  file_container.querySelector(".opzione-file-dropzone").classList.remove("hidden");
+
+  let file_input = file_container.querySelector("#" + id + "-filepicker");
+  file_input.value = "";
+  file_input.onchange = () => {
+    console.log(file_input.files)
+    // file_input.classList.add("fileselected")
+    // file_container.querySelector("label").innerText = file_input.files[0].name
+  }
+}
+
+for (element of document.querySelectorAll(".opzione-file-dropzone")) {
+  element.ondrop = (e) => {
+    e.preventDefault();
+    element.classList.remove("filehover")
+
+    let input = element.querySelector("input")
+    input.files = e.dataTransfer.files
+    input.onchange()
+  }
+
+  element.ondragover = (e) => {
+    e.preventDefault();
+  }
+
+  element.ondragenter = (e) => {
+    e.preventDefault();
+    element.classList.add("filehover")
+  }
+
+  element.ondragleave = (e) => {
+    element.classList.remove("filehover")
+  }
+}
+
+
 function modificato(id) {
   if (!modifiche.includes(id)) {
     modifiche.push(id);
     mostra_pulsante_applica();
   }
 }
-
 
 function mostra_pulsante_applica() {
   pulsante_applica.disabled = false;
