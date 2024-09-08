@@ -27,6 +27,8 @@ CONFIG_TEMPLATE = (
     or ROOT_PATH / "database" / "configurazione.json.template"
 )
 
+SYSTEMD_SERVICE = os.getenv("SCUOLASYNC_SERVICE") or "scuolasync.service"
+
 
 @beartype
 def parsepath(pathstring: str) -> Path:
@@ -594,11 +596,7 @@ class Configurazione:
                 logger.error("Systemctl non trovato.")
 
             self.shell_commands["update"] = ["git", "pull"]
-            self.shell_commands["reboot"] = [
-                "systemctl",
-                "restart",
-                "sostituzioni.service",
-            ]
+            self.shell_commands["reboot"] = ["systemctl", "restart", SYSTEMD_SERVICE]
             self.shell_commands["get_version"] = [
                 "git",
                 "rev-parse",
@@ -686,7 +684,7 @@ class Configurazione:
     def check_update(self):
         rootpath = self.get("rootpath").path
 
-        # "/sostituzioni/sostituzioni", git è un livello più alto
+        # "/scuolasync/sostituzioni", git è un livello più alto
         repopath = rootpath.parent
 
         try:
