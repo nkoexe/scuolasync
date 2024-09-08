@@ -1,0 +1,13 @@
+[Unit]
+Description=ScuolaSync - Server
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/scuolasync
+Environment=PATH=/pythonenv/bin:/usr/bin
+ExecStart=/pythonenv/bin/gunicorn --workers 1 -k gevent --bind 127.0.0.1:5123 sostituzioni.app:app
+
+[Install]
+WantedBy=multi-user.target
