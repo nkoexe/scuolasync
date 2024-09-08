@@ -1,12 +1,12 @@
 """
-Sistema per la gestione di sostituzioni, notizie ed eventi scolastici dell'istituto "Gandhi" di Merano.
+Sistema per la gestione di sostituzioni, notizie ed eventi scolastici.
 """
 
-__author__ = "Niccolò Ragazzi, Chiara Gandolfi"
+__author__ = "Niccolò Ragazzi"
 __copyright__ = "Copyright 2023-present Niccolò Ragazzi"
 __credits__ = ["Niccolò Ragazzi", "Chiara Gandolfi"]
-__license__ = ""
-__version__ = "0.9"
+__license__ = " GNU Affero General Public License v3"
+__version__ = "1.0.0"
 __maintainer__ = "Niccolò Ragazzi"
-__email__ = "niccolo.ragazzi@gandhimerano.com"
+__email__ = "hi@njco.dev"
 __status__ = "Development"
