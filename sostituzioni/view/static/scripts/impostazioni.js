@@ -24,13 +24,61 @@ for (let index = 0; index < sezioni.length; index++) {
 //////////////////////////////
 
 
+function elimina_file(id) {
+  let file_container = document.getElementById(id);
+  file_container.querySelector(".img-container").classList.add("hidden");
+  file_container.querySelector(".opzione-file-dropzone").classList.remove("hidden");
+
+  let file_input = file_container.querySelector("#" + id + "-filepicker");
+  file_input.value = "";
+
+  file_input.onchange = () => {
+    if (file_input.files[0].size > 1024 * 1024) {
+      notyf.error("Il file selezionato è troppo grande. Caricare un file di massimo 1MB.");
+      return;
+    }
+
+    file_container.classList.add("loading");
+
+    let reader = new FileReader();
+    reader.readAsArrayBuffer(file_input.files[0]);
+    reader.onload = () => {
+      socket.emit("carica file", { "id": id, "name": file_input.files[0].name, "mime": file_input.files[0].type, "data": reader.result });
+    };
+  }
+}
+
+for (element of document.querySelectorAll(".opzione-file-dropzone")) {
+  element.ondrop = (e) => {
+    e.preventDefault();
+    element.classList.remove("filehover")
+
+    let input = element.querySelector("input")
+    input.files = e.dataTransfer.files
+    input.onchange()
+  }
+
+  element.ondragover = (e) => {
+    e.preventDefault();
+  }
+
+  element.ondragenter = (e) => {
+    e.preventDefault();
+    element.classList.add("filehover")
+  }
+
+  element.ondragleave = (e) => {
+    element.classList.remove("filehover")
+  }
+}
+
+
 function modificato(id) {
   if (!modifiche.includes(id)) {
     modifiche.push(id);
     mostra_pulsante_applica();
   }
 }
-
 
 function mostra_pulsante_applica() {
   pulsante_applica.disabled = false;
@@ -84,6 +132,11 @@ function applica() {
       let percorso = element.getElementsByTagName("input")[0];
       dati[element.id] = [radice.selectedIndex, percorso.value]
 
+    } else if (element.classList.contains("opzione-file")) {
+      // Se l'opzione è un file
+
+      let file = element.getElementsByTagName("input")[0];
+      dati[element.id] = file.files[0];
     }
   })
 
@@ -96,4 +149,22 @@ socket.on("applica impostazioni errore", (errore) => {
 
 socket.on("applica impostazioni successo", (data) => {
   location.reload();
+})
+
+socket.on("carica file successo", (data) => {
+  let file_container = document.getElementById(data.id);
+  file_container.classList.remove("loading");
+  file_container.querySelector(".opzione-file-dropzone").classList.add("hidden");
+  file_container.querySelector(".img-container").classList.remove("hidden");
+  file_container.querySelector(".img-container").querySelector("img").src = data.path;
+
+  if (data.id == "schoolmainlogo") {
+    notyf.success("Logo aggiornato con successo");
+  } else if (data.id == "schoolheaderlogo") {
+    notyf.success("Logo intestazione aggiornato con successo");
+  }
+})
+
+socket.on("carica file errore", (errore) => {
+  alert(errore);
 })

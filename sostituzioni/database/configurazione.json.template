@@ -37,6 +37,51 @@
       "default": "ScuolaSync",
       "valore": "ScuolaSync"
     },
+    "schoolname": {
+      "titolo": "Nome dell'Istituto Scolastico",
+      "descrizione": "Specifica il nome dell'istituto scolastico a cui è associato il sistema.",
+      "sezione": "sistema",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "testo",
+      "lunghezza_massima": 30,
+      "default": "",
+      "valore": ""
+    },
+    "schoolmainlogo": {
+      "titolo": "Logo dell'Istituto Scolastico",
+      "descrizione": "Logo principale dell'istituto scolastico a cui è associato il sistema. Questo logo apparirà nella pagina di accesso.",
+      "sezione": "sistema",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "file",
+      "path": {
+        "scelte_radice": [
+          ""
+        ],
+        "radice": 0,
+        "default": "images/logo.png",
+        "valore": "images/logo.png"
+      },
+      "mime": "image/*"
+    },
+    "schoolheaderlogo": {
+      "titolo": "Logo Intestazione",
+      "descrizione": "Seleziona il logo che verrà visualizzato nell'intestazione della pagina principale e nelle pagine delle impostazioni.",
+      "sezione": "sistema",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "file",
+      "path": {
+        "scelte_radice": [
+          ""
+        ],
+        "radice": 0,
+        "default": "images/logo_white.png",
+        "valore": "images/logo_white.png"
+      },
+      "mime": "image/*"
+    },
     "sysstate": {
       "titolo": "Stato del sistema",
       "descrizione": "Utilizzare la modalità \"In Produzione\" per l'utilizzo regolare. Utilizzare modalità \"In Manutenzione\" per il debug del sistema.",
@@ -101,7 +146,7 @@
     },
     "flasksecretkey": {
       "titolo": "Secret key",
-      "descrizione": "La chiave di sicurezza del sistema, utilizzata per gestire le sessioni. Se questo campo è vuoto, verrà utilizzata una chiave casuale. Consigliato di <u>lasciare vuoto per migliore sicurezza</u>",
+      "descrizione": "La chiave di sicurezza del sistema, utilizzata per gestire le sessioni. Se questo campo è vuoto, verrà utilizzata una chiave casuale. Consigliato di <strong>lasciare vuoto per migliore sicurezza</strong>.",
       "sezione": "login",
       "disabilitato": false,
       "nascosto": false,
@@ -145,14 +190,14 @@
     },
     "loginpageparagraph": {
       "titolo": "Paragrafo di Note",
-      "descrizione": "Testo che verrà visualizzato sotto al pulsante di accesso. Può essere stilizzato, includendo <br> per andare a capo, <b> per grassetto, <i> per corsivo ecc.",
+      "descrizione": "Testo che verrà visualizzato sotto al pulsante di accesso. Può essere stilizzato, includendo &lt;br&gt; per andare a capo, &lt;b&gt; per grassetto, &lt;i&gt; per corsivo ecc.",
       "sezione": "login",
       "disabilitato": false,
       "nascosto": false,
       "tipo": "testo",
       "lunghezza_massima": null,
       "default": "L'accesso al sistema è eseguito tramite l'account Google appartenente al tuo istituto scolastico.",
-      "valore": "L'accesso al sistema è eseguito tramite l'account Google appartenente al tuo istituto scolastico.<br>Assicurati di selezionare il tuo account <i>@gandhimerano.com</i>"
+      "valore": "L'accesso al sistema è eseguito tramite l'account Google appartenente al tuo istituto scolastico."
     },
     "nosostituzionimsg": {
       "titolo": "Errore nessuna sostituzione",
@@ -231,6 +276,34 @@
       "tipo": "booleano",
       "default": false,
       "valore": false
+    },
+    "displaytemposcrolleventi": {
+      "titolo": "Intervallo di scorrimento eventi",
+      "descrizione": "Imposta il tempo, in secondi, dopo il quale la lista degli eventi passa automaticamente alla pagina successiva.",
+      "sezione": "visualizzazionefisica",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "numero",
+      "intervallo": [
+        1,
+        50
+      ],
+      "default": 10,
+      "valore": 10
+    },
+    "displaytemposcrollsostituzioni": {
+      "titolo": "Intervallo di scorrimento sostituzioni",
+      "descrizione": "Imposta il tempo, in secondi, dopo il quale la lista delle sostituzioni passa automaticamente alla pagina successiva.",
+      "sezione": "visualizzazionefisica",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "numero",
+      "intervallo": [
+        1,
+        50
+      ],
+      "default": 10,
+      "valore": 10
     },
     "maxbackupdays": {
       "titolo": "Eliminazione automatica backup",

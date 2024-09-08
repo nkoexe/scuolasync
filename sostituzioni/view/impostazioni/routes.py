@@ -21,7 +21,11 @@ def main():
 @role_required("impostazioni.write")
 def gestione_utenti():
     lista_utenti = [(u.email, u.ruolo.nome) for u in utenti]
-    return render_template("gestione_impostazioni/utenti.html", utenti=lista_utenti)
+    return render_template(
+        "gestione_impostazioni/utenti.html",
+        configurazione=configurazione,
+        utenti=lista_utenti,
+    )
 
 
 @impostazioni.route("/impostazioni/docenti")
@@ -31,7 +35,11 @@ def gestione_docenti():
     lista_docenti = [
         (d["nome"], d["cognome"]) for d in Docente.load() if not d["cancellato"]
     ]
-    return render_template("gestione_impostazioni/docenti.html", docenti=lista_docenti)
+    return render_template(
+        "gestione_impostazioni/docenti.html",
+        configurazione=configurazione,
+        docenti=lista_docenti,
+    )
 
 
 @impostazioni.route("/impostazioni/classi")
@@ -43,7 +51,10 @@ def gestione_classi():
     ]
     lista_aule = [a["numero"] for a in Aula.load() if not a["cancellato"]]
     return render_template(
-        "gestione_impostazioni/classi.html", classi=lista_classi, aule=lista_aule
+        "gestione_impostazioni/classi.html",
+        configurazione=configurazione,
+        classi=lista_classi,
+        aule=lista_aule,
     )
 
 
@@ -52,7 +63,11 @@ def gestione_classi():
 @role_required("impostazioni.write")
 def gestione_aule():
     lista_aule = [(a["numero"], a["piano"]) for a in Aula.load() if not a["cancellato"]]
-    return render_template("gestione_impostazioni/aule.html", aule=lista_aule)
+    return render_template(
+        "gestione_impostazioni/aule.html",
+        configurazione=configurazione,
+        aule=lista_aule,
+    )
 
 
 @impostazioni.route("/impostazioni/ore")
@@ -63,7 +78,9 @@ def gestione_ore():
         (o["numero"], [o["ora_inizio_default"], o["ora_fine_default"]])
         for o in OraPredefinita.load()
     ]
-    return render_template("gestione_impostazioni/ore.html", ore=lista_ore)
+    return render_template(
+        "gestione_impostazioni/ore.html", configurazione=configurazione, ore=lista_ore
+    )
 
 
 @impostazioni.route("/impostazioni/note")
@@ -71,7 +88,9 @@ def gestione_ore():
 @role_required("impostazioni.write")
 def gestione_note():
     note = [n["testo"] for n in NotaStandard.load()]
-    return render_template("gestione_impostazioni/note.html", note=note)
+    return render_template(
+        "gestione_impostazioni/note.html", configurazione=configurazione, note=note
+    )
 
 
 @impostazioni.route("/reboot")

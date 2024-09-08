@@ -186,3 +186,71 @@ Ogni campo è identificato dal suo attributo "type", che può solo avere uno dei
     "value": 2
   }
 ```
+
+
+
+
+
+temp 
+uso questo spazio come cestino dato che questo file ha comunque bisogno di un refactor
+
+    "hotreload": {
+      "titolo": "Hot reload",
+      "descrizione": "Applica immediatamente le impostazioni cambiate. Utile per vedere istantaneamente i cambiamenti di colori e font, ma sconsigliato in ogni altro caso. (test checkbox, non implementare seriamente)",
+      "sezione": "test",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "booleano",
+      "default": false,
+      "valore": true
+    },
+    "numeroebbasta": {
+      "titolo": "Numero",
+      "descrizione": "e basta",
+      "sezione": "test",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "numero",
+      "intervallo": [
+        null,
+        null
+      ],
+      "default": 10,
+      "valore": 2.5
+    },
+    "numerounita": {
+      "titolo": "Numero",
+      "descrizione": "con unità di misura?? Wow!!!! che ingegno, che grandiosità.",
+      "sezione": "test",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "numero_unita",
+      "intervallo": [
+        null,
+        null
+      ],
+      "scelte_unita": [
+        "px",
+        "em",
+        "rem",
+        "cm"
+      ],
+      "unita_default": 0,
+      "unita": 0,
+      "default": 20,
+      "valore": 20
+    },
+    "numero_intervallo": {
+      "titolo": "NNumero",
+      "descrizione": "Con intervallo tra -10 e 399",
+      "sezione": "test",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "numero",
+      "intervallo": [
+        -10,
+        399
+      ],
+      "default": 7,
+      "valore": 100
+    },

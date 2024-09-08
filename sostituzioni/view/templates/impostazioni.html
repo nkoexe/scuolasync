@@ -5,7 +5,8 @@ opzione_numero_unita,
 opzione_checkbox,
 opzione_colorpicker,
 opzione_selezione,
-opzione_percorso with context %}
+opzione_percorso,
+opzione_file with context %}
 <!DOCTYPE html>
 <html lang="it">
 
@@ -19,6 +20,7 @@ opzione_percorso with context %}
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/lib/notyf.min.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/header.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/impostazioni.css') }}">
@@ -28,10 +30,9 @@ opzione_percorso with context %}
 <body>
   <div id="header-shadow"></div>
   <div id="header">
-    <a href="{{url_for('online.index')}}">
-      <img id="header-logo" src="{{ url_for('static', filename='images/logo_white.png') }}" alt="Logo Gandhi">
+    <a id="header-logo-link" href="{{url_for('online.index')}}">
+      <img id="header-logo" src="{{ url_for('static', filename=configurazione.get('schoolheaderlogo')) }}" alt="Logo scuola">
     </a>
-    <!-- <img id="header-logo" src="https://www.psicolinea.it/wp-content/uploads/2005/01/Gandhi.png" alt="Logo Gandhi"> -->
     <div id="header-separator"></div>
     <h1 id="header-titolo">Impostazioni</h1>
     <div id="header-pulsanti">
@@ -88,11 +89,10 @@ opzione_percorso with context %}
             <div class="opzioni-container">
               <ul class="opzioni-lista">
                 {% for opzione in configurazione.opzioni %}
-                {% if not opzione.nascosto %}
-                {% if opzione.sezione == sezione.id %}
+                {% if (not opzione.nascosto) and (opzione.sezione == sezione.id) %}
                 <li>
                   <h5 class="opzione-titolo">{{opzione.titolo}}</h5>
-                  <p class="opzione-descrizione">{{opzione.descrizione}}</p>
+                  <p class="opzione-descrizione">{{opzione.descrizione | safe}}</p>
                   {% if opzione.tipo == opzione.TESTO %}
                   {{ opzione_testo(opzione) }}
                   {% elif opzione.tipo == opzione.NUMERO %}
@@ -117,10 +117,11 @@ opzione_percorso with context %}
                   {{ opzione_percorso(elemento) }}
                   {% endif %}
                   {% endfor %}
+                  {% elif opzione.tipo == opzione.FILE %}
+                  {{ opzione_file(opzione) }}
                   {% endif %}
                 </li>
                 <div class="opzioni-separator"></div>
-                {% endif %}
                 {% endif %}
                 {% endfor %}
                 {% if sezione.id == 'docenti' %}
@@ -151,6 +152,7 @@ opzione_percorso with context %}
     </div>
     <button id="pulsante-applica" class="pulsante pulsante-footer" onclick="applica()" disabled>Applica</button>
   </div>
+  <script src="{{ url_for('static', filename='scripts/lib/notyf.min.js') }}" defer onload="notyf = new Notyf({duration: 3000})"></script>
   <script src="{{ url_for('static', filename='scripts/lib/socket.io.min.js') }}"></script>
   <script src="{{ url_for('static', filename='scripts/impostazioni.js') }}"></script>
 </body>

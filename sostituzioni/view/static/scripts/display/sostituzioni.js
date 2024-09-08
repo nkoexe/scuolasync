@@ -1,3 +1,4 @@
+
 const ui_sostituzione_html_template = `
 <li>
 <div class="sostituzione {oggi}">
@@ -223,4 +224,4 @@ setInterval(() => {
 	element.scrollIntoView({ behavior: "smooth" })
 	// Aggiunge la classe "current" all'indice della pagina attuale
 	ui_sostituzioni_pagine.children[sostituzioni_elemento_scroll].classList.add("current")
-}, 10000)
+}, tempo_scroll_sostituzioni)

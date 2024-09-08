@@ -16,9 +16,29 @@
     <div id="main-container">
         <h1>Licenze Software</h1>
         <hr>
-        <p>Licenza sul progetto: &copy; <a href="https://linkedin.com/in/chiara-gandolfi-30266a13/" target="_blank">Chiara Gandolfi</a> e <a href="https://njco.dev" target="_blank">Niccolò Ragazzi</a></p>
-        <p>Licenza sul codice sorgente: &copy; <a href="https://njco.dev" target="_blank">Niccolò Ragazzi</a></p>
-        <p>Licenza sui dati contenuti: &copy; <a href="https://www.iiss-gandhi-merano.it/" target="_blank">I.I.S.S. "Gandhi" - Merano</a></p>
+        <p>Il software è distribuito sotto un modello di doppia licenza:</p>
+        <ul>
+            <li>Il codice sorgente è rilasciato sotto GNU Affero General Public License version 3 (AGPLv3).</li>
+            <li>Progetto, documentazione, interfaccia utente e asset grafici sono rilasciati sotto la licenza Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0).</li>
+        </ul>
+        <br>
+        <h3>Licenza sul progetto:</h3>
+        <p>&copy; <a href="https://linkedin.com/in/chiara-gandolfi-30266a13/" target="_blank">Chiara Gandolfi</a> e <a href="https://njco.dev" target="_blank">Niccolò Ragazzi</a></p>
+        <p>I file di progetto hanno licenza <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a>.
+            <br>Sono disponibili su richiesta. Per ulteriori informazioni, contattare <a href="mailto:chiara.gandolfi@scuola.alto-adige.it" target="_blank">chiara.gandolfi@scuola.alto-adige.it</a>.
+        </p>
+        <br>
+        <h3>Licenza sul codice sorgente:</h3>
+        <p>&copy; <a href="https://njco.dev" target="_blank">Niccolò Ragazzi</a></p>
+        <p>Il codice sorgente è rilasciato sotto la <a href="https://github.com/nkoexe/sostituzioni/blob/dev/LICENSE" target="_blank">GNU Affero General Public License version 3 (AGPLv3)</a>.</p>
+        <br>
+        <h3>Licenza sulla documentazione, interfaccia utente e asset grafici:</h3>
+        <p>&copy; <a href="https://njco.dev" target="_blank">Niccolò Ragazzi</a></p>
+        <p>La documentazione di sistema, il disegno dell'interfaccia grafica, e gli asset grafici del progetto sono rilasciati sotto la licenza <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a>.</p>
+        <br>
+        <h3>Licenza sui dati contenuti:</h3>
+        <p>&copy; <a href="https://www.iiss-gandhi-merano.it/" target="_blank">I.I.S.S. "Gandhi" - Merano</a></p>
+        <p>I dati contenuti all'interno del sistema sono di proprietà dell'Istituto.</p>
         <br>
         <br>
         <br>
@@ -45,50 +65,45 @@
             <li><span class="material-symbols-rounded icon">menu_book</span><a href="https://docsify.js.org/" target="_blank">Docsify</a></li>
             <!-- <li><span class="material-symbols-rounded icon">close_fullscreen</span><a href="https://github.com/kangax/html-minifier">html-minifier</a><a href="https://github.com/css/csso">csso</a><a href="https://github.com/mishoo/UglifyJS">uglify-js</a></li> -->
         </ul>
+        <p>Per dettagli sulle licenze dei software di terze parti utilizzati, si può consultare il file <a href="" target="_blank">THIRD_PARTY_LICENSES</a> disponibile nel repository del progetto.</p>
     </div>
     <style>
         #main-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 10px;
+            padding-bottom: 100px;
             font-family: 'Gabarito', sans-serif;
-            margin: 0 20%;
         }
 
-        @media (max-width: 1000px) {
-            #main-container {
-                margin: 0;
-            }
+        p {
+            line-height: 1.5;
         }
 
         a {
-            position: relative;
-            text-decoration: none;
             color: #0074D9;
+            text-decoration: none;
+            background-image: linear-gradient(to right, #0074D9, #0074D9);
+            background-size: 0 2px;
+            background-position: 100% 100%;
+            background-repeat: no-repeat;
+            transition: background-size 0.3s;
+            cursor: pointer;
         }
 
-        a::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 0;
-            height: 2px;
-            background-color: #0074D9;
-            transition: width 0.3s;
+        a:hover {
+            background-size: 100% 2px;
+            background-position: 0 100%;
         }
 
-        a:hover::before {
-            left: 0;
-            right: auto;
-            width: 100%;
-        }
-
-        ul {
+        ul:has(.icon) {
             list-style: none;
         }
 
-        li {
+        li:has(.icon) {
             display: flex;
             align-items: center;
-            white-space: pre; 
+            white-space: pre;
         }
 
         .icon {

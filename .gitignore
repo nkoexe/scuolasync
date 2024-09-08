@@ -12,6 +12,9 @@ sostituzioni/.env
 sostituzioni/control/chiavi/
 sostituzioni/database/backup/
 
+sostituzioni/view/static/images/1_*
+sostituzioni/view/static/images/2_*
+
 sostituzioni/database/configurazione.json
 sostituzioni/database/database.db
 sostituzioni/database/demo.db

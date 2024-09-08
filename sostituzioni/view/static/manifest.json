@@ -1,7 +1,7 @@
 {
-    "name": "ScuolaSync | Gandhi Merano",
+    "name": "ScuolaSync",
     "short_name": "ScuolaSync",
-    "description": "Applicazione per la gestione di sostituzioni, eventi e notizie scolastiche.",
+    "description": "Gestione di sostituzioni, eventi e notizie scolastiche.",
     "start_url": "/",
     "scope": "/",
     "display": "standalone",

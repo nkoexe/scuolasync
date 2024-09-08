@@ -25,9 +25,12 @@ const ui_sostituzione_html_template = `<div class="sostituzione ${sostituzioni_w
 </div>`
 
 
-const ui_sostituzioni_lista = document.getElementById("sostituzioni-lista")
-const ui_sostituzioni_messaggio_informativo = document.getElementById("sostituzioni-messaggio-informativo")
+const ui_sostituzioni_lista = document.querySelector("#sostituzioni-lista")
+const ui_sostituzioni_messaggio_informativo = document.querySelector("#sostituzioni-messaggio-informativo")
 
+const ui_sostituzioni_ordinamento_data = document.querySelector("#sostituzioni-ordinamento-data")
+const ui_sostituzioni_ordinamento_data_up = ui_sostituzioni_ordinamento_data.children[0]
+const ui_sostituzioni_ordinamento_data_down = ui_sostituzioni_ordinamento_data.children[1]
 let sostituzioni_data_verso_ordinamento = 1
 
 
@@ -83,6 +86,10 @@ async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora
 async function refresh_sostituzioni(hard_refresh) {
 	hard_refresh = typeof hard_refresh === 'boolean' ? hard_refresh : false
 
+	// Ordina e filtra
+	sostituzioni_applica_filtri()
+	ordina_sostituzioni()
+
 	if (hard_refresh) {
 		// Rimuovi completamente ogni dato e rigenera la lista. Per liste di grandi dimensioni, diventa un processo sostanzioso. Necessario al caricamento iniziale.
 
@@ -94,7 +101,13 @@ async function refresh_sostituzioni(hard_refresh) {
 
 		const htmlStrings = await Promise.all(promises);
 
-		ui_sostituzioni_lista.innerHTML = htmlStrings.join('');
+		if (sostituzioni_visualizzate.length > 100) {
+			ui_sostituzioni_lista.innerHTML = htmlStrings.slice(0, 30).join('');
+			await new Promise(resolve => setTimeout(resolve, 1))
+			ui_sostituzioni_lista.innerHTML += htmlStrings.slice(30).join('');
+		} else {
+			ui_sostituzioni_lista.innerHTML = htmlStrings.join('');
+		}
 
 		if (sostituzioni_write) {
 			for (const sostituzione of document.querySelectorAll(".sostituzione")) {
@@ -105,11 +118,8 @@ async function refresh_sostituzioni(hard_refresh) {
 		attach_tooltips()
 	}
 
-	// Ordina e filtra
-	// Non rigenerare la lista ma mostra soltanto le sostituzioni filtrate, le altre vengono nascoste
 
-	sostituzioni_applica_filtri()
-	ordina_sostituzioni()
+	// Non rigenerare la lista ma mostra soltanto le sostituzioni filtrate, le altre vengono nascoste
 
 	const elementsMap = new Map();
 	const elementsToShow = []
@@ -150,15 +160,45 @@ async function refresh_sostituzioni(hard_refresh) {
 		ui_sostituzioni_messaggio_informativo.innerHTML = "<span>" + messaggio_nessuna_sostituzione + "</span>"
 		ui_sostituzioni_messaggio_informativo.classList.remove("hidden")
 	}
+
+	// Aggiorna info sostituzioni
+	let now = new Date()
+	now.setHours(0, 0, 0, 0)
+	now = now.getTime() / 1000
+
+	let sostituzioni_oggi = 0
+	let sostituzioni_nascoste = 0
+	let sostituzioni_incomplete = 0
+	let sostituzioni_errori = 0
+
+	for (const sostituzione of sostituzioni_visualizzate) {
+		if (sostituzione.data >= now && sostituzione.data < now + 24 * 60 * 60) {
+			sostituzioni_oggi++
+		}
+		if (!sostituzione.pubblicato) {
+			sostituzioni_nascoste++
+		}
+		if (sostituzione.incompleta) {
+			sostituzioni_incomplete++
+		}
+		if (sostituzione.sovrapposizioni) {
+			sostituzioni_errori++
+		}
+	}
+
+	document.querySelector("#sostituzioni-info-numero-totale").innerHTML = sostituzioni_visualizzate.length
+	document.querySelector("#sostituzioni-info-numero-oggi").innerHTML = sostituzioni_oggi
+	if (sostituzioni_write) {
+		document.querySelector("#sostituzioni-info-numero-nascoste").innerHTML = sostituzioni_nascoste == 0 ? '' : sostituzioni_nascoste
+		document.querySelector("#sostituzioni-info-numero-incomplete").innerHTML = sostituzioni_incomplete == 0 ? '' : sostituzioni_incomplete
+		document.querySelector("#sostituzioni-info-numero-errori").innerHTML = sostituzioni_errori == 0 ? '' : sostituzioni_errori
+	}
 }
 
 function ordina_sostituzioni() {
-	sostituzioni_visualizzate.sort((a, b) => {
-		res = compara_data(a, b) * sostituzioni_data_verso_ordinamento
-		if (res == 0) { res = compara_ora_predefinita(b, a) }
-		if (res == 0) { res = compara_docente(b, a) }
-		return res
-	})
+	// rimuovi ordinamento dei vari filtri	
+	ui_sostituzioni_ordinamento_data_up.classList.remove("selected")
+	ui_sostituzioni_ordinamento_data_down.classList.remove("selected")
 
 	if (!sostituzioni_filtro_ora.ordina) {
 		sostituzioni_filtro_ora.ui_rimuovi_ordinamento()
@@ -177,24 +217,62 @@ function ordina_sostituzioni() {
 		sostituzioni_filtro_docente.verso_ordinamento = 1
 	}
 
+	// ordina i dati secondo l'ordinamento impostato
 	if (sostituzioni_filtro_ora.ordina) {
 		sostituzioni_visualizzate.sort((a, b) => {
-			return compara_ora_predefinita(a, b) * sostituzioni_filtro_ora.verso_ordinamento
+			res = compara_ora_predefinita(a, b) * sostituzioni_filtro_ora.verso_ordinamento
+			if (res == 0) { res = compara_data(a, b) }
+			if (res == 0) { res = compara_docente(a, b) }
+			return res
 		})
-	}
-	if (sostituzioni_filtro_classe.ordina) {
+		sostituzioni_data_verso_ordinamento = -1
+	} else if (sostituzioni_filtro_classe.ordina) {
 		sostituzioni_visualizzate.sort((a, b) => {
-			return compara_classe(a, b) * sostituzioni_filtro_classe.verso_ordinamento
+			res = compara_classe(a, b) * sostituzioni_filtro_classe.verso_ordinamento
+			if (res == 0) { res = compara_data(a, b) }
+			if (res == 0) { res = compara_ora_predefinita(a, b) }
+			return res
 		})
-	}
-	if (sostituzioni_filtro_aula.ordina) {
+		sostituzioni_data_verso_ordinamento = -1
+	} else if (sostituzioni_filtro_aula.ordina) {
 		sostituzioni_visualizzate.sort((a, b) => {
-			return compara_aula(a, b) * sostituzioni_filtro_aula.verso_ordinamento
+			res = compara_aula(a, b) * sostituzioni_filtro_aula.verso_ordinamento
+			if (res == 0) { res = compara_data(a, b) }
+			if (res == 0) { res = compara_ora_predefinita(a, b) }
+			return res
 		})
-	}
-	if (sostituzioni_filtro_docente.ordina) {
+		sostituzioni_data_verso_ordinamento = -1
+	} else if (sostituzioni_filtro_docente.ordina) {
 		sostituzioni_visualizzate.sort((a, b) => {
-			return compara_docente(a, b) * sostituzioni_filtro_docente.verso_ordinamento
+			res = compara_docente(a, b) * sostituzioni_filtro_docente.verso_ordinamento
+			if (res == 0) { res = compara_data(a, b) }
+			if (res == 0) { res = compara_ora_predefinita(a, b) }
+			return res
+		})
+		sostituzioni_data_verso_ordinamento = -1
+	} else {
+
+		if (sostituzioni_data_verso_ordinamento === 1) {
+			ui_sostituzioni_ordinamento_data_down.classList.add("selected")
+		} else {
+			ui_sostituzioni_ordinamento_data_up.classList.add("selected")
+		}
+
+		sostituzioni_visualizzate.sort((a, b) => {
+			res = compara_data(a, b) * sostituzioni_data_verso_ordinamento
+			if (res == 0) { res = compara_ora_predefinita(b, a) }
+			if (res == 0) { res = compara_docente(b, a) }
+			return res
 		})
 	}
+}
+
+ui_sostituzioni_ordinamento_data.onclick = (e) => {
+	sostituzioni_data_verso_ordinamento *= -1
+	refresh_sostituzioni()
+}
+
+
+if (typeof aggiornamento_disponibile !== 'undefined' && aggiornamento_disponibile) {
+	document.querySelector("#sostituzioni-info-aggiornamento").classList.remove("hidden")
 }

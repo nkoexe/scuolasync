@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#C00F19" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
   <meta name="view-transition" content="same-origin" />
-  <title>{{title}} | Gandhi Merano</title>
+  <title>{{configurazione.get("systitle")}} | {{configurazione.get('schoolname')}}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap">
@@ -30,7 +30,7 @@
       {% endwith %}
       <div id="login-container">
         <div id="title-frame">
-          <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Gandhi">
+          <img id="logo" src="{{ url_for('static', filename=configurazione.get('schoolmainlogo')) }}" alt="Logo scuola">
           <div id="title-separator"></div>
           <h1 id="title"><span>Scuola</span><span id="title-hidden-s">S</span><svg id="title-wacky-s" viewBox="-10 -10 120 150">
               <path d="M85.5 7C85.5 7 27 31.5 26.5 53C26 74.5 77 47.5 77 68C77 88.5 25.6667 118.833 4 130.5" />
@@ -40,9 +40,9 @@
           <a href="{{ url_for('auth.googlessoredirect') }}" id="button-accedi">Accedi</a>
         </div>
         <div id="notes-frame">
-          <p>{{ paragraph | safe }}</p>
-          {% if supportemail %}
-          <p>Non riesci ad accedere? <a href="mailto:{{supportemail}}">Segnala un problema</a>.</p>
+          <p>{{ configurazione.get("loginpageparagraph") | safe }}</p>
+          {% if configurazione.get("supportemail") %}
+          <p>Non riesci ad accedere? <a href="mailto:{{configurazione.get('supportemail')}}">Segnala un problema</a>.</p>
           {% endif %}
         </div>
       </div>

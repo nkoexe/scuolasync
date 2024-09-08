@@ -16,11 +16,6 @@ from sostituzioni.view.auth import auth
 logger = logging.getLogger(__name__)
 
 
-# @auth.route("/richiedi-accesso")
-# def fottiti():
-#     return 'Qui ci sarà il form per richiedere l\'accesso al sistema, con opportune minacce. Per il momento, in caso di problemi di accesso, scrivere a <a href="mailto:niccolo.ragazzi@gandhimerano.com">niccolo.ragazzi@gandhimerano.com</a>'
-
-
 @auth.route("/login")
 def login():
     if current_user.is_authenticated:
@@ -29,7 +24,7 @@ def login():
     # 3 lines of development speedup, remove in production pls ty
     # from sostituzioni.model.auth import authenticate_user
 
-    # authenticate_user("niccolo.ragazzi@gandhimerano.com")
+    # authenticate_user("niccolo.rag@gmail.com")
     # authenticate_user("bidelleria@gandhimerano.com")
     # return redirect(url_for("online.index"))
 
@@ -38,10 +33,7 @@ def login():
 
     return render_template(
         "login.html",
-        title=configurazione.get("systitle"),
-        bottomparagraph=configurazione.get("loginpageparagraph"),
-        paragraph=configurazione.get("loginpageparagraph"),
-        supportemail=configurazione.get("supportemail"),
+        configurazione=configurazione,
     )
 
 

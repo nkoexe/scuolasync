@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap">
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
   <script src="{{ url_for('static', filename='scripts/lib/socket.io.min.js') }}"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
@@ -31,11 +30,14 @@
           </div>
         </div>
       </div>
+      {% if configurazione.get('displayqrcode') %}
       <div id="qr-frame" class="frame">
         <img src="{{url_for('fisica.generate_qrcode')}}" alt="QR Code">
         <span id="qr-arrow" class="material-symbols-rounded">switch_access_shortcut</span>
         <span id="qr-description">Controlla le<br>supplenze online!</span>
       </div>
+      {% endif %}
+
       <div id="eventi-frame" class="frame">
         <div id="header-eventi">
           <h2 id="header-eventi-titolo">Prossimi Eventi</h2>
@@ -94,6 +96,8 @@
     const messaggio_nessuna_sostituzione = "{{ configurazione.get('displaynosostituzionimsg') }}"
     const giorni_futuri_da_mostrare = {{ configurazione.get('displayrangegiornifuturi').valore }}
     const giorni_futuri_da_mostrare_lavorativi = Boolean({{ configurazione.get('displayrangegiornifuturi').unita }})
+    const tempo_scroll_eventi = {{ configurazione.get('displaytemposcrolleventi') }} * 1000
+    const tempo_scroll_sostituzioni = {{ configurazione.get('displaytemposcrollsostituzioni') }} * 1000
 
     let eventi = []
     let notizie = []

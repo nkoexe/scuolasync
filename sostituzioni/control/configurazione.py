@@ -19,13 +19,19 @@ logger = logging.getLogger(__name__)
 
 
 ROOT_PATH = Path(__file__).parent.parent
-CONFIG_FILE = ROOT_PATH / "database" / "configurazione.json"
-CONFIG_TEMPLATE = ROOT_PATH / "database" / "configurazione.json.template"
+CONFIG_FILE = (
+    os.getenv("SCUOLASYNC_CONFIG") or ROOT_PATH / "database" / "configurazione.json"
+)
+CONFIG_TEMPLATE = (
+    os.getenv("SCUOLASYNC_CONFIG_TEMPLATE")
+    or ROOT_PATH / "database" / "configurazione.json.template"
+)
 
 
 @beartype
 def parsepath(pathstring: str) -> Path:
     pathstring = pathstring.replace("%ROOT%", str(ROOT_PATH))
+    # pathstring = pathstring.replace("%STATIC%", configurazione.get("flaskstaticdir"))
 
     return Path(pathstring)
 
@@ -42,7 +48,7 @@ class Sezione:
         self.descrizione: str = dati.get("descrizione", "")
 
     def __repr__(self):
-        return "Sezione" + self.id
+        return "Sezione " + self.id
 
     def aggiorna(self, template):
         self.titolo = template.titolo
@@ -62,6 +68,7 @@ class Opzione:
     SELEZIONE = "selezione"
     PERCORSO = "percorso"
     LISTA = "lista"
+    FILE = "file"
 
     @beartype
     def __init__(
@@ -162,6 +169,12 @@ class Opzione:
                         Opzione(parent=self, dati=dati_lista, index=index)
                     )
 
+            case self.FILE:
+                self.tipo_valori = "percorso"
+                self.path = Opzione(parent=self, dati=dati.get("path"))
+                self.valore = self.path
+                self.mime: str = dati.get("mime")
+
             case _:
                 logger.error(
                     f"Nel caricamento della configurazione, opzione con id {self.id} non ha un tipo valido ({self.tipo})"
@@ -174,30 +187,39 @@ class Opzione:
         self.disabilitato = template.disabilitato
         self.nascosto = template.nascosto
         self.tipo = template.tipo
-        self.default = template.default
 
         match self.tipo:
             case self.TESTO:
+                self.default = template.default
                 self.lunghezza_massima = template.lunghezza_massima
 
             case self.NUMERO:
+                self.default = template.default
                 self.intervallo = template.intervallo
 
             case self.NUMERO_UNITA:
+                self.default = template.default
                 self.intervallo = template.intervallo
                 self.scelte_unita = template.scelte_unita
                 self.unita_default = template.unita_default
                 self.unita = template.unita
 
             case self.SELEZIONE:
+                self.default = template.default
                 self.scelte = template.scelte
 
             case self.PERCORSO:
+                self.default = template.default
                 self.scelte_radice = template.scelte_radice
                 self.radice = template.radice
 
             case self.LISTA:
+                self.default = template.default
                 self.tipo_valori = template.tipo_valori
+
+            case self.FILE:
+                self.path = template.path
+                self.mime = template.mime
 
     def __eq__(self, value: object) -> bool:
         return self.valore == value
@@ -446,6 +468,16 @@ class Opzione:
 
                 return True
 
+            case self.FILE:
+                if not isinstance(dati, str):
+                    raise TypeError(
+                        "Dati non validi, per file fornire un stringa per il percorso"
+                    )
+
+                self.path.set((0, dati))
+
+                return True
+
     def esporta(self):
 
         dati = {
@@ -518,12 +550,17 @@ class Opzione:
 
                 dati["valore"] = valori
 
+            case self.FILE:
+                dati["path"] = self.path.esporta()
+                dati["mime"] = self.mime
+
         return dati
 
 
 class Configurazione:
     @beartype
     def __init__(self):
+        self.aggiornamento_disponibile = False
         self.shell_commands = {}
 
         if which("git") is None:
@@ -613,22 +650,68 @@ class Configurazione:
         self.set("version", v, force=True)
 
     def applica_aggiornamenti(self):
+        """
+        Funzione che viene eseguita allo startup, per aggiornare sezioni e opzioni
+        della configurazione locale con quelle del template.
+        """
+        # Carica la configurazione del template
         configurazione_template = Configurazione()
         configurazione_template.load(CONFIG_TEMPLATE)
 
         for sezione_template in configurazione_template.sezioni:
+            # Se la sezione è già presente nella configurazione locale
             if sezione_template.id in self.sezioni.keys():
+                # Aggiorna i dati della sezione
                 self.sezioni.get(sezione_template.id).aggiorna(sezione_template)
             else:
+                # Altrimenti aggiunge la nuova sezione
                 self.sezioni.append(sezione_template)
 
         for opzione_template in configurazione_template.opzioni:
+            # Se l'opzione è già presente nella configurazione locale
             if opzione_template.id in self.opzioni.keys():
+                # Aggiorna i dati dell'opzione come descrizione,
+                # nascosto ecc., ma non il suo valore
                 self.opzioni.get(opzione_template.id).aggiorna(opzione_template)
             else:
                 self.opzioni.append(opzione_template)
 
+        # Ordina le sezioni e le opzioni secondo l'ordine di template, dato che
+        # nella pagina online esse vengono mostrate secondo l'ordine del file
+        ordine_sezioni = configurazione_template.sezioni.keys()
+        ordine_opzioni = configurazione_template.opzioni.keys()
+
+        self.sezioni.sort(key=lambda x: ordine_sezioni.index(x.id))
+        self.opzioni.sort(key=lambda x: ordine_opzioni.index(x.id))
+
         del configurazione_template
+
+    def check_update(self):
+        rootpath = self.get("rootpath").path
+
+        # "/sostituzioni/sostituzioni", git è un livello più alto
+        repopath = rootpath.parent
+
+        try:
+            new_version = (
+                subprocess.run(
+                    self.shell_commands["check_update"],
+                    cwd=repopath,
+                    capture_output=True,
+                )
+                .stdout.decode("utf-8")
+                .split("\t")[0]
+                .strip()
+            )
+        except Exception as e:
+            logger.error(f"Errore durante il controllo dell'aggiornamento: {e}")
+            raise e
+
+        self.aggiornamento_disponibile = (
+            new_version != configurazione.get("version").valore
+        )
+
+        return self.aggiornamento_disponibile
 
     def __repr__(self):
         return "Configurazione Sistema"

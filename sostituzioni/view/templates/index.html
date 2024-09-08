@@ -5,15 +5,13 @@
   <meta charset="UTF-8" />
   <meta name="theme-color" content="#C00F19" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- remove this meta tag when view-transition has more support across browsers -->
-  <meta name="view-transition" content="same-origin" />
   <title>{{title}}</title>
   <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/lib/notyf.min.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/selezione.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/header.css') }}">
@@ -22,14 +20,13 @@
   {% if utente.ruolo.nome != 'visualizzatore' %}
   <link rel="stylesheet" href="{{ url_for('static', filename='style/gestione_dati.css') }}">
   {% endif %}
-  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='style/indexmin.css') }}"> -->
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
 </head>
 
 <body>
   <div id="header">
-    <a href="{{url_for('online.index')}}">
-      <img id="header-logo" src="{{ url_for('static', filename='images/logo_white.png') }}" alt="Logo Gandhi">
+    <a id="header-logo-link" href="{{url_for('online.index')}}">
+      <img id="header-logo" src="{{ url_for('static', filename=configurazione.get('schoolheaderlogo')) }}" alt="Logo scuola">
     </a>
     <div id="header-separator"></div>
     <h1 id="header-titolo">{{title}}</h1>
@@ -51,7 +48,7 @@
           <div id="header-eventi-pulsanti">
             <div id="eventi-filtro-data" data-tooltip="Filtro degli eventi per data<br>(non ancora implementato)"><span class="material-symbols-rounded">calendar_month</span></div>
             {% if utente.permessi.eventi.write %}
-            <div id="pulsante-nuovo-evento" class="pulsante pulsante-inserimento" onclick="mostra_nuovo_evento()"><span class="material-symbols-rounded">add</span></div>
+            <button id="pulsante-nuovo-evento" class="pulsante pulsante-inserimento" onclick="mostra_nuovo_evento()"><span class="material-symbols-rounded">add</span></button>
             {% endif %}
           </div>
         </div>
@@ -65,7 +62,7 @@
         <div id="header-notizie">
           <h2 id="header-notizie-titolo">Notizie</h2>
           {% if utente.permessi.notizie.write %}
-          <div id="pulsante-nuova-notizia" class="pulsante pulsante-inserimento" onclick="mostra_nuova_notizia()"><span class="material-symbols-rounded">add</span></div>
+          <button id="pulsante-nuova-notizia" class="pulsante pulsante-inserimento" onclick="mostra_nuova_notizia()"><span class="material-symbols-rounded">add</span></butto>
           {% endif %}
         </div>
         <div id="notizie-container">
@@ -81,7 +78,7 @@
           <div id="pulsanti-header-sostituzioni">
             {% if utente.permessi.sostituzioni.write %}
             <div id="container-esporta-sostituzioni">
-              <div id="pulsante-esporta-sostituzioni" class="pulsante-header-sostituzioni" data-tooltip="Esportazione dei dati"><span class="material-symbols-rounded">export_notes</span></div>
+              <button id="pulsante-esporta-sostituzioni" class="pulsante-header-sostituzioni" data-tooltip="Esportazione dei dati"><span class="material-symbols-rounded">export_notes</span></button>
               <div id="popup-esporta-sostituzioni" tabindex="0">
                 <div>
                   <h2>Esportazione Dati</h2>
@@ -138,42 +135,45 @@
               </div>
             </div>
             {% endif %}
-            <div id="pulsante-refresh-sostituzioni" class="pulsante-header-sostituzioni" onclick="ui_refresh_sostituzioni()" data-tooltip="Ricarica lista di sostituzioni"><span class="material-symbols-rounded">sync</span></div>
+            <button id="pulsante-refresh-sostituzioni" class="pulsante-header-sostituzioni" onclick="ui_refresh_sostituzioni()" data-tooltip="Ricarica lista di sostituzioni"><span class="material-symbols-rounded">sync</span></button>
           </div>
           {% if utente.permessi.sostituzioni.write %}
-          <div id="pulsante-nuova-sostituzione" class="pulsante pulsante-inserimento" onclick="mostra_nuova_sostituzione()"><span class="material-symbols-rounded icon">add</span><span class="text">Nuova</span></div>
+          <button id="pulsante-nuova-sostituzione" class="pulsante pulsante-inserimento" onclick="mostra_nuova_sostituzione()"><span class="material-symbols-rounded icon">add</span><span class="text">Nuova</span></button>
           {% endif %}
         </div>
         <div id="sostituzioni-main">
           <div id="sostituzioni-container">
             <div id="sostituzioni-filtri-container">
-              <div id="sostituzioni-filtro-data" tabindex="0">
-                <span id="sostituzioni-filtro-data-testo"><span>Data</span><span class="material-symbols-rounded icon">expand_more</span></span>
-                <div class="sostituzioni-ordinamento" data-tooltip="Ordinamento per data<br>(non ancora implementato 😔)">
+              <div id="sostituzioni-filtro-data">
+                <button id="sostituzioni-filtro-data-pulsante">
+                  <span>Data</span><span class="material-symbols-rounded icon">chevron_right</span>
+                </button>
+                <div id="sostituzioni-ordinamento-data" class="sostituzioni-ordinamento">
                   <div class="sostituzioni-ordinamento-arrowup"></div>
-                  <div class="sostituzioni-ordinamento-arrowdown"></div>
+                  <div class="sostituzioni-ordinamento-arrowdown selected"></div>
                 </div>
-                <div id="sostituzioni-filtro-data-expandible">
-                  <button id="sostituzioni-filtro-data-oggi" class="sostituzioni-filtro-data-opzione">Oggi</button>
-                  <button id="sostituzioni-filtro-data-domani" class="sostituzioni-filtro-data-opzione">Domani</button>
-                  <button id="sostituzioni-filtro-data-future" class="sostituzioni-filtro-data-opzione selected">Future</button>
-                  <input type="date" id="sostituzioni-filtro-data-data" class="sostituzioni-filtro-data-opzione">
-                  <select id="sostituzioni-filtro-data-mese" class="sostituzioni-filtro-data-opzione">
-                    <option value="8">Settembre</option>
-                    <option value="9">Ottobre</option>
-                    <option value="10">Novembre</option>
-                    <option value="11">Dicembre</option>
-                    <option value="0">Gennaio</option>
-                    <option value="1">Febbraio</option>
-                    <option value="2">Marzo</option>
-                    <option value="3">Aprile</option>
-                    <option value="4">Maggio</option>
-                    <option value="5">Giugno</option>
-                  </select>
-                  <button id="sostituzioni-filtro-data-tutte" class="sostituzioni-filtro-data-opzione">Tutte</button>
-                  <input type="checkbox" id="sostituzioni-filtro-nascosti" class="checkbox" checked hidden>
-                  <input type="checkbox" id="sostituzioni-filtro-eliminati" class="checkbox" hidden>
-                </div>
+              </div>
+              <div id="sostituzioni-filtro-data-expandible">
+                <button id="sostituzioni-filtro-data-oggi" class="sostituzioni-filtro-data-opzione">Oggi</button>
+                <button id="sostituzioni-filtro-data-domani" class="sostituzioni-filtro-data-opzione">Domani</button>
+                <button id="sostituzioni-filtro-data-future" class="sostituzioni-filtro-data-opzione selected">Future</button>
+                <input type="date" id="sostituzioni-filtro-data-data" class="sostituzioni-filtro-data-opzione">
+                <select id="sostituzioni-filtro-data-mese" class="sostituzioni-filtro-data-opzione">
+                  <option value="" disabled selected>Mese</option>
+                  <option value="8">Settembre</option>
+                  <option value="9">Ottobre</option>
+                  <option value="10">Novembre</option>
+                  <option value="11">Dicembre</option>
+                  <option value="0">Gennaio</option>
+                  <option value="1">Febbraio</option>
+                  <option value="2">Marzo</option>
+                  <option value="3">Aprile</option>
+                  <option value="4">Maggio</option>
+                  <option value="5">Giugno</option>
+                </select>
+                <button id="sostituzioni-filtro-data-tutte" class="sostituzioni-filtro-data-opzione">Tutte</button>
+                <!-- <input type="checkbox" id="sostituzioni-filtro-nascosti" class="checkbox" checked hidden> -->
+                <!-- <input type="checkbox" id="sostituzioni-filtro-eliminati" class="checkbox" hidden> -->
               </div>
               <div id="sostituzioni-filtro-ora">
                 <div class="sostituzioni-filtri-ricerca">
@@ -236,6 +236,14 @@
               <div id="sostituzioni-messaggio-informativo"><span>Caricamento...</span></div>
               <div id="sostituzioni-lista"></div>
             </div>
+          </div>
+          <div id="sostituzioni-info-container">
+            <span class="sostituzioni-info" data-tooltip="Numero totale di sostituzioni per i filtri applicati."><span id="sostituzioni-info-numero-totale" class="sostituzioni-info-numero"></span> sostituzioni</span>
+            <span class="sostituzioni-info"><span id="sostituzioni-info-numero-oggi" class="sostituzioni-info-numero"></span> oggi</span>
+            <span class="sostituzioni-info" data-tooltip="Numero di sostituzioni che sono visibili soltanto a editor."><span id="sostituzioni-info-numero-nascoste" class="sostituzioni-info-numero"></span> nascoste</span>
+            <span class="sostituzioni-info" data-tooltip="Numero di sostituzioni che hanno uno o più campi necessari vuoti."><span id="sostituzioni-info-numero-incomplete" class="sostituzioni-info-numero"></span> incomplete</span>
+            <span class="sostituzioni-info" data-tooltip="Numero di sostituzioni che hanno sovrapposizioni di docente, classe o aula."><span id="sostituzioni-info-numero-errori" class="sostituzioni-info-numero"></span> errori</span>
+            <span class="sostituzioni-info hidden" id="sostituzioni-info-aggiornamento"><a href="{{ url_for('impostazioni.update')}}">Aggiornamento disponibile!</a></span>
           </div>
         </div>
       </div>
@@ -384,6 +392,9 @@
   {% endif %}
   <script>
     const messaggio_nessuna_sostituzione = "{{ configurazione.get('nosostituzionimsg') }}"
+    {% if utente.ruolo.nome == 'amministratore' %}
+    const aggiornamento_disponibile = {{ configurazione.aggiornamento_disponibile | tojson }}
+    {% endif %}
 
     const notizie_write = {{ utente.permessi.notizie.write | tojson }}
     const eventi_write = {{ utente.permessi.eventi.write | tojson }}
@@ -401,7 +412,7 @@
     let docenti = []
   </script>
   <script src="{{ url_for('static', filename='scripts/lib/socket.io.min.js') }}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js" onload="notyf = new Notyf({duration: 3000})"></script>
+  <script src="{{ url_for('static', filename='scripts/lib/notyf.min.js') }}" defer onload="notyf = new Notyf({duration: 3000})"></script>
   <script src="{{url_for('static', filename='scripts/lib/fuzzyset.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/lib/compare.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/lib/selezione.js')}}"></script>
@@ -419,7 +430,6 @@
   <script src="{{url_for('static', filename='scripts/esportazione_report.js')}}"></script>
   {% endif %}
   <script src="{{url_for('static', filename='scripts/onlinesocket.js')}}"></script>
-  <!-- <script src="{{url_for('static', filename='scripts/sostituzioni.min.js')}}"></script> -->
 </body>
 
 </html>

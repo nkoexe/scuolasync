@@ -3,6 +3,7 @@ import subprocess
 import os
 import re
 from datetime import datetime, timedelta
+from flask import url_for
 from flask_socketio import emit
 
 from sostituzioni.control.configurazione import configurazione
@@ -43,6 +44,39 @@ def applica(dati):
     emit("applica impostazioni successo")
 
 
+@socketio.on("carica file", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def carica_file(dati):
+    logger.debug(f"ricevuto: {dati}")
+
+    if dati["id"] == "schoolmainlogo":
+        file_name = "1_" + dati["name"]
+        file_path = "images/" + file_name
+        file = configurazione.get("flaskstaticdir").path / file_path
+
+    elif dati["id"] == "schoolheaderlogo":
+        file_name = "2_" + dati["name"]
+        file_path = "images/" + file_name
+        file = configurazione.get("flaskstaticdir").path / file_path
+
+    else:
+        emit("carica file errore", "id opzione non valido")
+        return
+
+    try:
+        file.write_bytes(dati["data"])
+        configurazione.set(dati["id"], file_path)
+    except ValueError as e:
+        emit("carica file errore", str(e))
+        return
+
+    emit(
+        "carica file successo",
+        {"id": dati["id"], "path": url_for("static", filename=file_path)},
+    )
+
+
 # //////////////////////////////
 
 
@@ -50,31 +84,12 @@ def applica(dati):
 @login_required
 @role_required("impostazioni.write")
 def check_update():
-    rootpath = configurazione.get("rootpath").path
-
-    # "/sostituzioni/sostituzioni", git è un livello più alto
-    repopath = rootpath.parent
 
     try:
-        new_version = (
-            subprocess.run(
-                configurazione.shell_commands["check_update"],
-                cwd=repopath,
-                capture_output=True,
-            )
-            .stdout.decode("utf-8")
-            .split("\t")[0]
-            .strip()
-        )
+        aggiornamento = configurazione.check_update()
     except Exception as e:
-        logger.error(f"Errore durante il controllo dell'aggiornamento: {e}")
         emit("check update errore", str(e))
         return
-
-    if new_version == configurazione.get("version").valore:
-        aggiornamento = False
-    else:
-        aggiornamento = True
 
     emit("check update successo", {"value": aggiornamento})
 
@@ -519,7 +534,6 @@ def modifica_aula(dati):
             aula = Aula(numero_aula)
             aula.modifica({"numero": new_numero_aula, "piano": new_piano_aula})
         except Exception as e:
-            print(e)
             emit("modifica aula errore", {"numero_aula": numero_aula, "error": str(e)})
             return
 
@@ -665,8 +679,6 @@ def modifica_ora(dati):
         "new_ora_fine": (str)
     }
     """
-
-    print(dati)
 
     numero = dati["numero"].strip()
     new_numero = dati["new_numero"].strip()

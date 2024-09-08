@@ -1,4 +1,4 @@
-from beartype._decor.decormain import beartype
+from beartype import beartype
 from beartype.typing import List, Tuple, Any
 
 
@@ -15,6 +15,7 @@ class SearchableList(List):
         if values is not None:
             self.extend(values)
 
+    @beartype
     def get(self, id, key: str | Tuple | None = None, default: Any = None):
         if key is None:
             key = self.key
@@ -54,6 +55,7 @@ class SearchableList(List):
 
         return default
 
+    @beartype
     def get_all(self, id, key: str | Tuple | None = None):
         if key is None:
             key = self.key
@@ -86,6 +88,39 @@ class SearchableList(List):
 
     def keys(self):
         return [getattr(element, self.key) for element in self]
+
+    @beartype
+    def index(self, id, key: str | Tuple | None = None):
+        if key is None:
+            key = self.key
+
+        if isinstance(key, str):
+            for index, element in enumerate(self):
+                if isinstance(element, dict):
+                    if element[key] == id:
+                        return index
+                elif isinstance(element, object):
+                    if getattr(element, key) == id:
+                        return index
+                else:
+                    raise TypeError(
+                        f"SearchableList.get: non è possibile ricercare elementi di tipo {type(element)}"
+                    )
+            return -1
+
+        elif isinstance(key, Tuple):
+            for index, element in enumerate(self):
+                if isinstance(element, dict):
+                    if all(element[k] == v for k, v in zip(key, id)):
+                        return index
+                elif isinstance(element, object):
+                    if all(getattr(element, k) == v for k, v in zip(key, id)):
+                        return index
+                else:
+                    raise TypeError(
+                        f"SearchableList.get: non è possibile ricercare elementi di tipo {type(element)}"
+                    )
+            return -1
 
 
 class Test:
