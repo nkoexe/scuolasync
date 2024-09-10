@@ -15,8 +15,8 @@
   <div id="main-container">
     <h1>Informativa Privacy e Cookie</h1>
     <hr>
-    <p>Il sistema fa parte del sistema informatico dell'I.I.S.S. "Gandhi" Merano.
-    <p><strong>Informativa:</strong> <a href="https://www.iiss-gandhi-merano.it/privacy">iiss-gandhi-merano.it/privacy</a></p>
+    <p>Il sistema fa parte del sistema informatico di {{configurazione.get('schoolname')}}.
+    <p><strong>Informativa:</strong> <a href="{{configurazione.get('schoolprivacylink')}}">{{configurazione.get('schoolprivacylink')}}</a></p>
     <br>
     <p>Questo sistema utilizza soltanto cookie strettamente necessari al suo funzionamento:</p>
     <table>
@@ -29,7 +29,7 @@
       <tbody>
         <tr>
           <td>session</td>
-          <td>Contiene l'identificativo della sessione generato casualmente per permettere l'accesso al sistema, bloccando richieste non autorizzate.{% if logintimeout > 0 %} Viene eliminato dopo {{ logintimeout }} minuti.{% endif %}</td>
+          <td>Contiene l'identificativo della sessione generato casualmente per permettere l'accesso al sistema, bloccando richieste non autorizzate.{% if configurazione.get("flasksessionlifetime") > 0 %} Viene eliminato dopo {{ configurazione.get("flasksessionlifetime") }} minuti.{% endif %}</td>
         </tr>
       </tbody>
     </table>
