@@ -5,4 +5,4 @@
 
 
 [Documentazione](#⭐-scuolasync)
-[GitHub](https://github.com/nkoexe/sostituzioni)
+[GitHub](https://github.com/nkoexe/scuolasync)

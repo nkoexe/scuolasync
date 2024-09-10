@@ -4,6 +4,10 @@
       "titolo": "Sistema",
       "descrizione": "Impostazioni generali di sistema."
     },
+    "scuola": {
+      "titolo": "Informazioni Istituto",
+      "descrizione": "Informazioni sull'istituto scolastico a cui è associato il sistema, come nome, logo e link."
+    },
     "login": {
       "titolo": "Autenticazione",
       "descrizione": "Impostazioni per l'accesso al sistema e opzioni della pagina di login."
@@ -36,51 +40,6 @@
       "lunghezza_massima": 30,
       "default": "ScuolaSync",
       "valore": "ScuolaSync"
-    },
-    "schoolname": {
-      "titolo": "Nome dell'Istituto Scolastico",
-      "descrizione": "Specifica il nome dell'istituto scolastico a cui è associato il sistema.",
-      "sezione": "sistema",
-      "disabilitato": false,
-      "nascosto": false,
-      "tipo": "testo",
-      "lunghezza_massima": 30,
-      "default": "",
-      "valore": ""
-    },
-    "schoolmainlogo": {
-      "titolo": "Logo dell'Istituto Scolastico",
-      "descrizione": "Logo principale dell'istituto scolastico a cui è associato il sistema. Questo logo apparirà nella pagina di accesso.",
-      "sezione": "sistema",
-      "disabilitato": false,
-      "nascosto": false,
-      "tipo": "file",
-      "path": {
-        "scelte_radice": [
-          ""
-        ],
-        "radice": 0,
-        "default": "images/logo.png",
-        "valore": "images/logo.png"
-      },
-      "mime": "image/*"
-    },
-    "schoolheaderlogo": {
-      "titolo": "Logo Intestazione",
-      "descrizione": "Seleziona il logo che verrà visualizzato nell'intestazione della pagina principale e nelle pagine delle impostazioni.",
-      "sezione": "sistema",
-      "disabilitato": false,
-      "nascosto": false,
-      "tipo": "file",
-      "path": {
-        "scelte_radice": [
-          ""
-        ],
-        "radice": 0,
-        "default": "images/logo_white.png",
-        "valore": "images/logo_white.png"
-      },
-      "mime": "image/*"
     },
     "sysstate": {
       "titolo": "Stato del sistema",
@@ -127,6 +86,73 @@
       "nascosto": false,
       "tipo": "testo",
       "lunghezza_massima": null,
+      "default": "",
+      "valore": ""
+    },
+    "schoolname": {
+      "titolo": "Nome dell'Istituto Scolastico",
+      "descrizione": "Specifica il nome dell'istituto scolastico a cui è associato il sistema. Questo nome apparirà nelle pagine di privacy e licenze, e nel titolo delle pagine.",
+      "sezione": "scuola",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "testo",
+      "lunghezza_massima": 30,
+      "default": "",
+      "valore": ""
+    },
+    "schoolmainlogo": {
+      "titolo": "Logo Principale",
+      "descrizione": "Logo principale dell'istituto scolastico. Questo logo apparirà nella pagina di accesso.",
+      "sezione": "scuola",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "file",
+      "path": {
+        "scelte_radice": [
+          ""
+        ],
+        "radice": 0,
+        "default": "images/logo.png",
+        "valore": "images/logo.png"
+      },
+      "mime": "image/*"
+    },
+    "schoolheaderlogo": {
+      "titolo": "Logo Intestazione",
+      "descrizione": "Logo che verrà visualizzato nell'intestazione della pagina principale e nelle pagine delle impostazioni.",
+      "sezione": "scuola",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "file",
+      "path": {
+        "scelte_radice": [
+          ""
+        ],
+        "radice": 0,
+        "default": "images/logo_white.png",
+        "valore": "images/logo_white.png"
+      },
+      "mime": "image/*"
+    },
+    "schoollink": {
+      "titolo": "Pagina Web dell'Istituto",
+      "descrizione": "Link alla pagina principale dell'istituto scolastico. Questo link verrà collegato al nome dell'istituto nella pagina di licenze.",
+      "sezione": "scuola",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "testo",
+      "lunghezza_massima": 200,
+      "default": "",
+      "valore": ""
+    },
+    "schoolprivacylink": {
+      "titolo": "Informativa Privacy",
+      "descrizione": "Link alla pagina dell'informativa privacy dell'istituto scolastico. Verrà inserito nella pagina di privacy del sistema.",
+      "sezione": "scuola",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "testo",
+      "lunghezza_massima": 200,
       "default": "",
       "valore": ""
     },

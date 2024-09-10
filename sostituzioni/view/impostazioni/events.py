@@ -100,7 +100,7 @@ def check_update():
 def update():
     rootpath = configurazione.get("rootpath").path
 
-    # "/sostituzioni/sostituzioni", git è un livello più alto
+    # "/scuolasync/sostituzioni", git è un livello più alto
     repopath = rootpath.parent
 
     subprocess.run(configurazione.shell_commands["update"], cwd=repopath)

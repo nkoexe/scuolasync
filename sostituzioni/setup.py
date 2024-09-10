@@ -156,15 +156,12 @@ def main():
     )
 
     print(
-        """                                                                                              
- ___             _    _    _             _            _ 
-/ __> ___  ___ _| |_ <_> _| |_  _ _ .___<_> ___ ._ _ <_>
-\__ \/ . \<_-<  | |  | |  | |  | | | / /| |/ . \| ' || |
-<___/\___//__/  |_|  |_|  |_|  `___|/___|_|\___/|_|_||_|
+        """
+╔════════════════════════════════════════╗
+║           ScuolaSync Setup             ║
+╚════════════════════════════════════════╝
 """
     )
-
-    print("\nBenvenuto nel setup del sistema insert title here.\n\n")
 
     input("Premere ENTER per iniziare l'installazione.")
 

@@ -15,10 +15,10 @@
   <div id="main-container">
     <h1>Informativa Privacy e Cookie</h1>
     <hr>
-    <p>Il sistema fa parte del sistema informatico dell'I.I.S.S. "Gandhi" Merano.
-    <p><strong>Informativa:</strong> <a href="https://www.iiss-gandhi-merano.it/privacy">iiss-gandhi-merano.it/privacy</a></p>
+    <p>ScuolaSync fa parte del sistema informatico di {{configurazione.get('schoolname')}}.
+    <p><strong>Informativa:</strong> <a href="{{configurazione.get('schoolprivacylink')}}">{{configurazione.get('schoolprivacylink')}}</a></p>
     <br>
-    <p>Questo sistema utilizza soltanto cookie strettamente necessari al suo funzionamento:</p>
+    <p>Questo sito utilizza soltanto cookie strettamente necessari al suo funzionamento:</p>
     <table>
       <thead>
         <tr>
@@ -29,7 +29,7 @@
       <tbody>
         <tr>
           <td>session</td>
-          <td>Contiene l'identificativo della sessione generato casualmente per permettere l'accesso al sistema, bloccando richieste non autorizzate.{% if logintimeout > 0 %} Viene eliminato dopo {{ logintimeout }} minuti.{% endif %}</td>
+          <td>Contiene l'identificativo della sessione generato casualmente per permettere l'accesso al sistema, bloccando richieste non autorizzate.{% if configurazione.get("flasksessionlifetime") > 0 %} Viene eliminato dopo {{ configurazione.get("flasksessionlifetime") }} minuti.{% endif %}</td>
         </tr>
       </tbody>
     </table>
@@ -38,37 +38,31 @@
   </div>
   <style>
     #main-container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 10px;
+      padding-bottom: 100px;
       font-family: 'Gabarito', sans-serif;
-      margin: 0 20%;
     }
 
-    @media (max-width: 1000px) {
-      #main-container {
-        margin: 0;
-      }
+    p {
+      line-height: 1.5;
     }
 
     a {
-      position: relative;
-      text-decoration: none;
       color: #0074D9;
+      text-decoration: none;
+      background-image: linear-gradient(to right, #0074D9, #0074D9);
+      background-size: 0 2px;
+      background-position: 100% 100%;
+      background-repeat: no-repeat;
+      transition: background-size 0.3s;
+      cursor: pointer;
     }
 
-    a::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 0;
-      height: 2px;
-      background-color: #0074D9;
-      transition: width 0.3s;
-    }
-
-    a:hover::before {
-      left: 0;
-      right: auto;
-      width: 100%;
+    a:hover {
+      background-size: 100% 2px;
+      background-position: 0 100%;
     }
 
     table,

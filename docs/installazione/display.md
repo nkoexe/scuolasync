@@ -68,7 +68,7 @@ su root
 Questo script installa i software necessari, crea un utente 'scuolasync' e configura lo startup automatico.
 
 ```sh
-wget https://raw.githubusercontent.com/nkoexe/sostituzioni/main/scripts/kiosk_install.sh; sh kiosk-install.sh
+wget https://raw.githubusercontent.com/nkoexe/scuolasync/main/scripts/kiosk_install.sh; sh kiosk-install.sh
 ```
 
 Se viene chiesto quale gestore di login usare, selezionare `lightdm`

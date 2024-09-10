@@ -11,12 +11,10 @@ from sostituzioni.view import app
 
 @app.route("/privacy")
 def privacy():
-    return render_template(
-        "privacy.html", logintimeout=configurazione.get("flasksessionlifetime")
-    )
+    return render_template("privacy.html", configurazione=configurazione)
 
 
 @app.route("/license")
 @app.route("/licenze")
 def licenze():
-    return render_template("licenze.html")
+    return render_template("licenze.html", configurazione=configurazione)
