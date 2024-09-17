@@ -1828,13 +1828,20 @@ class Utente(ElementoDatabase):
 
     @beartype
     def modifica(self, dati: dict):
+        old_email = self.email
+
         if "email" in dati:
             self.email = dati["email"]
 
         if "ruolo" in dati:
             self.ruolo = dati["ruolo"]
 
-        return self.aggiorna()
+        return self.DATABASE.update(
+            self.TABLENAME,
+            Where("email").equals(old_email),
+            email=self.email,
+            ruolo=self.ruolo.nome,
+        )
 
     def aggiorna(self):
         if not self.email:
