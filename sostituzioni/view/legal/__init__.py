@@ -18,3 +18,13 @@ def privacy():
 @app.route("/licenze")
 def licenze():
     return render_template("licenze.html", configurazione=configurazione)
+
+
+@app.route("/yourschool")
+def demo_school():
+    return "Pagina principale del tuo Istituto Scolastico"
+
+
+@app.route("/yourschool/privacy")
+def demo_privacy():
+    return "Pagina Privacy del tuo Istituto Scolastico"
