@@ -730,7 +730,7 @@ class Configurazione:
         return self.opzioni.get(id_opzione)
 
     @beartype
-    def set(self, id_opzione: str, dati: Any, force: bool = False) -> bool:
+    def set(self, id_opzione: str, dati: Any, force: bool = False, salva: bool = False) -> bool:
         """
         Imposta il valore di un'opzione.
 
@@ -740,6 +740,7 @@ class Configurazione:
                      un booleano, o una lista di valori se l'opzione è composta.
 
         :param force: Forza l'aggiornamento di un'impostazione, anche se essa è disabilitata.
+        :param salva: Esporta la configurazione salvandola a disco.
 
         :return: Success. Se l'id_opzione non è riconosciuto, restituisce False.
                  In caso contrario, chiama il metodo set dell'oggetto opzioni[id_opzione]
@@ -754,7 +755,12 @@ class Configurazione:
             logger.warning(f"Setter: id {id_opzione} non riconosciuto.")
             return False
 
-        return self.opzioni.get(id_opzione).set(dati, force)
+        res = self.opzioni.get(id_opzione).set(dati, force)
+
+        if salva:
+            self.esporta()
+
+        return res
 
     @beartype
     def aggiorna(self, configurazione: Dict, salva=True) -> bool:

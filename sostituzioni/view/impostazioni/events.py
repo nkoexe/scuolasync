@@ -66,7 +66,7 @@ def carica_file(dati):
 
     try:
         file.write_bytes(dati["data"])
-        configurazione.set(dati["id"], file_path)
+        configurazione.set(dati["id"], file_path, salva=True)
     except ValueError as e:
         emit("carica file errore", str(e))
         return
