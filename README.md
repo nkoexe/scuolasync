@@ -14,11 +14,7 @@ ScuolaSync is licensed under a dual license model.
 
 The program's source code is available under the GNU Affero General Public License version 3.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-See the full text of the GNU Affero General Public License in the [LICENSE](LICENSE) file.
+See the full text of the GNU AGPLv3 in the [LICENSE](LICENSE) file.
 
 
 ### Documentation, User Interface, and Graphic Assets
