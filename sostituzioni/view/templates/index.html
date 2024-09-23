@@ -29,7 +29,12 @@
       <img id="header-logo" src="{{ url_for('static', filename=configurazione.get('schoolheaderlogo')) }}" alt="Logo scuola">
     </a>
     <div id="header-separator"></div>
-    <h1 id="header-titolo">{{title}}</h1>
+    <!-- <h1 id="header-titolo">{{title}}</h1> -->
+    <h1 id="header-titolo">
+      <object type="image/svg+xml" data="{{ url_for('static', filename='images/scuolasync.svg') }}" onload="this.parentNode.replaceChild(this.contentDocument.documentElement, this);">
+        ScuolaSync
+      </object>
+    </h1>
     <div id="header-pulsanti">
       <button id="pulsante-installa" class="pulsante-header hidden"><span class="material-symbols-rounded" data-tooltip="Installa Applicazione"></span></button>
       {% if utente.permessi.impostazioni.write %}
@@ -62,7 +67,7 @@
           <h2 id="header-notizie-titolo">Notizie</h2>
           {% if utente.permessi.notizie.write %}
           <button id="pulsante-nuova-notizia" class="pulsante pulsante-inserimento" onclick="mostra_nuova_notizia()"><span class="material-symbols-rounded">add</span></butto>
-          {% endif %}
+            {% endif %}
         </div>
         <div id="notizie-container">
           <div id="notizie-messaggio-informativo"><span>Caricamento...</span></div>

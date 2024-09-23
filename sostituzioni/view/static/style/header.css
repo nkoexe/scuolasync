@@ -41,6 +41,26 @@
     view-transition-name: header-titolo;
 }
 
+/* fix flicker, wait for svg to load */
+#header-titolo:has(object) {
+    opacity: 0;
+}
+
+#header-titolo:has(svg) {
+    height: 100%;
+}
+
+#header-titolo svg {
+    padding: 10px 0 8px 0;
+    height: 100%;
+    width: min-content;
+    fill: white;
+}
+
+#header-titolo svg #scuolasync_s {
+    stroke: white !important;
+}
+
 #header-pulsanti {
     align-self: flex-end;
     display: flex;
