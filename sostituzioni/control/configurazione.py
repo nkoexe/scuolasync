@@ -676,8 +676,13 @@ class Configurazione:
         ordine_sezioni = configurazione_template.sezioni.keys()
         ordine_opzioni = configurazione_template.opzioni.keys()
 
-        self.sezioni.sort(key=lambda x: ordine_sezioni.index(x.id))
-        self.opzioni.sort(key=lambda x: ordine_opzioni.index(x.id))
+        try:
+            self.sezioni.sort(key=lambda x: ordine_sezioni.index(x.id))
+            self.opzioni.sort(key=lambda x: ordine_opzioni.index(x.id))
+        except ValueError:
+            logging.info(
+                "Configurazione locale ha impostazioni non presenti nel template."
+            )
 
         del configurazione_template
 
@@ -730,7 +735,9 @@ class Configurazione:
         return self.opzioni.get(id_opzione)
 
     @beartype
-    def set(self, id_opzione: str, dati: Any, force: bool = False, salva: bool = False) -> bool:
+    def set(
+        self, id_opzione: str, dati: Any, force: bool = False, salva: bool = False
+    ) -> bool:
         """
         Imposta il valore di un'opzione.
 
