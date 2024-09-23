@@ -85,7 +85,7 @@ def load_configurazione():
 
 
 def init_configurazione():
-    configurazione.load(ROOT_PATH / "database" / "configurazione.json.template")
+    configurazione.load(CONFIG_TEMPLATE)
 
     print("Inizializzazione configurazione di sistema.\n")
 
@@ -111,7 +111,10 @@ def init_configurazione():
         client_secret = text_input("OAuth 2.0 Client Secret di Microsoft: ")
         configurazione.set("msclientsecret", client_secret)
 
-    support_email = text_input("Indirizzo email che verrà indicato come contatto di supporto: ", allow_empty=True)
+    support_email = text_input(
+        "Indirizzo email che verrà indicato come contatto di supporto: ",
+        allow_empty=True,
+    )
     configurazione.set("supportemail", support_email)
 
     configurazione.esporta(CONFIG_FILE)
@@ -189,7 +192,9 @@ def init_database_utenti():
 
     crea_db_utenti()
     print("Database utenti creato.")
-    utente_admin = text_input("Inserisci l'email del primo amministratore che eseguirà l'accesso: ")
+    utente_admin = text_input(
+        "Inserisci l'email del primo amministratore che eseguirà l'accesso: "
+    )
     aggiungi_utente(utente_admin)
 
 
@@ -197,12 +202,13 @@ def init_database_utenti():
 
 
 def main():
-    global ROOT_PATH, CONFIG_FILE, configurazione
+    global ROOT_PATH, CONFIG_FILE, CONFIG_TEMPLATE, configurazione
     environ["SOSTITUZIONI_SETUP"] = "1"
 
     from sostituzioni.control.configurazione import (
         ROOT_PATH,
         CONFIG_FILE,
+        CONFIG_TEMPLATE,
         configurazione,
     )
 
