@@ -8,7 +8,7 @@ from sostituzioni.model.auth import (
     login_required,
     sso_login,
     logout_user,
-    GOOGLE_SSO_REQ_URI,
+    SSO_REQ_URI,
 )
 from sostituzioni.view.auth import auth
 
@@ -24,7 +24,7 @@ def login():
     # 3 lines of development speedup, remove in production pls ty
     # from sostituzioni.model.auth import authenticate_user
 
-    # authenticate_user("niccolo.rag@gmail.com")
+    # authenticate_user("niccolo.ragazzi@gandhimerano.com")
     # authenticate_user("bidelleria@gandhimerano.com")
     # return redirect(url_for("online.index"))
 
@@ -37,9 +37,9 @@ def login():
     )
 
 
-@auth.route("/googlesso")
-def googlessoredirect():
-    return redirect(GOOGLE_SSO_REQ_URI)
+@auth.route("/sso")
+def ssoredirect():
+    return redirect(SSO_REQ_URI)
 
 
 @auth.route("/loginredirect")

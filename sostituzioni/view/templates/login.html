@@ -37,7 +37,7 @@
             </svg><span>ync</span></h1>
         </div>
         <div id="loginbutton-frame">
-          <a href="{{ url_for('auth.googlessoredirect') }}" id="button-accedi">Accedi</a>
+          <a href="{{ url_for('auth.ssoredirect') }}" id="button-accedi">Accedi</a>
         </div>
         <div id="notes-frame">
           <p>{{ configurazione.get("loginpageparagraph") | safe }}</p>
