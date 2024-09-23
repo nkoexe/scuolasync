@@ -17,19 +17,33 @@ def backup():
     # create the new backup
     local_file = local_backup(local_backup_dir)
 
-    drive_service = service_account_login()
-    drive_folder_id = configurazione.get("backupdrivefolderid").valore
-
-    upload_to_drive(drive_service, local_file, drive_folder_id)
-
-    logger.info("Backup completed successfully.")
+    logger.info("Local backup completed successfully.")
 
     # get the previous backups
     local_backup_list = get_local_backups(local_backup_dir)
-    drive_backup_list = get_drive_backups(drive_service, drive_folder_id)
 
     # delete the old backups, duration can be set in the configuration
+    logger.debug("Deleting old backups from local storage..")
     delete_old_local_backups(local_backup_list)
+
+
+    # upload to Google Drive
+    drive_service = service_account_login()
+
+    if not drive_service:
+        logger.error("Errore nell'autenticazione con Google Drive")
+        return local_file
+
+    drive_folder_id = configurazione.get("backupdrivefolderid").valore
+
+    logger.debug("Uploading backup to Google Drive..")
+    upload_to_drive(drive_service, local_file, drive_folder_id)
+
+    logger.info("Backup to Google Drive completed successfully.")
+
+    logger.debug("Deleting old backups from Google Drive..")
+    drive_backup_list = get_drive_backups(drive_service, drive_folder_id)
+
     delete_old_drive_backups(drive_service, drive_backup_list)
 
     return local_file

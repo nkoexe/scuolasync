@@ -46,7 +46,7 @@ else:
 
     SSO_REQ_URI = OAUTH_CLIENT.prepare_request_uri(
         uri="https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
-        redirect_uri="http://localhost:5000/loginredirect",
+        redirect_uri=configurazione.get("redirecturi"),
         scope="openid email",
     )
     TOKEN_URI = "https://login.microsoftonline.com/common/oauth2/v2.0/token"
