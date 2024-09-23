@@ -156,6 +156,75 @@
       "default": "",
       "valore": ""
     },
+    "ssochoice": {
+      "titolo": "Gestore Single Sign-On",
+      "descrizione": "Scelta tra Google e Microsoft per quali account utilizzare per accedere al sistema.",
+      "sezione": "login",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "selezione",
+      "scelte": [
+        "Google",
+        "Microsoft"
+      ],
+      "default": 0,
+      "valore": 0
+    },
+    "gclientid": {
+      "titolo": "Google OAuth Client ID",
+      "descrizione": "",
+      "sezione": "login",
+      "disabilitato": true,
+      "nascosto": true,
+      "tipo": "testo",
+      "lunghezza_massima": null,
+      "default": "",
+      "valore": ""
+    },
+    "gclientsecret": {
+      "titolo": "Google OAuth Client Secret",
+      "descrizione": "",
+      "sezione": "login",
+      "disabilitato": true,
+      "nascosto": true,
+      "tipo": "testo",
+      "lunghezza_massima": null,
+      "default": "",
+      "valore": ""
+    },
+    "msclientid": {
+      "titolo": "Microsoft OAuth Client ID",
+      "descrizione": "",
+      "sezione": "login",
+      "disabilitato": true,
+      "nascosto": true,
+      "tipo": "testo",
+      "lunghezza_massima": null,
+      "default": "",
+      "valore": ""
+    },
+    "msclientsecret": {
+      "titolo": "Microsoft OAuth Client Secret",
+      "descrizione": "",
+      "sezione": "login",
+      "disabilitato": true,
+      "nascosto": true,
+      "tipo": "testo",
+      "lunghezza_massima": null,
+      "default": "",
+      "valore": ""
+    },
+    "redirecturi": {
+      "titolo": "Single Sign On Redirect URI",
+      "descrizione": "",
+      "sezione": "login",
+      "disabilitato": true,
+      "nascosto": true,
+      "tipo": "testo",
+      "lunghezza_massima": null,
+      "default": "",
+      "valore": ""
+    },
     "flasksessionlifetime": {
       "titolo": "Durata della sessione",
       "descrizione": "Minuti di inattività dopo i quali bisognerà eseguire nuovamente il login. Impostare a -1 per disabilitare il logout automatico.",
@@ -176,39 +245,6 @@
       "sezione": "login",
       "disabilitato": false,
       "nascosto": false,
-      "tipo": "testo",
-      "lunghezza_massima": null,
-      "default": "",
-      "valore": ""
-    },
-    "oauthclientid": {
-      "titolo": "Google OAuth Client ID",
-      "descrizione": "",
-      "sezione": "login",
-      "disabilitato": true,
-      "nascosto": true,
-      "tipo": "testo",
-      "lunghezza_massima": null,
-      "default": "",
-      "valore": ""
-    },
-    "oauthclientsecret": {
-      "titolo": "Google OAuth Client Secret",
-      "descrizione": "",
-      "sezione": "login",
-      "disabilitato": true,
-      "nascosto": true,
-      "tipo": "testo",
-      "lunghezza_massima": null,
-      "default": "",
-      "valore": ""
-    },
-    "redirecturi": {
-      "titolo": "Google OAuth Redirect URI",
-      "descrizione": "",
-      "sezione": "login",
-      "disabilitato": true,
-      "nascosto": true,
       "tipo": "testo",
       "lunghezza_massima": null,
       "default": "",
