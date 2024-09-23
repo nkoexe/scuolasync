@@ -203,7 +203,7 @@ def init_database_utenti():
 
 def main():
     global ROOT_PATH, CONFIG_FILE, CONFIG_TEMPLATE, configurazione
-    environ["SOSTITUZIONI_SETUP"] = "1"
+    environ["SCUOLASYNC_SETUP"] = "1"
 
     from sostituzioni.control.configurazione import (
         ROOT_PATH,
