@@ -612,7 +612,12 @@ class Configurazione:
             ]
             # self.shell_commands["check_update"] = ["echo", "demo"]
 
+    @beartype
     def load(self, file: Path = CONFIG_FILE):
+        if not file.exists():
+            logger.error(f"File di configurazione non trovato: {file}")
+            return False
+
         with open(file, encoding="utf-8") as configfile:
             logger.debug("Caricamento file di configurazione..")
             self.data = load(configfile)
@@ -646,6 +651,8 @@ class Configurazione:
         )
         self.set("version", v, force=True)
 
+        return True
+
     def applica_aggiornamenti(self):
         """
         Funzione che viene eseguita allo startup, per aggiornare sezioni e opzioni
@@ -653,7 +660,13 @@ class Configurazione:
         """
         # Carica la configurazione del template
         configurazione_template = Configurazione()
-        configurazione_template.load(CONFIG_TEMPLATE)
+        ok = configurazione_template.load(CONFIG_TEMPLATE)
+
+        if not ok:
+            logger.error(
+                "Errore durante il caricamento del template, impossibile applicare aggiornamenti."
+            )
+            return False
 
         for sezione_template in configurazione_template.sezioni:
             # Se la sezione è già presente nella configurazione locale
@@ -819,6 +832,13 @@ class Configurazione:
 
 configurazione = Configurazione()
 
-if "SOSTITUZIONI_SETUP" not in os.environ:
-    configurazione.load()
+if "SCUOLASYNC_SETUP" not in os.environ:
+    ok = configurazione.load()
+
+    if not ok:
+        logger.error(
+            "Configurazione di sistema non caricata. Controllare la posizione del file, oppure eseguire `python -m sostituzioni.setup` per inizializzare il sistema."
+        )
+        exit(1)
+
     configurazione.applica_aggiornamenti()
