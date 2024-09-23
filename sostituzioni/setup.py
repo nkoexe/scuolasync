@@ -27,15 +27,41 @@ def text_input(question: str, allow_empty: bool = False):
         return answer
 
 
+def select_input(question: str, options: list):
+    while True:
+        print(question)
+        for i, option in enumerate(options):
+            print(f"{i+1}. {option}")
+        answer = input("> ")
+
+        if answer.isdigit():
+            try:
+                answer = int(answer)
+            except ValueError:
+                print("Inserisci un numero valido.")
+                continue
+            if answer < 1 or answer > len(options):
+                print("Inserisci un numero valido.")
+                continue
+            return options[answer - 1]
+
+        elif answer in options:
+            return answer
+
+        else:
+            print("Inserisci un numero valido.")
+            continue
+
+
 # //////////////////////////////
 
 
 def load_configurazione():
     print(
         """
-╔═══════════════════════════════════╗
-║ Configurazione del sistema        ║
-╚═══════════════════════════════════╝
+╔═════════════════════════════════════════╗
+║ Configurazione del sistema              ║
+╚═════════════════════════════════════════╝
 """
     )
 
@@ -61,11 +87,36 @@ def load_configurazione():
 def init_configurazione():
     configurazione.load(ROOT_PATH / "database" / "configurazione.json.template")
 
-    print("Inizializzazione configurazione di sistema.")
+    print("Inizializzazione configurazione di sistema.\n")
+
+    sso_choice = select_input(
+        "Quale gestore di Single Sign On vuoi utilizzare?", ["Google", "Microsoft"]
+    )
+
+    if sso_choice == "Google":
+        configurazione.set("ssochoice", 0)
+
+        client_id = text_input("OAuth 2.0 Client ID di Google: ")
+        configurazione.set("gclientid", client_id)
+
+        client_secret = text_input("OAuth 2.0 Client Secret di Google: ")
+        configurazione.set("gclientsecret", client_secret)
+
+    elif sso_choice == "Microsoft":
+        configurazione.set("ssochoice", 1)
+
+        client_id = text_input("OAuth 2.0 Client ID di Microsoft: ")
+        configurazione.set("msclientid", client_id)
+
+        client_secret = text_input("OAuth 2.0 Client Secret di Microsoft: ")
+        configurazione.set("msclientsecret", client_secret)
+
+    support_email = text_input("Indirizzo email che verrà indicato come contatto di supporto: ", allow_empty=True)
+    configurazione.set("supportemail", support_email)
 
     configurazione.esporta(CONFIG_FILE)
 
-    print("Configurazione di sistema completata.")
+    print("\nConfigurazione di sistema completata.")
 
 
 # //////////////////////////////
@@ -75,9 +126,9 @@ def load_database():
 
     print(
         """
-╔═══════════════════════════════════╗
-║ Configurazione del database       ║
-╚═══════════════════════════════════╝
+╔═════════════════════════════════════════╗
+║ Configurazione del database             ║
+╚═════════════════════════════════════════╝
 """
     )
 
@@ -111,9 +162,9 @@ def load_database_utenti():
 
     print(
         """
-╔════════════════════════════════════════╗
-║ Configurazione del database di utenti  ║
-╚════════════════════════════════════════╝
+╔═════════════════════════════════════════╗
+║ Configurazione del database di utenti   ║
+╚═════════════════════════════════════════╝
 """
     )
 
@@ -138,7 +189,7 @@ def init_database_utenti():
 
     crea_db_utenti()
     print("Database utenti creato.")
-    utente_admin = text_input("Inserisci l'email dell'utente admin: ")
+    utente_admin = text_input("Inserisci l'email del primo amministratore che eseguirà l'accesso: ")
     aggiungi_utente(utente_admin)
 
 
@@ -157,9 +208,9 @@ def main():
 
     print(
         """
-╔════════════════════════════════════════╗
-║           ScuolaSync Setup             ║
-╚════════════════════════════════════════╝
+╔═════════════════════════════════════════╗
+║            ScuolaSync Setup             ║
+╚═════════════════════════════════════════╝
 """
     )
 
@@ -170,9 +221,9 @@ def main():
     load_database()
     load_database_utenti()
 
-    print("Installazione completata.")
+    print("\n\nInstallazione completata!")
 
-    print("Per avviare il server di test, eseguire il comando python -m sostituzioni")
+    print("Per avviare il server di test, eseguire il comando `python -m sostituzioni`")
 
 
 if __name__ == "__main__":

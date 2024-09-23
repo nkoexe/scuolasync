@@ -158,7 +158,7 @@
     },
     "ssochoice": {
       "titolo": "Gestore Single Sign-On",
-      "descrizione": "Scelta tra Google e Microsoft per quali account utilizzare per accedere al sistema.",
+      "descrizione": "Scelta se utilizzare account Google oppure Microsoft per eseguire l'accesso al sistema.",
       "sezione": "login",
       "disabilitato": false,
       "nascosto": false,
@@ -274,7 +274,7 @@
     },
     "controlloerroriauleescluse": {
       "titolo": "Aule escluse dal controllo sovrapposizioni",
-      "descrizione": "Nel controllo per sovrapposizioni, ammettere sovrapposizioni in queste aule. Esempio di caso d'uso sono le zone per la sorveglianza a pausa, nelle quali ci sono più insegnanti contemporaneamente.",
+      "descrizione": "Nel controllo per sovrapposizioni, ammettere sovrapposizioni in queste aule. Esempio di caso d'uso sono le zone per la sorveglianza a pausa, nelle quali ci sono più insegnanti contemporaneamente. (In via di sviluppo, per il momento utilizzare il file di configurazione)",
       "sezione": "visualizzazioneonline",
       "disabilitato": false,
       "nascosto": false,
