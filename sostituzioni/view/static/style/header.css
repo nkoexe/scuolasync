@@ -39,6 +39,9 @@
     font-weight: normal;
     margin: auto 10px;
     text-wrap: nowrap;
+}
+
+#header-titolo:not(:has(object)):not(:has(svg)) {
     view-transition-name: header-titolo;
 }
 
