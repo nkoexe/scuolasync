@@ -94,8 +94,8 @@
   </div>
   <script>
     const messaggio_nessuna_sostituzione = "{{ configurazione.get('displaynosostituzionimsg') }}"
-    const giorni_futuri_da_mostrare = {{ configurazione.get('displayrangegiornifuturi').valore }}
-    const giorni_futuri_da_mostrare_lavorativi = Boolean({{ configurazione.get('displayrangegiornifuturi').unita }})
+    const giorni_da_mostrare = {{ configurazione.get('displayrangegiornifuturi').valore }}
+    const giorni_da_mostrare_lavorativi = Boolean({{ configurazione.get('displayrangegiornifuturi').unita }})
     const tempo_scroll_eventi = {{ configurazione.get('displaytemposcrolleventi') }} * 1000
     const tempo_scroll_sostituzioni = {{ configurazione.get('displaytemposcrollsostituzioni') }} * 1000
 

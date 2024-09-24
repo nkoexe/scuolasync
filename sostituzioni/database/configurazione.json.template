@@ -295,8 +295,8 @@
       "valore": "Nessuna supplenza in vista!"
     },
     "displayrangegiornifuturi": {
-      "titolo": "Numero di giorni da mostrare",
-      "descrizione": "Mostra le sostituzioni sul display soltanto per questo numero di giorni futuri, non mostrare quelle oltre. Il giorno corrente è escluso - se l'impostazione è a 2 ed è lunedí, si mostreranno le sostituzioni fino a mercoledí. Impostare a -1 per disabilitare e mostrare tutte le sostituzioni future.",
+      "titolo": "Numero di Giorni da Visualizzare",
+      "descrizione": "Visualizza le sostituzioni per il numero di giorni futuri specificato, incluso il giorno corrente. Ad esempio, impostando a 3, se il giorno corrente è lunedì verranno mostrate le sostituzioni fino a mercoledì incluso. Viene considerato giorno lavorativo un qualsiasi giorno che abbia una sostituzione. Imposta a -1 per disabilitare il limite e mostrare tutte le sostituzioni future.",
       "sezione": "visualizzazionefisica",
       "disabilitato": false,
       "nascosto": false,
