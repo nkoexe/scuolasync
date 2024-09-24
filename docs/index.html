@@ -83,15 +83,16 @@
       fill: var(--base-color);
     }
 
-    /* @media (prefers-color-scheme: dark) {
+    @media (prefers-color-scheme: dark) {
       .app-name {
-        filter: hue-rotate(0.5turn) brightness(1.7) invert(1);
+        filter: hue-rotate(0.5turn) brightness(2) invert(1);
       }
-    }*/
+    }
   </style>
   <script>
     window.$docsify = {
       name: 'ScuolaSync',
+      logo: 'images/scuolasync.svg',
       repo: 'nkoexe/scuolasync',
       coverpage: true,
       loadSidebar: "sidebar.md",
@@ -125,6 +126,9 @@
   <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-ini.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-systemd.min.js"></script>
 </body>
 
 </html>
