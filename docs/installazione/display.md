@@ -38,7 +38,7 @@ eseguire il login
 
 Crea il file `/etc/systemd/sleep.conf.d/nosuspend.conf`
 
-```conf
+```ini
 [Sleep]
 AllowSuspend=no
 AllowHibernation=no
@@ -49,7 +49,7 @@ AllowHybridSleep=no
 Se utilizzando un laptop, previeni la sospensione quando si abbassa lo schermo.
 Modifica il file `/etc/systemd/logind.conf`:
 
-```conf
+```ini
 [Login]
 HandleLidSwitch=ignore
 HandleLidSwitchDocked=ignore
@@ -93,7 +93,7 @@ Creazione file di configurazione di lightdm per il login automatico all'accensio
 `/etc/lightdm/lightdm.conf`
 Impostare `UTENTE` allo username effettivo.
 
-```conf
+```ini
 [SeatDefaults]
 autologin-user=UTENTE
 user-session=openbox

@@ -1,0 +1,9 @@
+:root {
+  --color-accent: #3c3d45;
+  --color-pulsante: #262b32;
+  --color-evento-urgente: #ffdfaa;
+  --color-sostituzioni-incompleta: #1d529f36;
+  --color-sostituzioni-sovrapposizioni: #ff66004a;
+  --color-danger: #a72525;
+  --color-selezione-hover-delete-bg: #a72525;
+}

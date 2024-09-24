@@ -1,10 +1,10 @@
 :root {
     --color-background: #fff8f8;
-    --color-sezioni: #C00F19;
+    --color-sezioni: var(--color-accent);
     --color-opzioni: #ebebeb;
-    --color-footer: #C00F19;
-    --color-text-sezione: #fff;
-    --color-text-opzione: #fff;
+    --color-footer: var(--color-accent);
+    --color-text-sezione: var(--color-accent-text);
+    --color-text-opzione: var(--color-accent-text);
     --color-background-opzione: #fff;
     --color-background-opzione-disabled: #ffffffaa;
     --color-text-opzione: #000;
