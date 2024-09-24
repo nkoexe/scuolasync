@@ -220,7 +220,8 @@ class Opzione:
                 self.tipo_valori = template.tipo_valori
 
             case self.FILE:
-                self.path = template.path
+                # temp fix per logo che scompare occasionalmente?? non riesco a replicare quindi questo sta qui
+                # self.path = template.path
                 self.mime = template.mime
 
     def __eq__(self, value: object) -> bool:
