@@ -244,7 +244,7 @@
       "descrizione": "La chiave di sicurezza del sistema, utilizzata per gestire le sessioni. Se questo campo è vuoto, verrà utilizzata una chiave casuale. Consigliato di <strong>lasciare vuoto per migliore sicurezza</strong>.",
       "sezione": "login",
       "disabilitato": false,
-      "nascosto": false,
+      "nascosto": true,
       "tipo": "testo",
       "lunghezza_massima": null,
       "default": "",
