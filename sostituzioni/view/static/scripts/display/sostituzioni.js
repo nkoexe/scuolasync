@@ -77,24 +77,38 @@ function refresh_sostituzioni() {
 	let now = new Date()
 	let now_timestamp = now.getTime()
 	now.setHours(0, 0, 0, 0)
+	let today_timestamp = now.getTime()
 	let max_timestamp = null
 
 	// Tieni solo le sostituzioni entro il range di date impostato
-	// Se il numero di giorni futuri è -1 bypassa il filtro
-	if (giorni_futuri_da_mostrare >= 0) {
-		max_timestamp = (now_timestamp + giorni_futuri_da_mostrare * 24 * 60 * 60 * 1000)
-		if (giorni_futuri_da_mostrare_lavorativi) {
-			// Interpreta i giorni futuri soltanto come lavorativi, ignorando Sabato e Domenica
-			let weekday = now.getDay()
-			let day_counter = giorni_futuri_da_mostrare
-			while (day_counter >= 0) {
-				if (weekday == 0 || weekday == 6) {
-					// Sabato o Domenica, quindi aggiungi un loop per controllare il giorno successivo
+	// Se il numero di giorni da mostrare è -1 bypassa il filtro
+	if (giorni_da_mostrare >= 0) {
+		max_timestamp = (today_timestamp + (giorni_da_mostrare - 1) * 24 * 60 * 60 * 1000)
+
+		if (giorni_da_mostrare_lavorativi) {
+			// mostra un numero di giorni lavorativi
+			// Un giorno lavorativo è un giorno che ha una sostituzione, questo permette di visualizzare eventualmente anche sabato e domenica
+			let day_counter = 0  // counter per giorni lavorativi
+			let day_check = 0  // counter incrementale per giorni controllati
+			let lista_date = sostituzioni_visualizzate.map(sostituzione => sostituzione.data * 1000)
+
+			// Non abbiamo raggiunto il limite di giorni lavorativi da mostrare
+			while (day_counter < giorni_da_mostrare) {
+				// check se il giorno è nel range di date
+				if (lista_date.includes(today_timestamp + day_check * 24 * 60 * 60 * 1000)) {
+					// Abbiamo trovato un giorni lavorativo!
 					day_counter++
+				} else {
+					// Giorno che non ha nessuna sostituzione, quindi itera nuovamente per controllare il giorno successivo
 					max_timestamp += 24 * 60 * 60 * 1000
+
+					// Cap di un anno. Teoricamente non si dovrebbe mai arrivare qui ma mica mi fido io
+					if (day_check > 365) {
+						break
+					}
 				}
-				weekday = (weekday + 1) % 7
-				day_counter--
+				// fine giorno, sia lavorativo che non, quindi incrementa il contatore
+				day_check++
 			}
 		}
 	}
@@ -105,7 +119,7 @@ function refresh_sostituzioni() {
 
 		// Conferma che la sostituzione non sia passata
 		// La sottrazione è perché le sostituzioni di oggi sono salvate allo timestamp di oggi a mezzanotte
-		if (sostituzione.data * 1000 < (now_timestamp - 24 * 60 * 60 * 1000)) {
+		if (sostituzione.data * 1000 < (today_timestamp)) {
 			return false
 		}
 
@@ -121,6 +135,7 @@ function refresh_sostituzioni() {
 				if (ora_predefinita) {
 					const [hour, minute] = (ora_predefinita.ora_fine_default).split(":")
 					const timestamp = now.setHours(parseInt(hour), parseInt(minute))
+					// La sostituzione viene mostrata fino a 5 minuti dalla sua fine
 					if (timestamp - 5 * 60 * 1000 <= now_timestamp) { return false }
 				} else {
 					return false
@@ -147,7 +162,7 @@ function refresh_sostituzioni() {
 		sostituzioni_visualizzate.forEach(element => {
 			let oggi = false
 
-			if (element.data * 1000 < now_timestamp) {
+			if (element.data * 1000 < today_timestamp) {
 				oggi = true
 			}
 

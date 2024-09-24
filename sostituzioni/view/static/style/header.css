@@ -1,5 +1,6 @@
 :root {
     --color-header-bg: #C00F19;
+    --color-header-fg: #ffffff;
 }
 
 #header {
@@ -7,7 +8,7 @@
     width: 100%;
     height: 65px;
     background-color: var(--color-header-bg);
-    color: white;
+    color: var(--color-header-fg);
     z-index: 100;
 }
 
@@ -31,14 +32,44 @@
     width: 3px;
     margin: auto 15px;
     border-radius: 2px;
-    background-color: white;
+    background-color: var(--color-header-fg);
 }
 
 #header-titolo {
     font-weight: normal;
     margin: auto 10px;
     text-wrap: nowrap;
+}
+
+#header-titolo:not(:has(object)):not(:has(svg)) {
     view-transition-name: header-titolo;
+}
+
+/* fix flicker, wait for svg to load */
+#header-titolo:has(object) {
+    opacity: 0;
+}
+
+#header-titolo:has(svg) {
+    height: 100%;
+}
+
+#header-titolo svg {
+    padding: 10px 0 8px 0;
+    height: 100%;
+    width: min-content;
+    fill: var(--color-header-fg);
+}
+
+#header-titolo svg #scuolasync_s {
+    stroke: var(--color-header-fg) !important;
+    stroke-dasharray: 300 !important;
+    transition: none;
+}
+
+#header-titolo:has(svg):hover #scuolasync_s {
+    stroke-dashoffset: 600;
+    transition: stroke-dashoffset .5s .3s;
 }
 
 #header-pulsanti {
@@ -66,7 +97,7 @@
 
 
 #header-pulsanti span {
-    color: white;
+    color: var(--color-header-fg);
     font-size: 30px;
     margin: auto;
     padding: 8px;
@@ -80,7 +111,7 @@
     width: 1000px;
     height: 1000px;
     z-index: 132456;
-    background-color: #C00F19;
+    background-color: var(--color-header-bg);
     border-radius: 100vw;
     transition: all 0.35s;
 }
