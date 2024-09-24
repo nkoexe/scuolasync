@@ -405,7 +405,6 @@ option:disabled {
     align-items: center;
 }
 
-
 #filtro-opzioni-esporta-sostituzioni>div {
     display: flex;
     align-items: center;
@@ -980,7 +979,6 @@ input[type="date"].sostituzioni-filtro-data-opzione::before {
     font-style: italic;
 }
 
-
 /* CONTEXT MENU */
 #context-menu {
     position: absolute;
@@ -1066,7 +1064,6 @@ input[type="date"].sostituzioni-filtro-data-opzione::before {
     background-color: var(--color-selezione-hover-delete-bg);
     color: var(--color-selezione-hover-delete-fg);
 }
-
 
 /* MOBILE */
 @media (max-width: 1000px) {
