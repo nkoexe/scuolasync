@@ -143,6 +143,7 @@ class Opzione:
                 self.scelte: List[str] = dati.get("scelte", [""])
                 self.default: int = dati.get("default", 0)
                 self.valore: int = dati.get("valore", 0)
+                self.scelta = self.scelte[self.valore]
 
             case self.PERCORSO:
                 self.scelte_radice: List[str] = dati.get("scelte_radice", [""])
@@ -417,6 +418,7 @@ class Opzione:
                     )
 
                 self.valore = dati
+                self.scelta = self.scelte[self.valore]
                 return True
 
             case self.PERCORSO:

@@ -48,9 +48,9 @@ button {
 .notizia a,
 .evento a,
 #sostituzioni-info-container a {
-    color: #0074D9;
+    color: var(--color-link);
     text-decoration: none;
-    background-image: linear-gradient(to right, #0074D9, #0074D9);
+    background-image: linear-gradient(to right, var(--color-link), var(--color-link));
     background-size: 0 2px;
     background-position: 100% 100%;
     background-repeat: no-repeat;
@@ -70,9 +70,9 @@ button {
     position: relative;
     width: 20px;
     height: 20px;
-    color: black;
+    color: var(--color-element-border);
     background-color: inherit;
-    border: 1px solid black;
+    border: 1px solid var(--color-element-border);
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.15s;
@@ -95,8 +95,8 @@ button {
 
 .checkbox:checked {
     color: var(--color-accent-text) !important;
-    border-color: var(--color-accent) !important;
-    background-color: var(--color-accent) !important;
+    border-color: var(--color-pulsante) !important;
+    background-color: var(--color-pulsante) !important;
 }
 
 .checkbox:checked::before {
@@ -172,8 +172,8 @@ option:disabled {
     width: max-content;
     max-width: 250px;
     opacity: 0;
-    background-color: black;
-    color: #fff;
+    background-color: var(--color-tooltip-bg);
+    color: var(--color-tooltip-fg);
     padding: 5px 10px;
     border-radius: 5px;
     z-index: 110;
@@ -195,13 +195,13 @@ option:disabled {
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: black transparent transparent transparent;
+    border-color: var(--color-tooltip-bg) transparent transparent transparent;
 }
 
 #tooltip.tooltip-bottom #tooltip-arrow {
     top: unset;
     bottom: 100%;
-    border-color: transparent transparent black transparent;
+    border-color: transparent transparent var(--color-tooltip-bg) transparent;
 }
 
 /* MAIN GRID  */
@@ -418,7 +418,7 @@ option:disabled {
     margin: auto;
     align-items: center;
     justify-content: center;
-    background-color: var(--color-accent);
+    background-color: var(--color-pulsante);
     color: var(--color-accent-text);
 }
 
@@ -446,7 +446,7 @@ option:disabled {
 }
 
 .pulsante-inserimento {
-    background-color: var(--color-accent);
+    background-color: var(--color-pulsante-nuovo);
     color: var(--color-accent-text);
 }
 
@@ -673,7 +673,7 @@ input[type="date"].sostituzioni-filtro-data-opzione::before {
     outline: none;
     border: none;
     background-color: inherit;
-    color: white;
+    color: var(--color-sostituzioni-filtri-fg);
     font-size: 16px;
     font-weight: bold;
 }
@@ -910,7 +910,7 @@ input[type="date"].sostituzioni-filtro-data-opzione::before {
 
 .evento.urgente {
     padding: 15px 15px;
-    background-color: #f0c0bc;
+    background-color: var(--color-evento-urgente);
     border-radius: 0.5rem;
 }
 
@@ -1053,7 +1053,7 @@ input[type="date"].sostituzioni-filtro-data-opzione::before {
 #dialog-conferma-elimina-pulsanti button {
     margin: 5px;
     border-radius: 5px;
-    border: 1px solid black;
+    border: 1px solid var(--color-element-border);
     padding: 15px 30px;
     font-size: 15px;
     background-color: var(--color-selezione-bg);
@@ -1069,8 +1069,6 @@ input[type="date"].sostituzioni-filtro-data-opzione::before {
 
 
 /* MOBILE */
-
-
 @media (max-width: 1000px) {
     #main-window {
         overflow: auto;

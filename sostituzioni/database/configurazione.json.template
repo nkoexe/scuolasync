@@ -41,6 +41,20 @@
       "default": "ScuolaSync",
       "valore": "ScuolaSync"
     },
+    "colortheme": {
+      "titolo": "Tema",
+      "descrizione": "Scegli il tema di colori per l'interfaccia utente.",
+      "sezione": "sistema",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "selezione",
+      "scelte": [
+        "Gandhi",
+        "Lame"
+      ],
+      "default": 0,
+      "valore": 0
+    },
     "sysstate": {
       "titolo": "Stato del sistema",
       "descrizione": "Utilizzare la modalità \"In Produzione\" per l'utilizzo regolare. Utilizzare modalità \"In Manutenzione\" per il debug del sistema.",

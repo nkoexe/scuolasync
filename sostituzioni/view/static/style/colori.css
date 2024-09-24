@@ -14,17 +14,24 @@
     --color-warning-fg: #ffffff;
     --color-info: #0d8ec5;
     --color-info-fg: #ffffff;
-    --color-eventi-bg: #eaeaea;
-    --color-notizie-bg: #eaeaea;
+    --color-header-bg: var(--color-accent);
+    --color-header-fg: var(--color-accent-text);
+    --color-pulsante: var(--color-accent);
+    --color-pulsante-nuovo: var(--color-pulsante);
+    --color-link: #0074D9;
+    --color-eventi-bg: var(--color-sostituzioni-bg);
+    --color-evento-urgente: #f0c0bc;
+    --color-notizie-bg: var(--color-sostituzioni-bg);
     --color-sostituzioni-bg: #eaeaea;
-    --color-sostituzioni-filtri-bg: #C00F19;
-    --color-sostituzioni-filtri-fg: #ffffff;
+    --color-sostituzioni-filtri-bg: var(--color-accent);
+    --color-sostituzioni-filtri-fg: var(--color-accent-text);
     --color-sostituzioni-filtri-placeholder: #ffffffd0;
     --color-sostituzioni-lista1: #f3f3f3;
     --color-sostituzioni-lista2: #fdfdfd;
     --color-sostituzioni-incompleta: #5eaddc36;
     --color-sostituzioni-sovrapposizioni: #ff001136;
     --color-gestionedati-modificato: #ffbc0069;
+    --color-element-border: #000000;
     --color-shadow: #00000055;
     --color-input-border: #bababa;
     --color-selezione-bg: #F3F6F8;
@@ -32,6 +39,8 @@
     --color-selezione-hover-bg: #0000001b;
     --color-selezione-hover-delete-bg: #C00F19;
     --color-selezione-hover-delete-fg: #ffffff;
+    --color-tooltip-bg: #000000;
+    --color-tooltip-fg: #ffffff;
     --color-scrollbar: #00000046;
     --color-scrollbar-hover: #00000059;
 }
