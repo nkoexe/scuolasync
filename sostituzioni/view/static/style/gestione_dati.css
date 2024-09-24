@@ -60,7 +60,7 @@
 }
 
 #pulsante-chiudi-gestione-dati:hover {
-    background-color: #ce0c0c;
+    background-color: var(--color-danger);
     color: white;
 }
 
