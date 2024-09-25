@@ -162,7 +162,7 @@ function refresh_sostituzioni() {
 		sostituzioni_visualizzate.forEach(element => {
 			let oggi = false
 
-			if (element.data * 1000 < today_timestamp) {
+			if (element.data * 1000 < now_timestamp) {
 				oggi = true
 			}
 

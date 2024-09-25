@@ -15,6 +15,7 @@
   {% if configurazione.get('displayqrcode') %}
   <link rel="stylesheet" href="{{ url_for('static', filename='style/display_qr.css') }}">
   {% endif %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/theme/'+configurazione.get('colortheme').scelta.lower()+'.css') }}">
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
 </head>
 
