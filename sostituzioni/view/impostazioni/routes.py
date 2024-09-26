@@ -127,6 +127,7 @@ def version():
 @role_required("impostazioni.write")
 def log():
     import subprocess
+    from sostituzioni.control.configurazione import SYSTEMD_SERVICE
 
     return (
         subprocess.check_output(
@@ -135,7 +136,7 @@ def log():
                 "--output",
                 "cat",
                 "-u",
-                "sostituzioni",
+                SYSTEMD_SERVICE,
                 "-n",
                 "1000",
                 "--no-pager",
