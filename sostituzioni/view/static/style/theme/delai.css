@@ -1,0 +1,10 @@
+:root {
+  --color-accent: #B12139;
+  --color-pulsante: #B12139;
+  --color-evento-urgente: #ffcbcc;
+  /* --color-sostituzioni-incompleta: #1d529f36; */
+  /* --color-sostituzioni-sovrapposizioni: #ff2f0030; */
+  /* --color-sostituzioni-oggi: #cce1f7; */
+  --color-danger: #B12139;
+  --color-selezione-hover-delete-bg: #B12139;
+}

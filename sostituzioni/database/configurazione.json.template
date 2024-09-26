@@ -50,6 +50,7 @@
       "tipo": "selezione",
       "scelte": [
         "Gandhi",
+        "Delai",
         "Gre",
         "Lame"
       ],
