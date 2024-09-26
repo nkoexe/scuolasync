@@ -307,12 +307,11 @@ ul {
 }
 
 #sostituzioni-lista .sostituzione.oggi {
-    background-color: #f0c0bc;
-    margin: 2px 0;
+    background-color: var(--color-sostituzioni-oggi);
 }
 
 #sostituzioni-lista .sostituzione.oggi div.sostituzione-data {
-    border-right-color: #e5aeae;
+    border-right-color: #0000000c;
 }
 
 /* fix radius del primo elemento a sinistra */
@@ -399,7 +398,7 @@ ul {
 
 .evento.urgente {
     padding: 1vw;
-    background-color: #f0c0bc;
+    background-color: var(--color-evento-urgente);
     border-radius: 0.5vw;
 }
 

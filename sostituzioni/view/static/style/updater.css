@@ -7,8 +7,9 @@
 
 html,
 body {
-    width: 99%;
-    height: 90%;
+    width: 100%;
+    height: 100%;
+    margin: 0;
 }
 
 a {
@@ -23,12 +24,6 @@ a {
     padding: 0 5%;
 }
 
-@media (max-width: 1300px) {
-    #main-container {
-        grid-template-columns: 100%;
-    }
-}
-
 #text-container {
     padding: 5%;
     display: flex;
@@ -37,7 +32,6 @@ a {
 
 #version {
     flex: 1;
-    text-align: end;
     display: flex;
 }
 
@@ -58,7 +52,7 @@ a {
     right: 0;
     width: 0;
     height: 2px;
-    background-color: #c00f19;
+    background-color: var(--color-accent);
     transition: width 0.3s;
 }
 
@@ -82,6 +76,7 @@ a {
 #title {
     font-size: 3rem;
     font-weight: 700;
+    margin: 3vh 0;
 }
 
 #button-container {
@@ -97,7 +92,7 @@ a {
     width: 200px;
     max-width: 100%;
     border-radius: 70px;
-    background-color: #c00f19;
+    background-color: var(--color-pulsante);
     transition: all 0.3s, box-shadow .5s ease-out;
     user-select: none;
 }
@@ -120,7 +115,7 @@ a {
     opacity: 0;
     font-size: 3rem;
     font-weight: 700;
-    color: white;
+    color: var(--color-accent-text);
     transition: all 0.3s, color 0s;
 }
 
@@ -137,20 +132,6 @@ a {
     text-wrap: nowrap;
     min-width: auto;
     transition: inherit;
-}
-
-@media (max-width: 500px) {
-    #button-text-container-inner {
-        font-size: 2rem;
-    }
-}
-
-@media (max-width: 350px) {
-    #button-text-container-inner {
-        width: 100%;
-        flex-direction: column;
-        text-align: center;
-    }
 }
 
 #button-text {}
@@ -180,7 +161,7 @@ a {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    border: 10px solid white;
+    border: 10px solid var(--color-accent-text);
     border-top-color: transparent;
     animation: loading 1s cubic-bezier(.2, .45, 1, .8) infinite;
 }
@@ -206,5 +187,40 @@ a {
 
     100% {
         opacity: 1;
+    }
+}
+
+@media (max-width: 1300px) {
+    #main-container {
+        grid-template-columns: 100%;
+        padding: 0 5vw;
+    }
+
+    #title {
+        font-size: 10vw;
+    }
+}
+
+@media (max-width: 500px) {
+
+    #description,
+    #version {
+        font-size: 4vw;
+    }
+
+    #button-text-container-inner {
+        font-size: 10vw;
+    }
+}
+
+@media (max-width: 350px) {
+    #button-text-container-inner {
+        width: 100%;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    #button-text {
+        display: none;
     }
 }

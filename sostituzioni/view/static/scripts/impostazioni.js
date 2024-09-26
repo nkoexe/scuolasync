@@ -20,9 +20,7 @@ for (let index = 0; index < sezioni.length; index++) {
   });
 }
 
-
 //////////////////////////////
-
 
 function elimina_file(id) {
   let file_container = document.getElementById(id);
@@ -73,10 +71,16 @@ for (element of document.querySelectorAll(".opzione-file-dropzone")) {
 }
 
 
-function modificato(id) {
-  if (!modifiche.includes(id)) {
-    modifiche.push(id);
+function modificato(element) {
+  if (!modifiche.includes(element)) {
+    modifiche.push(element);
     mostra_pulsante_applica();
+  }
+
+  switch (element.id) {
+    case "colortheme":
+      document.querySelector('#colortheme_css').href = 'static/style/theme/' + element.querySelector("select").value + '.css';
+      break;
   }
 }
 
