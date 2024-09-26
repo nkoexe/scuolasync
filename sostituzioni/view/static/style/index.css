@@ -422,7 +422,7 @@ option:disabled {
 }
 
 #pulsante-scarica-esporta-sostituzioni .icon {
-    background-color: var(--color-accent);
+    background-color: var(--color-pulsante);
     font-size: 30px;
 }
 
