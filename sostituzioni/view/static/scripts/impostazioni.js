@@ -22,24 +22,6 @@ for (let index = 0; index < sezioni.length; index++) {
 
 //////////////////////////////
 
-const colortheme = document.querySelector("#colortheme select");
-
-colortheme.onchange = () => {
-  const head = document.querySelector('head');
-  let element = document.querySelector('#colortheme_css')
-  if (!element) {
-    element = document.createElement('link');
-    element.id = 'colortheme_css';
-    element.rel = 'stylesheet';
-    element.type = 'text/css';
-    element.media = 'all';
-    head.appendChild(element);
-  }
-  element.href = 'static/style/theme/' + colortheme.value + '.css';
-}
-
-//////////////////////////////
-
 function elimina_file(id) {
   let file_container = document.getElementById(id);
   file_container.querySelector(".img-container").classList.add("hidden");
@@ -89,10 +71,16 @@ for (element of document.querySelectorAll(".opzione-file-dropzone")) {
 }
 
 
-function modificato(id) {
-  if (!modifiche.includes(id)) {
-    modifiche.push(id);
+function modificato(element) {
+  if (!modifiche.includes(element)) {
+    modifiche.push(element);
     mostra_pulsante_applica();
+  }
+
+  switch (element.id) {
+    case "colortheme":
+      document.querySelector('#colortheme_css').href = 'static/style/theme/' + element.querySelector("select").value + '.css';
+      break;
   }
 }
 
