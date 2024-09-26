@@ -87,6 +87,21 @@ CREATE TABLE IF NOT EXISTS sostituzione (
     FOREIGN KEY (nome_docente, cognome_docente) REFERENCES docente(nome, cognome) ON UPDATE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS archivio_sostituzioni (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    pubblicato BOOLEAN NOT NULL DEFAULT 0,
+    cancellato BOOLEAN NOT NULL DEFAULT 0,
+    data INTEGER,
+    note VARCHAR,
+    ora_inizio VARCHAR(5),
+    ora_fine VARCHAR(5),
+    numero_ora_predefinita VARCHAR(20),
+    numero_aula VARCHAR(30),
+    nome_classe VARCHAR(30),
+    nome_docente VARCHAR(50),
+    cognome_docente VARCHAR(50),
+);
+
 -- CREATE TABLE IF NOT EXISTS visualizzazione_mostra_sostituzione (
 --     nome_visualizzazione VARCHAR(50) NOT NULL REFERENCES visualizzazione(nome) ON UPDATE CASCADE,
 --     id_sostituzione INTEGER NOT NULL REFERENCES sostituzione(id) ON UPDATE CASCADE,
