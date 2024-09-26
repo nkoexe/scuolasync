@@ -100,6 +100,7 @@ def reboot():
     return render_template(
         "updater.html",
         version=configurazione.get("version").valore,
+        configurazione=configurazione,
         reboot=True,
     )
 
@@ -111,6 +112,7 @@ def update():
     return render_template(
         "updater.html",
         version=configurazione.get("version").valore,
+        configurazione=configurazione,
         reboot=False,  # indica semplicemente che non è la pagina di reboot
     )
 
