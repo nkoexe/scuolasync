@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style/header.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/impostazioni.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/gestione_impostazioni/base.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='style/theme/'+configurazione.get('colortheme').scelta.lower()+'.css') }}">
+  <link rel="stylesheet" id="colortheme_css" href="{{ url_for('static', filename='style/theme/'~configurazione.get('colortheme')~'.css') }}">
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
   {% block head %}
   {% endblock %}

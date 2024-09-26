@@ -20,7 +20,7 @@
   {% if utente.ruolo.nome != 'visualizzatore' %}
   <link rel="stylesheet" href="{{ url_for('static', filename='style/gestione_dati.css') }}">
   {% endif %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='style/theme/'+configurazione.get('colortheme').scelta.lower()+'.css') }}">
+  <link rel="stylesheet" id="colortheme_css" href="{{ url_for('static', filename='style/theme/'~configurazione.get('colortheme')~'.css') }}">
   <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='icons/apple-touch-icon.png') }}">
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
 </head>

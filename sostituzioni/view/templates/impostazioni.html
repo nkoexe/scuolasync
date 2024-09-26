@@ -24,7 +24,7 @@ opzione_file with context %}
   <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/header.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/impostazioni.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='style/theme/'+configurazione.get('colortheme').scelta.lower()+'.css') }}">
+  <link rel="stylesheet" id="colortheme_css" href="{{ url_for('static', filename='style/theme/'~configurazione.get('colortheme')~'.css') }}">
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
 </head>
 
