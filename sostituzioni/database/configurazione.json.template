@@ -49,10 +49,10 @@
       "nascosto": false,
       "tipo": "selezione",
       "scelte": [
-        "Gandhi",
-        "Delai",
-        "Gre",
-        "Lame"
+        "Mahatma Gandhi",
+        "Andrea e Pietro Delai",
+        "Gabriel Lamé",
+        "Aristotle"
       ],
       "default": 0,
       "valore": 0
