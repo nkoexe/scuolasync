@@ -62,10 +62,13 @@ scheduler.add_job(
 
 # temi stagionali
 def update_seasonal_themes():
-    now = datetime.now()
-
     if "xmas" in configurazione.extra_themes:
         configurazione.extra_themes.remove("xmas")
+
+    if not configurazione.get("seasonalthemes"):
+        return
+
+    now = datetime.now()
 
     # xmas theme
     if (

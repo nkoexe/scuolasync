@@ -58,6 +58,16 @@
       "default": 0,
       "valore": 0
     },
+    "seasonalthemes": {
+      "titolo": "Temi Stagionali",
+      "descrizione": "Abilita l'uso di temi stagionali in certi momenti dell'anno. Fiocchi a Natale, ragnatele ad Halloween...",
+      "sezione": "sistema",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "booleano",
+      "default": true,
+      "valore": true
+    },
     "sysstate": {
       "titolo": "Stato del sistema",
       "descrizione": "Utilizzare la modalità \"In Produzione\" per l'utilizzo regolare. Utilizzare modalità \"In Manutenzione\" per il debug del sistema.",
