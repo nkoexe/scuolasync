@@ -20,8 +20,10 @@
     --color-pulsante-nuovo: var(--color-pulsante);
     --color-link: #0074D9;
     --color-eventi-bg: var(--color-sostituzioni-bg);
+    --color-evento-bg: #f3f3f3;
     --color-evento-urgente: #f0c0bc;
-    --color-notizie-bg: var(--color-sostituzioni-bg);
+    --color-notizie-bg: var(--color-eventi-bg);
+    --color-notizia-bg: var(--color-evento-bg);
     --color-sostituzioni-bg: #eaeaea;
     --color-sostituzioni-filtri-bg: var(--color-accent);
     --color-sostituzioni-filtri-fg: var(--color-accent-text);

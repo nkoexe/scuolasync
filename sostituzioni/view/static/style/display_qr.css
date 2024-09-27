@@ -4,7 +4,7 @@
   position: relative;
   grid-area: 3/1/4/2;
   padding: 0.5vw;
-  background-color: var(--color-eventi-bg);
+  background-color: var(--color-sostituzioni-bg);
 }
 
 #qr-frame img {
