@@ -1,14 +1,8 @@
 :root {
-  --color-accent: #008080;
-  --color-pulsante: #008080;
-  --color-evento-urgente: #ffcabd;
-  --color-sostituzioni-incompleta: #d0e4e6;
+  --color-accent: #556938;
+  --color-pulsante: #6c893b;
+  --color-evento-urgente: #d2e3b4;
+  --color-sostituzioni-incompleta: #4c7f1136;
   --color-sostituzioni-sovrapposizioni: #ff43004a;
-  --color-sostituzioni-oggi: #ffcabd;
-  --color-eventi-bg: #d0e4e6;
-  --color-evento-bg: #edfafa;
-  --color-notizie-bg: var(--color-eventi-bg);
-  --color-notizia-bg: var(--color-evento-bg);
-  --color-danger: #a72525;
-  --color-selezione-hover-delete-bg: #a72525;
+  --color-sostituzioni-oggi: #d2e3b4;
 }
