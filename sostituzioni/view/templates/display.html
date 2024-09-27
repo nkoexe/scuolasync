@@ -16,6 +16,9 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style/display_qr.css') }}">
   {% endif %}
   <link rel="stylesheet" id="colortheme_css" href="{{ url_for('static', filename='style/theme/'~configurazione.get('colortheme')~'.css') }}">
+  {% for theme in configurazione.extra_themes %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/theme/'~theme~'.css') }}">
+  {% endfor %}
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
 </head>
 

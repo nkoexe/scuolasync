@@ -4,7 +4,7 @@ from apscheduler.triggers.cron import CronTrigger
 
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.control.backup import backup
-from sostituzioni.control.database import database, Where
+from sostituzioni.control.database import database
 
 scheduler = BackgroundScheduler()
 
@@ -57,6 +57,31 @@ scheduler.add_job(
         year="*", month=mese, day=giorno, hour="0", minute="0", second="0"
     ),
     name="new_school_year",
+)
+
+
+# temi stagionali
+def update_seasonal_themes():
+    now = datetime.now()
+
+    if "xmas" in configurazione.extra_themes:
+        configurazione.extra_themes.remove("xmas")
+
+    # xmas theme
+    if (
+        datetime(now.year, 12, 18, 0, 0, 0)
+        <= now
+        <= datetime(now.year, 12, 31, 23, 59, 59)
+    ):
+        configurazione.extra_themes.append("xmas")
+
+
+update_seasonal_themes()
+
+scheduler.add_job(
+    update_seasonal_themes,
+    trigger=CronTrigger(year="*", month="*", day="*", hour="0", minute="0", second="0"),
+    name="update_seasonal_themes",
 )
 
 scheduler.start()
