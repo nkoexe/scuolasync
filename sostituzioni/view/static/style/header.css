@@ -4,7 +4,7 @@
     height: 65px;
     background-color: var(--color-header-bg);
     color: var(--color-header-fg);
-    z-index: 100;
+    z-index: 40;
 }
 
 #header-logo-link {

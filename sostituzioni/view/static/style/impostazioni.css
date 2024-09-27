@@ -551,7 +551,7 @@ input[type="file"] {
     width: 100%;
     height: 80px;
     background-color: var(--color-footer);
-    z-index: 100;
+    z-index: 40;
     view-transition-name: footer;
 }
 
@@ -587,7 +587,6 @@ input[type="file"] {
     border-bottom-right-radius: 1rem;
 }
 
-
 .pulsante-footer {
     padding: 15px 30px;
     background-color: #ffffff;
@@ -612,7 +611,7 @@ input[type="file"] {
     height: 65px;
     border-radius: 100%;
     box-shadow: 0px 5px 15px #00000088;
-    z-index: 90;
+    z-index: 30;
 }
 
 #footer-shadow {
@@ -622,7 +621,7 @@ input[type="file"] {
     height: 80px;
     border-radius: 100%;
     box-shadow: 0px -5px 15px #00000088;
-    z-index: 90;
+    z-index: 30;
     view-transition-name: footer-shadow;
 }
 
