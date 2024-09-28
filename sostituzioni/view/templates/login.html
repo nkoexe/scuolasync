@@ -13,6 +13,9 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/login.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/theme/'+configurazione.get('colortheme').scelta.lower()+'.css') }}">
+  {% for theme in configurazione.extra_themes %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/theme/'~theme~'.css') }}">
+  {% endfor %}
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
 </head>
 
