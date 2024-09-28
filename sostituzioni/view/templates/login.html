@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/login.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='style/theme/'+configurazione.get('colortheme').scelta.lower()+'.css') }}">
+  <link rel="stylesheet" id="colortheme_css" href="{{ url_for('static', filename='style/theme/'~configurazione.get('colortheme')~'.css') }}">
   {% for theme in configurazione.extra_themes %}
   <link rel="stylesheet" href="{{ url_for('static', filename='style/theme/'~theme~'.css') }}">
   {% endfor %}
@@ -57,6 +57,10 @@
       </div>
     </div>
   </div>
+  <script>
+    // set theme color
+    document.head.querySelector("meta[name=theme-color]").content = getComputedStyle(document.body).getPropertyValue('--color-accent')
+  </script>
 </body>
 
 </html>

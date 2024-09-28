@@ -15,6 +15,9 @@ const ui_conferma_elimina_storico_container = document.querySelector("#dialog-co
 const ui_conferma_elimina_storico = document.querySelector("#dialog-conferma-elimina-storico")
 const ui_conferma_elimina_per_reale = document.querySelector("#dialog-conferma-elimina-per-reale")
 
+// set theme color
+document.head.querySelector("meta[name=theme-color]").content = getComputedStyle(document.body).getPropertyValue('--color-accent')
+
 
 // ----------------------------------
 
