@@ -7,6 +7,9 @@ let modifiche = []
 
 let sezioni = document.getElementsByClassName('sezione-header');
 
+// set theme color
+document.head.querySelector("meta[name=theme-color]").content = getComputedStyle(document.body).getPropertyValue('--color-accent')
+
 for (let index = 0; index < sezioni.length; index++) {
   sezioni[index].addEventListener('click', () => {
     sezioni[index].classList.toggle('expanded');
