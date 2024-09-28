@@ -52,10 +52,21 @@
         "Mahatma Gandhi",
         "Andrea e Pietro Delai",
         "Gabriel Lamé",
-        "Aristotle"
+        "Obi-Wan Kenobi",
+        "Giuseppe Garibaldi"
       ],
       "default": 0,
       "valore": 0
+    },
+    "seasonalthemes": {
+      "titolo": "Temi Stagionali",
+      "descrizione": "Abilita l'uso di temi stagionali in certi momenti dell'anno. Fiocchi a Natale, ragnatele ad Halloween...",
+      "sezione": "sistema",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "booleano",
+      "default": true,
+      "valore": true
     },
     "sysstate": {
       "titolo": "Stato del sistema",

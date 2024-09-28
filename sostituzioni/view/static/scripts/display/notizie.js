@@ -17,12 +17,6 @@ function add_notizia_to_ui_list(id, pubblicato, data_ora_inizio, data_ora_fine, 
     ui_notizie_lista.innerHTML += notizia_html
 }
 
-function ui_modifica_notizia() {
-    let id = parseInt(ui_context_menu.dataset.id)
-    mostra_modifica_notizia(id)
-    ui_context_menu.closingcallback()
-}
-
 function refresh_notizie() {
     ui_notizie_lista.innerHTML = ""
 

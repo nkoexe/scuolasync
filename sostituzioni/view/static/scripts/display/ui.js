@@ -3,6 +3,12 @@ const ui_giorno = document.getElementById("giorno")
 const ui_data = document.getElementById("data")
 
 
+const userLocale =
+    navigator.languages && navigator.languages.length
+        ? navigator.languages[0]
+        : navigator.language;
+
+
 // Cose da fare in un determinato momento
 // struttura: { unixtimestamp: func }
 let tasks = {}

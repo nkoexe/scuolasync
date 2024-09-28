@@ -566,6 +566,7 @@ class Configurazione:
     @beartype
     def __init__(self):
         self.aggiornamento_disponibile = False
+        self.extra_themes = []
         self.shell_commands = {}
 
         if which("git") is None:

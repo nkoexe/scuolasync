@@ -903,7 +903,7 @@ input[type="date"].sostituzioni-filtro-data-opzione::before {
     margin: 5px 0;
     padding: 10px 15px;
     gap: 10px;
-    background-color: #f3f3f3;
+    background-color: var(--color-evento-bg);
     border-radius: 1rem;
 }
 
@@ -970,7 +970,7 @@ input[type="date"].sostituzioni-filtro-data-opzione::before {
 .notizia {
     margin: 5px 0;
     padding: 10px 15px;
-    background-color: #f3f3f3;
+    background-color: var(--color-notizia-bg);
     border-radius: 1rem;
 }
 

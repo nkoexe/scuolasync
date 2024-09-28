@@ -29,13 +29,22 @@ function format_date(data_ora_inizio, data_ora_fine) {
     format_options_inizio = { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }
     format_options_fine = { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }
 
+    // if the year is the same do not display it
     if (data_ora_inizio.getFullYear() == now.getFullYear() && now.getFullYear() == data_ora_fine.getFullYear()) {
         format_options_inizio.year = undefined
         format_options_fine.year = undefined
     }
+    // if the date is the same display only the first date, with start and end time
     if (data_ora_inizio.getMonth() == data_ora_fine.getMonth() && data_ora_inizio.getDay() == data_ora_fine.getDay()) {
         format_options_fine.day = undefined
         format_options_fine.month = undefined
+    }
+    // if the time is midnight, display only the date
+    if (data_ora_inizio.getHours() == 0 && data_ora_inizio.getMinutes() == 0 && data_ora_fine.getHours() == 0 && data_ora_fine.getMinutes() == 0) {
+        format_options_inizio.hour = undefined
+        format_options_inizio.minute = undefined
+        format_options_fine.hour = undefined
+        format_options_fine.minute = undefined
     }
 
     return data_ora_inizio.toLocaleString(userLocale, format_options_inizio) + " - " + data_ora_fine.toLocaleString(userLocale, format_options_fine)
