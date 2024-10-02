@@ -310,6 +310,38 @@
       "default": [],
       "valore": []
     },
+    "mostralinkiformadocente": {
+      "titolo": "Avviso Docente in menu contestuale",
+      "descrizione": "Mostra un pulsante nel menu contestuale di una sostituzione per mandare una email al docente. Utile per informare di variazioni o eventuali in modo immediato.",
+      "sezione": "visualizzazioneonline",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "booleano",
+      "default": false,
+      "valore": false
+    },
+    "oggettomailinformadocente": {
+      "titolo": "Oggetto Mail di Avviso Docente",
+      "descrizione": "Oggetto della email di avviso che verrà inviata al docente. Utilizzare i placeholder {docente}, {classe}, {aula}, {data}, {ora} per indicare le rispettive informazioni.",
+      "sezione": "visualizzazioneonline",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "testo",
+      "lunghezza_massima": null,
+      "default": "Supplenza in {classe} - aula {aula}",
+      "valore": "Supplenza in {classe} - aula {aula}"
+    },
+    "corpomailinformadocente": {
+      "titolo": "Corpo Mail di Avviso Docente",
+      "descrizione": "Corpo del messaggio di avviso che verrà inviato al docente. Utilizzare i placeholder {docente}, {classe}, {aula}, {data}, {ora} per indicare le rispettive informazioni.",
+      "sezione": "visualizzazioneonline",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "testo",
+      "lunghezza_massima": null,
+      "default": "Gentile {docente},<br><br>Le confermiamo l'assegnazione di una supplenza:<br>- Classe: {classe}<br>- Aula: {aula}<br>- Data: {data}<br>- Orario: {ora}<br><br>Grazie per la Sua disponibilità e buon lavoro.",
+      "valore": "Gentile {docente},<br><br>Le confermiamo l'assegnazione di una supplenza:<br>- Classe: {classe}<br>- Aula: {aula}<br>- Data: {data}<br>- Orario: {ora}<br><br>Grazie per la Sua disponibilità e buon lavoro."
+    },
     "displaynosostituzionimsg": {
       "titolo": "Errore nessuna sostituzione",
       "descrizione": "Testo che verrà mostrato quando non ci sono sostituzioni future e la lista è vuota.",
