@@ -36,7 +36,7 @@ function fix_date_to_input(date) {
 }
 
 function fix_date_from_input(value) {
-    return value + new Date().getTimezoneOffset() * 60 * 1000
+    return value + new Date(value).getTimezoneOffset() * 60 * 1000
 }
 
 
