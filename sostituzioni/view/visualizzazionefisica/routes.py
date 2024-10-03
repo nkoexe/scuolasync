@@ -40,7 +40,13 @@ def index():
 def generate_qrcode():
     url = request.url_root
     img_bytes = BytesIO()
-    img = qrcode.make(url, image_factory=PyPNGImage, box_size=10, border=0)
+    img = qrcode.make(
+        url,
+        image_factory=PyPNGImage,
+        error_correction=qrcode.ERROR_CORRECT_L,
+        box_size=10,
+        border=0,
+    )
     img.save(img_bytes)
     img_bytes.seek(0)
 
