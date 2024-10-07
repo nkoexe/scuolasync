@@ -103,6 +103,7 @@ class Opzione:
             titolo = dati.get("titolo", "")
             descrizione = dati.get("descrizione", "")
             sezione = dati.get("sezione", "")
+            trigger = dati.get("trigger", None)
             disabilitato = dati.get("disabilitato", False)
             nascosto = dati.get("nascosto", False)
             tipo = dati.get("tipo", "")
@@ -113,6 +114,7 @@ class Opzione:
             titolo = ""
             descrizione = ""
             sezione = parent.sezione
+            trigger = parent.trigger
             disabilitato = dati.get("disabilitato", False)
             nascosto = dati.get("nascosto", False)
             tipo = parent.tipo_valori
@@ -124,6 +126,7 @@ class Opzione:
         self.titolo: str = titolo
         self.descrizione: str = descrizione
         self.sezione: str = sezione
+        self.trigger: str | None = trigger
         self.disabilitato: bool = disabilitato
         self.nascosto: bool = nascosto
         self.tipo: str = tipo
@@ -203,6 +206,7 @@ class Opzione:
         self.titolo = template.titolo
         self.descrizione = template.descrizione
         self.sezione = template.sezione
+        self.trigger = template.trigger
         self.disabilitato = template.disabilitato
         self.nascosto = template.nascosto
         self.tipo = template.tipo
@@ -505,6 +509,7 @@ class Opzione:
             "titolo": self.titolo,
             "descrizione": self.descrizione,
             "sezione": self.sezione,
+            "trigger": self.trigger,
             "disabilitato": self.disabilitato,
             "nascosto": self.nascosto,
             "tipo": self.tipo,
@@ -581,6 +586,7 @@ class Opzione:
 class Configurazione:
     @beartype
     def __init__(self):
+        self.trigger = set()
         self.aggiornamento_disponibile = False
         self.extra_themes = []
         self.shell_commands = {}
@@ -746,6 +752,24 @@ class Configurazione:
 
         return self.aggiornamento_disponibile
 
+    @beartype
+    def esegui_trigger(self):
+        if "reboot" in self.trigger:
+            # decidere come gestire il reboot, per ora lasciare il trigger e segnalare il frontend
+            pass
+
+        if "display" in self.trigger:
+            # aggiorna il display fisico
+            self.trigger.remove("display")
+
+        if "seasonalthemes" in self.trigger:
+            from sostituzioni.control.cron import update_seasonal_themes
+
+            update_seasonal_themes()
+            self.trigger.remove("seasonalthemes")
+
+        return True
+
     def __repr__(self):
         return "Configurazione Sistema"
 
@@ -795,10 +819,14 @@ class Configurazione:
             logger.warning(f"Setter: id {id_opzione} non riconosciuto.")
             return False
 
-        res = self.opzioni.get(id_opzione).set(dati, force)
+        opzione = self.opzioni.get(id_opzione)
+        self.trigger.add(opzione.trigger)
+        res = opzione.set(dati, force)
 
         if salva:
             self.esporta()
+
+        self.esegui_trigger()
 
         return res
 
