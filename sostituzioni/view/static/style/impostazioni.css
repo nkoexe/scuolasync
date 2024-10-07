@@ -556,6 +556,7 @@ input[type="file"] {
 }
 
 #link-aggiorna-riavvio {
+    position: relative;
     display: flex;
     margin: auto 10px auto 30px;
     font-size: large;
@@ -585,6 +586,63 @@ input[type="file"] {
 #link-riavvio {
     border-top-right-radius: 1rem;
     border-bottom-right-radius: 1rem;
+}
+
+@keyframes please {
+    0% {
+        scale: 1;
+        rotate: 0deg;
+    }
+
+    10% {
+        scale: 1.2;
+    }
+
+    20% {
+        rotate: 20deg;
+    }
+
+    40% {
+        rotate: -20deg;
+    }
+
+    60%,
+    100% {
+        scale: 1;
+        rotate: 0deg;
+    }
+}
+
+#please-reboot {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    background-color: var(--color-warning);
+    color: var(--color-warning-fg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: please .5s 1s 2;
+    transition: scale 0.2s;
+}
+
+#please-reboot::after {
+    /* content: "!"; */
+    content: "";
+    width: 100%;
+    aspect-ratio: 1;
+    margin: 5px;
+    /* font-size: 14px;
+    font-weight: bold; */
+    background-color: var(--color-warning-fg);
+    border-radius: 100%;
+}
+
+#please-reboot:hover {
+    scale: 1.1;
 }
 
 .pulsante-footer {
