@@ -45,6 +45,7 @@
       "titolo": "Tema",
       "descrizione": "Scegli il tema di colori per l'interfaccia utente.",
       "sezione": "sistema",
+      "trigger": "display",
       "disabilitato": false,
       "nascosto": false,
       "tipo": "selezione",

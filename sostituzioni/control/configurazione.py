@@ -760,6 +760,9 @@ class Configurazione:
 
         if "display" in self.trigger:
             # aggiorna il display fisico
+            from flask_socketio import emit
+
+            emit("reload", broadcast=True, namespace="/display")
             self.trigger.remove("display")
 
         if "seasonalthemes" in self.trigger:
