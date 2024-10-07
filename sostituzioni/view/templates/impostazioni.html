@@ -44,9 +44,9 @@ opzione_file with context %}
     </div>
   </div>
 
-  <!-- {% for sezione in configurazione.sezioni %}
+  {#{% for sezione in configurazione.sezioni %}
   <a href="#{{sezione.id}}"><button>{{sezione.titolo}}</button></a>
-  {% endfor %} -->
+  {% endfor %}#}
   <div id="main-frame">
     <div id="main-container">
       <div id="link-container">
@@ -128,18 +128,6 @@ opzione_file with context %}
                 <div class="opzioni-separator"></div>
                 {% endif %}
                 {% endfor %}
-                {% if sezione.id == 'docenti' %}
-                <li>
-                  <h5 class="opzione-titolo">Importa docenti da file</h5>
-                  <p class="opzione-descrizione">Usare i file esportati dai gruppi Google. Accettati formati XSLX e CSV, con nome e cognome nella colonna 'Member Name'. Il nome del file dovrebbe assomigliare a questo: 'Members_xxxxxxxxxxxxxxxx_01012023_000000.csv.xlsx'</p>
-                  <div class="opzione-file">
-                    <input type="file" id="import-docenti-filepicker">
-                    <label for="import-docenti-filepicker" class="material-symbols-rounded pulsante">upload_file</label>
-                    <button onclick="importa_docenti()" class="pulsante">Importa</button>
-                    <span id="import-docenti-selected-file-label"></span>
-                  </div>
-                </li>
-                {% endif %}
               </ul>
             </div>
           </div>
