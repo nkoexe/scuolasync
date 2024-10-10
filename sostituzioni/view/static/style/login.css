@@ -5,6 +5,10 @@
     filter: none;
 }
 
+@view-transition {
+    navigation: auto;
+}
+
 html,
 body {
     height: 100%;
@@ -13,31 +17,10 @@ body {
 body {
     width: 100%;
     height: 100%;
-    background-color: var(--color-accent);
 }
 
 a {
     -webkit-tap-highlight-color: transparent;
-}
-
-@keyframes slidein {
-    from {
-        bottom: 70%;
-        left: 100%;
-    }
-
-    to {
-        bottom: -10%;
-        left: -20%;
-    }
-}
-
-@keyframes fadein {
-
-    0%,
-    50% {
-        opacity: 0;
-    }
 }
 
 #main-container {
@@ -47,20 +30,25 @@ a {
     height: 100%;
     max-height: 100%;
     overflow: hidden;
-    background-color: var(--color-accent);
 }
 
 #design {
     position: absolute;
-    height: 200%;
-    width: 200%;
-    bottom: -10%;
-    left: -20%;
-    background-color: white;
-    border-radius: 100%;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: var(--color-accent);
     z-index: 10;
-    animation: slidein 0.5s;
 }
+
+#circle {
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    clip-path: circle(110% at 100% 0);
+}
+
 
 #content {
     width: 100%;
@@ -106,10 +94,10 @@ a {
     width: 60vh;
     max-height: 70vh;
     max-width: 90%;
+    background-color: #ffffffcc;
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 8px #00000050, 0px 6px 12px #00000050, 0px 10px 20px #00000050;
     border-radius: 3vh;
-    animation: fadein 0.8s;
     z-index: 20;
 }
 
@@ -217,7 +205,7 @@ a {
 
 #pulsanti-legali a {
     z-index: 30;
-    color: #555555;
+    color: #3f3f3f;
     text-decoration: none;
     padding: 10px 15px;
     border-radius: 10px;
@@ -231,7 +219,7 @@ a {
 
 #pulsanti-legali .separator {
     margin: auto;
-    color: #555555;
+    color: #3f3f3f;
     z-index: 10;
 }
 
@@ -272,4 +260,48 @@ a {
     #title-separator {
         display: none;
     }
+}
+
+@keyframes circle-clip {
+    0% {
+        clip-path: circle(0 at 100% 0);
+    }
+
+    100% {
+        clip-path: circle(110% at 100% 0);
+    }
+}
+
+@keyframes opacity {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+::view-transition-image-pair(root) {
+    background-color: var(--color-accent);
+}
+
+::view-transition-old(root) {
+    animation: opacity .5s cubic-bezier(.54, 0, .64, .99);
+}
+
+::view-transition-new(root) {
+    animation: circle-clip .5s cubic-bezier(.26, .23, .4, 1);
+}
+
+::view-transition-image-pair(root)::after {
+    content: "to";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-accent);
+    border-radius: 100%;
+    z-index: 10;
 }

@@ -1,9 +1,7 @@
 // const ui_pulsante_help = document.querySelector('#pulsante-help')
 let installPrompt = null;
 const ui_pulsante_installa = document.querySelector('#pulsante-installa')
-const ui_help_container = document.querySelector('#help-container')
-const ui_pulsante_logout = document.querySelector('#pulsante-logout')
-const ui_logout_fun = document.querySelector("#logout-fun")  // logout overlay animation
+// const ui_help_container = document.querySelector('#help-container')
 
 const ui_pulsante_refresh_sostituzioni = document.querySelector('#pulsante-refresh-sostituzioni')
 
@@ -66,18 +64,6 @@ function ui_refresh_sostituzioni() {
 // ui_pulsante_help.onclick = () => {
 //     ui_help_container.classList.remove("hidden")
 // }
-
-// logout animation
-ui_pulsante_logout.onclick = (e) => {
-    ui_logout_fun.style.top = "-70vh"
-    ui_logout_fun.style.right = "-70vw"
-    ui_logout_fun.style.height = "200vh"
-    ui_logout_fun.style.width = "200vw"
-
-    e.preventDefault()
-
-    setTimeout(() => { location.href = ui_pulsante_logout.href }, 210)
-}
 
 
 // ----------------------------------
