@@ -1,5 +1,21 @@
 """
-Gestione della configurazione del sistema tramite il file configurazione.json
+    This file is part of ScuolaSync.
+
+    Copyright (C) 2023-present Niccolò Ragazzi <hi@njco.dev>
+
+    ScuolaSync is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with ScuolaSync.  If not, you can find a copy at
+    <https://www.gnu.org/licenses/agpl-3.0.html>.
 """
 
 import os
@@ -87,6 +103,7 @@ class Opzione:
             titolo = dati.get("titolo", "")
             descrizione = dati.get("descrizione", "")
             sezione = dati.get("sezione", "")
+            trigger = dati.get("trigger", None)
             disabilitato = dati.get("disabilitato", False)
             nascosto = dati.get("nascosto", False)
             tipo = dati.get("tipo", "")
@@ -97,6 +114,7 @@ class Opzione:
             titolo = ""
             descrizione = ""
             sezione = parent.sezione
+            trigger = parent.trigger
             disabilitato = dati.get("disabilitato", False)
             nascosto = dati.get("nascosto", False)
             tipo = parent.tipo_valori
@@ -108,6 +126,7 @@ class Opzione:
         self.titolo: str = titolo
         self.descrizione: str = descrizione
         self.sezione: str = sezione
+        self.trigger: str | None = trigger
         self.disabilitato: bool = disabilitato
         self.nascosto: bool = nascosto
         self.tipo: str = tipo
@@ -187,6 +206,7 @@ class Opzione:
         self.titolo = template.titolo
         self.descrizione = template.descrizione
         self.sezione = template.sezione
+        self.trigger = template.trigger
         self.disabilitato = template.disabilitato
         self.nascosto = template.nascosto
         self.tipo = template.tipo
@@ -489,6 +509,7 @@ class Opzione:
             "titolo": self.titolo,
             "descrizione": self.descrizione,
             "sezione": self.sezione,
+            "trigger": self.trigger,
             "disabilitato": self.disabilitato,
             "nascosto": self.nascosto,
             "tipo": self.tipo,
@@ -565,6 +586,7 @@ class Opzione:
 class Configurazione:
     @beartype
     def __init__(self):
+        self.trigger = set()
         self.aggiornamento_disponibile = False
         self.extra_themes = []
         self.shell_commands = {}
@@ -732,6 +754,27 @@ class Configurazione:
 
         return self.aggiornamento_disponibile
 
+    @beartype
+    def esegui_trigger(self):
+        if "reboot" in self.trigger:
+            # decidere come gestire il reboot, per ora lasciare il trigger e segnalare il frontend
+            pass
+
+        if "display" in self.trigger:
+            # aggiorna il display fisico
+            from flask_socketio import emit
+
+            emit("reload", broadcast=True, namespace="/display")
+            self.trigger.remove("display")
+
+        if "seasonalthemes" in self.trigger:
+            from sostituzioni.control.cron import update_seasonal_themes
+
+            update_seasonal_themes()
+            self.trigger.remove("seasonalthemes")
+
+        return True
+
     def __repr__(self):
         return "Configurazione Sistema"
 
@@ -781,10 +824,14 @@ class Configurazione:
             logger.warning(f"Setter: id {id_opzione} non riconosciuto.")
             return False
 
-        res = self.opzioni.get(id_opzione).set(dati, force)
+        opzione = self.opzioni.get(id_opzione)
+        self.trigger.add(opzione.trigger)
+        res = opzione.set(dati, force)
 
         if salva:
             self.esporta()
+
+        self.esegui_trigger()
 
         return res
 

@@ -1,9 +1,7 @@
 // const ui_pulsante_help = document.querySelector('#pulsante-help')
 let installPrompt = null;
 const ui_pulsante_installa = document.querySelector('#pulsante-installa')
-const ui_help_container = document.querySelector('#help-container')
-const ui_pulsante_logout = document.querySelector('#pulsante-logout')
-const ui_logout_fun = document.querySelector("#logout-fun")  // logout overlay animation
+// const ui_help_container = document.querySelector('#help-container')
 
 const ui_pulsante_refresh_sostituzioni = document.querySelector('#pulsante-refresh-sostituzioni')
 
@@ -36,7 +34,7 @@ function fix_date_to_input(date) {
 }
 
 function fix_date_from_input(value) {
-    return value + new Date().getTimezoneOffset() * 60 * 1000
+    return value + new Date(value).getTimezoneOffset() * 60 * 1000
 }
 
 
@@ -66,18 +64,6 @@ function ui_refresh_sostituzioni() {
 // ui_pulsante_help.onclick = () => {
 //     ui_help_container.classList.remove("hidden")
 // }
-
-// logout animation
-ui_pulsante_logout.onclick = (e) => {
-    ui_logout_fun.style.top = "-70vh"
-    ui_logout_fun.style.right = "-70vw"
-    ui_logout_fun.style.height = "200vh"
-    ui_logout_fun.style.width = "200vw"
-
-    e.preventDefault()
-
-    setTimeout(() => { location.href = ui_pulsante_logout.href }, 210)
-}
 
 
 // ----------------------------------
@@ -115,6 +101,19 @@ function ui_conferma_elimina_sostituzione() {
     id = parseInt(ui_context_menu.dataset.id)
     s_elimina_sostituzione(id, !(ui_conferma_elimina_storico.checked))
     ui_context_menu.closingcallback()
+}
+function ui_informa_docente() {
+    const id = parseInt(ui_context_menu.dataset.id)
+    const sostituzione = sostituzioni.find(x => x.id == id)
+    const docente = sostituzione.nome_docente + " " + sostituzione.cognome_docente
+    const classe = sostituzione.nome_classe
+    const aula = sostituzione.numero_aula
+    const data = new Date(sostituzione.data * 1000).toLocaleDateString()
+    const ora = sostituzione.ora_predefinita ? sostituzione.ora_predefinita + "a ora" : sostituzione.ora_inizio + "-" + sostituzione.ora_fine
+    const oggetto = oggetto_mail_informa_docente.replaceAll("{docente}", docente).replaceAll("{classe}", classe).replaceAll("{aula}", aula).replaceAll("{data}", data).replaceAll("{ora}", ora)
+    const corpo = corpo_mail_informa_docente.replaceAll("{docente}", docente).replaceAll("{classe}", classe).replaceAll("{aula}", aula).replaceAll("{data}", data).replaceAll("{ora}", ora)
+    const url = "mailto:?to=&subject=" + oggetto + "&body=" + corpo
+    window.open(url, '_blank').focus();
 }
 function ui_modifica_evento() {
     id = parseInt(ui_context_menu.dataset.id)
@@ -175,6 +174,7 @@ function mostra_context_menu_sostituzione(event, sostituzione) {
         pulsante("ui_modifica_sostituzione", "edit", "Modifica")
         + pulsante("ui_duplica_sostituzione", "content_copy", "Duplica")
         + (sostituzione.classList.contains("non-pubblicato") ? pulsante("ui_pubblica_sostituzione", "visibility", "Pubblica") : pulsante("ui_nascondi_sostituzione", "visibility_off", "Nascondi"))
+        + (mostra_link_informa_docente ? pulsante("ui_informa_docente", "email", "Avvisa Docente") : "")
         + pulsante("ui_elimina", "delete", "Elimina")
 
     mostra_context_menu(sostituzione)

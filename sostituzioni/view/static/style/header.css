@@ -98,19 +98,6 @@
     padding: 8px;
 }
 
-/* logout animation */
-#logout-fun {
-    position: fixed;
-    top: -1000px;
-    right: -1000px;
-    width: 1000px;
-    height: 1000px;
-    z-index: 132456;
-    background-color: var(--color-header-bg);
-    border-radius: 100vw;
-    transition: all 0.35s;
-}
-
 @media (max-width: 600px) {
 
     #header-titolo,

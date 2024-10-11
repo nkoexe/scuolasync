@@ -21,7 +21,9 @@
 
 <body>
   <div id="main-container">
-    <div id="design"></div>
+    <div id="design">
+      <dir id="circle"></dir>
+    </div>
     <div id="content">
       {% with messages = get_flashed_messages() %}
       {% if messages %}
@@ -57,10 +59,13 @@
       </div>
     </div>
   </div>
-  <!-- <script>
-    // set theme color
-    document.head.querySelector("meta[name=theme-color]").content = getComputedStyle(document.body).getPropertyValue('--color-accent')
-  </script> -->
+  <script>
+    window.addEventListener("pagereveal", async (e) => {
+      if (e.viewTransition) {
+        document.body.classList.add("view-transition");
+      }
+    });
+  </script>
 </body>
 
 </html>

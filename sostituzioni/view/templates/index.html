@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link rel="stylesheet" href="{{ url_for('static', filename='style/lib/notyf.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/lib/tooltip.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/selezione.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/header.css') }}">
@@ -395,16 +396,14 @@
     <div id="pulsanti-context-menu">
     </div>
   </div>
-  <div id="tooltip">
-    <div id="tooltip-arrow"></div>
-    <div id="tooltip-content">
-      <span id="tooltip-text">test</span>
-    </div>
-  </div>
-
   {% endif %}
   <script>
     const messaggio_nessuna_sostituzione = "{{ configurazione.get('nosostituzionimsg') }}"
+    {% if utente.permessi.sostituzioni.write %}
+    const mostra_link_informa_docente = {{ configurazione.get('mostralinkiformadocente').valore | tojson }}
+    const oggetto_mail_informa_docente = `{{ configurazione.get('oggettomailinformadocente') }}`
+    const corpo_mail_informa_docente = `{{ configurazione.get('corpomailinformadocente').valore.replace('\\n', '%0A').replace('<br>', '%0A') | safe }}`
+    {% endif %}
     {% if utente.ruolo.nome == 'amministratore' %}
     const aggiornamento_disponibile = {{ configurazione.aggiornamento_disponibile | tojson }}
     {% endif %}

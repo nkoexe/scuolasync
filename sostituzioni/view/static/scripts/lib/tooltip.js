@@ -1,12 +1,21 @@
-const tooltip = document.querySelector("#tooltip")
-const tooltip_arrow = document.querySelector("#tooltip-arrow")
-const tooltip_text = document.querySelector("#tooltip-text")
+const tooltip = document.createElement("div")
+tooltip.id = "tooltip"
+document.body.appendChild(tooltip)
+
+const tooltip_arrow = document.createElement("div")
+tooltip_arrow.id = "tooltip-arrow"
+tooltip.appendChild(tooltip_arrow)
+
+const tooltip_content = document.createElement("div")
+tooltip_content.id = "tooltip-content"
+tooltip.appendChild(tooltip_content)
+
+const tooltip_text = document.createElement("span")
+tooltip_text.id = "tooltip-text"
+tooltip_content.appendChild(tooltip_text)
 
 const tooltip_padding = 10
 
-tooltip.onmouseover = () => {
-  tooltip_arrow.classList.add("visible")
-}
 
 function attach_tooltips() {
   for (const element of document.querySelectorAll('[data-tooltip]')) {

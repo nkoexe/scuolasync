@@ -3,7 +3,7 @@ Sistema per la gestione di sostituzioni, notizie ed eventi scolastici.
 """
 
 __author__ = "Niccolò Ragazzi"
-__copyright__ = "Copyright 2023-present Niccolò Ragazzi"
+__copyright__ = "Copyright 2023-present Niccolò Ragazzi <hi@njco.dev>"
 __credits__ = ["Niccolò Ragazzi", "Chiara Gandolfi"]
 __license__ = " GNU Affero General Public License v3"
 __version__ = "1.0.0"

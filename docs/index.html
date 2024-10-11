@@ -43,6 +43,8 @@
       --sidebar-name-color: var(--heading-color);
       --sidebar-name-font-size: 36px;
       --sidebar-link-transition: all 0.2s;
+      --sidebar-nav-pagelink-transition: all 0.2s;
+      --sidebar-nav-pagelink-background: none;
       --sidebar-toggle-offset-top: calc(100% - (var(--sidebar-toggle-height)));
 
       --search-input-transition: all 0.2s;
@@ -95,8 +97,12 @@
       logo: 'images/scuolasync.svg',
       repo: 'nkoexe/scuolasync',
       coverpage: true,
-      loadSidebar: "sidebar.md",
       nativeEmoji: true,
+      loadSidebar: "sidebar.md",
+      sidebarDisplayLevel: 0,
+      alias: {
+        '/.*/sidebar.md': '/sidebar.md',
+      },
       search: {
         paths: 'auto',
         placeholder: 'Cerca',
@@ -129,6 +135,7 @@
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-ini.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-systemd.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
 </body>
 
 </html>

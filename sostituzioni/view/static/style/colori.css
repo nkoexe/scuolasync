@@ -42,8 +42,6 @@
     --color-selezione-hover-bg: #0000001b;
     --color-selezione-hover-delete-bg: #C00F19;
     --color-selezione-hover-delete-fg: #ffffff;
-    --color-tooltip-bg: #000000;
-    --color-tooltip-fg: #ffffff;
     --color-scrollbar: #00000046;
     --color-scrollbar-hover: #00000059;
 }
@@ -141,6 +139,17 @@
     to {
         opacity: 0;
     }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
 }
 
 @media (prefers-reduced-motion: reduce) {

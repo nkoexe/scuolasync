@@ -78,6 +78,10 @@ socket.on("aggiornamento notizie", () => {
 
 // ----------------
 
+socket.on("reload", () => {
+  location.reload()
+})
+
 // vedi view/__init__.py
 // socket.on('shutdown', () => {
 //     console.log('Shutting down')
