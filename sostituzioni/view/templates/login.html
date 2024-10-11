@@ -21,7 +21,9 @@
 
 <body>
   <div id="main-container">
-    <div id="design"><dir id="circle"></dir></div>
+    <div id="design">
+      <dir id="circle"></dir>
+    </div>
     <div id="content">
       {% with messages = get_flashed_messages() %}
       {% if messages %}
@@ -57,40 +59,13 @@
       </div>
     </div>
   </div>
-  <!-- <script>
-    // set theme color
-    document.head.querySelector("meta[name=theme-color]").content = getComputedStyle(document.body).getPropertyValue('--color-accent')
-  </script> -->
-  <!-- <script>
-    window.addEventListener('pagereveal', async (e) => {
+  <script>
+    window.addEventListener("pagereveal", async (e) => {
       if (e.viewTransition) {
-        const fromURL = new URL(navigation.activation.from.url);
-        console.log(fromURL.pathname)
-        if (fromURL.pathname == "/") {
-
-          const transition = document.startViewTransition(() => {
-            document.location.href = ui_pulsante_logout.href;
-          });
-
-          transition.ready.then(() => {
-            document.documentElement.animate(
-              {
-                clipPath: [
-                  `circle(0 at 100% 0)`,
-                  `circle(${endRadius} at 100% 0)`,
-                ],
-              },
-              {
-                duration: 500,
-                easing: 'ease-in',
-                pseudoElement: '::view-transition-new(root)',
-              }
-            );
-          });
-        }
+        document.body.classList.add("view-transition");
       }
     });
-  </script> -->
+  </script>
 </body>
 
 </html>

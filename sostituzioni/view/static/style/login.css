@@ -42,13 +42,17 @@ a {
     z-index: 10;
 }
 
+#design:hover:not(:has(#circle:hover)) #circle {
+    clip-path: circle(108% at 100% 0);
+}
+
 #circle {
     height: 100%;
     width: 100%;
     background-color: white;
     clip-path: circle(110% at 100% 0);
+    transition: clip-path 0.5s;
 }
-
 
 #content {
     width: 100%;
@@ -223,54 +227,6 @@ a {
     z-index: 10;
 }
 
-@media (max-width: 1000px) {
-    #login-container {
-        box-shadow: none;
-        margin: 0;
-        width: 100%;
-        max-height: 80vh;
-        max-width: unset;
-        backdrop-filter: none;
-    }
-
-    #logo {
-        width: 20%;
-    }
-}
-
-/* @media (max-width: 600px) {
-    #pulsanti-legali {
-        flex-direction: column;
-    }
-
-    #pulsanti-legali a {
-        margin: auto;
-        margin-right: 0;
-    }
-
-    #pulsanti-legali .separator {
-        display: none;
-    }
-} */
-
-@media (max-width: 400px) {
-    #title-frame {
-        flex-direction: column;
-        gap: 3vh;
-    }
-
-    #title-separator {
-        display: none;
-    }
-}
-
-@media (max-aspect-ratio: 3/4) {
-
-    #pulsanti-legali a,
-    #pulsanti-legali .separator {
-        color: var(--color-accent-text);
-    }
-}
 
 @keyframes circle-clip {
     0% {
@@ -282,15 +238,72 @@ a {
     }
 }
 
-/* @keyframes circle-clip-end {
-    0% {
-        clip-path: circle(110% at 100% 0);
+@media (max-width: 700px) {
+    #circle {
+        clip-path: circle(90% at 80% 0);
     }
 
-    100% {
-        clip-path: circle(130% at 100% 0);
+    #login-container {
+        box-shadow: none;
+        margin: 0;
+        padding: 4vh 30px 100px 30px;
+        width: 100%;
+        max-height: 100%;
+        max-width: unset;
+        background-color: transparent;
+        backdrop-filter: none;
     }
-} */
+
+    #logo {
+        width: 20%;
+    }
+
+    #notes-frame {
+        margin-top: 10vh;
+        color: var(--color-accent-text);
+        --color-link: #6fbcff;
+    }
+
+    #pulsanti-legali {
+        left: 0;
+        right: unset;
+    }
+
+    #pulsanti-legali a,
+    #pulsanti-legali .separator {
+        color: var(--color-accent-text);
+    }
+
+    @keyframes circle-clip {
+        0% {
+            clip-path: circle(0 at calc(100% - 50px) 30px);
+        }
+
+        100% {
+            clip-path: circle(90% at 80% 0);
+        }
+    }
+
+    body.view-transition #notes-frame *,
+    body.view-transition #pulsanti-legali * {
+        animation: fade-in .3s .5s backwards !important;
+    }
+}
+
+@media (max-aspect-ratio: 1/2) {
+    #title-frame {
+        flex-direction: column;
+        gap: 3vh;
+    }
+
+    #title-separator {
+        display: none;
+    }
+
+    #logo {
+        width: 20vh;
+    }
+}
 
 
 ::view-transition-image-pair(root) {
@@ -304,5 +317,4 @@ a {
 
 ::view-transition-new(root) {
     animation: circle-clip .5s cubic-bezier(.26, .23, .4, 1)
-        /*, circle-clip-end .5s .5s cubic-bezier(.24,0,.59,0)*/
 }
