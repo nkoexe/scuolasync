@@ -100,3 +100,14 @@ body::before {
     visibility: hidden;
   }
 }
+
+/* hide in display */
+body:has(#ora)::before {
+  content: none;
+}
+
+body:has(#ora)::after {
+  right: 0;
+  left: auto;
+  rotate: -90deg;
+}
