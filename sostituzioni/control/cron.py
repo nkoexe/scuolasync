@@ -94,7 +94,7 @@ def update_seasonal_themes():
 
     # halloween theme
     if (
-        datetime(now.year, 1, 30, 0, 0, 0)
+        datetime(now.year, 10, 30, 0, 0, 0)
         <= now
         <= datetime(now.year, 10, 31, 23, 59, 59)
     ):
