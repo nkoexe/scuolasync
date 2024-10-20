@@ -354,8 +354,8 @@
       "nascosto": false,
       "tipo": "testo",
       "lunghezza_massima": null,
-      "default": "Gentile {docente},<br><br>Le confermiamo l'assegnazione di una supplenza:<br>- Classe: {classe}<br>- Aula: {aula}<br>- Data: {data}<br>- Orario: {ora}<br><br>Grazie per la Sua disponibilità e buon lavoro.",
-      "valore": "Gentile {docente},<br><br>Le confermiamo l'assegnazione di una supplenza:<br>- Classe: {classe}<br>- Aula: {aula}<br>- Data: {data}<br>- Orario: {ora}<br><br>Grazie per la Sua disponibilità e buon lavoro."
+      "default": "Gentile {docente},<br><br>Questa è una comunicazione automatica per avvisare della seguente supplenza:<br>- Classe: {classe}<br>- Aula: {aula}<br>- Data: {data}<br>- Orario: {ora}<br><br>Grazie per la Sua disponibilità e buon lavoro.",
+      "valore": "Gentile {docente},<br><br>Questa è una comunicazione automatica per avvisare della seguente supplenza:<br>- Classe: {classe}<br>- Aula: {aula}<br>- Data: {data}<br>- Orario: {ora}<br><br>Grazie per la Sua disponibilità e buon lavoro."
     },
     "displaynosostituzionimsg": {
       "titolo": "Errore nessuna sostituzione",
