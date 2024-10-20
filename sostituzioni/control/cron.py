@@ -82,6 +82,8 @@ scheduler.add_job(
 
 # temi stagionali
 def update_seasonal_themes():
+    if "halloween" in configurazione.extra_themes:
+        configurazione.extra_themes.remove("halloween")
     if "xmas" in configurazione.extra_themes:
         configurazione.extra_themes.remove("xmas")
 
@@ -89,6 +91,14 @@ def update_seasonal_themes():
         return
 
     now = datetime.now()
+
+    # halloween theme
+    if (
+        datetime(now.year, 1, 30, 0, 0, 0)
+        <= now
+        <= datetime(now.year, 10, 31, 23, 59, 59)
+    ):
+        configurazione.extra_themes.append("halloween")
 
     # xmas theme
     if (
