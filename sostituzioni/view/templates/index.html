@@ -398,8 +398,8 @@
   {% endif %}
   <script>
     const messaggio_nessuna_sostituzione = "{{ configurazione.get('nosostituzionimsg') }}"
-    {% if utente.permessi.sostituzioni.write %}
     const mostra_notifiche_successo = {{ configurazione.get('mostranotifichesuccesso').valore | tojson }}
+    {% if utente.permessi.sostituzioni.write %}
     const mostra_link_informa_docente = {{ configurazione.get('mostralinkiformadocente').valore | tojson }}
     const oggetto_mail_informa_docente = `{{ configurazione.get('oggettomailinformadocente') }}`
     const corpo_mail_informa_docente = `{{ configurazione.get('corpomailinformadocente').valore.replace('\\n', '%0A').replace('<br>', '%0A') | safe }}`
