@@ -874,6 +874,25 @@ input[type="date"].sostituzioni-filtro-data-opzione::before {
     border-radius: 0.5rem;
 }
 
+@keyframes placeholder-animation {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.evento.placeholder {
+    height: 70px;
+    animation: placeholder-animation 1s ease-in-out infinite;
+}
+
 .evento-data {
     display: flex;
     justify-content: center;
