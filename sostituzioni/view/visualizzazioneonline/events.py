@@ -159,10 +159,12 @@ def nuova_sostituzione(data):
         sostituzioni.inserisci(sostituzione)
     except Exception as e:
         emit("errore inserimento sostituzione", str(e))
-        return
+        return False
 
     emit("aggiornamento sostituzioni", broadcast=True)
     emit("aggiornamento sostituzioni", broadcast=True, namespace="/display")
+
+    return True
 
 
 @socketio.on("modifica sostituzione")
@@ -178,17 +180,19 @@ def modifica_sostituzione(data):
             f"Modifica sostituzione: errore nel formato dei dati ricevuti - id: {id}, dati: {dati}"
         )
         emit("errore modifica sostituzione", "Errore nella modifica della sostituzione")
-        return
+        return False
 
     try:
         sostituzioni.modifica(data.get("id"), data.get("data"))
     except Exception as e:
         logger.error(f"Errore durante la modifica della sostituzione: {e}")
         emit("errore modifica sostituzione", str(e))
-        return
+        return False
 
     emit("aggiornamento sostituzioni", broadcast=True)
     emit("aggiornamento sostituzioni", broadcast=True, namespace="/display")
+
+    return True
 
 
 @socketio.on("elimina sostituzione")
@@ -202,6 +206,8 @@ def elimina_sostituzione(data):
 
     emit("aggiornamento sostituzioni", broadcast=True)
     emit("aggiornamento sostituzioni", broadcast=True, namespace="/display")
+
+    return True
 
 
 @socketio.on("nuovo evento")
@@ -220,6 +226,8 @@ def nuovo_evento(data):
     emit("aggiornamento eventi", broadcast=True)
     emit("aggiornamento eventi", broadcast=True, namespace="/display")
 
+    return True
+
 
 @socketio.on("modifica evento")
 @login_required
@@ -232,6 +240,8 @@ def modifica_evento(data):
     emit("aggiornamento eventi", broadcast=True)
     emit("aggiornamento eventi", broadcast=True, namespace="/display")
 
+    return True
+
 
 @socketio.on("elimina evento")
 @login_required
@@ -243,6 +253,8 @@ def elimina_evento(data):
 
     emit("aggiornamento eventi", broadcast=True)
     emit("aggiornamento eventi", broadcast=True, namespace="/display")
+
+    return True
 
 
 @socketio.on("nuova notizia")
@@ -260,6 +272,8 @@ def nuova_notizia(data: dict):
     emit("aggiornamento notizie", broadcast=True)
     emit("aggiornamento notizie", broadcast=True, namespace="/display")
 
+    return True
+
 
 @socketio.on("modifica notizia")
 @login_required
@@ -272,6 +286,8 @@ def modifica_notizia(data):
     emit("aggiornamento notizie", broadcast=True)
     emit("aggiornamento notizie", broadcast=True, namespace="/display")
 
+    return True
+
 
 @socketio.on("elimina notizia")
 @login_required
@@ -283,6 +299,8 @@ def elimina_notizia(data):
 
     emit("aggiornamento notizie", broadcast=True)
     emit("aggiornamento notizie", broadcast=True, namespace="/display")
+
+    return True
 
 
 # ////////////////////////////////////

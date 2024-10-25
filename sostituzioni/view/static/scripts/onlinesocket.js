@@ -1,6 +1,14 @@
 const socket = io();
 
 
+notify_success = (msg) => {
+    notyf.success(msg)
+}
+if (!mostra_notifiche_successo) {
+    notify_success = function () { }
+}
+
+
 socket.on("lista eventi", (data) => {
     eventi = data
 
@@ -133,48 +141,84 @@ function s_richiedi_notizie(filtri) {
 }
 
 function s_nuova_sostituzione(data) {
-    socket.emit("nuova sostituzione", data)
+    socket.emit("nuova sostituzione", data, (ok) => {
+        if (ok) {
+            notify_success("Sostituzione inserita correttamente.")
+        }
+    })
 }
 
 function s_elimina_sostituzione(id, mantieni_in_storico) {
-    socket.emit("elimina sostituzione", { id, mantieni_in_storico })
+    socket.emit("elimina sostituzione", { id, mantieni_in_storico }, (ok) => {
+        if (ok) {
+            notify_success("Sostituzione eliminata.")
+        }
+    })
 }
 
 function s_modifica_sostituzione(id, data) {
     socket.emit("modifica sostituzione", {
         id: id,
-        data: data,
+        data: data
+    }, (ok) => {
+        if (ok) {
+            notify_success("Sostituzione modificata correttamente.")
+        }
     })
 }
 
 
 function s_nuovo_evento(data) {
-    socket.emit("nuovo evento", data)
+    socket.emit("nuovo evento", data, (ok) => {
+        if (ok) {
+            notify_success("Evento inserito correttamente.")
+        }
+    })
 }
 
 function s_elimina_evento(id) {
-    socket.emit("elimina evento", { id: id })
+    socket.emit("elimina evento", { id: id }, (ok) => {
+        if (ok) {
+            notify_success("Evento eliminato.")
+        }
+    })
 }
 
 function s_modifica_evento(id, data) {
     socket.emit("modifica evento", {
         id: id,
         data: data,
+    }, (ok) => {
+        if (ok) {
+            notify_success("Evento modificato correttamente.")
+        }
     })
 }
 
 
 function s_nuova_notizia(data) {
-    socket.emit("nuova notizia", data)
+    socket.emit("nuova notizia", data, (ok) => {
+        if (ok) {
+            notify_success("Notizia inserita correttamente.")
+        }
+    })
 }
 
 function s_elimina_notizia(id) {
-    socket.emit("elimina notizia", { id: id })
+    socket.emit("elimina notizia", { id: id }, (ok) => {
+        if (ok) {
+            notify_success("Notizia eliminata.")
+        }
+    })
 }
 
 function s_modifica_notizia(id, data) {
     socket.emit("modifica notizia", {
         id: id,
         data: data,
+    }, (ok) => {
+        if (ok) {
+            notify_success("Sostituzione inserita correttamente.")
+        }
     })
 }

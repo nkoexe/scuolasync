@@ -315,6 +315,16 @@
       "default": [],
       "valore": []
     },
+    "mostranotifichesuccesso": {
+      "titolo": "Notifiche di conferma",
+      "descrizione": "Mostra una notifica di successo a seguito di un'operazione andata a buon fine. Si applica a inserimento, duplicazione, modifica o eliminazione.",
+      "sezione": "visualizzazioneonline",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "booleano",
+      "default": true,
+      "valore": true
+    },
     "mostralinkiformadocente": {
       "titolo": "Avviso Docente in menu contestuale",
       "descrizione": "Mostra un pulsante nel menu contestuale di una sostituzione per mandare una email al docente. Utile per informare di variazioni o eventuali in modo immediato.",
@@ -344,8 +354,8 @@
       "nascosto": false,
       "tipo": "testo",
       "lunghezza_massima": null,
-      "default": "Gentile {docente},<br><br>Le confermiamo l'assegnazione di una supplenza:<br>- Classe: {classe}<br>- Aula: {aula}<br>- Data: {data}<br>- Orario: {ora}<br><br>Grazie per la Sua disponibilità e buon lavoro.",
-      "valore": "Gentile {docente},<br><br>Le confermiamo l'assegnazione di una supplenza:<br>- Classe: {classe}<br>- Aula: {aula}<br>- Data: {data}<br>- Orario: {ora}<br><br>Grazie per la Sua disponibilità e buon lavoro."
+      "default": "Gentile {docente},<br><br>Questa è una comunicazione automatica per avvisare della seguente supplenza:<br>- Classe: {classe}<br>- Aula: {aula}<br>- Data: {data}<br>- Orario: {ora}<br><br>Grazie per la Sua disponibilità e buon lavoro.",
+      "valore": "Gentile {docente},<br><br>Questa è una comunicazione automatica per avvisare della seguente supplenza:<br>- Classe: {classe}<br>- Aula: {aula}<br>- Data: {data}<br>- Orario: {ora}<br><br>Grazie per la Sua disponibilità e buon lavoro."
     },
     "displaynosostituzionimsg": {
       "titolo": "Errore nessuna sostituzione",

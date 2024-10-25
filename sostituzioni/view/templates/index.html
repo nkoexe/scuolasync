@@ -68,7 +68,14 @@
         </div>
         <div id="eventi-container">
           <div id="eventi-lista-container">
-            <ul id="eventi-lista"></ul>
+            <ul id="eventi-lista">
+              <li>
+                <div class="evento placeholder"></div>
+              </li>
+              <li>
+                <div class="evento placeholder"></div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -399,6 +406,7 @@
   {% endif %}
   <script>
     const messaggio_nessuna_sostituzione = "{{ configurazione.get('nosostituzionimsg') }}"
+    const mostra_notifiche_successo = {{ configurazione.get('mostranotifichesuccesso').valore | tojson }}
     {% if utente.permessi.sostituzioni.write %}
     const mostra_link_informa_docente = {{ configurazione.get('mostralinkiformadocente').valore | tojson }}
     const oggetto_mail_informa_docente = `{{ configurazione.get('oggettomailinformadocente') }}`
