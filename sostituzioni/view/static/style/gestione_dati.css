@@ -14,8 +14,8 @@
     /* pointer-events: all; */
     position: relative;
     flex-direction: column;
-    /* min-width: 400px;
-    min-height: 500px; */
+    /* min-width: 400px; */
+    min-height: 500px;
     width: 100%;
     height: 70%;
     margin: auto;
@@ -127,7 +127,6 @@
     flex: 1;
     align-items: center;
     align-content: center;
-    flex-wrap: wrap;
     gap: 30px;
 }
 
@@ -191,7 +190,6 @@
     flex: 1;
     align-items: center;
     align-content: center;
-    flex-wrap: wrap;
     gap: 10px;
 }
 
@@ -286,6 +284,10 @@
         height: 100%;
         border-radius: 0;
     }
+
+    #pulsante-chiudi-gestione-dati {
+        border-radius: 0;
+    }
 }
 
 @media (max-width: 1000px) {
@@ -304,14 +306,45 @@
     }
 }
 
-/* Soltanto se ci sono due o più pulsanti secondari, metti i secondari in alto e il primario in basso */
+@media (max-width: 700px) {
+    #gestione-dati-frame {
+        padding-top: 100px;
+        min-height: 650px;
+    }
+
+    #gestione-dati-titolo {
+        display: none;
+    }
+
+    #gestione-dati-sostituzione input {
+        width: 100%;
+    }
+
+    #gestioni-dati-sostituzione-quando {
+        align-items: normal;
+    }
+
+    #gestione-dati-sostituzione-ora-container {
+        flex-direction: column;
+        margin: 0;
+    }
+}
+
 @media (max-width: 600px) {
+    #pulsante-terziario-sostituzione {
+        display: none;
+    }
+
+    /* Soltanto se ci sono due o più pulsanti secondari, metti i secondari in alto e il primario in basso */
     .pulsanti-gestione-dati:has(.pulsante-secondario-gestione-dati:nth-child(1)) {
         flex-direction: column;
     }
 
-    .pulsanti-secondari-gestione-dati:has(.pulsante-secondario-gestione-dati:nth-child(1)) {
+    .pulsanti-gestione-dati:has(.pulsante-secondario-gestione-dati:nth-child(1)) .pulsanti-secondari-gestione-dati {
         margin: 0;
-        justify-content: space-between;
+    }
+
+    .pulsante-secondario-gestione-dati {
+        width: 100%;
     }
 }
