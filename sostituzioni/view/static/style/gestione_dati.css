@@ -158,8 +158,6 @@
 
 #gestione-dati-sostituzione-ora-predefinita {
     flex: 1;
-    display: flex;
-    flex-wrap: wrap;
 }
 
 #gestione-dati-sostituzione-ora-predefinita input {
@@ -309,24 +307,30 @@
 @media (max-width: 700px) {
     #gestione-dati-frame {
         padding-top: 100px;
-        min-height: 650px;
+        min-height: 550px;
     }
 
     #gestione-dati-titolo {
         display: none;
     }
 
-    #gestione-dati-sostituzione input {
+    #gestione-dati-frame input {
         width: 100%;
     }
 
     #gestioni-dati-sostituzione-quando {
         align-items: normal;
+        flex: unset;
     }
 
     #gestione-dati-sostituzione-ora-container {
         flex-direction: column;
         margin: 0;
+        gap: 0;
+    }
+
+    #gestione-dati-sostituzione-ora-predefinita {
+        flex: unset;
     }
 }
 
@@ -345,6 +349,27 @@
     }
 
     .pulsante-secondario-gestione-dati {
+        width: 100%;
+    }
+}
+
+@media (max-width: 500px) {
+    #gestione-dati-frame {
+        min-height: 700px;
+    }
+
+    #gestioni-dati-sostituzione-quando {
+        flex-direction: column;
+        gap: 30px;
+        flex: unset;
+    }
+
+    #gestione-dati-sostituzione-ora-container {
+        align-items: flex-start;
+    }
+
+    #gestione-dati-sostituzione-ora-predefinita,
+    #gestione-dati-sostituzione-docente {
         width: 100%;
     }
 }
