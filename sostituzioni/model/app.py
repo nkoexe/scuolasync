@@ -20,8 +20,21 @@
 
 from secrets import token_hex
 from flask import Flask
+from os import environ
 
-from sostituzioni.control.configurazione import configurazione
+try:
+    from sostituzioni.control.configurazione import configurazione
+except FileNotFoundError:
+    environ["SCUOLASYNC_SETUP"] = "1"
+
+    # reimport the module loading the default config file
+    from sostituzioni.control.configurazione import configurazione
+
+try:
+    import sostituzioni.control.database
+except FileNotFoundError:
+    environ["SCUOLASYNC_SETUP"] = "2"
+
 from sostituzioni.control.cli import database_cli, importer_cli, backup_cli
 import sostituzioni.control.cron
 

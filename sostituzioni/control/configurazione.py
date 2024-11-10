@@ -25,7 +25,7 @@ from pathlib import Path
 from json import load, dump
 import logging
 
-from beartype._decor.decormain import beartype
+from beartype import beartype
 from beartype.typing import List, Dict, Any, Iterator
 
 import sostituzioni.control.logging
@@ -44,6 +44,16 @@ CONFIG_TEMPLATE = (
 )
 
 SYSTEMD_SERVICE = os.getenv("SCUOLASYNC_SERVICE") or "scuolasync.service"
+
+
+# error caught in model/app.py to enter setup mode
+# this will reimport the module without loading the default config file
+if not CONFIG_FILE.exists() and "SCUOLASYNC_SETUP" not in os.environ:
+    raise FileNotFoundError(f"File di configurazione non trovato: {CONFIG_FILE}")
+
+if not CONFIG_TEMPLATE.exists():
+    logger.error(f"File di configurazione template non trovato: {CONFIG_TEMPLATE}")
+    exit(1)
 
 
 @beartype
@@ -640,7 +650,7 @@ class Configurazione:
     def load(self, file: Path = CONFIG_FILE):
         if not file.exists():
             logger.error(f"File di configurazione non trovato: {file}")
-            return False
+            raise FileNotFoundError(f"File di configurazione non trovato: {file}")
 
         with open(file, encoding="utf-8") as configfile:
             logger.debug("Caricamento file di configurazione..")
@@ -881,13 +891,14 @@ class Configurazione:
 
 configurazione = Configurazione()
 
-if "SCUOLASYNC_SETUP" not in os.environ:
-    ok = configurazione.load()
 
-    if not ok:
-        logger.error(
-            "Configurazione di sistema non caricata. Controllare la posizione del file, oppure eseguire `python -m sostituzioni.setup` per inizializzare il sistema."
-        )
-        exit(1)
+if "SCUOLASYNC_SETUP" in os.environ:
+    # initialize an empty configuration for setup mode
+
+    configurazione.load(CONFIG_TEMPLATE)
+
+else:
+    # regular startup
+    configurazione.load()
 
     configurazione.applica_aggiornamenti()
