@@ -1,0 +1,164 @@
+#main-frame {
+  overflow: unset;
+}
+
+#main-container {
+  width: 700px;
+}
+
+#header {
+  width: 100%;
+  height: auto;
+  padding: 0 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#header .nav-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#header-titolo {
+  margin: 10px 30px;
+  display: flex;
+  align-items: center;
+}
+
+#header-titolo svg {
+  width: 250px;
+  height: auto;
+  view-transition-name: header-svg;
+}
+
+#title-text {
+  font-size: 16px;
+  padding-top: 21px;
+  padding-left: 5px;
+  color: #444;
+}
+
+#progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10%;
+  height: 3px;
+  background-color: var(--color-accent);
+  view-transition-name: progress;
+}
+
+/* landing page */
+#main-frame:has(#index) #title-text,
+#main-frame:has(#index) .nav-button {
+  display: none;
+}
+
+#main-frame:has(#index) #progress {
+  width: 0;
+  height: ;
+}
+
+#main-frame:has(#index) #header {
+  justify-content: center;
+  margin-top: 10%;
+}
+
+#main-frame:has(#index) #header-titolo svg {
+  width: 600px;
+  max-width: 100%;
+}
+
+#main-container:has(#index) {
+  margin: 10px auto;
+}
+
+#index {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#index-description {
+  font-size: 20px;
+  margin-bottom: 50px;
+}
+
+#index-pulsanti {
+  display: flex;
+  gap: 20px;
+}
+
+#index a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  margin: 5px;
+  padding: 20px 50px;
+  border-radius: 20px;
+  color: #222;
+  font-size: 20px;
+  transition: all 0.3s;
+}
+
+#index a .arrow {
+  transition: all 0.3s;
+}
+
+#index a:hover {
+  box-shadow: 0 2px 6px #00000040, 0 8px 16px #00000040, 0 15px 30px #00000040;
+}
+
+#index a:hover .arrow {
+  transform: translateX(5px);
+}
+
+#index-pulsante-licenze {
+  border: 1px solid #333;
+}
+
+#index-next {
+  background-color: var(--color-accent);
+  color: var(--color-accent-text) !important;
+  font-weight: bold;
+}
+
+
+/* admin email */
+#admin-container {
+  padding: 50px;
+  padding-bottom: 100px;
+}
+
+#admin-email-container {
+  display: flex;
+  place-content: center;
+  margin-top: 80px;
+}
+
+#admin-email {
+  width: 700px;
+  font-size: 26px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #222;
+}
+
+#admin-email.invalid {
+  border-bottom: 2px solid red;
+}
+
+::view-transition-old(content) {
+  animation: 0.3s fade-out;
+}
+
+::view-transition-new(content) {
+  animation: 0.3s fade-in;
+}

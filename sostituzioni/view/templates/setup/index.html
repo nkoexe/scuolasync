@@ -1,0 +1,15 @@
+{% extends 'setup/base.html' %}
+
+{% block next_url %}{{ url_for('setup.admin') }}{% endblock %}
+
+{% block content %}
+<div id="index">
+  <div id="index-description">
+    Sistema per la gestione di sostituzioni, eventi e notizie scolastiche.
+  </div>
+  <div id="index-pulsanti">
+    <a id="index-pulsante-licenze" href="{{ url_for('licenze') }}"><span>Licenze & Crediti</span><span class="arrow material-symbols-rounded">arrow_forward</span></a>
+    <a id="index-next" href="{{ next_url }}"><span>Installazione</span><span class="arrow material-symbols-rounded">arrow_forward</span></a>
+  </div>
+</div>
+{% endblock %}

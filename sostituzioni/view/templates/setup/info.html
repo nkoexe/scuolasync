@@ -1,0 +1,35 @@
+{% extends 'setup/base.html' %}
+{% from "macro/impostazioni.html" import
+opzione_testo,
+opzione_selezione with context %}
+
+{% block back_url %}{{ url_for('setup.admin') }}{% endblock %}
+{% block next_url %}https://github.com/nkoexe/scuolasync{% endblock %}
+
+{% block content %}
+
+<div class="opzioni-container">
+  <ul class="opzioni-lista">
+    <li>
+      <h5 class="opzione-titolo">y</h5>
+      <p class="opzione-descrizione">{{ lipsum(n=1, html=True, min=20, max=100) }}</p>
+      {{ opzione_testo(configurazione.get('supportemail')) }}
+    </li>
+    <li>
+      <h5 class="opzione-titolo">y</h5>
+      <p class="opzione-descrizione">{{ lipsum(n=1, html=True, min=20, max=100) }}</p>
+      {{ opzione_selezione(configurazione.get('colortheme')) }}
+    </li>
+  </ul>
+</div>
+
+email amministratore
+email support
+selezione tema
+
+<style>
+  #progress {
+    width: 20%
+  }
+</style>
+{% endblock %}
