@@ -149,7 +149,12 @@
     to {
         opacity: 1;
     }
+}
 
+@keyframes rotate {
+    to {
+        rotate: 360deg;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
