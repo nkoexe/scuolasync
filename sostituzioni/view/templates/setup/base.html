@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
   <title>ScuolaSync Setup</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,6 +49,26 @@
 
     window.onbeforeunload = () => {
       save();
+    }
+
+    function modificato(element) {
+      let dati = {};
+
+      if (element.id == "colortheme") {
+        document.querySelector('#colortheme_css').href = 'static/style/theme/' + element.querySelector("select").value + '.css';
+      }
+
+      if (element.classList.contains("opzione-testo")) {
+        let testo = element.getElementsByTagName("input")[0];
+        dati[element.id] = testo.value;
+
+      } else if (element.classList.contains("opzione-selezione")) {
+
+        let select = element.getElementsByTagName("select")[0];
+        dati[element.id] = select.selectedIndex;
+      }
+
+      socket.emit("applica impostazioni", dati);
     }
   </script>
   <script src="{{ url_for('static', filename='scripts/lib/socket.io.min.js') }}" onload="socket = io('/impostazioni')"></script>

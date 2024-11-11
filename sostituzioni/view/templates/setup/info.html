@@ -7,29 +7,35 @@ opzione_selezione with context %}
 {% block next_url %}https://github.com/nkoexe/scuolasync{% endblock %}
 
 {% block content %}
-
 <div class="opzioni-container">
   <ul class="opzioni-lista">
     <li>
-      <h5 class="opzione-titolo">y</h5>
-      <p class="opzione-descrizione">{{ lipsum(n=1, html=True, min=20, max=100) }}</p>
+      <h5 class="opzione-titolo">Email di contatto tecnico</h5>
+      <p class="opzione-descrizione">Agli utenti del sistema verrà indicata questo indirizzo email per il supporto tecnico.</p>
       {{ opzione_testo(configurazione.get('supportemail')) }}
     </li>
     <li>
-      <h5 class="opzione-titolo">y</h5>
-      <p class="opzione-descrizione">{{ lipsum(n=1, html=True, min=20, max=100) }}</p>
+      <h5 class="opzione-titolo">Colori</h5>
+      <p class="opzione-descrizione">Tema di colori per l'interfaccia utente.</p>
       {{ opzione_selezione(configurazione.get('colortheme')) }}
+      <div id="showcase-colori">
+        <div class="colore"></div>
+        <div class="colore"></div>
+        <div class="colore"></div>
+        <div class="colore"></div>
+        <div class="colore"></div>
+        <div class="colore"></div>
+        <div class="colore"></div>
+        <div class="colore"></div>
+        <div class="colore"></div>
+        <div class="colore"></div>
+      </div>
     </li>
   </ul>
 </div>
-
-email amministratore
-email support
-selezione tema
 
 <style>
   #progress {
     width: 20%
   }
 </style>
-{% endblock %}
