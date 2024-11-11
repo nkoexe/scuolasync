@@ -4,7 +4,7 @@ opzione_testo,
 opzione_selezione with context %}
 
 {% block back_url %}{{ url_for('setup.admin') }}{% endblock %}
-{% block next_url %}https://github.com/nkoexe/scuolasync{% endblock %}
+{% block next_url %}{{ url_for('setup.scuola') }}{% endblock %}
 
 {% block content %}
 <div class="opzioni-container">
@@ -14,6 +14,7 @@ opzione_selezione with context %}
       <p class="opzione-descrizione">Agli utenti del sistema verrà indicata questo indirizzo email per il supporto tecnico.</p>
       {{ opzione_testo(configurazione.get('supportemail')) }}
     </li>
+    <div class="opzioni-separator"></div>
     <li>
       <h5 class="opzione-titolo">Colori</h5>
       <p class="opzione-descrizione">Tema di colori per l'interfaccia utente.</p>
@@ -39,3 +40,4 @@ opzione_selezione with context %}
     width: 20%
   }
 </style>
+{% endblock %}

@@ -23,6 +23,11 @@ def info():
     return render_template("setup/info.html", configurazione=configurazione)
 
 
+@setup.route("/scuola")
+def scuola():
+    return render_template("setup/scuola.html", configurazione=configurazione)
+
+
 # override default error handler (so that sostituzioni.view.errorhandlers does not complain)
 @setup.app_errorhandler(404)
 def error(e):
