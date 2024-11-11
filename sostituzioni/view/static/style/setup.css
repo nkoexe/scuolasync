@@ -130,6 +130,38 @@
   font-weight: bold;
 }
 
+#index-status {
+  margin-top: 50px;
+  padding: 20px 30px;
+  font-size: 22px;
+  border-left: 2px solid #222;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  translate: 10px 0;
+  transition: all 0.5s .3s;
+}
+
+#index-status.visible {
+  opacity: 1;
+  translate: 0;
+}
+
+#index-status.error {
+  border-left-color: #9e0b0b !important;
+}
+
+#index-status.error #index-status-icon .icon {
+  color: #9e0b0b;
+}
+
+#index-status-icon .icon {
+  padding: 10px;
+  font-size: 30px;
+  animation: 15s rotate infinite;
+}
 
 /* admin email */
 #admin-container {

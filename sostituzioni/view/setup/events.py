@@ -15,6 +15,11 @@ from sostituzioni.model.auth import (
 from sostituzioni.view import socketio
 
 
+@socketio.on("test", namespace="/impostazioni")
+def test():
+    return "ok"
+
+
 @socketio.on("admin email", namespace="/impostazioni")
 @login_required
 @role_required("impostazioni.write")

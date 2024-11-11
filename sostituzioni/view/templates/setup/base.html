@@ -50,7 +50,7 @@
       save();
     }
   </script>
-  <script src="{{ url_for('static', filename='scripts/lib/socket.io.min.js') }}" defer onload="socket = io('/impostazioni')"></script>
+  <script src="{{ url_for('static', filename='scripts/lib/socket.io.min.js') }}" onload="socket = io('/impostazioni')"></script>
   {% block scripts %}{% endblock %}
 </body>
 
