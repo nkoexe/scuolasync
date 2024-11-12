@@ -1,0 +1,46 @@
+{% extends 'setup/base.html' %}
+
+{% block back_url %}{{ url_for('setup.ssoinfo') }}{% endblock %}
+{% block next_url %}{{ url_for('setup.next') }}{% endblock %}
+
+{% block content %}
+<div class="status">
+  <div class="status-icon"><span class="icon material-symbols-rounded">verified</span></div>
+  <span class="status-text">Fatto! Il sistema è configurato e pronto all'uso, ma manca di vita.</span>
+</div>
+<div id="next" class="opzioni-container">
+  <h2>Ecco i prossimi passi:</h2>
+  <ul>
+    <li>Riavvia il sistema</li>
+    <li>Esegui l'accesso con l'account amministratore creato</li>
+    <li>Accedi alla pagina di impostazioni (<span class="material-symbols-rounded">settings</span>)</li>
+    <li>Aggiungi altri utenti (amministratori, editor o visualizzatori)</li>
+    <li>Aggiungi dati interni (orario, docenti, classi, aule)</li>
+  </ul>
+</div>
+<button id="button-riavvia" href="{{ next_url }}"><span>Riavvia</span><span class="arrow material-symbols-rounded">arrow_forward</span></button>
+
+<style>
+  #progress {
+    width: 100%
+  }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.onload = () => {
+    document.querySelectorAll(".status").forEach(status => {
+      status.classList.add("visible");
+    })
+  }
+
+  document.querySelector("#button-riavvia").onclick = () => {
+    //socket.emit("setup done");
+
+    document.querySelector("#arrow-back").style.opacity = "0";
+    document.querySelector(".status").style.opacity = "0";
+    document.querySelector("#next").style.marginTop = "0";
+  }
+</script>
+{% endblock %}

@@ -37,6 +37,11 @@ def ssoinfo():
     return render_template("setup/ssoinfo.html", configurazione=configurazione)
 
 
+@setup.route("/next")
+def next():
+    return render_template("setup/next.html", configurazione=configurazione)
+
+
 # override default error handler (so that sostituzioni.view.errorhandlers does not complain)
 @setup.app_errorhandler(404)
 def error(e):

@@ -3,7 +3,7 @@
 opzione_testo with context %}
 
 {% block back_url %}{{ url_for('setup.sso') }}{% endblock %}
-{% block next_url %}{{ url_for('setup.ssoinfo') }}{% endblock %}
+{% block next_url %}{{ url_for('setup.next') }}{% endblock %}
 
 {% set ssochoice = configurazione.get("ssochoice") %}
 {% set ssoprovider = "Google Cloud" if ssochoice == 0 else "Microsoft Entra ID" %}

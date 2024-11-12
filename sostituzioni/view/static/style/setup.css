@@ -96,6 +96,38 @@
   gap: 50px;
 }
 
+.status {
+  padding: 20px 30px;
+  font-size: 22px;
+  border-left: 2px solid #222;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  translate: 10px 0;
+  transition: all 0.5s .3s;
+}
+
+.status.visible {
+  opacity: 1;
+  translate: 0;
+}
+
+.status.error {
+  border-left-color: #9e0b0b !important;
+}
+
+.status.error .status-icon .icon {
+  color: #9e0b0b;
+}
+
+.status-icon .icon {
+  padding: 10px;
+  font-size: 30px;
+  animation: 15s rotate infinite;
+}
+
 /* landing page */
 #main-frame:has(#index) #title-text,
 #main-frame:has(#index) .nav-button {
@@ -174,35 +206,6 @@
 
 #index-status {
   margin-top: 50px;
-  padding: 20px 30px;
-  font-size: 22px;
-  border-left: 2px solid #222;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  opacity: 0;
-  translate: 10px 0;
-  transition: all 0.5s .3s;
-}
-
-#index-status.visible {
-  opacity: 1;
-  translate: 0;
-}
-
-#index-status.error {
-  border-left-color: #9e0b0b !important;
-}
-
-#index-status.error #index-status-icon .icon {
-  color: #9e0b0b;
-}
-
-#index-status-icon .icon {
-  padding: 10px;
-  font-size: 30px;
-  animation: 15s rotate infinite;
 }
 
 /* admin email */
@@ -330,6 +333,70 @@
   rotate: 30deg;
 }
 
+/* next steps */
+#next {
+  margin-top: 50px;
+  transition: margin-top 1s;
+}
+
+#next ul {
+  margin: 20px;
+}
+
+#next li {
+  padding: 5px 0;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+}
+
+#next li::before {
+  font-family: 'Material Symbols Rounded';
+  content: "arrow_forward";
+  margin-right: 10px;
+  color: var(--color-accent);
+  transition: all 0.3s;
+}
+
+#next li:hover::before {
+  transform: translateX(5px);
+}
+
+#button-riavvia {
+  width: 230px;
+  height: 100px;
+  margin-left: auto;
+  margin-top: 30px;
+  padding-left: 50px;
+  font-size: 26px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-radius: 30px;
+  background-color: var(--color-accent);
+  color: var(--color-accent-text);
+  cursor: pointer;
+  transition: all 0.3s;
+  animation: .5s .5s fade-in backwards, 1s slide-up backwards;
+}
+
+#button-riavvia:hover {
+  scale: 1.01;
+  box-shadow: 0 2px 6px #00000040, 0 8px 16px #00000040, 0 15px 30px #00000040;
+}
+
+#button-riavvia .arrow {
+  font-size: 30px;
+  transition: all 0.3s;
+}
+
+#button-riavvia:hover .arrow {
+  transform: translateX(5px);
+}
+
+#main-frame:has(#next) #arrow-next {
+  opacity: 0;
+}
 
 ::view-transition-old(content) {
   animation: 0.3s fade-out;

@@ -39,3 +39,15 @@ def sso_choice(choice):
             return
 
     configurazione.set("ssochoice", int(choice))
+
+
+@socketio.on("setup done", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def setup_done():
+    # todo: controllare se è stato eseguito il setup
+    # todo salvare configurazione
+
+    from sostituzioni.view.impostazioni.events import reboot
+
+    reboot()
