@@ -28,3 +28,14 @@ def admin_email(email):
         return
 
     configurazione.admin_email = email
+
+
+@socketio.on("sso choice", namespace="/impostazioni")
+@login_required
+@role_required("impostazioni.write")
+def sso_choice(choice):
+    if not isinstance(choice, int):
+        if not isinstance(choice, str) or not choice.isdigit():
+            return
+
+    configurazione.set("ssochoice", int(choice))
