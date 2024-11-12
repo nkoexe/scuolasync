@@ -894,8 +894,18 @@ configurazione = Configurazione()
 
 if "SCUOLASYNC_SETUP" in os.environ:
     # initialize an empty configuration for setup mode
-
     configurazione.load(CONFIG_TEMPLATE)
+
+    # override set method to force save even on disabled options
+    from types import MethodType
+
+    def force_set(
+        self, id_opzione: str, dati: Any, force: bool = False, salva: bool = False
+    ):
+        self._set(id_opzione, dati, True, salva)
+
+    configurazione._set = configurazione.set
+    configurazione.set = MethodType(force_set, configurazione)
 
 else:
     # regular startup
