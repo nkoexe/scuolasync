@@ -2,6 +2,22 @@
   user-select: none;
 }
 
+.opzioni-container a {
+  color: var(--color-link);
+  text-decoration: none;
+  background-image: linear-gradient(to right, var(--color-link), var(--color-link));
+  background-size: 0 2px;
+  background-position: 100% 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.3s;
+  cursor: pointer;
+}
+
+.opzioni-container a:hover {
+  background-size: 100% 2px;
+  background-position: 0 100%;
+}
+
 #main-frame {
   overflow: unset;
 }
@@ -31,9 +47,8 @@
 }
 
 #header .nav-button:hover {
-  background-color: #00000027;
+  background-color: #00000020;
 }
-
 
 #header-titolo {
   margin: 10px 30px;
@@ -45,7 +60,6 @@
 #header-titolo:has(object) {
   opacity: 0;
 }
-
 
 #header-titolo svg {
   width: 250px;
