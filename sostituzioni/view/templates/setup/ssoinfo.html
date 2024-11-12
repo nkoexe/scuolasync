@@ -52,5 +52,15 @@ opzione_testo with context %}
 
 {% block scripts %}
 <script>
+  document.querySelectorAll(".opzione input").forEach(input => {
+    input.disabled = false;
+  })
+
+  const redirecturi_input = document.querySelector("#redirecturi input");
+  redirecturi_input.value = window.location.href.replace("ssoinfo", "loginredirect");
+  redirecturi_input.oninput();
+  redirecturi_input.disabled = true;
+  redirecturi_input.style.opacity = 1;
+  redirecturi_input.style.color = "initial";
 </script>
 {% endblock %}
