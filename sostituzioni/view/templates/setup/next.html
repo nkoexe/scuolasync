@@ -3,12 +3,22 @@
 {% block back_url %}{{ url_for('setup.ssoinfo') }}{% endblock %}
 {% block next_url %}{{ url_for('setup.next') }}{% endblock %}
 
+{% set ok = admin and school_img and school_info and sso %}
+
 {% block content %}
+{% if ok %}
 <div class="status">
   <div class="status-icon"><span class="icon material-symbols-rounded">verified</span></div>
   <span class="status-text">Fatto! Il sistema è configurato e pronto all'uso, ma manca di vita.</span>
 </div>
+{% else %}
+<div class="status error">
+  <div class="status-icon"><span class="icon material-symbols-rounded">error</span></div>
+  <span class="status-text">Attenzione! Dati mancanti. {% if admin and sso %} È possibile continuare e completare la configurazione in seguito.{% endif %}</span>
+</div>
+{% endif %}
 <div id="next" class="opzioni-container">
+  {% if ok %}
   <h2>Ecco i prossimi passi:</h2>
   <ul>
     <li>Riavvia il sistema</li>
@@ -17,8 +27,28 @@
     <li>Aggiungi altri utenti (amministratori, editor o visualizzatori)</li>
     <li>Aggiungi dati interni (orario, docenti, classi, aule)</li>
   </ul>
+  {% else %}
+  <h2>Errori:</h2>
+  <ul>
+    {% if not admin %}
+    <li>Email amministratore non impostata</li>
+    {% endif %}
+    {% if not school_img %}
+    <li>Logo scolastico mancante</li>
+    {% endif %}
+    {% if not school_info %}
+    <li>Informazioni relative all'istituto mancanti</li>
+    {% endif %}
+    {% if not sso %}
+    <li>Credenziali SSO mancanti</li>
+    {% endif %}
+    {% endif %}
 </div>
-<button id="button-riavvia" href="{{ next_url }}"><span>Riavvia</span><span class="arrow material-symbols-rounded">arrow_forward</span></button>
+{% if ok %}
+<button id="button-riavvia"><span>Riavvia</span><span class="arrow material-symbols-rounded">arrow_forward</span></button>
+{% elif admin and sso %}
+<button id="button-riavvia"><span>Riavvia comunque</span><span class="arrow material-symbols-rounded">arrow_forward</span></button>
+{% endif %}
 
 <style>
   #progress {
@@ -36,11 +66,19 @@
   }
 
   document.querySelector("#button-riavvia").onclick = () => {
-    //socket.emit("setup done");
-
     document.querySelector("#arrow-back").style.opacity = "0";
     document.querySelector(".status").style.opacity = "0";
+    document.querySelector(".status").style.padding = "0";
     document.querySelector("#next").style.marginTop = "0";
+    document.querySelector("#button-riavvia").style.opacity = "0";
+    document.querySelector("#header-titolo").style.margin = "100px 0 0 0";
+    document.querySelector("#scuolasync_s").style.animation = "2s 2s loading infinite";
+
+    socket.emit("setup done");
+
+    socket.on("connect", () => {
+      window.location.reload();
+    });
   }
 </script>
 {% endblock %}

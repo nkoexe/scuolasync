@@ -39,7 +39,43 @@ def ssoinfo():
 
 @setup.route("/next")
 def next():
-    return render_template("setup/next.html", configurazione=configurazione)
+    admin_ready = False
+    school_img_ready = False
+    school_info_ready = False
+    sso_ready = False
+
+    admin_ready = bool(configurazione.admin_email)
+
+    school_img_ready = (
+        configurazione.get("schoolmainlogo").valore.path.exists()
+        and configurazione.get("schoolhederlogo").valore.path.exists()
+    )
+
+    school_info_ready = (
+        bool(configurazione.get("supportemail"))
+        and bool(configurazione.get("schoollink"))
+        and bool(configurazione.get("schoolprivacylink"))
+    )
+
+    match configurazione.get("ssochoice"):
+        case 0:
+            sso_ready = bool(configurazione.get("gclientid")) and bool(
+                configurazione.get("gclientsecret")
+            )
+
+        case 1:
+            sso_ready = bool(configurazione.get("msclientid")) and bool(
+                configurazione.get("msclientsecret")
+            )
+
+    return render_template(
+        "setup/next.html",
+        configurazione=configurazione,
+        admin=admin_ready,
+        school_img=school_img_ready,
+        school_info=school_info_ready,
+        sso=sso_ready,
+    )
 
 
 # override default error handler (so that sostituzioni.view.errorhandlers does not complain)

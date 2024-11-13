@@ -54,6 +54,7 @@
   margin: 10px 30px;
   display: flex;
   align-items: center;
+  transition: margin 1s .2s;
 }
 
 /* fix flicker, wait for svg to load */
@@ -69,6 +70,7 @@
 
 #scuolasync_s {
   stroke: var(--color-accent) !important;
+  stroke-dasharray: 300 !important;
 }
 
 #title-text {
@@ -336,7 +338,7 @@
 /* next steps */
 #next {
   margin-top: 50px;
-  transition: margin-top 1s;
+  transition: margin-top 1.5s .2s;
 }
 
 #next ul {
@@ -363,11 +365,9 @@
 }
 
 #button-riavvia {
-  width: 230px;
-  height: 100px;
   margin-left: auto;
   margin-top: 30px;
-  padding-left: 50px;
+  padding: 30px 50px;
   font-size: 26px;
   display: flex;
   align-items: center;
@@ -377,7 +377,7 @@
   color: var(--color-accent-text);
   cursor: pointer;
   transition: all 0.3s;
-  animation: .5s .5s fade-in backwards, 1s slide-up backwards;
+  animation: .5s 2s fade-in backwards, 1s 1.5s slide-up backwards;
 }
 
 #button-riavvia:hover {
@@ -396,6 +396,16 @@
 
 #main-frame:has(#next) #arrow-next {
   opacity: 0;
+}
+
+@keyframes loading {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: 600;
+  }
 }
 
 ::view-transition-old(content) {
