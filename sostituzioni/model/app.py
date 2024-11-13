@@ -35,6 +35,10 @@ try:
 except FileNotFoundError:
     environ["SCUOLASYNC_SETUP"] = "2"
 
+    # reimport the module creating the database first
+    import sostituzioni.control.database
+
+
 from sostituzioni.control.cli import database_cli, importer_cli, backup_cli
 import sostituzioni.control.cron
 

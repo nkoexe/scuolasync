@@ -45,8 +45,11 @@ def sso_choice(choice):
 @login_required
 @role_required("impostazioni.write")
 def setup_done():
-    # todo: controllare se è stato eseguito il setup
-    # todo salvare configurazione
+    configurazione.esporta()
+
+    from sostituzioni.control.cli import aggiungi_utente
+
+    aggiungi_utente(configurazione.admin_email, "amministratore")
 
     from sostituzioni.view.impostazioni.events import reboot
 
