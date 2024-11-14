@@ -1,3 +1,4 @@
+from pathlib import Path
 from flask import redirect, url_for, render_template
 
 from sostituzioni.control.configurazione import configurazione
@@ -47,9 +48,12 @@ def next():
     admin_ready = bool(configurazione.admin_email)
 
     school_img_ready = (
-        configurazione.get("schoolmainlogo").valore.path.exists()
-        and configurazione.get("schoolhederlogo").valore.path.exists()
-    )
+        configurazione.get("flaskstaticdir").path
+        / configurazione.get("schoolmainlogo").path
+    ).exists() and (
+        configurazione.get("flaskstaticdir").path
+        / configurazione.get("schoolheaderlogo").path
+    ).exists()
 
     school_info_ready = (
         bool(configurazione.get("supportemail"))
