@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style/impostazioni.css') }}">
   <link rel="stylesheet" id="colortheme_css" href="{{ url_for('static', filename='style/theme/'~configurazione.get('colortheme')~'.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/setup.css') }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='icons/apple-touch-icon.png') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
 </head>
 
 <body>
@@ -25,7 +27,7 @@
     <div id="header">
       <div id="progress"></div>
       <a id="arrow-back" class="nav-button" href="{{back_url}}"><span class="material-symbols-rounded">arrow_back</span></a>
-      <h1 id="header-titolo"><object type="image/svg+xml" data="{{ url_for('static', filename='images/scuolasync.svg') }}" onload="this.parentNode.replaceChild(this.contentDocument.documentElement, this);">
+      <h1 id="header-titolo"><object type="image/svg+xml" width="250px" height="72px" data="{{ url_for('static', filename='images/scuolasync.svg') }}" onload="this.parentNode.replaceChild(this.contentDocument.documentElement, this);">
           ScuolaSync
         </object><span id="title-text">SETUP</span>
       </h1>

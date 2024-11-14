@@ -57,15 +57,14 @@
   transition: margin 1s .2s;
 }
 
-/* fix flicker, wait for svg to load */
-#header-titolo:has(object) {
-  opacity: 0;
+#header-titolo {
+  view-transition-name: header;
 }
 
 #header-titolo svg {
   width: 250px;
   height: auto;
-  view-transition-name: header-svg;
+  /* view-transition-name: header; */
 }
 
 #scuolasync_s {
