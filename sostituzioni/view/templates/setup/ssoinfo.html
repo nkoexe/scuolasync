@@ -6,17 +6,17 @@ opzione_testo with context %}
 {% block next_url %}{{ url_for('setup.next') }}{% endblock %}
 
 {% set ssochoice = configurazione.get("ssochoice") %}
-{% set ssoprovider = "Google Cloud" if ssochoice == 0 else "Microsoft Entra ID" %}
+{% set ssoprovider = "Google Cloud" if ssochoice == 0 else "Microsoft Entra" %}
 
 {% block content %}
 <div class="opzioni-container">
   <h2>Dati Preliminari</h2>
-  <p>Per poter compilare questa sezione servono dati del progetto {{ssoprovider}}.<br>Assicurati di avere OAuth Client ID e Client Secret a disposizione.<br><a href="">Scopri come</a>.</p>
+  <p>Per poter compilare questa sezione servono dati del progetto {{ssoprovider}}.<br>Assicurati di avere OAuth Client ID e Client Secret a disposizione.<br><a href="/docs#/installazione/server/prerequisiti?id=passaggi-per-configurare-sso" target="_blank">Scopri come</a>.</p>
 </div>
 <div class="opzioni-container">
   <ul class="opzioni-lista">
     <li>
-      <h5 class="opzione-titolo">{{ssoprovider}} OAuth Client ID</h5>
+      <h5 class="opzione-titolo">{% if ssochoice == 0 %}Google Cloud Client ID{% else %}Microsoft Entra Application (client) ID{% endif %}</h5>
       <p class="opzione-descrizione"></p>
       {% if ssochoice == 0 %}
       {{ opzione_testo(configurazione.get('gclientid')) }}
@@ -26,7 +26,7 @@ opzione_testo with context %}
     </li>
     <div class="opzioni-separator"></div>
     <li>
-      <h5 class="opzione-titolo">{{ssoprovider}} OAuth Client Secret</h5>
+      <h5 class="opzione-titolo">{% if ssochoice == 0 %}Google Cloud Client Secret{% else %}Microsoft Entra Client Secret{% endif %}</h5>
       <p class="opzione-descrizione"></p>
       {% if ssochoice == 0 %}
       {{ opzione_testo(configurazione.get('gclientsecret')) }}
