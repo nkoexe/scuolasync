@@ -40,10 +40,8 @@ fi
 echo "Installing dependencies..."
 python3 -m pip install -r requirements.txt --log pip-install.log || { echo "Dependency installation failed. Check pip-install.log for details."; exit 1; }
 
-
-# Prompt the user for the server name
-echo "Enter the server name for your Nginx configuration (e.g., scuolasync.example.com):"
-read -r SERVER_NAME
+# use environment variable instead of user input to allow piping
+SERVER_NAME=${SERVER_NAME:-""}
 
 if [ -z "$SERVER_NAME" ]; then
     echo "Server name cannot be empty. Exiting."
@@ -93,10 +91,10 @@ sudo systemctl reload nginx || { echo "Failed to reload Nginx."; exit 1; }
 
 echo "Nginx configuration installed successfully for server name: $SERVER_NAME"
 
-echo "Would you like to enable SSL for $SERVER_NAME using Let's Encrypt? [y/N]"
-read -r ENABLE_SSL
+DISABLE_SSL=${SCUOLASYNC_NO_SSL:-""}
 
-if [ "$ENABLE_SSL" = "y" ] || [ "$ENABLE_SSL" = "Y" ]; then
+# Disable ssl is not set, proceed with obtaining SSL certificate
+if [ -z "$DISABLE_SSL" ]; then
     echo "Obtaining SSL certificate for $SERVER_NAME..."
     command -v certbot >/dev/null 2>&1 || { echo "Certbot is not installed. Please install it before enabling SSL."; exit 1; }
 
@@ -163,7 +161,7 @@ echo "Service installed successfully."
 echo "Installation completed successfully."
 
 echo ""
-if [ "$ENABLE_SSL" = "y" ] || [ "$ENABLE_SSL" = "Y" ]; then
+if [ -z "$DISABLE_SSL" ]; then
     echo "Head to https://$SERVER_NAME to set up the system."
 else
     echo "Head to http://$SERVER_NAME to set up the system."
