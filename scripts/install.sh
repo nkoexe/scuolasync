@@ -41,7 +41,7 @@ echo "Installing dependencies..."
 python3 -m pip install -r requirements.txt --log pip-install.log || { echo "Dependency installation failed. Check pip-install.log for details."; exit 1; }
 
 # use environment variable instead of user input to allow piping
-SERVER_NAME=${SERVER_NAME:-""}
+SERVER_NAME=${SCUOLASYNC_SERVER_NAME:-""}
 
 if [ -z "$SERVER_NAME" ]; then
     echo "Server name cannot be empty. Exiting."
