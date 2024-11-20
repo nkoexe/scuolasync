@@ -6,6 +6,14 @@ for cmd in python3 pip3 git nginx systemctl; do
     command -v $cmd >/dev/null 2>&1 || { echo >&2 "$cmd not found."; exit 1; }
 done
 
+# use environment variable instead of user input to allow piping
+SERVER_NAME=${SCUOLASYNC_SERVER_NAME:-""}
+
+if [ -z "$SERVER_NAME" ]; then
+    echo "Server name cannot be empty. Set the environment variable SCUOLASYNC_SERVER_NAME."
+    exit 1
+fi
+
 # Ensure Python version is adequate
 PYTHON_VERSION=$(python3 -c "import sys; print('.'.join(map(str, sys.version_info[:2])))")
 REQUIRED_VERSION="3.10"
@@ -13,6 +21,7 @@ if [ "$(printf '%s\n' "$REQUIRED_VERSION" "$PYTHON_VERSION" | sort -V | head -n1
     echo "Python 3.10 or higher is required. Found: $PYTHON_VERSION"
     exit 1
 fi
+# todo: check for python-venv
 
 # Clone the repository
 if [ -d "scuolasync" ]; then
@@ -39,14 +48,6 @@ fi
 # Install the dependencies
 echo "Installing dependencies..."
 python3 -m pip install -r requirements.txt --log pip-install.log || { echo "Dependency installation failed. Check pip-install.log for details."; exit 1; }
-
-# use environment variable instead of user input to allow piping
-SERVER_NAME=${SCUOLASYNC_SERVER_NAME:-""}
-
-if [ -z "$SERVER_NAME" ]; then
-    echo "Server name cannot be empty. Exiting."
-    exit 1
-fi
 
 # Define the Nginx configuration file content
 NGINX_CONF="
