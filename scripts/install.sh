@@ -7,8 +7,14 @@ for cmd in python3 git nginx systemctl; do
 done
 
 # check for required python modules
-command -v "python3 -m pip -V" >/dev/null 2>&1 || { echo >&2 "python3 -m pip not found. Please install python3-pip."; exit 1; }
-command -v "python3 -m venv" >/dev/null 2>&1 || { echo >&2 "python3 -m venv not found. Please install python3-venv."; exit 1; }
+if ! python3 -m pip --version >/dev/null 2>&1; then
+    echo >&2 "python3 -m pip not found. Please install python3-pip."
+    exit 1
+fi
+if ! python3 -m venv --help >/dev/null 2>&1; then
+    echo >&2 "python3 -m venv not found. Please install python3-venv."
+    exit 1
+fi
 
 # check for nginx service
 systemctl is-active --quiet nginx || { echo "nginx service is not active. Please start the service before running this script."; exit 1; }
