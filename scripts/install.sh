@@ -58,7 +58,7 @@ else
 fi
 
 # Define the Nginx configuration file content
-NGINX_CONF='
+NGINX_CONF=$'
 server {
         server_name '"$SERVER_NAME"';
 
