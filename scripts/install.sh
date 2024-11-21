@@ -27,10 +27,6 @@ fi
 
 
 if [ -z "$SKIP_DOWNLOAD" ]; then
-    echo "Skipping download. Using existing repository."
-
-else
-
     # Clone the repository
     if [ -d "scuolasync" ]; then
         echo "Directory 'scuolasync' already exists. Remove or rename it before running the script."
@@ -57,6 +53,8 @@ else
     echo "Installing dependencies..."
     python3 -m pip install -r requirements.txt --log pip-install.log || { echo "Dependency installation failed. Check pip-install.log for details."; exit 1; }
 
+else
+    echo "Skipping download. Using existing repository."
 fi
 
 # Define the Nginx configuration file content
