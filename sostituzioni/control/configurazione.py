@@ -43,9 +43,6 @@ CONFIG_TEMPLATE = (
     or ROOT_PATH / "database" / "configurazione.json.template"
 )
 
-SYSTEMD_SERVICE = os.getenv("SCUOLASYNC_SERVICE") or "scuolasync.service"
-
-
 # error caught in model/app.py to enter setup mode
 # this will reimport the module without loading the default config file
 if not CONFIG_FILE.exists() and "SCUOLASYNC_SETUP" not in os.environ:
@@ -606,15 +603,6 @@ class Configurazione:
 
         if os.name == "nt":
             self.shell_commands["update"] = ["git", "pull"]
-            self.shell_commands["reboot"] = [
-                "kill",
-                "-9",
-                str(os.getpid()),
-                "&&",
-                "python",
-                "-m",
-                "sostituzioni",
-            ]
             self.shell_commands["get_version"] = [
                 "git",
                 "rev-parse",
@@ -628,11 +616,7 @@ class Configurazione:
                 "main",
             ]
         else:
-            if which("systemctl") is None:
-                logger.error("Systemctl non trovato.")
-
             self.shell_commands["update"] = ["git", "pull"]
-            self.shell_commands["reboot"] = ["systemctl", "restart", SYSTEMD_SERVICE]
             self.shell_commands["get_version"] = [
                 "git",
                 "rev-parse",
