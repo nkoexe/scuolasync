@@ -7,7 +7,7 @@ for cmd in python3 git nginx systemctl; do
 done
 
 # check for required python modules
-command -v "python3 -m pip" >/dev/null 2>&1 || { echo >&2 "python3 -m pip not found. Please install python3-pip."; exit 1; }
+command -v "python3 -m pip -V" >/dev/null 2>&1 || { echo >&2 "python3 -m pip not found. Please install python3-pip."; exit 1; }
 command -v "python3 -m venv" >/dev/null 2>&1 || { echo >&2 "python3 -m venv not found. Please install python3-venv."; exit 1; }
 
 # check for nginx service
