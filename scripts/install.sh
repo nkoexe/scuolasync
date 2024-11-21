@@ -2,13 +2,21 @@
 
 # Check for binaries
 echo "Checking for required binaries..."
-for cmd in python3 pip3 git nginx systemctl; do
+for cmd in python3 git nginx systemctl; do
     command -v $cmd >/dev/null 2>&1 || { echo >&2 "$cmd not found."; exit 1; }
 done
 
+# check for required python modules
+command -v "python3 -m pip" >/dev/null 2>&1 || { echo >&2 "python3 -m pip not found. Please install python3-pip."; exit 1; }
+command -v "python3 -m venv" >/dev/null 2>&1 || { echo >&2 "python3 -m venv not found. Please install python3-venv."; exit 1; }
+
+# check for nginx service
+systemctl is-active --quiet nginx || { echo "nginx service is not active. Please start the service before running this script."; exit 1; }
+
 # use environment variable instead of user input to allow piping
 SERVER_NAME=${SCUOLASYNC_SERVER_NAME:-""}
-SKIP_DOWNLOAD=${SCUOLASYNC_SKIP_DOWNLOAD:-""}
+SKIP_DOWNLOAD=${SCUOLASYNC_NO_DOWNLOAD:-""}
+DISABLE_SSL=${SCUOLASYNC_NO_SSL:-""}
 
 
 if [ -z "$SERVER_NAME" ]; then
@@ -54,7 +62,7 @@ if [ -z "$SKIP_DOWNLOAD" ]; then
     python3 -m pip install -r requirements.txt --log pip-install.log || { echo "Dependency installation failed. Check pip-install.log for details."; exit 1; }
 
 else
-    echo "Skipping download. Using existing repository."
+    echo "Skipping download. Please make sure you're inside the repository directory."
 fi
 
 # Define the Nginx configuration file content
@@ -99,8 +107,6 @@ echo "Reloading Nginx..."
 sudo systemctl reload nginx || { echo "Failed to reload Nginx."; exit 1; }
 
 echo "Nginx configuration installed successfully for server name: $SERVER_NAME"
-
-DISABLE_SSL=${SCUOLASYNC_NO_SSL:-""}
 
 # Disable ssl is not set, proceed with obtaining SSL certificate
 if [ -z "$DISABLE_SSL" ]; then
