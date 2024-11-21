@@ -8,6 +8,8 @@ done
 
 # use environment variable instead of user input to allow piping
 SERVER_NAME=${SCUOLASYNC_SERVER_NAME:-""}
+SKIP_DOWNLOAD=${SCUOLASYNC_SKIP_DOWNLOAD:-""}
+
 
 if [ -z "$SERVER_NAME" ]; then
     echo "Server name cannot be empty. Set the environment variable SCUOLASYNC_SERVER_NAME."
@@ -23,31 +25,39 @@ if [ "$(printf '%s\n' "$REQUIRED_VERSION" "$PYTHON_VERSION" | sort -V | head -n1
 fi
 # todo: check for python-venv
 
-# Clone the repository
-if [ -d "scuolasync" ]; then
-    echo "Directory 'scuolasync' already exists. Remove or rename it before running the script."
-    exit 1
-fi
 
-echo "Cloning the repository..."
-git clone https://github.com/nkoexe/scuolasync.git || { echo "Cloning repository failed."; exit 1; }
+if [ -z "$SKIP_DOWNLOAD" ]; then
+    echo "Skipping download. Using existing repository."
 
-# Set up the virtual environment
-cd scuolasync || { echo "Directory 'scuolasync' not found."; exit 1; }
-echo "Setting up the virtual environment..."
-python3 -m venv env || { echo "Virtual environment creation failed."; exit 1; }
-
-# Activate the virtual environment
-if [ -f "env/bin/activate" ]; then
-    . env/bin/activate
 else
-    echo "Virtual environment activation script not found."
-    exit 1
-fi
 
-# Install the dependencies
-echo "Installing dependencies..."
-python3 -m pip install -r requirements.txt --log pip-install.log || { echo "Dependency installation failed. Check pip-install.log for details."; exit 1; }
+    # Clone the repository
+    if [ -d "scuolasync" ]; then
+        echo "Directory 'scuolasync' already exists. Remove or rename it before running the script."
+        exit 1
+    fi
+
+    echo "Cloning the repository..."
+    git clone https://github.com/nkoexe/scuolasync.git || { echo "Cloning repository failed."; exit 1; }
+
+    # Set up the virtual environment
+    cd scuolasync || { echo "Directory 'scuolasync' not found."; exit 1; }
+    echo "Setting up the virtual environment..."
+    python3 -m venv env || { echo "Virtual environment creation failed."; exit 1; }
+
+    # Activate the virtual environment
+    if [ -f "env/bin/activate" ]; then
+        . env/bin/activate
+    else
+        echo "Virtual environment activation script not found."
+        exit 1
+    fi
+
+    # Install the dependencies
+    echo "Installing dependencies..."
+    python3 -m pip install -r requirements.txt --log pip-install.log || { echo "Dependency installation failed. Check pip-install.log for details."; exit 1; }
+
+fi
 
 # Define the Nginx configuration file content
 NGINX_CONF='
