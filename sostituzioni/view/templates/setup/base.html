@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+  <title>ScuolaSync Setup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/selezione.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/impostazioni.css') }}">
+  <link rel="stylesheet" id="colortheme_css" href="{{ url_for('static', filename='style/theme/'~configurazione.get('colortheme')~'.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/setup.css') }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='icons/apple-touch-icon.png') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
+</head>
+
+<body>
+  <div id="main-frame">
+    {% set back_url %}{% block back_url %}{% endblock %}{% endset %}
+    {% set next_url %}{% block next_url %}{% endblock %}{% endset %}
+
+    <div id="header">
+      <div id="progress"></div>
+      <a id="arrow-back" class="nav-button" href="{{back_url}}"><span class="material-symbols-rounded">arrow_back</span></a>
+      <h1 id="header-titolo"><object type="image/svg+xml" width="250px" height="72px" data="{{ url_for('static', filename='images/scuolasync.svg') }}" onload="this.parentNode.replaceChild(this.contentDocument.documentElement, this);">
+          ScuolaSync
+        </object><span id="title-text">SETUP</span>
+      </h1>
+      <a id="arrow-next" class="nav-button" href="{{next_url}}"><span class="material-symbols-rounded">arrow_forward</span></a>
+    </div>
+    <div id="main-container">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div>
+  <script>
+    let saveTimeout = null;
+    let save = () => { };
+
+    function saveDelayed() {
+      if (saveTimeout !== null) {
+        clearTimeout(saveTimeout)
+      }
+      saveTimeout = setTimeout(save, 500);
+    }
+
+    window.onbeforeunload = () => {
+      save();
+    }
+
+    function modificato(element) {
+      let dati = {};
+
+      if (element.id == "colortheme") {
+        document.querySelector('#colortheme_css').href = 'static/style/theme/' + element.querySelector("select").value + '.css';
+      }
+
+      if (element.classList.contains("opzione-testo")) {
+        let testo = element.getElementsByTagName("input")[0];
+        dati[element.id] = testo.value;
+
+      } else if (element.classList.contains("opzione-selezione")) {
+
+        let select = element.getElementsByTagName("select")[0];
+        dati[element.id] = select.selectedIndex;
+      }
+
+      socket.emit("applica impostazioni", dati);
+    }
+  </script>
+  <script src="{{ url_for('static', filename='scripts/lib/socket.io.min.js') }}" onload="socket = io('/impostazioni')"></script>
+  {% block scripts %}{% endblock %}
+</body>
+
+</html>

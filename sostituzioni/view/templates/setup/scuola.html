@@ -1,0 +1,133 @@
+{% extends 'setup/base.html' %}
+{% from "macro/impostazioni.html" import
+opzione_testo,
+opzione_file with context %}
+
+{% block back_url %}{{ url_for('setup.info') }}{% endblock %}
+{% block next_url %}{{ url_for('setup.sso') }}{% endblock %}
+
+{% block content %}
+<div class="opzioni-container">
+  <ul class="opzioni-lista">
+    <li>
+      <h5 class="opzione-titolo">Logo dell'istituto</h5>
+      <p class="opzione-descrizione">Logo principale dell'istituto scolastico. Questo logo apparirà nella pagina di accesso, su sfondo bianco.</p>
+      {{ opzione_file(configurazione.get('schoolmainlogo')) }}
+    </li>
+    <div class="opzioni-separator"></div>
+    <li>
+      <h5 class="opzione-titolo">Logo per intestazione</h5>
+      <p class="opzione-descrizione">Logo che verrà visualizzato nell'intestazione della pagina principale e nelle pagine delle impostazioni. Si consiglia di utilizzare un logo bianco con trasparenza, in quanto lo sfondo dell'intestazione è colorato in base al tema.</p>
+      {{ opzione_file(configurazione.get('schoolheaderlogo')) }}
+    </li>
+    <div class="opzioni-separator"></div>
+    <li>
+      <h5 class="opzione-titolo">Sito web dell'istituto</h5>
+      <p class="opzione-descrizione">Link alla pagina principale dell'istituto scolastico. Questo link verrà collegato al nome dell'istituto nella pagina di licenze.</p>
+      {{ opzione_testo(configurazione.get('schoollink')) }}
+    </li>
+    <div class="opzioni-separator"></div>
+    <li>
+      <h5 class="opzione-titolo">Link pagina privacy</h5>
+      <p class="opzione-descrizione">Link alla pagina dell'informazioni sull'istituto scolastico. Questo link verrà inserito nella pagina di privacy del sistema.</p>
+      {{ opzione_testo(configurazione.get('schoolprivacylink')) }}
+    </li>
+  </ul>
+</div>
+
+<style>
+  #progress {
+    width: 40%
+  }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function elimina_file(id) {
+    let file_container = document.getElementById(id);
+    file_container.querySelector(".img-container").classList.add("hidden");
+    file_container.querySelector(".opzione-file-dropzone").classList.remove("hidden");
+
+    let file_input = file_container.querySelector("#" + id + "-filepicker");
+    file_input.value = "";
+
+    file_input.onchange = () => {
+      if (file_input.files[0].size > 1024 * 1024) {
+        let label = file_container.querySelector("label")
+        let old_text = label.innerHTML
+        setTimeout(() => {
+          label.innerHTML = old_text
+        }, 2000)
+        label.innerHTML = "Il file selezionato è troppo grande. Caricare un file di massimo 1MB.";
+        return;
+      }
+
+      file_container.classList.add("loading");
+
+      let reader = new FileReader();
+      reader.readAsArrayBuffer(file_input.files[0]);
+      reader.onload = () => {
+        socket.emit("carica file", { "id": id, "name": file_input.files[0].name, "mime": file_input.files[0].type, "data": reader.result });
+      };
+    }
+  }
+
+  async function check_img(element) {
+    const res = await fetch(element.src);
+    const buff = await res.blob();
+    return buff.type.startsWith('image/')
+  }
+
+  check_img(document.querySelector("#schoolmainlogo img")).then(res => {
+    if (!res) {
+      elimina_file("schoolmainlogo");
+    }
+  })
+
+  check_img(document.querySelector("#schoolheaderlogo img")).then(res => {
+    if (!res) {
+      elimina_file("schoolheaderlogo");
+    }
+  })
+
+
+  for (element of document.querySelectorAll(".opzione-file-dropzone")) {
+    element.ondrop = (e) => {
+      e.preventDefault();
+      element.classList.remove("filehover")
+
+      let input = element.querySelector("input")
+      input.files = e.dataTransfer.files
+      input.onchange()
+    }
+
+    element.ondragover = (e) => {
+      e.preventDefault();
+    }
+
+    element.ondragenter = (e) => {
+      e.preventDefault();
+      element.classList.add("filehover")
+    }
+
+    element.ondragleave = (e) => {
+      element.classList.remove("filehover")
+    }
+  }
+
+
+  socket.on("carica file successo", (data) => {
+    let file_container = document.getElementById(data.id);
+    file_container.classList.remove("loading");
+    file_container.querySelector(".opzione-file-dropzone").classList.add("hidden");
+    file_container.querySelector(".img-container").classList.remove("hidden");
+    file_container.querySelector(".img-container").querySelector("img").src = data.path;
+  })
+
+  socket.on("carica file errore", (data) => {
+    console.log(data);
+  })
+
+</script>
+{% endblock %}

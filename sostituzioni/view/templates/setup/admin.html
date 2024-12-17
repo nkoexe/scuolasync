@@ -1,0 +1,44 @@
+{% extends 'setup/base.html' %}
+
+{% block back_url %}{{ url_for('setup.index') }}{% endblock %}
+{% block next_url %}{{ url_for('setup.info') }}{% endblock %}
+
+{% block content %}
+<div id="admin-container" class="opzioni-container">
+  <h2 id="admin-titolo" class="opzione-titolo">Account Admin</h2>
+  <p id="admin-description">Il sistema ha bisogno di almeno un account amministratore per funzionare correttamente.
+    Inserire qui l'indirizzo email che verrà utilizzato per la gestione dei dati. Altri utenti potranno essere aggiunti in seguito.</p>
+  <div id="admin-email-container">
+    <input type="text" id="admin-email" placeholder="admin@istituto.it" value="{{ configurazione.admin_email }}">
+  </div>
+</div>
+
+<style>
+  #progress {
+    width: 10%
+  }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const email_input = document.getElementById("admin-email");
+  
+  save = () => {
+    let email = email_input.value.trim();
+
+    if (!email || !email.match("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$")) {
+      email_input.classList.add("invalid");
+      return;
+    }
+
+    email_input.classList.remove("invalid");
+
+    socket.emit("admin email", email);
+  }
+
+  document.querySelector("#admin-email").oninput = () => {
+    saveDelayed();
+  }
+</script>
+{% endblock %}

@@ -132,7 +132,8 @@ def update():
 @login_required
 @role_required("impostazioni.write")
 def reboot():
-    subprocess.Popen(configurazione.shell_commands["reboot"], cwd=os.getcwd())
+    # reboot is handled externally. The process exits and is restarted by systemd or others
+    exit(0)
 
 
 # //////////////////////////////

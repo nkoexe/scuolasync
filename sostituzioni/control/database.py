@@ -18,12 +18,13 @@
     <https://www.gnu.org/licenses/agpl-3.0.html>.
 """
 
+import re
+import logging
+import sqlite3
+from os import environ
+from datetime import datetime
 from beartype import beartype
 from beartype.typing import Any
-import sqlite3
-from datetime import datetime
-import logging
-import re
 
 from sostituzioni.lib.searchablelist import SearchableList
 from sostituzioni.control.configurazione import configurazione
@@ -373,10 +374,19 @@ class Database:
 databasepath = configurazione.get("databasepath").path
 authdatabasepath = configurazione.get("authdatabasepath").path
 
-if not databasepath.exists():
-    raise FileNotFoundError(f"Database {databasepath} non trovato.")
-if not authdatabasepath.exists():
-    raise FileNotFoundError(f"Database utenti {authdatabasepath} non trovato.")
+if "SCUOLASYNC_SETUP" in environ:
+    from sostituzioni.control.cli import crea_db, crea_db_utenti
+
+    if not databasepath.exists():
+        crea_db()
+    if not authdatabasepath.exists():
+        crea_db_utenti()
+
+else:
+    if not databasepath.exists():
+        raise FileNotFoundError(f"Database {databasepath} non trovato.")
+    if not authdatabasepath.exists():
+        raise FileNotFoundError(f"Database utenti {authdatabasepath} non trovato.")
 
 database = Database(databasepath)
 authdatabase = Database(authdatabasepath)

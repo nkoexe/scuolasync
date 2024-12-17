@@ -1,8 +1,39 @@
 # 🛠️ **Installazione di ScuolaSync**
 
-### 1. **Clonare il Repository Git**
+## Installazione Automatica
 
-Clona il repository di **ScuolaSync** sul tuo server utilizzando `git`:
+Il modo più semplice per installare **ScuolaSync** è utilizzando lo script di installazione automatica. \
+Questo controllerà che i requisiti siano soddisfatti, scaricherà i file necessari e configurerà Nginx e Systemd.
+
+> Controlla sempre il contenuto di uno script remoto prima di eseguirlo. \
+[install.sh](https://github.com/nkoexe/scuolasync/blob/main/scripts/install.sh)
+
+Prima di eseguire lo script, assicurati che la variabile d'ambiente `SCUOLASYNC_SERVER_NAME` sia impostatacon il nome del tuo server (ad esempio `scuolasync.fuss.bz.it`, oppure `scuolasync.local` per un'installazione locale).
+
+```bash
+export SCUOLASYNC_SERVER_NAME=<url>
+```
+
+Variabili opzionali:
+
+- `SCUOLASYNC_NO_DOWNLOAD`: i file non verranno scaricati e lo script configurerà Nginx e Systemd. Assicurarsi di essere all'interno della directory `scuolasync`.
+- `SCUOLASYNC_NO_SSL`: nella configurazione di Nginx salta la creazione di un certificato SSL. Utile se si installa il sistema per utilizzo locale.
+
+Impostare a qualsiasi valore per attivare. \
+Ad esempio, `export SCUOLASYNC_NO_DOWNLOAD=1`
+
+Esegui lo script di installazione:
+
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/nkoexe/scuolasync/refs/heads/main/scripts/install.sh)"
+```
+
+
+## Installazione Manuale
+
+### 1. **Download dei file necessari**
+
+Clonare il repository utilizzando `git`:
 
 ```bash
 git clone https://github.com/nkoexe/scuolasync.git
@@ -14,28 +45,28 @@ cd scuolasync
 Per mantenere isolate le dipendenze dell'applicazione, crea un ambiente virtuale Python:
 
 ```bash
-python -m venv env
+python3 -m venv env
 source env/bin/activate
 ```
 
 ### 3. **Installare le Dipendenze**
 
-Installa tutte le dipendenze richieste dall'applicazione utilizzando il file `requirements.txt`:
+Installa le dipendenze utilizzando il file `requirements.txt`:
 
 ```bash
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 
-Altrimenti, se desideri installare manualmente i pacchetti, usa il comando seguente:
+Altrimenti, se desideri controllare manualmente i pacchetti:
 
 ```bash
-pip install flask flask-login flask-socketio flask-wtf beartype apscheduler pandas openpyxl xlsxwriter odspy pylibmagic python-magic oauthlib google-auth google-api-python-client qrcode gunicorn gevent
+python3 -m pip install flask flask-login flask-socketio flask-wtf beartype apscheduler pandas openpyxl xlsxwriter odspy pylibmagic python-magic oauthlib google-auth google-api-python-client qrcode gunicorn gevent
 ```
 
 ---
 
 
-## 🔧 **Configurazione del Servizio Systemd**
+### 🔧 **Configurazione del Servizio Systemd**
 
 Affinché ScuolaSync venga eseguito come servizio di sistema e si avvii automaticamente, devi configurare un'unità **systemd**. Segui i passaggi riportati di seguito.
 

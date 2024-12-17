@@ -1,0 +1,52 @@
+{% extends 'setup/base.html' %}
+
+{% block back_url %}{{ url_for('setup.scuola') }}{% endblock %}
+{% block next_url %}{{ url_for('setup.ssoinfo') }}{% endblock %}
+
+{% block content %}
+<div class="opzioni-container">
+  <h5 class="opzione-titolo">Gestore di Account</h5>
+  <p class="opzione-descrizione">Seleziona il servizio per la didattica che gestisce gli account scolastici.</p>
+  <div id="sso-container">
+    <button data-choice="0" class="sso-button">
+      <div class="indicator material-symbols-rounded">check</div>Google
+    </button>
+    <button data-choice="1" class="sso-button">
+      <div class="indicator material-symbols-rounded">check</div>Microsoft
+    </button>
+  </div>
+</div>
+
+<style>
+  #progress {
+    width: 60%
+  }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  let choice = {{ configurazione.get("ssochoice") }};
+
+  save = () => {
+    socket.emit("sso choice", choice);
+  }
+
+  document.querySelectorAll(".sso-button").forEach(button => {
+    if (button.dataset.choice == choice) {
+      button.classList.add("selected")
+    }
+
+    button.onclick = () => {
+      choice = button.dataset.choice;
+      document.querySelectorAll(".sso-button").forEach(button => {
+        button.classList.remove("selected");
+      })
+      button.classList.add("selected");
+
+      save();
+    }
+  })
+
+</script>
+{% endblock %}

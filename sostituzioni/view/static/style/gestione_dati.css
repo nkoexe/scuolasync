@@ -14,10 +14,10 @@
     /* pointer-events: all; */
     position: relative;
     flex-direction: column;
-    min-width: 400px;
+    /* min-width: 400px; */
     min-height: 500px;
-    width: 100vh;
-    height: 70vh;
+    width: 100%;
+    height: 70%;
     margin: auto;
     background-color: var(--color-background);
     border-radius: 1rem;
@@ -41,8 +41,6 @@
     border: 1px solid var(--color-input-border);
     border-radius: 5px;
 }
-
-
 
 #gestione-dati-frame .gestione-dati-element {
     flex: 1;
@@ -93,6 +91,7 @@
 }
 
 .pulsante-secondario-gestione-dati {
+    background-color: #00000010;
     box-shadow: none;
 }
 
@@ -128,7 +127,6 @@
     flex: 1;
     align-items: center;
     align-content: center;
-    flex-wrap: wrap;
     gap: 30px;
 }
 
@@ -160,8 +158,6 @@
 
 #gestione-dati-sostituzione-ora-predefinita {
     flex: 1;
-    display: flex;
-    flex-wrap: wrap;
 }
 
 #gestione-dati-sostituzione-ora-predefinita input {
@@ -192,7 +188,6 @@
     flex: 1;
     align-items: center;
     align-content: center;
-    flex-wrap: wrap;
     gap: 10px;
 }
 
@@ -231,11 +226,19 @@
     font-style: italic;
 }
 
+.gestione-dati-data {
+    display: flex;
+}
+
+.gestione-dati-data>div {
+    flex: 1;
+}
 
 #gestione-dati-notizia-testo-container,
 #gestione-dati-evento-testo-container {
     flex: 1;
     margin-top: 2vw;
+    min-height: 3em;
 }
 
 #gestione-dati-notizia-testo-container textarea,
@@ -273,6 +276,17 @@
     scale: 1.2;
 }
 
+@media (max-height: 600px) {
+    #gestione-dati-frame {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+
+    #pulsante-chiudi-gestione-dati {
+        border-radius: 0;
+    }
+}
 
 @media (max-width: 1000px) {
     #gestione-dati-frame {
@@ -285,16 +299,77 @@
         border-radius: 0;
     }
 
+    .gestione-dati-data {
+        flex-direction: column;
+    }
 }
 
-/* Soltanto se ci sono due o più pulsanti secondari, metti i secondari in alto e il primario in basso */
+@media (max-width: 700px) {
+    #gestione-dati-frame {
+        padding-top: 100px;
+        min-height: 550px;
+    }
+
+    #gestione-dati-titolo {
+        display: none;
+    }
+
+    #gestione-dati-frame input {
+        width: 100%;
+    }
+
+    #gestioni-dati-sostituzione-quando {
+        align-items: normal;
+        flex: unset;
+    }
+
+    #gestione-dati-sostituzione-ora-container {
+        flex-direction: column;
+        margin: 0;
+        gap: 0;
+    }
+
+    #gestione-dati-sostituzione-ora-predefinita {
+        flex: unset;
+    }
+}
+
 @media (max-width: 600px) {
+    #pulsante-terziario-sostituzione {
+        display: none;
+    }
+
+    /* Soltanto se ci sono due o più pulsanti secondari, metti i secondari in alto e il primario in basso */
     .pulsanti-gestione-dati:has(.pulsante-secondario-gestione-dati:nth-child(1)) {
         flex-direction: column;
     }
 
-    .pulsanti-secondari-gestione-dati:has(.pulsante-secondario-gestione-dati:nth-child(1)) {
+    .pulsanti-gestione-dati:has(.pulsante-secondario-gestione-dati:nth-child(1)) .pulsanti-secondari-gestione-dati {
         margin: 0;
-        justify-content: space-between;
+    }
+
+    .pulsante-secondario-gestione-dati {
+        width: 100%;
+    }
+}
+
+@media (max-width: 500px) {
+    #gestione-dati-frame {
+        min-height: 700px;
+    }
+
+    #gestioni-dati-sostituzione-quando {
+        flex-direction: column;
+        gap: 30px;
+        flex: unset;
+    }
+
+    #gestione-dati-sostituzione-ora-container {
+        align-items: flex-start;
+    }
+
+    #gestione-dati-sostituzione-ora-predefinita,
+    #gestione-dati-sostituzione-docente {
+        width: 100%;
     }
 }

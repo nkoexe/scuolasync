@@ -25,7 +25,7 @@ from pathlib import Path
 from json import load, dump
 import logging
 
-from beartype._decor.decormain import beartype
+from beartype import beartype
 from beartype.typing import List, Dict, Any, Iterator
 
 import sostituzioni.control.logging
@@ -43,7 +43,14 @@ CONFIG_TEMPLATE = (
     or ROOT_PATH / "database" / "configurazione.json.template"
 )
 
-SYSTEMD_SERVICE = os.getenv("SCUOLASYNC_SERVICE") or "scuolasync.service"
+# error caught in model/app.py to enter setup mode
+# this will reimport the module without loading the default config file
+if not CONFIG_FILE.exists() and "SCUOLASYNC_SETUP" not in os.environ:
+    raise FileNotFoundError(f"File di configurazione non trovato: {CONFIG_FILE}")
+
+if not CONFIG_TEMPLATE.exists():
+    logger.error(f"File di configurazione template non trovato: {CONFIG_TEMPLATE}")
+    exit(1)
 
 
 @beartype
@@ -596,15 +603,6 @@ class Configurazione:
 
         if os.name == "nt":
             self.shell_commands["update"] = ["git", "pull"]
-            self.shell_commands["reboot"] = [
-                "kill",
-                "-9",
-                str(os.getpid()),
-                "&&",
-                "python",
-                "-m",
-                "sostituzioni",
-            ]
             self.shell_commands["get_version"] = [
                 "git",
                 "rev-parse",
@@ -618,11 +616,7 @@ class Configurazione:
                 "main",
             ]
         else:
-            if which("systemctl") is None:
-                logger.error("Systemctl non trovato.")
-
             self.shell_commands["update"] = ["git", "pull"]
-            self.shell_commands["reboot"] = ["systemctl", "restart", SYSTEMD_SERVICE]
             self.shell_commands["get_version"] = [
                 "git",
                 "rev-parse",
@@ -642,7 +636,7 @@ class Configurazione:
     def load(self, file: Path = CONFIG_FILE):
         if not file.exists():
             logger.error(f"File di configurazione non trovato: {file}")
-            return False
+            raise FileNotFoundError(f"File di configurazione non trovato: {file}")
 
         with open(file, encoding="utf-8") as configfile:
             logger.debug("Caricamento file di configurazione..")
@@ -883,13 +877,24 @@ class Configurazione:
 
 configurazione = Configurazione()
 
-if "SCUOLASYNC_SETUP" not in os.environ:
-    ok = configurazione.load()
 
-    if not ok:
-        logger.error(
-            "Configurazione di sistema non caricata. Controllare la posizione del file, oppure eseguire `python -m sostituzioni.setup` per inizializzare il sistema."
-        )
-        exit(1)
+if "SCUOLASYNC_SETUP" in os.environ:
+    # initialize an empty configuration for setup mode
+    configurazione.load(CONFIG_TEMPLATE)
+
+    # override set method to force save even on disabled options
+    from types import MethodType
+
+    def force_set(
+        self, id_opzione: str, dati: Any, force: bool = False, salva: bool = False
+    ):
+        self._set(id_opzione, dati, True, salva)
+
+    configurazione._set = configurazione.set
+    configurazione.set = MethodType(force_set, configurazione)
+
+else:
+    # regular startup
+    configurazione.load()
 
     configurazione.applica_aggiornamenti()

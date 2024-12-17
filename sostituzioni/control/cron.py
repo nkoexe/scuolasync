@@ -102,7 +102,7 @@ def update_seasonal_themes():
 
     # xmas theme
     if (
-        datetime(now.year, 12, 18, 0, 0, 0)
+        datetime(now.year, 12, 15, 0, 0, 0)
         <= now
         <= datetime(now.year, 12, 31, 23, 59, 59)
     ):

@@ -13,7 +13,7 @@ const userLocale =
 // struttura: { unixtimestamp: func }
 let tasks = {}
 
-const options_ora = { 'hour': '2-digit', 'minute': '2-digit', 'second': '2-digit' }
+const options_ora = { 'hour': '2-digit', 'minute': '2-digit', 'second': '2-digit', 'hourCycle': 'h23' }
 const options_giorno = { 'day': '2-digit' }
 const options_data = { 'month': 'long', 'year': 'numeric' }
 

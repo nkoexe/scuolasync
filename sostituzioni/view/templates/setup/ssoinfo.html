@@ -1,0 +1,66 @@
+{% extends 'setup/base.html' %}
+{% from "macro/impostazioni.html" import
+opzione_testo with context %}
+
+{% block back_url %}{{ url_for('setup.sso') }}{% endblock %}
+{% block next_url %}{{ url_for('setup.next') }}{% endblock %}
+
+{% set ssochoice = configurazione.get("ssochoice") %}
+{% set ssoprovider = "Google Cloud" if ssochoice == 0 else "Microsoft Entra" %}
+
+{% block content %}
+<div class="opzioni-container">
+  <h2>Dati Preliminari</h2>
+  <p>Per poter compilare questa sezione servono dati del progetto {{ssoprovider}}.<br>Assicurati di avere OAuth Client ID e Client Secret a disposizione.<br><a href="/docs#/installazione/server/prerequisiti?id=passaggi-per-configurare-sso" target="_blank">Scopri come</a>.</p>
+</div>
+<div class="opzioni-container">
+  <ul class="opzioni-lista">
+    <li>
+      <h5 class="opzione-titolo">{% if ssochoice == 0 %}Google Cloud Client ID{% else %}Microsoft Entra Application (client) ID{% endif %}</h5>
+      <p class="opzione-descrizione"></p>
+      {% if ssochoice == 0 %}
+      {{ opzione_testo(configurazione.get('gclientid')) }}
+      {% else %}
+      {{ opzione_testo(configurazione.get('msclientid')) }}
+      {% endif %}
+    </li>
+    <div class="opzioni-separator"></div>
+    <li>
+      <h5 class="opzione-titolo">{% if ssochoice == 0 %}Google Cloud Client Secret{% else %}Microsoft Entra Client Secret{% endif %}</h5>
+      <p class="opzione-descrizione"></p>
+      {% if ssochoice == 0 %}
+      {{ opzione_testo(configurazione.get('gclientsecret')) }}
+      {% else %}
+      {{ opzione_testo(configurazione.get('msclientsecret')) }}
+      {% endif %}
+    </li>
+    <div class="opzioni-separator"></div>
+    <li>
+      <h5 class="opzione-titolo">{{ssoprovider}} Redirect URI</h5>
+      <p class="opzione-descrizione"></p>
+      {{ opzione_testo(configurazione.get('redirecturi')) }}
+    </li>
+  </ul>
+</div>
+
+<style>
+  #progress {
+    width: 80%
+  }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.querySelectorAll(".opzione input").forEach(input => {
+    input.disabled = false;
+  })
+
+  const redirecturi_input = document.querySelector("#redirecturi input");
+  redirecturi_input.value = window.location.href.replace("ssoinfo", "loginredirect");
+  redirecturi_input.oninput();
+  redirecturi_input.disabled = true;
+  redirecturi_input.style.opacity = 1;
+  redirecturi_input.style.color = "initial";
+</script>
+{% endblock %}

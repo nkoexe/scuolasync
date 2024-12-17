@@ -1,0 +1,38 @@
+{% extends 'setup/base.html' %}
+
+{% block next_url %}{{ url_for('setup.admin') }}{% endblock %}
+
+{% block content %}
+<div id="index">
+  <div id="index-description">
+    Sistema per la gestione di sostituzioni, eventi e notizie scolastiche.
+  </div>
+  <div id="index-pulsanti">
+    <a id="index-pulsante-licenze" href="{{ url_for('licenze') }}"><span>Licenze & Crediti</span><span class="arrow material-symbols-rounded">arrow_forward</span></a>
+    <a id="index-next" href="{{ next_url }}"><span>Inizia Setup</span><span class="arrow material-symbols-rounded">arrow_forward</span></a>
+  </div>
+  <div id="index-status" class="status">
+    <div id="index-status-icon" class="status-icon"><span class="icon material-symbols-rounded">verified</span></div>
+    <span id="index-status-text" class="status-text">Benvenuto! Il server è attivo e configurato correttamente.</span>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  socket.timeout(3000).emit("test", (err, res) => {
+    document.querySelector("#index-status").classList.add("visible");
+
+    if (res != "ok") {
+      document.querySelector("#index-status").classList.add("error");
+      document.querySelector("#index-status-icon .icon").innerHTML = "error";
+
+      if (socket.connected) {
+        document.querySelector("#index-status-text").innerHTML = "Il server è attivo e SocketIO è connesso, ma non è in grado di comunicare correttamente.";
+      } else {
+        document.querySelector("#index-status-text").innerHTML = "Il server è attivo ma SocketIO non è connesso.";
+      }
+    }
+  });
+</script>
+{% endblock %}
