@@ -13,5 +13,7 @@ sostituzioni/database/backup/
 sostituzioni/view/static/images/1_*
 sostituzioni/view/static/images/2_*
 
-sostituzioni/database/configurazione.json
+sostituzioni/database/.json
 sostituzioni/database/*.db
+
+*.log
