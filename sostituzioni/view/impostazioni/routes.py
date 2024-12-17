@@ -18,7 +18,7 @@
     <https://www.gnu.org/licenses/agpl-3.0.html>.
 """
 
-from flask import render_template
+from flask import render_template, send_file
 
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.model.auth import login_required, role_required, utenti
@@ -146,4 +146,4 @@ def version():
 @login_required
 @role_required("impostazioni.write")
 def log():
-    return 'deprecated'
+    return send_file(configurazione.logfile, as_attachment=False)

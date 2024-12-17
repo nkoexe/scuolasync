@@ -28,7 +28,7 @@ import logging
 from beartype import beartype
 from beartype.typing import List, Dict, Any, Iterator
 
-import sostituzioni.control.logging
+from sostituzioni.control.logging import file as logfile
 from sostituzioni.lib.searchablelist import SearchableList
 
 logger = logging.getLogger(__name__)
@@ -593,6 +593,7 @@ class Opzione:
 class Configurazione:
     @beartype
     def __init__(self):
+        self.logfile = logfile
         self.trigger = set()
         self.aggiornamento_disponibile = False
         self.extra_themes = []
