@@ -18,12 +18,17 @@
     <https://www.gnu.org/licenses/agpl-3.0.html>.
 """
 
+from pathlib import Path
 import logging
 
-logging.basicConfig(
-    level=logging.INFO, format="%(levelname)s - %(asctime)s - %(name)s - %(message)s"
-)
+file = Path(__file__).parent.parent / "scuolasync.log"
 
+logging.basicConfig(
+    level=logging.INFO,
+    filename=file,
+    filemode="a",
+    format="%(levelname)s - %(asctime)s - %(name)s - %(message)s",
+)
 
 logging.getLogger("geventwebsocket.handler").setLevel(logging.ERROR)
 logging.getLogger("apscheduler.scheduler").setLevel(logging.ERROR)
