@@ -764,8 +764,11 @@ class Configurazione:
 
         if "seasonalthemes" in self.trigger:
             from sostituzioni.control.cron import update_seasonal_themes
+            from flask_socketio import emit
 
             update_seasonal_themes()
+            emit("reload", broadcast=True, namespace="/display")
+
             self.trigger.remove("seasonalthemes")
 
         return True
