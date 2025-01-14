@@ -12,6 +12,17 @@
  xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
  xmlns="http://www.w3.org/2000/svg"
  xmlns:svg="http://www.w3.org/2000/svg">
+ <style>
+@media (prefers-color-scheme: dark) {
+  #txt_scuola path,
+  #txt_ync path {
+    fill: #fff;
+  }
+  #scuolasync_s {
+    stroke: #cf222b !important;
+  }
+}
+ </style>
  <g
   id="scuolasync_svg_group"
   inkscape:label="scuolasync"
