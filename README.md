@@ -1,9 +1,7 @@
-<div style="background-color: white; padding: 20px 50px; border-radius: 10px; text-align: center;">
-  <img src="sostituzioni/view/static/images/scuolasync.svg" alt="Logo ScuolaSync" style="height: 150px;">
-</div>
+<div align="center">
+<img src="docs/images/scuolasync.svg" alt="Logo ScuolaSync" style="height: 150px;">
 <br>
-<div style="text-align: center;">
-  Sistema per la gestione di sostituzioni, eventi e notizie scolastiche.
+Sistema per la gestione di sostituzioni, eventi e notizie scolastiche.
 </div>
 <br>
 
