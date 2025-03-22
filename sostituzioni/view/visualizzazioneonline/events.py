@@ -332,3 +332,15 @@ def esporta_sostituzioni(filtri: dict | None = None):
         return
 
     emit("esportazione completata")
+
+
+# ////////////////////////////////////
+
+
+@socketio.on("iscrizione notifiche")
+@login_required
+def iscrizione_notifiche():
+
+    print()
+
+    return True

@@ -17,12 +17,16 @@ self.addEventListener("activate", (event) => {
 });
 
 
-self.addEventListener('push', function (event) {
-  if (event.data) {
-    console.log('Push event!! ', event.data.text())
-  } else {
-    console.log('Push event but no data')
-  }
+self.addEventListener('push', (event) => {
+  const title = "Notifica";
+  const options = {
+    body: "ay yo this shi workin\n" + event.data.text(),
+    tag: "devtest",
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(title, options)
+  );
 })
 
 // Fetch event handler (checks for network, falls back to cache)

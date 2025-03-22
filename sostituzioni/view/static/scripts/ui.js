@@ -280,7 +280,7 @@ function setup_notifications() {
     const subscribeOptions = {
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(
-        'BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U'
+        'BKBRjX_4TBOtWNrNKK2PgFF9X5rwQtis3NQC1eMn4xkaUVAjPk_O0QTq4YMKyMlf2WC740BO2KuEvx3gPU2IfEQ'
       )
     };
 
@@ -289,6 +289,8 @@ function setup_notifications() {
     });
   });
 }
+
+setup_notifications()
 
 
 

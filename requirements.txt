@@ -13,5 +13,7 @@ oauthlib
 google-auth
 google-api-python-client
 qrcode
+py-vapid
+pywebpush
 gunicorn
 gevent

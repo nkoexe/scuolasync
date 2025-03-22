@@ -1,21 +1,21 @@
 """
-    This file is part of ScuolaSync.
+This file is part of ScuolaSync.
 
-    Copyright (C) 2023-present Niccolò Ragazzi <hi@njco.dev>
+Copyright (C) 2023-present Niccolò Ragazzi <hi@njco.dev>
 
-    ScuolaSync is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+ScuolaSync is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU Affero General Public License
-    along with ScuolaSync.  If not, you can find a copy at
-    <https://www.gnu.org/licenses/agpl-3.0.html>.
+You should have received a copy of the GNU Affero General Public License
+along with ScuolaSync.  If not, you can find a copy at
+<https://www.gnu.org/licenses/agpl-3.0.html>.
 """
 
 from flask import render_template, send_file, send_from_directory
@@ -122,3 +122,28 @@ def service_worker():
     return send_from_directory(
         str(configurazione.get("flaskstaticdir").path / "scripts"), "service-worker.js"
     )
+
+
+@online.route("/test-notification")
+@login_required
+def test_notification():
+    from pywebpush import webpush
+    from random import randint
+
+    webpush(
+        subscription_info={
+            "endpoint": "https://fcm.googleapis.com/fcm/send/ekh7uubJ7ho:APA91bG-V1Xm4q4f2uh2dFYCVX0AmjdKbHutqrB_edcPd6OxBfBMkZS0SCj_JbbSBkxyZUOVOg1pFlNOeszUsPXFQ096pDEevZvrZYUBhyAlEe6zN2LturjgqaLvDqT2-sxBOnqQdo8N",
+            "expirationTime": None,
+            "keys": {
+                "p256dh": "BBuFLjsumbpj5-VI_nN9ApgcX8rOit8ZSBkT20sU3ySxEBmR-oQgEamSDQqE3aWOA1uRJuR1rwA2uuCpy7KpDy0",
+                "auth": "Upm7hrRLOLGJChHUEkPG_Q",
+            },
+        },
+        data=str(randint(0, 100)),
+        vapid_private_key="KfKu2UKkx2wKuS0OPvpaZL0Ebj9hLl9_b_5zyegnKN0",
+        vapid_claims={
+            "sub": "mailto:YourNameHere@example.org",
+        },
+    )
+
+    return "ok"
