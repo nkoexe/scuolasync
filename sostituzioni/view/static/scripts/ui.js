@@ -21,20 +21,20 @@ document.head.querySelector("meta[name=theme-color]").content = getComputedStyle
 
 
 const userLocale =
-    navigator.languages && navigator.languages.length
-        ? navigator.languages[0]
-        : navigator.language;
+  navigator.languages && navigator.languages.length
+    ? navigator.languages[0]
+    : navigator.language;
 
 
 // ----------------------------------
 
 
 function fix_date_to_input(date) {
-    return date.getTime() - date.getTimezoneOffset() * 60 * 1000
+  return date.getTime() - date.getTimezoneOffset() * 60 * 1000
 }
 
 function fix_date_from_input(value) {
-    return value + new Date(value).getTimezoneOffset() * 60 * 1000
+  return value + new Date(value).getTimezoneOffset() * 60 * 1000
 }
 
 
@@ -42,23 +42,23 @@ function fix_date_from_input(value) {
 
 
 function ui_loading_sostituzioni() {
-    ui_sostituzioni_lista.innerHTML = ""
-    ui_sostituzioni_messaggio_informativo.innerHTML = "<span>Caricamento...</span>"
-    ui_sostituzioni_messaggio_informativo.style.display = "flex"
+  ui_sostituzioni_lista.innerHTML = ""
+  ui_sostituzioni_messaggio_informativo.innerHTML = "<span>Caricamento...</span>"
+  ui_sostituzioni_messaggio_informativo.style.display = "flex"
 }
 
 // pulsante refresh richiesto dall'utente
 function ui_refresh_sostituzioni() {
-    ui_loading_sostituzioni()
+  ui_loading_sostituzioni()
 
-    ui_pulsante_refresh_sostituzioni.style.animation = 'none';
-    ui_pulsante_refresh_sostituzioni.offsetHeight; /* trigger reflow and restart animation */
-    ui_pulsante_refresh_sostituzioni.style.animation = null;
+  ui_pulsante_refresh_sostituzioni.style.animation = 'none';
+  ui_pulsante_refresh_sostituzioni.offsetHeight; /* trigger reflow and restart animation */
+  ui_pulsante_refresh_sostituzioni.style.animation = null;
 
-    filtri = sostituzioni_filtra_data()
-    // temporaneo, rimuovere quanod si crea il filtro 'pubblicato'
-    filtri.non_pubblicato = true
-    s_richiedi_sostituzioni(filtri)
+  filtri = sostituzioni_filtra_data()
+  // temporaneo, rimuovere quanod si crea il filtro 'pubblicato'
+  filtri.non_pubblicato = true
+  s_richiedi_sostituzioni(filtri)
 }
 
 // ui_pulsante_help.onclick = () => {
@@ -70,210 +70,256 @@ function ui_refresh_sostituzioni() {
 
 
 ui_context_menu.onblur = (event) => {
-    // if the event target is inside the context menu, do nothing
-    if (event.relatedTarget && event.relatedTarget.closest("#context-menu")) {
-        ui_context_menu.focus()
-        return
-    }
-    ui_context_menu.closingcallback()
+  // if the event target is inside the context menu, do nothing
+  if (event.relatedTarget && event.relatedTarget.closest("#context-menu")) {
+    ui_context_menu.focus()
+    return
+  }
+  ui_context_menu.closingcallback()
 }
 function ui_nascondi_sostituzione() {
-    id = parseInt(ui_context_menu.dataset.id)
-    pubblica_sostituzione(id, false)
-    ui_context_menu.closingcallback()
+  id = parseInt(ui_context_menu.dataset.id)
+  pubblica_sostituzione(id, false)
+  ui_context_menu.closingcallback()
 }
 function ui_pubblica_sostituzione() {
-    id = parseInt(ui_context_menu.dataset.id)
-    pubblica_sostituzione(id, true)
-    ui_context_menu.closingcallback()
+  id = parseInt(ui_context_menu.dataset.id)
+  pubblica_sostituzione(id, true)
+  ui_context_menu.closingcallback()
 }
 function ui_modifica_sostituzione() {
-    id = parseInt(ui_context_menu.dataset.id)
-    mostra_modifica_sostituzione(id)
-    ui_context_menu.closingcallback()
+  id = parseInt(ui_context_menu.dataset.id)
+  mostra_modifica_sostituzione(id)
+  ui_context_menu.closingcallback()
 }
 function ui_duplica_sostituzione() {
-    id = parseInt(ui_context_menu.dataset.id)
-    mostra_duplica_sostituzione(id)
-    ui_context_menu.closingcallback()
+  id = parseInt(ui_context_menu.dataset.id)
+  mostra_duplica_sostituzione(id)
+  ui_context_menu.closingcallback()
 }
 function ui_conferma_elimina_sostituzione() {
-    id = parseInt(ui_context_menu.dataset.id)
-    s_elimina_sostituzione(id, !(ui_conferma_elimina_storico.checked))
-    ui_context_menu.closingcallback()
+  id = parseInt(ui_context_menu.dataset.id)
+  s_elimina_sostituzione(id, !(ui_conferma_elimina_storico.checked))
+  ui_context_menu.closingcallback()
 }
 function ui_informa_docente() {
-    const id = parseInt(ui_context_menu.dataset.id)
-    const sostituzione = sostituzioni.find(x => x.id == id)
-    const docente = sostituzione.nome_docente + " " + sostituzione.cognome_docente
-    const classe = sostituzione.nome_classe
-    const aula = sostituzione.numero_aula
-    const data = new Date(sostituzione.data * 1000).toLocaleDateString()
-    const ora = sostituzione.ora_predefinita ? sostituzione.ora_predefinita + "a ora" : sostituzione.ora_inizio + "-" + sostituzione.ora_fine
-    const oggetto = oggetto_mail_informa_docente.replaceAll("{docente}", docente).replaceAll("{classe}", classe).replaceAll("{aula}", aula).replaceAll("{data}", data).replaceAll("{ora}", ora)
-    const corpo = corpo_mail_informa_docente.replaceAll("{docente}", docente).replaceAll("{classe}", classe).replaceAll("{aula}", aula).replaceAll("{data}", data).replaceAll("{ora}", ora)
-    const url = "mailto:?to=&subject=" + oggetto + "&body=" + corpo
-    window.open(url, '_blank').focus();
+  const id = parseInt(ui_context_menu.dataset.id)
+  const sostituzione = sostituzioni.find(x => x.id == id)
+  const docente = sostituzione.nome_docente + " " + sostituzione.cognome_docente
+  const classe = sostituzione.nome_classe
+  const aula = sostituzione.numero_aula
+  const data = new Date(sostituzione.data * 1000).toLocaleDateString()
+  const ora = sostituzione.ora_predefinita ? sostituzione.ora_predefinita + "a ora" : sostituzione.ora_inizio + "-" + sostituzione.ora_fine
+  const oggetto = oggetto_mail_informa_docente.replaceAll("{docente}", docente).replaceAll("{classe}", classe).replaceAll("{aula}", aula).replaceAll("{data}", data).replaceAll("{ora}", ora)
+  const corpo = corpo_mail_informa_docente.replaceAll("{docente}", docente).replaceAll("{classe}", classe).replaceAll("{aula}", aula).replaceAll("{data}", data).replaceAll("{ora}", ora)
+  const url = "mailto:?to=&subject=" + oggetto + "&body=" + corpo
+  window.open(url, '_blank').focus();
 }
 function ui_modifica_evento() {
-    id = parseInt(ui_context_menu.dataset.id)
-    mostra_modifica_evento(id)
-    ui_context_menu.closingcallback()
+  id = parseInt(ui_context_menu.dataset.id)
+  mostra_modifica_evento(id)
+  ui_context_menu.closingcallback()
 }
 function ui_duplica_evento() {
-    id = parseInt(ui_context_menu.dataset.id)
-    mostra_duplica_evento(id)
-    ui_context_menu.closingcallback()
+  id = parseInt(ui_context_menu.dataset.id)
+  mostra_duplica_evento(id)
+  ui_context_menu.closingcallback()
 }
 function ui_conferma_elimina_evento() {
-    id = parseInt(ui_context_menu.dataset.id)
-    s_elimina_evento(id)
-    ui_context_menu.closingcallback()
+  id = parseInt(ui_context_menu.dataset.id)
+  s_elimina_evento(id)
+  ui_context_menu.closingcallback()
 }
 function ui_modifica_notizia() {
-    id = parseInt(ui_context_menu.dataset.id)
-    mostra_modifica_notizia(id)
-    ui_context_menu.closingcallback()
+  id = parseInt(ui_context_menu.dataset.id)
+  mostra_modifica_notizia(id)
+  ui_context_menu.closingcallback()
 }
 function ui_conferma_elimina_notizia() {
-    id = parseInt(ui_context_menu.dataset.id)
-    s_elimina_notizia(id)
-    ui_context_menu.closingcallback()
+  id = parseInt(ui_context_menu.dataset.id)
+  s_elimina_notizia(id)
+  ui_context_menu.closingcallback()
 }
 function ui_elimina() {
-    ui_pulsanti_context_menu.classList.add("hidden")
-    ui_conferma_elimina.classList.remove("hidden")
-    // check if context menu is outside window, move it in case
-    const rect = ui_conferma_elimina.getBoundingClientRect()
-    if (rect.right > window.innerWidth) {
-        ui_context_menu.style.left = window.innerWidth - rect.width + "px"
-    }
-    if (rect.bottom > window.innerHeight) {
-        ui_context_menu.style.top = window.innerHeight - rect.height + "px"
-    }
+  ui_pulsanti_context_menu.classList.add("hidden")
+  ui_conferma_elimina.classList.remove("hidden")
+  // check if context menu is outside window, move it in case
+  const rect = ui_conferma_elimina.getBoundingClientRect()
+  if (rect.right > window.innerWidth) {
+    ui_context_menu.style.left = window.innerWidth - rect.width + "px"
+  }
+  if (rect.bottom > window.innerHeight) {
+    ui_context_menu.style.top = window.innerHeight - rect.height + "px"
+  }
 }
 function ui_annulla_elimina() {
-    ui_context_menu.closingcallback()
+  ui_context_menu.closingcallback()
 }
 
 // -----------
 // CONTEXT MENU
 
 function pulsante(funzione, icona, testo) {
-    return `<button onclick="${funzione}()" class="pulsante-context-menu" tabindex="0"><span class="material-symbols-rounded">${icona}</span><span>${testo}</span></button>`
+  return `<button onclick="${funzione}()" class="pulsante-context-menu" tabindex="0"><span class="material-symbols-rounded">${icona}</span><span>${testo}</span></button>`
 }
 
 function mostra_context_menu_sostituzione(event, sostituzione) {
-    event.preventDefault()
+  event.preventDefault()
 
-    ui_conferma_elimina_titolo.innerHTML = "Eliminare Sostituzione?"
-    ui_conferma_elimina_storico_container.classList.remove("hidden")
-    ui_conferma_elimina_per_reale.onclick = ui_conferma_elimina_sostituzione
+  ui_conferma_elimina_titolo.innerHTML = "Eliminare Sostituzione?"
+  ui_conferma_elimina_storico_container.classList.remove("hidden")
+  ui_conferma_elimina_per_reale.onclick = ui_conferma_elimina_sostituzione
 
-    ui_pulsanti_context_menu.innerHTML =
-        pulsante("ui_modifica_sostituzione", "edit", "Modifica")
-        + pulsante("ui_duplica_sostituzione", "content_copy", "Duplica")
-        + (sostituzione.classList.contains("non-pubblicato") ? pulsante("ui_pubblica_sostituzione", "visibility", "Pubblica") : pulsante("ui_nascondi_sostituzione", "visibility_off", "Nascondi"))
-        + (mostra_link_informa_docente ? pulsante("ui_informa_docente", "email", "Avvisa Docente") : "")
-        + pulsante("ui_elimina", "delete", "Elimina")
+  ui_pulsanti_context_menu.innerHTML =
+    pulsante("ui_modifica_sostituzione", "edit", "Modifica")
+    + pulsante("ui_duplica_sostituzione", "content_copy", "Duplica")
+    + (sostituzione.classList.contains("non-pubblicato") ? pulsante("ui_pubblica_sostituzione", "visibility", "Pubblica") : pulsante("ui_nascondi_sostituzione", "visibility_off", "Nascondi"))
+    + (mostra_link_informa_docente ? pulsante("ui_informa_docente", "email", "Avvisa Docente") : "")
+    + pulsante("ui_elimina", "delete", "Elimina")
 
-    mostra_context_menu(sostituzione)
+  mostra_context_menu(sostituzione)
 }
 
 function mostra_context_menu_evento(event, evento) {
-    event.preventDefault()
+  event.preventDefault()
 
-    ui_conferma_elimina_titolo.innerHTML = "Eliminare Evento?"
-    ui_conferma_elimina_storico_container.classList.add("hidden")
-    ui_conferma_elimina_per_reale.onclick = ui_conferma_elimina_evento
+  ui_conferma_elimina_titolo.innerHTML = "Eliminare Evento?"
+  ui_conferma_elimina_storico_container.classList.add("hidden")
+  ui_conferma_elimina_per_reale.onclick = ui_conferma_elimina_evento
 
-    ui_pulsanti_context_menu.innerHTML =
-        pulsante("ui_modifica_evento", "edit", "Modifica")
-        + pulsante("ui_duplica_evento", "content_copy", "Duplica")
-        + pulsante("ui_elimina", "delete", "Elimina")
+  ui_pulsanti_context_menu.innerHTML =
+    pulsante("ui_modifica_evento", "edit", "Modifica")
+    + pulsante("ui_duplica_evento", "content_copy", "Duplica")
+    + pulsante("ui_elimina", "delete", "Elimina")
 
-    mostra_context_menu(evento)
+  mostra_context_menu(evento)
 }
 
 function mostra_context_menu_notizia(event, notizia) {
-    event.preventDefault()
+  event.preventDefault()
 
-    ui_conferma_elimina_titolo.innerHTML = "Eliminare Notizia?"
-    ui_conferma_elimina_storico_container.classList.add("hidden")
-    ui_conferma_elimina_per_reale.onclick = ui_conferma_elimina_notizia
+  ui_conferma_elimina_titolo.innerHTML = "Eliminare Notizia?"
+  ui_conferma_elimina_storico_container.classList.add("hidden")
+  ui_conferma_elimina_per_reale.onclick = ui_conferma_elimina_notizia
 
-    ui_pulsanti_context_menu.innerHTML =
-        pulsante("ui_modifica_notizia", "edit", "Modifica")
-        + pulsante("ui_elimina", "delete", "Elimina")
+  ui_pulsanti_context_menu.innerHTML =
+    pulsante("ui_modifica_notizia", "edit", "Modifica")
+    + pulsante("ui_elimina", "delete", "Elimina")
 
-    mostra_context_menu(notizia)
+  mostra_context_menu(notizia)
 }
 
 function mostra_context_menu(elemento) {
-    elemento.focus()
+  elemento.focus()
 
-    let id = elemento.dataset.id
+  let id = elemento.dataset.id
 
-    elemento.classList.add("context-menu-active")
+  elemento.classList.add("context-menu-active")
 
-    ui_context_menu.dataset.id = id
-    ui_context_menu.classList.remove("hidden");
+  ui_context_menu.dataset.id = id
+  ui_context_menu.classList.remove("hidden");
 
-    if (event.clientX + ui_context_menu.offsetWidth > window.innerWidth) {
-        ui_context_menu.style.left = (window.innerWidth - ui_context_menu.offsetWidth) + "px";
-    } else if (event.clientX < 0) {
-        ui_context_menu.style.left = "0px";
-    } else {
-        ui_context_menu.style.left = event.clientX + "px";
-    }
-    if (event.clientY + ui_context_menu.offsetHeight > window.innerHeight) {
-        ui_context_menu.style.top = (window.innerHeight - ui_context_menu.offsetHeight) + "px";
-    } else if (event.clientY < 0) {
-        ui_context_menu.style.top = "0px";
-    } else {
-        ui_context_menu.style.top = event.clientY + "px";
-    }
+  if (event.clientX + ui_context_menu.offsetWidth > window.innerWidth) {
+    ui_context_menu.style.left = (window.innerWidth - ui_context_menu.offsetWidth) + "px";
+  } else if (event.clientX < 0) {
+    ui_context_menu.style.left = "0px";
+  } else {
+    ui_context_menu.style.left = event.clientX + "px";
+  }
+  if (event.clientY + ui_context_menu.offsetHeight > window.innerHeight) {
+    ui_context_menu.style.top = (window.innerHeight - ui_context_menu.offsetHeight) + "px";
+  } else if (event.clientY < 0) {
+    ui_context_menu.style.top = "0px";
+  } else {
+    ui_context_menu.style.top = event.clientY + "px";
+  }
 
-    ui_context_menu.focus()
-    ui_context_menu.closingcallback = () => {
-        ui_context_menu.classList.add("hidden")
-        ui_pulsanti_context_menu.classList.remove("hidden")
-        ui_conferma_elimina.classList.add("hidden")
-        elemento.classList.remove("context-menu-active")
-    }
+  ui_context_menu.focus()
+  ui_context_menu.closingcallback = () => {
+    ui_context_menu.classList.add("hidden")
+    ui_pulsanti_context_menu.classList.remove("hidden")
+    ui_conferma_elimina.classList.add("hidden")
+    elemento.classList.remove("context-menu-active")
+  }
 }
 
 
 // PWA
 
-navigator.serviceWorker && navigator.serviceWorker.register("service-worker.js")
-    .then((registration) => {
-    })
-    .catch((err) => {
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, '+')
+    .replace(/_/g, '/');
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
+function setup_notifications() {
+  if (!("Notification" in window)) {
+    console.log("This browser does not support notifications.");
+    return;
+  }
+
+  Notification.requestPermission().then((result) => {
+    if (result === 'granted') {
+      console.log('Permission granted');
+    } else {
+      console.log('Nope');
+      return;
+    }
+  });
+
+  navigator.serviceWorker.ready.then((registration) => {
+    const subscribeOptions = {
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(
+        'BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U'
+      )
+    };
+
+    registration.pushManager.subscribe(subscribeOptions).then((pushSubscription) => {
+      console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
     });
+  });
+}
+
+
+
+navigator.serviceWorker && navigator.serviceWorker.register("service-worker.js")
+  .then((registration) => {
+  })
+  .catch((err) => {
+  });
 
 
 window.onbeforeinstallprompt = function (e) {
-    installPrompt = e;
-    e.preventDefault()
-    ui_pulsante_installa.classList.remove("hidden");
-    if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
-        ui_pulsante_installa.querySelector("span").innerHTML = "install_mobile";
-    } else {
-        ui_pulsante_installa.querySelector("span").innerHTML = "install_desktop";
-    }
+  installPrompt = e;
+  e.preventDefault()
+  ui_pulsante_installa.classList.remove("hidden");
+  if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
+    ui_pulsante_installa.querySelector("span").innerHTML = "install_mobile";
+  } else {
+    ui_pulsante_installa.querySelector("span").innerHTML = "install_desktop";
+  }
 }
 
 ui_pulsante_installa.onclick = (e) => {
-    if (!installPrompt) {
-        return;
-    }
+  if (!installPrompt) {
+    return;
+  }
 
-    installPrompt.prompt();
-    installPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-            location.reload();
-        }
-    });
-    installPrompt = null;
+  installPrompt.prompt();
+  installPrompt.userChoice.then((choiceResult) => {
+    if (choiceResult.outcome === 'accepted') {
+      location.reload();
+    }
+  });
+  installPrompt = null;
 }
