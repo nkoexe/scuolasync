@@ -8,8 +8,7 @@ pandas
 openpyxl
 xlsxwriter
 odspy
-pylibmagic
-python-magic
+puremagic
 oauthlib
 google-auth
 google-api-python-client
