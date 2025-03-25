@@ -97,7 +97,9 @@ def richiesta_sostituzioni(filtri: dict | None = None):
         if "non_pubblicato" in filtri and not current_user.permessi.sostituzioni.write:
             filtri.pop("non_pubblicato")
 
-    emit("lista sostituzioni", sostituzioni.filtra(filtri))
+    lista_sostituzioni = sostituzioni.filtra(filtri)
+
+    emit("lista sostituzioni", lista_sostituzioni.to_json())
 
     # print(f"GET SOSTITUZIONI - {time() - start_time:.6f}")
 
@@ -163,24 +165,6 @@ def nuova_sostituzione(data):
 
     emit("aggiornamento sostituzioni", broadcast=True)
     emit("aggiornamento sostituzioni", broadcast=True, namespace="/display")
-
-    # ------- TEST
-    from pywebpush import webpush
-    from sostituzioni.control.configurazione import configurazione
-
-    title = f"Nuova supplenza in {sostituzione.nome_classe}"
-    body = f"Oggi alla {sostituzione.ora_predefinita} in {sostituzione.numero_aula}"
-
-    for info in configurazione.temp_utenti.values():
-        print(info)
-        webpush(
-            subscription_info=info,
-            data=f'{{"title": "{title}", "body": "{body}" }}',
-            vapid_private_key="KfKu2UKkx2wKuS0OPvpaZL0Ebj9hLl9_b_5zyegnKN0",
-            vapid_claims={
-                "sub": "mailto:test@example.org",
-            },
-        )
 
     return True
 

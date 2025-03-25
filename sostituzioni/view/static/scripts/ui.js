@@ -1,6 +1,7 @@
 // const ui_pulsante_help = document.querySelector('#pulsante-help')
 let installPrompt = null;
 const ui_pulsante_installa = document.querySelector('#pulsante-installa')
+const ui_pulsante_notifiche = document.querySelector('#pulsante-notifiche')
 // const ui_help_container = document.querySelector('#help-container')
 
 const ui_pulsante_refresh_sostituzioni = document.querySelector('#pulsante-refresh-sostituzioni')
@@ -290,7 +291,10 @@ function setup_notifications() {
   });
 }
 
-setup_notifications()
+ui_pulsante_notifiche.onclick = () => {
+  setup_notifications()
+  notyf.success("Notifiche attivate")
+}
 
 
 navigator.serviceWorker && navigator.serviceWorker.register("service-worker.js")

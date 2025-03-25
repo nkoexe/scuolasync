@@ -46,6 +46,7 @@
     </h1>
     <div id="header-pulsanti">
       <button id="pulsante-installa" class="pulsante-header hidden"><span class="material-symbols-rounded" data-tooltip="Installa Applicazione"></span></button>
+      <button id="pulsante-notifiche" class="pulsante-header"><span class="material-symbols-rounded" data-tooltip="Notifiche">notifications</span></button>
       {% if utente.permessi.impostazioni.write %}
       <!-- <button id="pulsante-help" class="pulsante-header"><span class="material-symbols-rounded" data-tooltip="Aiuto">help</span></button> -->
       <a class="pulsante-header" href="{{ url_for('impostazioni.main')}}"><span class="material-symbols-rounded" data-tooltip="Impostazioni">settings</span></a>

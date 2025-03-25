@@ -576,7 +576,7 @@ class Sostituzioni(SearchableList):
             ):
                 lista_filtrata.append(sostituzione)
 
-        return lista_filtrata.to_json()
+        return lista_filtrata
 
     @beartype
     def inserisci(self, sostituzione: Sostituzione):

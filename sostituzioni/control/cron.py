@@ -24,6 +24,7 @@ from apscheduler.triggers.cron import CronTrigger
 
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.control.backup import backup
+from sostituzioni.control.notifications import notificationmanager
 from sostituzioni.control.database import database
 
 scheduler = BackgroundScheduler()
@@ -43,6 +44,16 @@ scheduler.add_job(
     ),
     name="check_update",
 )
+
+# Invio notifiche a utenti - da definire
+scheduler.add_job(
+    notificationmanager.send_upcoming,
+    trigger=CronTrigger(
+        year="*", month="*", day="*", hour="*", minute="0", second="0"
+    ),
+    name="send_notifications_upcoming",
+)
+
 
 # Passaggio a nuovo anno scolastico - definito nella configurazione
 giorno = configurazione.get("newyeardate").valore
@@ -79,6 +90,8 @@ scheduler.add_job(
     name="new_school_year",
 )
 
+
+# -------------
 
 # temi stagionali
 def update_seasonal_themes():
@@ -117,4 +130,4 @@ scheduler.add_job(
     name="update_seasonal_themes",
 )
 
-scheduler.start()
+# scheduler.start()
