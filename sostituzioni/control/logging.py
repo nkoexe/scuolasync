@@ -25,7 +25,7 @@ file = Path(__file__).parent.parent / "scuolasync.log"
 
 logging.basicConfig(
     level=logging.INFO,
-    filename=file,
+    # filename=file,
     filemode="a",
     format="%(levelname)s - %(asctime)s - %(name)s - %(message)s",
 )

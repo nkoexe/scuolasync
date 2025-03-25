@@ -285,13 +285,12 @@ function setup_notifications() {
     };
 
     registration.pushManager.subscribe(subscribeOptions).then((pushSubscription) => {
-      console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
+      socket.emit('iscrizione notifiche', pushSubscription)
     });
   });
 }
 
 setup_notifications()
-
 
 
 navigator.serviceWorker && navigator.serviceWorker.register("service-worker.js")

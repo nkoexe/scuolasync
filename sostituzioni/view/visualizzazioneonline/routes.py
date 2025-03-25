@@ -65,6 +65,14 @@ def export():
     )
 
 
+@online.route("/service-worker.js")
+@login_required
+def service_worker():
+    return send_from_directory(
+        str(configurazione.get("flaskstaticdir").path / "scripts"), "service-worker.js"
+    )
+
+
 @online.route("/testone")
 @login_required
 @role_required("sostituzioni.write")
@@ -112,38 +120,5 @@ def testone():
         )
 
         sostituzioni.inserisci(sostituzione)
-
-    return "ok"
-
-
-@online.route("/service-worker.js")
-@login_required
-def service_worker():
-    return send_from_directory(
-        str(configurazione.get("flaskstaticdir").path / "scripts"), "service-worker.js"
-    )
-
-
-@online.route("/test-notification")
-@login_required
-def test_notification():
-    from pywebpush import webpush
-    from random import randint
-
-    webpush(
-        subscription_info={
-            "endpoint": "https://fcm.googleapis.com/fcm/send/ekh7uubJ7ho:APA91bG-V1Xm4q4f2uh2dFYCVX0AmjdKbHutqrB_edcPd6OxBfBMkZS0SCj_JbbSBkxyZUOVOg1pFlNOeszUsPXFQ096pDEevZvrZYUBhyAlEe6zN2LturjgqaLvDqT2-sxBOnqQdo8N",
-            "expirationTime": None,
-            "keys": {
-                "p256dh": "BBuFLjsumbpj5-VI_nN9ApgcX8rOit8ZSBkT20sU3ySxEBmR-oQgEamSDQqE3aWOA1uRJuR1rwA2uuCpy7KpDy0",
-                "auth": "Upm7hrRLOLGJChHUEkPG_Q",
-            },
-        },
-        data=str(randint(0, 100)),
-        vapid_private_key="KfKu2UKkx2wKuS0OPvpaZL0Ebj9hLl9_b_5zyegnKN0",
-        vapid_claims={
-            "sub": "mailto:YourNameHere@example.org",
-        },
-    )
 
     return "ok"

@@ -18,9 +18,11 @@ self.addEventListener("activate", (event) => {
 
 
 self.addEventListener('push', (event) => {
-  const title = "Notifica";
+  const data = event.data.json();
+
+  const title = data.title;
   const options = {
-    body: "ay yo this shi workin\n" + event.data.text(),
+    body: data.body,
     tag: "devtest",
   };
 

@@ -599,6 +599,9 @@ class Configurazione:
         self.extra_themes = []
         self.shell_commands = {}
 
+        # ---- temp
+        self.temp_utenti = {}
+
         if which("git") is None:
             logger.error("Git non trovato.")
 
