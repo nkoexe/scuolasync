@@ -12,6 +12,7 @@ puremagic
 oauthlib
 google-auth
 google-api-python-client
+pypng
 qrcode
 py-vapid
 pywebpush
