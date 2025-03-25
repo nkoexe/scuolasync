@@ -1,4 +1,5 @@
 from time import time
+from json import dumps
 from threading import Thread
 
 from pywebpush import webpush
@@ -7,15 +8,17 @@ from sostituzioni.model.model import Sostituzione, sostituzioni
 
 class Notification:
     def __init__(self, sostituzione: Sostituzione):
-        self.sostituzione = sostituzione
+        if sostituzione.ora_predefinita is not None:
+            self.title = f"Supplenza alla {sostituzione.ora_predefinita}a ora"
+        elif sostituzione.ora_inizio is not None and sostituzione.ora_fine is not None:
+            self.title = (
+                f"Supplenza oggi {sostituzione.ora_inizio}-{sostituzione.ora_fine}"
+            )
 
-    @property
-    def title(self):
-        return f"Nuova supplenza in {self.sostituzione.nome_classe}"
+        self.body = f"In {sostituzione.nome_classe} (aula {sostituzione.numero_aula})"
 
-    @property
-    def body(self):
-        return f"Oggi alla {self.sostituzione.ora_predefinita} in {self.sostituzione.nome_classe} ({self.sostituzione.numero_aula})"
+        if sostituzione.note:
+            self.body += f"\nNote: {sostituzione.note}"
 
 
 class NotificationManager:
@@ -41,9 +44,16 @@ class NotificationManager:
         print("Sent all notifications")
 
     def send(self, user, notification: Notification):
+        data = dumps(
+            {
+                "title": notification.title,
+                "body": notification.body,
+            }
+        )
+
         webpush(
             subscription_info=user,
-            data=f'{{"title": "{notification.title}", "body": "{notification.body}" }}',
+            data=data,
             vapid_private_key="KfKu2UKkx2wKuS0OPvpaZL0Ebj9hLl9_b_5zyegnKN0",
             vapid_claims={
                 "sub": "mailto:test@example.org",
