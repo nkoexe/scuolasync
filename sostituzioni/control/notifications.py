@@ -23,7 +23,6 @@ class NotificationManager:
         Thread(target=test_notification, daemon=True).start()
 
     def send_upcoming(self):
-        print("Sending upcoming notifications")
         after = int(time())
         before = after + 200 * 60
 
@@ -35,6 +34,7 @@ class NotificationManager:
             # foreach subscription send notification
 
             from sostituzioni.control.configurazione import configurazione
+            print(f"Sending {len(configurazione.temp_utenti.keys())} notifications")
             for info in configurazione.temp_utenti.values():
                 self.send(info, Notification(sostituzione))
 
@@ -48,8 +48,6 @@ class NotificationManager:
             vapid_claims={
                 "sub": "mailto:test@example.org",
             },
-            ttl=10,
-            timeout=5
         )
 
 

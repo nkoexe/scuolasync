@@ -2,7 +2,7 @@ const CACHE_NAME = 'scuolasync_offline_v2.11';
 const OFFLINE_URL = '/offline';
 
 // Install event handler (caches the offline page)
-self.addEventListener('install', (event) => {
+self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => cache.add(OFFLINE_URL))
@@ -17,13 +17,16 @@ self.addEventListener("activate", (event) => {
 });
 
 
-self.addEventListener('push', (event) => {
+self.addEventListener("push", (event) => {
   const data = event.data.json();
 
   const title = data.title;
   const options = {
     body: data.body,
     tag: "devtest",
+    data: {
+      url: data.url || "/"
+    }
   };
 
   event.waitUntil(
@@ -31,8 +34,32 @@ self.addEventListener('push', (event) => {
   );
 })
 
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+
+  const url = event.notification.data.url;
+
+  const promiseChain = clients.matchAll({
+    type: 'window',
+    includeUncontrolled: true
+  })
+    .then((windowClients) => {
+      const matchingClient = windowClients.find(
+        (client) => client.url.includes(url) && 'focus' in client
+      );
+
+      if (matchingClient) {
+        return matchingClient.focus();
+      } else {
+        return clients.openWindow(url);
+      }
+    });
+
+  event.waitUntil(promiseChain);
+});
+
 // Fetch event handler (checks for network, falls back to cache)
-self.addEventListener('fetch', (event) => {
+self.addEventListener("fetch", (event) => {
   event.respondWith(
     (async () => {
       try {
