@@ -64,7 +64,7 @@ class NotificationManager:
 def test_notification():
     while True:
         from time import sleep
-        sleep(30)
+        sleep(120)
         notificationmanager.send_upcoming()
 
 
