@@ -435,3 +435,40 @@ ul {
 .notizia {
     margin: auto;
 }
+
+#disconnected-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1vw;
+    position: absolute;
+    bottom: 0;
+    left: -100%;
+    padding: 1.3vw 3.5vw 1.4vw 1.5vw;
+    font-size: 1.4vw;
+    color: var(--color-danger-fg);
+    background-color: var(--color-danger);
+    border: .5vw var(--color-background);
+    border-style: solid solid none none;
+    border-top-right-radius: 2vw;
+    transition: left 1s cubic-bezier(0, .55, .4, 1);
+}
+
+#disconnected-container.active {
+    left: 0;
+}
+
+#disconnected-icon {
+    font-size: 1.7vw;
+    padding: .5vw;
+}
+
+#disconnected-text {
+    display: flex;
+    flex-direction: column;
+}
+
+#disconnected-description {
+    font-size: .8vw;
+    opacity: 0.8;
+}
