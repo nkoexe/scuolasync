@@ -130,4 +130,4 @@ scheduler.add_job(
     name="update_seasonal_themes",
 )
 
-# scheduler.start()
+scheduler.start()
