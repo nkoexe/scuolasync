@@ -28,9 +28,10 @@ class NotificationManager:
 
     def send_upcoming(self):
         after = int(time())
-        before = after + 200 * 60
+        before = after + 24 * 60 * 60
 
         s = sostituzioni.filtra({"data_inizio": after, "data_fine": before})
+        print(f"Found {len(s)} upcoming sostituzioni")
 
         for sostituzione in s:
             # todo get list of user subscriptions
@@ -38,6 +39,7 @@ class NotificationManager:
             # foreach subscription send notification
 
             from sostituzioni.control.configurazione import configurazione
+
             print(f"Sending {len(configurazione.temp_utenti.keys())} notifications")
             for info in configurazione.temp_utenti.values():
                 self.send(info, Notification(sostituzione))
@@ -65,7 +67,8 @@ class NotificationManager:
 def test_notification():
     while True:
         from time import sleep
-        sleep(120)
+
+        sleep(10)
         notificationmanager.send_upcoming()
 
 
