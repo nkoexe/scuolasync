@@ -36,11 +36,11 @@ scheduler.add_job(
     name="backup",
 )
 
-# Controllo aggiornamento - ogni due ore
+# Controllo aggiornamento - ogni giorno a mezzanotte
 scheduler.add_job(
     configurazione.check_update,
     trigger=CronTrigger(
-        year="*", month="*", day="*", hour="*/2", minute="0", second="0"
+        year="*", month="*", day="*", hour="0", minute="0", second="0"
     ),
     name="check_update",
 )
@@ -130,4 +130,4 @@ scheduler.add_job(
     name="update_seasonal_themes",
 )
 
-scheduler.start()
+# scheduler.start()

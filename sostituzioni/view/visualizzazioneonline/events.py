@@ -346,4 +346,6 @@ def iscrizione_notifiche(data):
 
     configurazione.temp_utenti[current_user.id] = data
 
+    logger.info(f"Utente {current_user.id} ha abilitato le notifiche.")
+
     return True

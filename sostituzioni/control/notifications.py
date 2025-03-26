@@ -1,9 +1,13 @@
+import logging
 from time import time
 from json import dumps
 from threading import Thread
 
 from pywebpush import webpush
 from sostituzioni.model.model import Sostituzione, sostituzioni
+
+
+logger = logging.getLogger(__name__)
 
 
 class Notification:
@@ -23,7 +27,7 @@ class Notification:
 
 class NotificationManager:
     def __init__(self):
-        # Thread(target=test_notification, daemon=True).start()
+        Thread(target=test_notification, daemon=True).start()
         pass
 
     def send_upcoming(self):
@@ -31,7 +35,7 @@ class NotificationManager:
         before = after + 24 * 60 * 60
 
         s = sostituzioni.filtra({"data_inizio": after, "data_fine": before})
-        print(f"Found {len(s)} upcoming sostituzioni")
+        logger.info(f"Found {len(s)} upcoming sostituzioni")
 
         for sostituzione in s:
             # todo get list of user subscriptions
@@ -40,11 +44,11 @@ class NotificationManager:
 
             from sostituzioni.control.configurazione import configurazione
 
-            print(f"Sending {len(configurazione.temp_utenti.keys())} notifications")
+            logger.info(f"Sending {len(configurazione.temp_utenti.keys())} notifications")
             for info in configurazione.temp_utenti.values():
                 self.send(info, Notification(sostituzione))
 
-        print("Sent all notifications")
+        logger.info("Sent all notifications")
 
     def send(self, user, notification: Notification):
         data = dumps(
