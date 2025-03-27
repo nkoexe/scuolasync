@@ -959,6 +959,77 @@ input[type="date"].sostituzioni-filtro-data-opzione::before {
     font-style: italic;
 }
 
+/* POPUP GESTIONE NOTIFICHE */
+@keyframes popup-notifiche-animation {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+
+}
+
+#popover-notifiche {
+    flex-direction: column;
+    position: absolute;
+    inset: unset;
+    right: 0;
+    top: 64px;
+    width: 350px;
+    height: calc(100% - 64px);
+    padding: 1rem;
+    background-color: var(--color-header-bg);
+    color: var(--color-header-fg);
+    border: none;
+    transform: translateX(100%);
+    animation: popup-notifiche-animation 0.3s cubic-bezier(.2, 1, .4, 1);
+    transition: all 0.2s allow-discrete;
+    padding-left: 50px;
+    mask: radial-gradient(circle at 0 31px, transparent 30px, black 30px);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 30px 100%, 30px 30px);
+}
+
+#popover-notifiche:popover-open {
+    display: flex;
+    transform: translateX(0);
+}
+
+#notifiche-lista-container {
+    flex: 1;
+}
+
+#selezione-docente-notifiche {
+    margin: 20px 0;
+}
+
+#selezione-docente-notifiche span {
+    opacity: 0.7;
+}
+
+#selezione-docente-notifiche input {
+    border: none;
+    background-color: transparent;
+    color: var(--color-header-fg);
+    font-size: 20px;
+    padding: 10px 20px;
+    margin: 5px 0;
+    border-bottom: 2px solid var(--color-header-fg);
+}
+
+#selezione-docente-notifiche input::placeholder {
+    color: var(--color-header-fg);
+    opacity: 0.7;
+}
+
+#pulsante-gestione-notifiche {
+    background-color: white;
+    font-size: 20px;
+    padding: 20px 0;
+    margin: 20px 30px;
+}
+
 /* CONTEXT MENU */
 #context-menu {
     position: absolute;
@@ -1015,7 +1086,6 @@ input[type="date"].sostituzioni-filtro-data-opzione::before {
     align-items: center;
     gap: 10px;
 }
-
 
 #dialog-conferma-elimina-storico-container {
     flex: 1;

@@ -292,10 +292,11 @@ function setup_notifications() {
 }
 
 ui_pulsante_notifiche.onclick = () => {
-  setup_notifications()
-  notyf.success("Notifiche attivate")
+  // setup_notifications()
+  // notyf.success("Notifiche attivate")
 }
 
+const ui_selezione_docente_notifiche = new Selezione({ query: "#selezione-docente-notifiche", filtra_lista: prendi_cognome_nome, autocomplete: true })
 
 navigator.serviceWorker && navigator.serviceWorker.register("service-worker.js")
   .then((registration) => {

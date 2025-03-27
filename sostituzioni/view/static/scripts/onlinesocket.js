@@ -67,6 +67,7 @@ socket.on("lista docenti", (data) => {
     docenti.sort((a, b) => a.cognome.localeCompare(b.cognome) || a.nome.localeCompare(b.nome));
 
     sostituzioni_filtro_docente.aggiorna(docenti)
+    ui_selezione_docente_notifiche.aggiorna(docenti)
 })
 
 // todo mostrare messaggio informativo che invita a ricaricare la pagina

@@ -27,7 +27,7 @@ class Notification:
 
 class NotificationManager:
     def __init__(self):
-        Thread(target=test_notification, daemon=True).start()
+        # Thread(target=test_notification, daemon=True).start()
         pass
 
     def send_upcoming(self):
