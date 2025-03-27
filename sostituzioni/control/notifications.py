@@ -44,8 +44,8 @@ class NotificationManager:
 
             from sostituzioni.control.configurazione import configurazione
 
-            logger.info(f"Sending {len(configurazione.temp_utenti.keys())} notifications")
-            for info in configurazione.temp_utenti.values():
+            for user, info in configurazione.temp_utenti.items():
+                logger.info(f"Sending notification to {user}")
                 self.send(info, Notification(sostituzione))
 
         logger.info("Sent all notifications")
@@ -69,11 +69,13 @@ class NotificationManager:
 
 
 def test_notification():
-    while True:
-        from time import sleep
+    from time import sleep
 
-        sleep(10)
+    sleep(10)
+
+    while True:
         notificationmanager.send_upcoming()
+        sleep(20)
 
 
 notificationmanager = NotificationManager()
