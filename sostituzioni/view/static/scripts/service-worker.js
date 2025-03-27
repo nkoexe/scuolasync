@@ -23,7 +23,7 @@ self.addEventListener("push", (event) => {
   const title = data.title;
   const options = {
     body: data.body,
-    tag: "devtest",
+    tag: title.replace(/ /g, "_"),
     data: {
       url: data.url || "/"
     }
