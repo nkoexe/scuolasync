@@ -1,7 +1,6 @@
 // const ui_pulsante_help = document.querySelector('#pulsante-help')
 let installPrompt = null;
 const ui_pulsante_installa = document.querySelector('#pulsante-installa')
-const ui_pulsante_notifiche = document.querySelector('#pulsante-notifiche')
 // const ui_help_container = document.querySelector('#help-container')
 
 const ui_pulsante_refresh_sostituzioni = document.querySelector('#pulsante-refresh-sostituzioni')
@@ -246,64 +245,11 @@ function mostra_context_menu(elemento) {
 
 
 // PWA
-
-function urlBase64ToUint8Array(base64String) {
-  const padding = '='.repeat((4 - base64String.length % 4) % 4);
-  const base64 = (base64String + padding)
-    .replace(/\-/g, '+')
-    .replace(/_/g, '/');
-
-  const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
-}
-
-function setup_notifications() {
-  if (!("Notification" in window)) {
-    console.log("This browser does not support notifications.");
-    return;
-  }
-
-  Notification.requestPermission().then((result) => {
-    if (result === 'granted') {
-      console.log('Permission granted');
-    } else {
-      console.log('Nope');
-      return;
-    }
-  });
-
-  navigator.serviceWorker.ready.then((registration) => {
-    const subscribeOptions = {
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(
-        'BKBRjX_4TBOtWNrNKK2PgFF9X5rwQtis3NQC1eMn4xkaUVAjPk_O0QTq4YMKyMlf2WC740BO2KuEvx3gPU2IfEQ'
-      )
-    };
-
-    registration.pushManager.subscribe(subscribeOptions).then((pushSubscription) => {
-      socket.emit('iscrizione notifiche', pushSubscription)
-    });
-  });
-}
-
-ui_pulsante_notifiche.onclick = () => {
-  // setup_notifications()
-  // notyf.success("Notifiche attivate")
-}
-
-const ui_selezione_docente_notifiche = new Selezione({ query: "#selezione-docente-notifiche", filtra_lista: prendi_cognome_nome, autocomplete: true })
-
 navigator.serviceWorker && navigator.serviceWorker.register("service-worker.js")
   .then((registration) => {
   })
   .catch((err) => {
   });
-
 
 window.onbeforeinstallprompt = function (e) {
   installPrompt = e;

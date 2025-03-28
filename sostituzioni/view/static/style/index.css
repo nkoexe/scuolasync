@@ -998,10 +998,29 @@ input[type="date"].sostituzioni-filtro-data-opzione::before {
 
 #notifiche-lista-container {
     flex: 1;
+    position: relative;
+    display: flex;
+}
+
+#notifiche-lista-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80%;
+    height: 1px;
+    margin: 0 10%;
+    background-color: var(--color-header-fg);
+    opacity: .2;
+}
+
+#errore-notifiche {
+    margin: auto;
+    opacity: 0.5;
 }
 
 #selezione-docente-notifiche {
-    margin: 20px 0;
+    margin: 50px 0;
 }
 
 #selezione-docente-notifiche span {
