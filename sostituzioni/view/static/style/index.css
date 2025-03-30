@@ -260,23 +260,30 @@ option:disabled {
     flex-direction: column;
     position: absolute;
     right: 0;
-    top: 80%;
+    top: 100%;
     width: 350px;
     height: 450px;
     padding: 1rem;
+    translate: 0 -10px;
     z-index: 50;
     background-color: var(--color-background);
     border-radius: 1rem;
     box-shadow: 0 3px 15px var(--color-shadow), 0 2px 5px var(--color-shadow);
-    /* transition-delay: 0.5s;
-    transition-property: display; */
-    transition: all 0.2s;
+    transition: all 0.2s allow-discrete;
 }
 
-#popup-esporta-sostituzioni.visible {
+#popup-esporta-sostituzioni.open {
     display: flex;
     opacity: 1;
-    top: 100%;
+    translate: 0 0;
+}
+
+@starting-style {
+    #popup-esporta-sostituzioni.open {
+        display: flex;
+        translate: 0 -10px;
+        opacity: 0;
+    }
 }
 
 #popup-esporta-sostituzioni:focus-visible {
@@ -374,8 +381,8 @@ option:disabled {
 
 #pulsante-scarica-esporta-sostituzioni {
     display: flex;
+    width: 100%;
     padding: 20px 20px;
-    margin: auto;
     align-items: center;
     justify-content: center;
     background-color: var(--color-pulsante);

@@ -1,5 +1,5 @@
 const ui_pulsante_esporta_report = document.getElementById("pulsante-esporta-sostituzioni")
-const ui_popup_esporta_report = document.getElementById("popup-esporta-sostituzioni")
+const ui_popup_esporta_report = new Popup({query: "#popup-esporta-sostituzioni"})
 const ui_radio_mese_esporta_report = document.getElementById("radio-filtro-mese-esporta-sostituzioni")
 const ui_radio_data_esporta_report = document.getElementById("radio-filtro-data-esporta-sostituzioni")
 const ui_filtro_mese_esporta_report = document.getElementById("filtro-mese-esporta-sostituzioni")
@@ -19,31 +19,7 @@ ui_filtro_data_fine_esporta_report.valueAsNumber = fix_date_to_input(now)
 
 
 ui_pulsante_esporta_report.onclick = () => {
-    if (ui_popup_esporta_report.style.display == "flex") {
-        // animation has already started, let the dialog close
-        return
-    }
-
-    ui_popup_esporta_report.style.display = "flex"
-    setTimeout(() => {
-        ui_popup_esporta_report.classList.add("visible")
-    }, 1)
-    ui_popup_esporta_report.focus()
-}
-
-
-ui_popup_esporta_report.onblur = (e) => {
-    if (e.relatedTarget && e.relatedTarget.closest("#popup-esporta-sostituzioni")) {
-        e.preventDefault()
-        e.stopPropagation()
-        ui_popup_esporta_report.focus()
-        return
-    }
-
-    ui_popup_esporta_report.classList.remove("visible")
-    setTimeout(() => {
-        ui_popup_esporta_report.style.display = "none"
-    }, 200)
+    ui_popup_esporta_report.toggle()
 }
 
 ui_filtro_mese_esporta_report.onclick = () => {

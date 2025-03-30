@@ -4,9 +4,8 @@ class Popup {
     this.isOpen = false;
 
     this.boundHandleOutsideClick = this.handleOutsideClick.bind(this);
-    this.boundHandleTouchStart = this.handleOutsideClick.bind(this); // Add this line
     this.boundHandleEscapeKey = this.handleEscapeKey.bind(this);
-    
+
     // Create event target for custom events
     this.eventTarget = new EventTarget();
   }
@@ -35,9 +34,7 @@ class Popup {
     // Delay adding the click handler until the next event cycle
     // This prevents the current click event from closing the popup
     setTimeout(() => {
-      document.addEventListener('mousedown', this.boundHandleOutsideClick);
-      // Add touchstart for mobile device support
-      document.addEventListener('touchstart', this.boundHandleTouchStart);
+      document.addEventListener('click', this.boundHandleOutsideClick);
     }, 0);
 
     this.eventTarget.dispatchEvent(new CustomEvent('open'));
@@ -46,8 +43,7 @@ class Popup {
   close() {
     this.element.classList.remove("open");
     this.isOpen = false;
-    document.removeEventListener('mousedown', this.boundHandleOutsideClick);
-    document.removeEventListener('touchstart', this.boundHandleTouchStart);
+    document.removeEventListener('click', this.boundHandleOutsideClick);
     document.removeEventListener('keydown', this.boundHandleEscapeKey);
 
     this.eventTarget.dispatchEvent(new CustomEvent('close'));
