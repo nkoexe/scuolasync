@@ -3,7 +3,6 @@ const ui_pulsante_notifiche = document.querySelector("#pulsante-notifiche")
 const ui_pulsante_gestione_notifiche = document.querySelector("#pulsante-gestione-notifiche")
 
 const ui_container_notifiche = new Popup({ query: "#container-notifiche" })
-const ui_selezione_docente_notifiche = new Selezione({ query: "#selezione-docente-notifiche", filtra_lista: prendi_cognome_nome, autocomplete: true })
 
 
 ui_pulsante_notifiche.onclick = (e) => {
