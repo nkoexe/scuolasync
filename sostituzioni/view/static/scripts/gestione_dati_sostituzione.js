@@ -34,7 +34,7 @@ function mostra_gestione_sostituzione() {
     gestione_dati_sostituzione_classe.aggiorna(classi);
     gestione_dati_sostituzione_aula.aggiorna(aule);
 
-    ui_gestione_dati.classList.remove('hidden');
+    ui_gestione_dati.open();
     ui_gestione_dati_sostituzione.classList.remove('hidden');
 }
 

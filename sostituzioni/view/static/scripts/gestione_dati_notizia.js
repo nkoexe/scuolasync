@@ -10,7 +10,7 @@ const gestione_dati_notizia_testo = document.getElementById('gestione-dati-notiz
 function mostra_gestione_notizia() {
     s_auth_check()
 
-    ui_gestione_dati.classList.remove('hidden');
+    ui_gestione_dati.open();
     ui_gestione_dati_notizia.classList.remove('hidden');
 }
 

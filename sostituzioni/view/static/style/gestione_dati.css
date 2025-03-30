@@ -1,33 +1,52 @@
 #gestione-dati-container {
     position: absolute;
-    display: flex;
+    display: none;
+    opacity: 0;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 100;
     background-color: #0000001f;
-    /* pointer-events: none; */
+    pointer-events: none;
+    transition: all 0.2s allow-discrete;
+}
+
+#gestione-dati-container.open {
+    display: flex;
+    opacity: 1;
+}
+
+@starting-style {
+    #gestione-dati-container.open {
+        display: flex;
+        opacity: 0;
+    }
 }
 
 #gestione-dati-frame {
-    /* pointer-events: all; */
     position: relative;
     flex-direction: column;
-    /* min-width: 400px; */
+    display: flex;
+    gap: 30px;
     width: 70%;
+    /* min-width: 400px; */
     max-width: 1000px;
-    min-height: 500px;
     height: 70%;
+    min-height: 500px;
     max-height: 800px;
     margin: auto;
+    padding: max(30px, 3vh);
     background-color: var(--color-background);
     border-radius: 1rem;
     box-shadow: 0 10px 25px var(--color-shadow), 0 0 10px var(--color-shadow);
-    display: flex;
-    padding: max(30px, 3vh);
-    gap: 30px;
-    transition: width 0.2s, height 0.2s;
+    translate: 0 -10px;
+    transition: all 0.2s;
+    pointer-events: all;
+}
+
+#gestione-dati-container.open #gestione-dati-frame {
+    translate: 0 0;
 }
 
 #gestione-dati-frame input,

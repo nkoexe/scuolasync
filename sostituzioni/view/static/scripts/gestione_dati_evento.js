@@ -10,7 +10,7 @@ const gestione_dati_evento_urgente = document.getElementById("gestione-dati-even
 function mostra_gestione_evento() {
     s_auth_check()
 
-    ui_gestione_dati.classList.remove("hidden");
+    ui_gestione_dati.open();
     ui_gestione_dati_evento.classList.remove("hidden");
 }
 
