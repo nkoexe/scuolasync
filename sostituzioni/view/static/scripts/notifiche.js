@@ -1,7 +1,15 @@
 const ui_errore_notifiche = document.querySelector("#errore-notifiche")
-const ui_pulsante_notifiche = document.querySelector("#pulsante-gestione-notifiche")
+const ui_pulsante_notifiche = document.querySelector("#pulsante-notifiche")
+const ui_pulsante_gestione_notifiche = document.querySelector("#pulsante-gestione-notifiche")
 
+const ui_container_notifiche = new Popup({ query: "#container-notifiche" })
 const ui_selezione_docente_notifiche = new Selezione({ query: "#selezione-docente-notifiche", filtra_lista: prendi_cognome_nome, autocomplete: true })
+
+
+ui_pulsante_notifiche.onclick = (e) => {
+  e.stopPropagation();
+  ui_container_notifiche.toggle()
+}
 
 function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4);
@@ -45,10 +53,10 @@ function setup_notifications() {
   });
 
   ui_errore_notifiche.innerHTML = "Notifiche abilitate.";
-  ui_pulsante_notifiche.innerHTML = "Disattiva notifiche";
+  ui_pulsante_gestione_notifiche.innerHTML = "Disattiva notifiche";
 }
 
-ui_pulsante_notifiche.onclick = () => {
+ui_pulsante_gestione_notifiche.onclick = () => {
   setup_notifications()
 }
 
