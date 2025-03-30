@@ -63,10 +63,6 @@ CREATE TABLE IF NOT EXISTS aula_ospita_classe (
     PRIMARY KEY (numero_aula, nome_classe)
 );
 
--- CREATE TABLE IF NOT EXISTS visualizzazione (
---     nome VARCHAR(50) PRIMARY KEY
--- );
-
 CREATE TABLE IF NOT EXISTS sostituzione (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     pubblicato BOOLEAN NOT NULL DEFAULT 0,
@@ -99,13 +95,6 @@ CREATE TABLE IF NOT EXISTS archivio_sostituzioni (
     cognome_docente VARCHAR(50)
 );
 
--- CREATE TABLE IF NOT EXISTS visualizzazione_mostra_sostituzione (
---     nome_visualizzazione VARCHAR(50) NOT NULL REFERENCES visualizzazione(nome) ON UPDATE CASCADE,
---     id_sostituzione INTEGER NOT NULL REFERENCES sostituzione(id) ON UPDATE CASCADE,
-
---     PRIMARY KEY (nome_visualizzazione, id_sostituzione)
--- );
-
 CREATE TABLE IF NOT EXISTS evento (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     urgente BOOLEAN NOT NULL DEFAULT 0,
@@ -115,13 +104,6 @@ CREATE TABLE IF NOT EXISTS evento (
     data_ora_fine INTEGER
 );
 
--- CREATE TABLE IF NOT EXISTS visualizzazione_mostra_evento (
---     nome_visualizzazione VARCHAR(50) NOT NULL REFERENCES visualizzazione(nome) ON UPDATE CASCADE,
---     id_evento INTEGER NOT NULL REFERENCES evento(id) ON UPDATE CASCADE,
- 
---     PRIMARY KEY (nome_visualizzazione, id_evento)
--- );
-
 CREATE TABLE IF NOT EXISTS notizia (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     cancellato BOOLEAN NOT NULL DEFAULT 0,
@@ -130,14 +112,68 @@ CREATE TABLE IF NOT EXISTS notizia (
     data_fine INTEGER
 );
 
--- CREATE TABLE IF NOT EXISTS visualizzazione_mostra_notizia (
---     nome_visualizzazione VARCHAR(50) NOT NULL REFERENCES visualizzazione(nome) ON UPDATE CASCADE,
---     id_notizia INTEGER NOT NULL REFERENCES notizia(id) ON UPDATE CASCADE,
+CREATE TABLE IF NOT EXISTS permesso (
+    nome VARCHAR(50) PRIMARY KEY,
+    descrizione VARCHAR NOT NULL
+);
 
---     PRIMARY KEY (nome_visualizzazione, id_notizia)
--- );
+CREATE TABLE IF NOT EXISTS ruolo (
+    nome VARCHAR(50) PRIMARY KEY
+);
+
+CREATE TABLE IF NOT EXISTS permesso_per_ruolo (
+    nome_ruolo VARCHAR(50) NOT NULL REFERENCES ruolo(nome) ON UPDATE CASCADE,
+    permesso_ruolo VARCHAR(50) NOT NULL REFERENCES permesso(nome) ON UPDATE CASCADE,
+
+    PRIMARY KEY (nome_ruolo, permesso_ruolo)
+);
+
+CREATE TABLE IF NOT EXISTS utente (
+    email VARCHAR PRIMARY KEY,
+    ruolo VARCHAR(50) NOT NULL REFERENCES ruolo(nome) ON UPDATE CASCADE
+);
+
+INSERT OR IGNORE INTO permesso VALUES 
+    ('notizie.read', ''),
+    ('notizie.write', ''),
+    ('eventi.read', ''),
+    ('eventi.write', ''),
+    ('sostituzioni.read', ''),
+    ('sostituzioni.write', ''),
+    ('impostazioni.write', '');
+
+INSERT OR IGNORE INTO ruolo VALUES 
+    ('amministratore'),
+    ('editor'),
+    ('visualizzatore');
+
+INSERT OR IGNORE INTO permesso_per_ruolo VALUES 
+    ('amministratore', 'notizie.read'),
+    ('amministratore', 'notizie.write'),
+    ('amministratore', 'eventi.read'),
+    ('amministratore', 'eventi.write'),
+    ('amministratore', 'sostituzioni.read'),
+    ('amministratore', 'sostituzioni.write'),
+    ('amministratore', 'impostazioni.write'),
+    ('editor', 'notizie.read'),
+    ('editor', 'notizie.write'),
+    ('editor', 'eventi.read'),
+    ('editor', 'eventi.write'),
+    ('editor', 'sostituzioni.read'),
+    ('editor', 'sostituzioni.write'),
+    ('visualizzatore', 'notizie.read'),
+    ('visualizzatore', 'eventi.read'),
+    ('visualizzatore', 'sostituzioni.read');
+
 
 ------ Creazione Trigger ------
+
+-- -- Copia dati nome e ruolo dall'utente che ha eseguito l'azione
+-- CREATE TRIGGER IF NOT EXISTS after_insert_accounting AFTER INSERT
+-- ON accounting
+-- BEGIN
+--     UPDATE accounting SET nome_utente = utente.email, ruolo_utente = utente.ruolo FROM utente WHERE accounting.rowid = NEW.rowid AND utente.email = NEW.legame_utente;
+-- END;
 
 -- -- Inserimento collegamento con ora predefinita se gli orari combaciano
 -- CREATE TRIGGER IF NOT EXISTS after_insert_sostituzione AFTER INSERT
@@ -154,4 +190,3 @@ CREATE TABLE IF NOT EXISTS notizia (
 -- BEGIN
 --     UPDATE sostituzione SET numero_ora_predefinita = ora_predefinita.numero FROM ora_predefinita WHERE sostituzione.rowid = NEW.rowid AND NEW.ora_inizio = ora_predefinita.ora_inizio_default AND NEW.ora_fine = ora_predefinita.ora_fine_default;
 -- END;
-

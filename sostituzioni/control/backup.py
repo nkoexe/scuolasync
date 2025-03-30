@@ -71,7 +71,6 @@ def backup():
 def local_backup(directory):
     files = [
         configurazione.get("databasepath").path,
-        configurazione.get("authdatabasepath").path,
         configurazione.get("configpath").path,
     ]
 

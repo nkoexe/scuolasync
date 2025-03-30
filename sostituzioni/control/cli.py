@@ -40,36 +40,6 @@ def crea_db(nome: str | None = None):
 
     print("File database:", dbpath)
 
-    # result = system(f'sqlite3 {dbpath.as_posix()} ".read {sqlpath.as_posix()}"')
-
-    try:
-        conn = sqlite3.connect(dbpath.as_posix())
-        c = conn.cursor()
-        c.executescript(sqlpath.read_text())
-        conn.commit()
-        conn.close()
-    except sqlite3.Error as e:
-        print("Errore nella creazione del database:", e)
-        return False
-
-    return True
-
-
-def crea_db_utenti(nome: str | None = None):
-    if not nome:
-        nome = "utenti.db"
-    elif "." not in nome:
-        nome = nome + ".db"
-
-    dbpath = configurazione.get("rootpath").path / "database" / nome
-    sqlpath = configurazione.get("scriptsdir").path / "creazione_database_utenti.sql"
-
-    if dbpath.exists():
-        print("Errore: Database con questo nome già esistente.")
-        return
-
-    print("File database:", dbpath)
-
     try:
         conn = sqlite3.connect(dbpath.as_posix())
         c = conn.cursor()
@@ -93,20 +63,6 @@ def imposta_principale(nome: str | None = None):
     configurazione.esporta()
 
     print(f"Database principale impostato: {nome}")
-
-    return True
-
-
-def imposta_principale_utenti(nome: str | None = None):
-    if not nome:
-        nome = "utenti.db"
-    elif "." not in nome:
-        nome = nome + ".db"
-
-    configurazione.set("authdatabasepath", (1, "database/" + nome))
-    configurazione.esporta()
-
-    print(f"Database utenti impostato: {nome}")
 
     return True
 
@@ -145,49 +101,9 @@ def aggiungi_utente(email: str, ruolo: str | None = None):
     return True
 
 
-def inserisci_db_utenti(nome: str | None = None):
-    sqlpath = configurazione.get("scriptsdir").path / "inserimento_dati_utenti_test.sql"
-
-    if not nome:
-        nome = "utenti.db"
-    elif "." not in nome:
-        nome = nome + ".db"
-
-    dbpath = configurazione.get("rootpath").path / "database" / nome
-
-    try:
-        conn = sqlite3.connect(dbpath.as_posix())
-        c = conn.cursor()
-        c.executescript(sqlpath.read_text())
-        conn.commit()
-        conn.close()
-    except sqlite3.Error as e:
-        print("Errore nell'inserimento dei dati di test:", e)
-        return False
-
-    return True
-
-
 def elimina_db(nome: str | None = None):
     if not nome:
         nome = "database.db"
-    elif "." not in nome:
-        nome = nome + ".db"
-
-    dbpath = configurazione.get("rootpath").path / "database" / nome
-
-    if not dbpath.exists():
-        print("Errore: Database con questo nome non esistente.")
-        return False
-
-    dbpath.unlink()
-
-    return True
-
-
-def elimina_db_utenti(nome: str | None = None):
-    if not nome:
-        nome = "utenti.db"
     elif "." not in nome:
         nome = nome + ".db"
 
@@ -224,11 +140,8 @@ def esegui_backup():
 
 
 database_cli = AppGroup(
-    "database", help="Gestione dei database principale e di utenti."
+    "database", help="Gestione di dati e database."
 )
-
-database_utenti_cli = AppGroup("utenti", help="Gestione del database di utenti.")
-database_cli.add_command(database_utenti_cli)
 
 importer_cli = AppGroup("importa", help="Importa docenti o utenti da file.")
 
@@ -266,22 +179,6 @@ def _imposta_principale(nome):
     imposta_principale(nome)
 
 
-@database_cli.command("inserisci-test")
-@click.argument("nome", type=str, required=False)
-def _inserisci_db(nome):
-    """\b
-    Inserisce dati di test nel database principale.
-
-    Args:
-        nome (str): Nome del database. (Default: database.db)
-    """
-
-    ok = inserisci_db(nome)
-
-    if ok:
-        print("Dati di test inseriti nel database principale.")
-
-
 @database_cli.command("elimina")
 @click.argument("nome", type=str, required=False)
 def _elimina_db(nome):
@@ -298,36 +195,7 @@ def _elimina_db(nome):
         print("Database eliminato.")
 
 
-@database_utenti_cli.command("crea")
-@click.argument("nome", type=str, required=False)
-def _crea_db_utenti(nome):
-    """\b
-    Crea un database di utenti.
-
-    Args:
-        nome (str): Nome del database. (Default: utenti.db)
-    """
-
-    ok = crea_db_utenti(nome)
-
-    if ok:
-        print("Database utenti creato.")
-
-
-@database_utenti_cli.command("imposta-principale")
-@click.argument("nome", type=str, required=False)
-def _imposta_principale_utenti(nome):
-    """\b
-    Imposta un database di utenti come principale.
-
-    Args:
-        nome (str): Nome del database. (Default: utenti.db)
-    """
-
-    imposta_principale_utenti(nome)
-
-
-@database_utenti_cli.command("aggiungi-utente")
+@database_cli.command("aggiungi-utente")
 @click.argument("email", type=str, required=True)
 @click.argument("ruolo", type=str, required=False)
 def _aggiungi_utente(email, ruolo):
@@ -343,38 +211,6 @@ def _aggiungi_utente(email, ruolo):
 
     if ok:
         print(f"Utente {email} aggiunto.")
-
-
-@database_utenti_cli.command("inserisci-test")
-@click.argument("nome", type=str, required=False)
-def _inserisci_db_utenti(nome):
-    """\b
-    Inserisce utenti di test nel database.
-
-    Args:
-        nome (str): Nome del database. (Default: utenti.db)
-    """
-
-    ok = inserisci_db_utenti(nome)
-
-    if ok:
-        print("Dati di test inseriti nel database utenti.")
-
-
-@database_utenti_cli.command("elimina")
-@click.argument("nome", type=str, required=False)
-def _elimina_db_utenti(nome):
-    """\b
-    Elimina un database di utenti.
-
-    Args:
-        nome (str): Nome del database da eliminare. (Default: utenti.db)
-    """
-
-    ok = elimina_db_utenti(nome)
-
-    if ok:
-        print("Database utenti eliminato.")
 
 
 @importer_cli.command("docenti")

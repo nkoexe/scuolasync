@@ -1,21 +1,21 @@
 """
-    This file is part of ScuolaSync.
+This file is part of ScuolaSync.
 
-    Copyright (C) 2023-present Niccolò Ragazzi <hi@njco.dev>
+Copyright (C) 2023-present Niccolò Ragazzi <hi@njco.dev>
 
-    ScuolaSync is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+ScuolaSync is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU Affero General Public License
-    along with ScuolaSync.  If not, you can find a copy at
-    <https://www.gnu.org/licenses/agpl-3.0.html>.
+You should have received a copy of the GNU Affero General Public License
+along with ScuolaSync.  If not, you can find a copy at
+<https://www.gnu.org/licenses/agpl-3.0.html>.
 """
 
 from os import environ
@@ -181,41 +181,23 @@ def init_database():
 # //////////////////////////////
 
 
-def load_database_utenti():
+def init_utenti():
+    from sostituzioni.control.database import Utente, Where
 
-    print(
-        """
-╔═════════════════════════════════════════╗
-║ Configurazione del database di utenti   ║
-╚═════════════════════════════════════════╝
-"""
-    )
-
-    authdatabasepath = configurazione.get("authdatabasepath").path
-
-    if not authdatabasepath.exists():
-        init_database_utenti()
+    utenti = Utente.load(where=Where("ruolo").equals("amministratore"))
+    if len(utenti) > 0:
+        print("Utenti amministratori: ")
+        for utente in utenti:
+            print(f" - {utente['email']}")
         return
 
-    print("Database utenti esistente trovato.")
-    keep = yes_or_no("Vuoi utilizzare il database utenti già esistente?", default=True)
+    else:
+        from sostituzioni.control.cli import aggiungi_utente
 
-    if not keep:
-        from sostituzioni.control.cli import elimina_db_utenti
-
-        elimina_db_utenti()
-        init_database_utenti()
-
-
-def init_database_utenti():
-    from sostituzioni.control.cli import crea_db_utenti, aggiungi_utente
-
-    crea_db_utenti()
-    print("Database utenti creato.")
-    utente_admin = text_input(
-        "Inserisci l'email del primo amministratore che eseguirà l'accesso: "
-    )
-    aggiungi_utente(utente_admin)
+        utente_admin = text_input(
+            "Inserisci l'email del primo amministratore che eseguirà l'accesso: "
+        )
+        aggiungi_utente(utente_admin)
 
 
 # //////////////////////////////
@@ -245,7 +227,7 @@ def main():
     load_configurazione()
 
     load_database()
-    load_database_utenti()
+    init_utenti()
 
     print("\n\nInstallazione completata!")
 

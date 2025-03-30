@@ -372,24 +372,19 @@ class Database:
 
 
 databasepath = configurazione.get("databasepath").path
-authdatabasepath = configurazione.get("authdatabasepath").path
 
 if "SCUOLASYNC_SETUP" in environ:
-    from sostituzioni.control.cli import crea_db, crea_db_utenti
+    from sostituzioni.control.cli import crea_db
 
     if not databasepath.exists():
         crea_db()
-    if not authdatabasepath.exists():
-        crea_db_utenti()
 
 else:
     if not databasepath.exists():
         raise FileNotFoundError(f"Database {databasepath} non trovato.")
-    if not authdatabasepath.exists():
-        raise FileNotFoundError(f"Database utenti {authdatabasepath} non trovato.")
+
 
 database = Database(databasepath)
-authdatabase = Database(authdatabasepath)
 
 
 # -----------------------------------------------
@@ -1773,23 +1768,8 @@ class Notizia(ElementoDatabaseConStorico):
         self._testo = new
 
 
-class Visualizzazione(ElementoDatabase):
-    TABLENAME = "visualizzazione"
-    KEY = "id"
-
-    def load():
-        return ElementoDatabase.load(Visualizzazione)
-
-    @beartype
-    def __init__(self):
-        super(Visualizzazione, self).__init__()
-
-
-# --------------------
-
-
 class Ruolo(ElementoDatabase):
-    DATABASE = authdatabase
+    DATABASE = database
     TABLENAME = "ruolo"
     KEY = "nome"
 
@@ -1828,7 +1808,7 @@ class Ruolo(ElementoDatabase):
 
 
 class Utente(ElementoDatabase):
-    DATABASE = authdatabase
+    DATABASE = database
     TABLENAME = "utente"
     KEY = "email"
 

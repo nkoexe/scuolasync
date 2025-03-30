@@ -60,7 +60,7 @@
       "valore": 0
     },
     "seasonalthemes": {
-      "titolo": "Temi Stagionali",
+      "titolo": "Temi stagionali",
       "descrizione": "Abilita l'uso di temi stagionali in certi momenti dell'anno. Fiocchi a Natale, ragnatele ad Halloween...",
       "sezione": "sistema",
       "trigger": "seasonalthemes",
@@ -120,7 +120,7 @@
       "valore": ""
     },
     "schoolmainlogo": {
-      "titolo": "Logo Principale",
+      "titolo": "Logo principale",
       "descrizione": "Logo principale dell'istituto scolastico. Questo logo apparirà nella pagina di accesso.",
       "sezione": "scuola",
       "disabilitato": false,
@@ -137,7 +137,7 @@
       "mime": "image/*"
     },
     "schoolheaderlogo": {
-      "titolo": "Logo Intestazione",
+      "titolo": "Logo intestazione",
       "descrizione": "Logo che verrà visualizzato nell'intestazione della pagina principale e nelle pagine delle impostazioni.",
       "sezione": "scuola",
       "disabilitato": false,
@@ -154,7 +154,7 @@
       "mime": "image/*"
     },
     "schoollink": {
-      "titolo": "Pagina Web dell'Istituto",
+      "titolo": "Pagina web dell'Istituto",
       "descrizione": "Link alla pagina principale dell'istituto scolastico. Questo link verrà collegato al nome dell'istituto nella pagina di licenze.",
       "sezione": "scuola",
       "disabilitato": false,
@@ -165,7 +165,7 @@
       "valore": ""
     },
     "schoolprivacylink": {
-      "titolo": "Informativa Privacy",
+      "titolo": "Informativa privacy",
       "descrizione": "Link alla pagina dell'informativa privacy dell'istituto scolastico. Verrà inserito nella pagina di privacy del sistema.",
       "sezione": "scuola",
       "disabilitato": false,
@@ -283,7 +283,7 @@
       "valore": ""
     },
     "loginpageparagraph": {
-      "titolo": "Paragrafo di Note",
+      "titolo": "Paragrafo di note",
       "descrizione": "Testo che verrà visualizzato sotto al pulsante di accesso. Può essere stilizzato, includendo &lt;br&gt; per andare a capo, &lt;b&gt; per grassetto, &lt;i&gt; per corsivo ecc.",
       "sezione": "login",
       "disabilitato": false,
@@ -326,7 +326,7 @@
       "valore": true
     },
     "mostralinkiformadocente": {
-      "titolo": "Avviso Docente in menu contestuale",
+      "titolo": "Avviso docente in menu contestuale",
       "descrizione": "Mostra un pulsante nel menu contestuale di una sostituzione per mandare una email al docente. Utile per informare di variazioni o eventuali in modo immediato.",
       "sezione": "visualizzazioneonline",
       "disabilitato": false,
@@ -336,7 +336,7 @@
       "valore": false
     },
     "oggettomailinformadocente": {
-      "titolo": "Oggetto Mail di Avviso Docente",
+      "titolo": "Oggetto mail di avviso docente",
       "descrizione": "Oggetto della email di avviso che verrà inviata al docente. Utilizzare i placeholder {docente}, {classe}, {aula}, {data}, {ora} per indicare le rispettive informazioni.",
       "sezione": "visualizzazioneonline",
       "disabilitato": false,
@@ -347,7 +347,7 @@
       "valore": "Supplenza in {classe} - aula {aula}"
     },
     "corpomailinformadocente": {
-      "titolo": "Corpo Mail di Avviso Docente",
+      "titolo": "Corpo mail di avviso docente",
       "descrizione": "Corpo del messaggio di avviso che verrà inviato al docente. Utilizzare i placeholder {docente}, {classe}, {aula}, {data}, {ora} per indicare le rispettive informazioni.",
       "sezione": "visualizzazioneonline",
       "disabilitato": false,
@@ -370,7 +370,7 @@
       "valore": "Nessuna supplenza in vista!"
     },
     "displayrangegiornifuturi": {
-      "titolo": "Numero di Giorni da Visualizzare",
+      "titolo": "Numero di giorni da mostrare",
       "descrizione": "Visualizza le sostituzioni per il numero di giorni futuri specificato, incluso il giorno corrente. Ad esempio, impostando a 3, se il giorno corrente è lunedì verranno mostrate le sostituzioni fino a mercoledì incluso. Viene considerato giorno lavorativo un qualsiasi giorno che abbia una sostituzione. Imposta a -1 per disabilitare il limite e mostrare tutte le sostituzioni future.",
       "sezione": "visualizzazionefisica",
       "trigger": "display",
@@ -407,7 +407,7 @@
       "valore": []
     },
     "displayqrcode": {
-      "titolo": "Mostra Codice QR",
+      "titolo": "Mostra codice QR",
       "descrizione": "Mostra un codice QR sul display che porta alla versione online della pagina.",
       "sezione": "visualizzazionefisica",
       "trigger": "display",
@@ -533,7 +533,7 @@
     },
     "scriptsdir": {
       "titolo": "Directory degli script",
-      "descrizione": "Script per creazione di database, reload del sistema eccetera.",
+      "descrizione": "Script per creazione di database, migrazione, ecc.",
       "sezione": "percorsi",
       "disabilitato": true,
       "nascosto": true,
@@ -575,21 +575,6 @@
       ],
       "default": "database/database.db",
       "valore": "database/database.db"
-    },
-    "authdatabasepath": {
-      "titolo": "Posizione database gestione utenti",
-      "descrizione": "Percorso del database nel quale sono salvati i dati degli utenti autorizzati ad accedere al sistema.",
-      "sezione": "percorsi",
-      "disabilitato": false,
-      "nascosto": false,
-      "tipo": "percorso",
-      "radice": 1,
-      "scelte_radice": [
-        "/",
-        "%ROOT%"
-      ],
-      "default": "database/utenti.db",
-      "valore": "database/utenti.db"
     },
     "flaskstaticdir": {
       "titolo": "Cartella file statici",
