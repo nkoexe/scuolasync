@@ -1,13 +1,20 @@
 const ui_errore_notifiche = document.querySelector("#errore-notifiche")
 const ui_pulsante_notifiche = document.querySelector("#pulsante-notifiche")
+const ui_pulsante_impostazioni_notifiche = document.querySelector("#pulsante-impostazioni-notifiche")
 const ui_pulsante_gestione_notifiche = document.querySelector("#pulsante-gestione-notifiche")
 
 const ui_container_notifiche = new Popup({ query: "#container-notifiche" })
+const ui_impostazioni_notifiche = new Popup({ query: "#impostazioni-notifiche" })
 
 
 ui_pulsante_notifiche.onclick = (e) => {
   e.stopPropagation();
   ui_container_notifiche.toggle()
+}
+
+ui_pulsante_impostazioni_notifiche.onclick = (e) => {
+  e.stopPropagation();
+  ui_impostazioni_notifiche.toggle()
 }
 
 function urlBase64ToUint8Array(base64String) {

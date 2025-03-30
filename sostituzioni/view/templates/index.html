@@ -56,11 +56,19 @@
     <div id="container-notifiche">
       <div id="notifiche-lista-container">
         <ul id="notifiche-lista"></ul>
-        <span id="errore-notifiche">Le notifiche sono disattivate.</span>
       </div>
-      <div id="impostazioni-notifiche">
+      <span id="errore-notifiche">Le notifiche sono disattivate.</span>
+      <div><button id="pulsante-impostazioni-notifiche"><span class="material-symbols-rounded">settings</span></button></div>
+      <div id="impostazioni-notifiche" class="open">
+        <div>
+          <h3>Impostazioni Notifiche</h3>
+          <span>descrizione</span>
+        </div>
+        <div><span>Riassunto serale</span><input type="checkbox" class="checkbox" name="" id=""></div>
+        <div><span>Riassunto mattutino</span><input type="checkbox" class="checkbox" name="" id=""></div>
+        <div><span>Prima della supplenza</span><input type="checkbox" class="checkbox" name="" id=""></div>
+        <button id="pulsante-gestione-notifiche" class="pulsante">Abilita Notifiche</button>
       </div>
-      <button id="pulsante-gestione-notifiche" class="pulsante">Abilita Notifiche</button>
     </div>
   </div>
   <div id="main-window">
