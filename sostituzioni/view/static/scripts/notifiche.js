@@ -8,7 +8,6 @@ const ui_impostazioni_notifiche = new Popup({ query: "#impostazioni-notifiche" }
 
 
 ui_pulsante_notifiche.onclick = (e) => {
-  e.stopPropagation();
   ui_container_notifiche.toggle()
 }
 
@@ -46,15 +45,23 @@ function setup_notifications() {
   });
 
   navigator.serviceWorker.ready.then((registration) => {
-    const subscribeOptions = {
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(
-        'BKBRjX_4TBOtWNrNKK2PgFF9X5rwQtis3NQC1eMn4xkaUVAjPk_O0QTq4YMKyMlf2WC740BO2KuEvx3gPU2IfEQ'
-      )
-    };
+    socket.emit('get vapid public key', {}, (vapidPublicKey) => {
+      if (!vapidPublicKey) {
+        ui_errore_notifiche.innerHTML = "Notifiche non supportate.";
+        return;
+      }
 
-    registration.pushManager.subscribe(subscribeOptions).then((pushSubscription) => {
-      socket.emit('iscrizione notifiche', pushSubscription)
+      console.log("Vapid public key: ", vapidPublicKey);
+
+      const subscribeOptions = {
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
+      };
+
+      registration.pushManager.subscribe(subscribeOptions).then((pushSubscription) => {
+        socket.emit('iscrizione notifiche', pushSubscription)
+      });
+
     });
   });
 

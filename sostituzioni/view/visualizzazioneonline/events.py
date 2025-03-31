@@ -22,6 +22,8 @@ import logging
 from flask_socketio import emit
 from time import time
 
+from sostituzioni.control.configurazione import configurazione
+from sostituzioni.control.notifications import notificationmanager
 from sostituzioni.control.exporter import Exporter
 from sostituzioni.model.model import (
     Aula,
@@ -339,10 +341,15 @@ def esporta_sostituzioni(filtri: dict | None = None):
 # ////////////////////////////////////
 
 
+@socketio.on("get vapid public key")
+@login_required
+def vapid_public_key(data):
+    return notificationmanager.public_key
+
+
 @socketio.on("iscrizione notifiche")
 @login_required
 def iscrizione_notifiche(data):
-    from sostituzioni.control.configurazione import configurazione
 
     configurazione.temp_utenti[current_user.id] = data
 

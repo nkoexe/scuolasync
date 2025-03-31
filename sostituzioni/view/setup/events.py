@@ -47,10 +47,19 @@ def sso_choice(choice):
 def setup_done():
     configurazione.esporta()
 
+    # vapid keys for webpush notifications
+    from sostituzioni.control.util import generate_vapid_keys
+
+    vapid_keys = generate_vapid_keys()
+    configurazione.set("vapid_private_key", vapid_keys["private_key"])
+    configurazione.set("vapid_public_key", vapid_keys["public_key"])
+
+    # create admin user
     from sostituzioni.control.cli import aggiungi_utente
 
     aggiungi_utente(configurazione.admin_email, "amministratore")
 
+    # let's go
     from sostituzioni.view.impostazioni.events import reboot
 
     reboot()

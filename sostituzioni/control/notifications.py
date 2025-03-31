@@ -1,9 +1,30 @@
+"""
+    This file is part of ScuolaSync.
+
+    Copyright (C) 2023-present Niccolò Ragazzi <hi@njco.dev>
+
+    ScuolaSync is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with ScuolaSync.  If not, you can find a copy at
+    <https://www.gnu.org/licenses/agpl-3.0.html>.
+"""
+
 import logging
 from time import time
 from json import dumps
 from threading import Thread
+from pywebpush import webpush, WebPushException
 
-from pywebpush import webpush
+from sostituzioni.control.configurazione import configurazione
 from sostituzioni.model.model import Sostituzione, sostituzioni
 
 
@@ -28,7 +49,9 @@ class Notification:
 class NotificationManager:
     def __init__(self):
         Thread(target=test_notification, daemon=True).start()
-        pass
+
+        self.private_key = configurazione.get("vapidprivatekey").valore
+        self.public_key = configurazione.get("vapidpublickey").valore
 
     def send_upcoming(self):
         after = int(time())
@@ -41,8 +64,6 @@ class NotificationManager:
             # todo get list of user subscriptions
             # if any subscription.docente == sostituzione.docente
             # foreach subscription send notification
-
-            from sostituzioni.control.configurazione import configurazione
 
             for user, info in configurazione.temp_utenti.items():
                 logger.info(f"Sending notification to {user}")
@@ -61,7 +82,7 @@ class NotificationManager:
         webpush(
             subscription_info=user,
             data=data,
-            vapid_private_key="KfKu2UKkx2wKuS0OPvpaZL0Ebj9hLl9_b_5zyegnKN0",
+            vapid_private_key=self.private_key,
             vapid_claims={
                 "sub": "mailto:test@example.org",
             },

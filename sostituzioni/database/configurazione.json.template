@@ -108,6 +108,28 @@
       "default": "",
       "valore": ""
     },
+    "vapidprivatekey": {
+      "titolo": "VAPID Public Key",
+      "descrizione": "",
+      "sezione": "sistema",
+      "disabilitato": true,
+      "nascosto": true,
+      "tipo": "testo",
+      "lunghezza_massima": null,
+      "default": "",
+      "valore": ""
+    },
+    "vapidpublickey": {
+      "titolo": "VAPID Private Key",
+      "descrizione": "",
+      "sezione": "sistema",
+      "disabilitato": true,
+      "nascosto": true,
+      "tipo": "testo",
+      "lunghezza_massima": null,
+      "default": "",
+      "valore": ""
+    },
     "schoolname": {
       "titolo": "Nome dell'Istituto Scolastico",
       "descrizione": "Specifica il nome dell'istituto scolastico a cui è associato il sistema. Questo nome apparirà nelle pagine di privacy e licenze, e nel titolo delle pagine.",
