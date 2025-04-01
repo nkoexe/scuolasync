@@ -60,7 +60,7 @@ python3 -m pip install -r requirements.txt
 Altrimenti, se desideri controllare manualmente i pacchetti:
 
 ```bash
-python3 -m pip install flask flask-login flask-socketio flask-wtf beartype apscheduler pandas openpyxl xlsxwriter odspy pylibmagic python-magic oauthlib google-auth google-api-python-client qrcode gunicorn gevent
+python3 -m pip install flask flask-login flask-socketio flask-wtf beartype apscheduler pandas openpyxl xlsxwriter odspy puremagic oauthlib google-auth google-api-python-client qrcode gunicorn gevent
 ```
 
 ---

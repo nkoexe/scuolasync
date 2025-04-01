@@ -21,8 +21,7 @@
 from pathlib import Path
 from io import BytesIO
 import pandas as pd
-import pylibmagic
-import magic
+import puremagic
 from beartype import beartype
 
 from sostituzioni.model.model import Docente, Utente, Ruolo
@@ -47,7 +46,7 @@ class Docenti:
             buffer = BytesIO(buffer)
 
         if file_type is None:
-            match magic.from_buffer(buffer, mime=True):
+            match puremagic.magic_stream(buffer).mime_type:
                 case "text/csv":
                     file_type = "csv"
                 case (
@@ -55,16 +54,18 @@ class Docenti:
                     | "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                 ):
                     file_type = "xlsx"
-                case (
-                    "application/vnd.oasis.opendocument.spreadsheet"
-                ):
+                case "application/vnd.oasis.opendocument.spreadsheet":
                     file_type = "ods"
 
-        if file_type == "csv" or file_type == "text/csv":
+        if file_type in ("csv", "text/csv"):
             data = pd.read_csv(buffer)
-        elif file_type == "xlsx" or file_type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" or file_type == "application/vnd.ms-excel":
+        elif file_type in (
+            "xlsx",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "application/vnd.ms-excel",
+        ):
             data = pd.read_excel(buffer)
-        elif file_type == "ods" or file_type == "application/vnd.oasis.opendocument.spreadsheet":
+        elif file_type in ("ods", "application/vnd.oasis.opendocument.spreadsheet"):
             data = pd.read_excel(buffer, engine="odf")
         else:
             # tenta comunque di aprirlo yolo
@@ -174,7 +175,7 @@ class Utenti:
     def from_buffer(buffer: bytes):
         data = None
 
-        match magic.from_buffer(buffer, mime=True):
+        match (mime := puremagic.magic_stream(buffer).mime_type):
             case "text/csv":
                 data = pd.read_csv(buffer)
             case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
@@ -187,9 +188,7 @@ class Utenti:
                 if data is None:
                     data = pd.read_csv(buffer)
                 if data is None:
-                    raise ValueError(
-                        f"File di tipo {magic.from_buffer(buffer, mime=True)} non supportato"
-                    )
+                    raise ValueError(f"File di tipo {mime} non supportato")
 
         ruolo_default = Ruolo("visualizzatore")
 

@@ -35,13 +35,20 @@ const ui_sostituzioni_pagine = document.querySelector("#sostituzioni-pagine")
 let sostituzioni_elemento_scroll = 0
 let sostituzioni_indici_scroll = []
 
+function render_ora_predefinita(ora_predefinita) {
+	if (ora_predefinita.match(/^[0-9]+$/) !== null) {
+		return ora_predefinita + "a ora"
+	} else {
+		return ora_predefinita
+	}
+}
 
 function format_sostituzione_to_html(oggi, data, ora_inizio, ora_fine, ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
 	if (ora_predefinita == null) {
 		if (ora_inizio == null) { ora = "" }
 		else { ora = ora_inizio + " - " + ora_fine }
 	}
-	else { ora = ora_predefinita.length == 1 ? ora_predefinita + "a ora" : ora_predefinita }
+	else { ora = render_ora_predefinita(ora_predefinita) }
 	if (note == null) { note = "" }
 	if (nome_docente == null) { nome_docente = "" }
 	if (cognome_docente == null) { cognome_docente = "" }

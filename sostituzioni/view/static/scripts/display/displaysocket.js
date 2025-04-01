@@ -90,8 +90,17 @@ socket.on("reload", () => {
 
 
 // socket.on('connect_error', reconnect)
-socket.on('connect_failed', reconnect)
-socket.on('disconnect', reconnect)
+socket.on('connect_failed', disconnected)
+socket.on('disconnect', disconnected)
+
+function disconnected() {
+  console.log('Disconnected')
+  document.querySelector('#qrcode_css').remove()
+  document.querySelector('#qr-frame').remove()
+  document.querySelector('#disconnected-since').innerText = new Date().toLocaleString('it-IT', { hour: '2-digit', minute: '2-digit' })
+  document.querySelector('#disconnected-container').classList.add('active')
+  reconnect()
+}
 
 function reconnect() {
   fetch('/')

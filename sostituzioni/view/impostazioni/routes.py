@@ -18,8 +18,11 @@
     <https://www.gnu.org/licenses/agpl-3.0.html>.
 """
 
-from flask import render_template, send_file
+from flask import render_template
+import re
+from datetime import datetime
 
+from sostituzioni.control.logging import file
 from sostituzioni.control.configurazione import configurazione
 from sostituzioni.model.auth import login_required, role_required, utenti
 from sostituzioni.model.model import Classe, Aula, Docente, OraPredefinita, NotaStandard
@@ -143,7 +146,23 @@ def version():
 
 
 @impostazioni.route("/log")
-@login_required
-@role_required("impostazioni.write")
+# @login_required
+# @role_required("impostazioni.write")
 def log():
-    return send_file(configurazione.logfile, as_attachment=False)
+    logdata = open(file, "r").read()
+
+    log_entries = []
+    for line in logdata.splitlines()[-200:]:
+        match = re.match(
+            r"^(?P<level>\w+) - (?P<datetime>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) - (?P<module>[\w\.]+) - (?P<message>.+)$",
+            line,
+        )
+        if match:
+            level = match.group("level")
+            datetime_str = match.group("datetime")
+            module = match.group("module")
+            message = match.group("message")
+            datetime_obj = datetime.strptime(datetime_str, "%Y-%m-%d %H:%M:%S,%f")
+            log_entries.append((level, datetime_obj, module, message))
+
+    return render_template("log.html", log=log_entries)

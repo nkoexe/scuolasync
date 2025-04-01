@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{title}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono,wght@400&display=swap" rel="stylesheet">
+  <link rel="icon" href="{{url_for('static', filename='icons/favicon.ico')}}">
+</head>
+
+<body>
+  <style>
+    * {
+      font-family: 'IBM Plex Mono', monospace;
+      box-sizing: border-box;
+      min-width: 0;
+      min-height: 0;
+    }
+
+    html,
+    body {
+      background-color: #161616;
+      color: #f0f0f0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+
+    #header-container div {
+      font-weight: bold;
+      padding: 2px 5px;
+      border-right: 1px solid #313131;
+      margin-right: 5px;
+    }
+
+    #header-container,
+    .row {
+      display: grid;
+      grid-template-columns: 180px 70px 250px 1fr;
+      align-items: center;
+      padding: 5px;
+      border-bottom: 1px solid #252525;
+    }
+
+    .level {
+      padding: 2px 10px;
+      border-radius: 5px;
+      width: fit-content;
+      height: fit-content;
+    }
+
+    .level.debug {
+      background-color: #2d2d2d;
+    }
+
+    .level.info {
+      background-color: #226eb6;
+    }
+
+    .level.warning {
+      background-color: #d4842f;
+    }
+
+    .level.error {
+      background-color: #b52828;
+    }
+  </style>
+  <div id="main-container">
+    <div id="header-container">
+      <div>Date</div>
+      <div>Level</div>
+      <div>Module</div>
+      <div>Message</div>
+    </div>
+    <div id="log-container">
+      {% for entry in log %}
+      <div class="row">
+        <span class="data" data-date="{{entry[1].timestamp()|int}}">{{entry[1].strftime('%Y-%m-%d %H:%M:%S')}}</span>
+        <span class="level {{entry[0]|lower}}">{{entry[0]}}</span>
+        <span class="module">{{entry[2]}}</span>
+        <span class="">{{entry[3]}}</span>
+      </div>
+      {% else %}
+      <p>nessun log</p>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+
+</html>

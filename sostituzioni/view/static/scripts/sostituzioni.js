@@ -34,6 +34,14 @@ const ui_sostituzioni_ordinamento_data_down = ui_sostituzioni_ordinamento_data.c
 let sostituzioni_data_verso_ordinamento = 1
 
 
+function render_ora_predefinita(ora_predefinita) {
+	if (ora_predefinita.match(/^[0-9]+$/) !== null) {
+		return ora_predefinita + "a ora"
+	} else {
+		return ora_predefinita
+	}
+}
+
 async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note, incompleta, sovrapposizioni, descrizione_sovrapposizione) {
 	if (ora_predefinita == null) {
 		if (ora_inizio == null) { ora = "" }
@@ -41,7 +49,7 @@ async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora
 			ora = ora_inizio + " - " + ora_fine
 		}
 	}
-	else { ora = ora_predefinita.length == 1 ? ora_predefinita + "a ora" : ora_predefinita }
+	else { ora = render_ora_predefinita(ora_predefinita) }
 	if (note == null) { note = "" }
 	if (cognome_docente == null) { cognome_docente = ""; nome_docente = "" }
 	if (nome_classe == null) { nome_classe = "" }
