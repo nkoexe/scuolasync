@@ -32,5 +32,14 @@ function update_ui() {
     }
 }
 
+
+// time in ms until 1ms after next second
+const until_next_second = 1001 - ((new Date().getTime() + 1000) % 1000)
+
+// update the UI every second after waiting for the clock to hit the next full second
+setTimeout(() => {
+    update_ui()
+    setInterval(update_ui, 1000)
+}, until_next_second)
+
 update_ui()
-setInterval(update_ui, 1000);

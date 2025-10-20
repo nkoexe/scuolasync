@@ -602,6 +602,11 @@ class Configurazione:
         if which("git") is None:
             logger.error("Git non trovato.")
 
+            self.shell_commands["update"] = []
+            self.shell_commands["get_version"] = ["echo", "ext"]
+            self.shell_commands["check_update"] = ["echo", "ext"]
+            return
+
         if os.name == "nt":
             self.shell_commands["update"] = ["git", "pull"]
             self.shell_commands["get_version"] = [

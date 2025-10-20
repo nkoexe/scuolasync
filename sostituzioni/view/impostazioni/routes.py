@@ -152,7 +152,7 @@ def log():
     logdata = open(file, "r").read()
 
     log_entries = []
-    for line in logdata.splitlines():
+    for line in logdata.splitlines()[-200:]:
         match = re.match(
             r"^(?P<level>\w+) - (?P<datetime>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) - (?P<module>[\w\.]+) - (?P<message>.+)$",
             line,
