@@ -25,14 +25,79 @@ const ui_sostituzione_html_template = `<div class="sostituzione ${sostituzioni_w
 </div>`
 
 
+const ui_sostituzioni_lista_container = document.querySelector("#sostituzioni-lista-container");
 const ui_sostituzioni_lista = document.querySelector("#sostituzioni-lista")
 const ui_sostituzioni_messaggio_informativo = document.querySelector("#sostituzioni-messaggio-informativo")
+const ui_sostituzioni_batch_sentinel = document.querySelector("#sostituzioni-batch-sentinel");
+
 
 const ui_sostituzioni_ordinamento_data = document.querySelector("#sostituzioni-ordinamento-data")
 const ui_sostituzioni_ordinamento_data_up = ui_sostituzioni_ordinamento_data.children[0]
 const ui_sostituzioni_ordinamento_data_down = ui_sostituzioni_ordinamento_data.children[1]
 let sostituzioni_data_verso_ordinamento = 1
 
+const sostituzioneDateFormatter = new Intl.DateTimeFormat(userLocale, {
+	year: "numeric",
+	month: "2-digit",
+	day: "2-digit"
+});
+
+const SOSTITUZIONI_BATCH_SIZE = 200;
+let pendingSostituzioni = [];
+let renderedSostituzioni = 0;
+
+const sostituzioniBatchObserver = new IntersectionObserver(entries => {
+	if (entries.some(entry => entry.boundingClientRect.top < entry.rootBounds.bottom)) {
+		renderNextSostituzioniBatch();
+
+	}
+}, {
+	root: ui_sostituzioni_lista_container,
+	// render 1000px in advance
+	// has to be less than batchsize * 2.5rem * 16 = 8000px
+	rootMargin: "1000px 0px",
+});
+
+sostituzioniBatchObserver.observe(ui_sostituzioni_batch_sentinel);
+
+// fix for jump in scrolls
+ui_sostituzioni_lista_container.addEventListener("scrollend", () => {
+	if (ui_sostituzioni_batch_sentinel.offsetTop - ui_sostituzioni_lista_container.scrollTop < ui_sostituzioni_lista_container.clientHeight) {
+		requestAnimationFrame(renderNextSostituzioniBatch);
+	}
+});
+
+function renderNextSostituzioniBatch() {
+	if (renderedSostituzioni >= pendingSostituzioni.length) return;
+
+	const nextChunk = pendingSostituzioni.slice(renderedSostituzioni, renderedSostituzioni + SOSTITUZIONI_BATCH_SIZE);
+	const fragment = document.createDocumentFragment();
+
+	// Combine all HTML into a single string and parse once
+	const template = document.createElement("template");
+	template.innerHTML = nextChunk.join("");
+	fragment.appendChild(template.content);
+
+	if (sostituzioni_write) {
+		for (const sostituzione of fragment.querySelectorAll(".sostituzione")) {
+			sostituzione.oncontextmenu = (e) => { mostra_context_menu_sostituzione(e, sostituzione) }
+		}
+	}
+
+	attach_tooltips({ root: fragment })
+
+	ui_sostituzioni_lista.appendChild(fragment);
+
+	renderedSostituzioni += nextChunk.length;
+
+	const remaining_height_estimate = (pendingSostituzioni.length - renderedSostituzioni) * 2.5; // 2.5rem minimo per sostituzione
+	ui_sostituzioni_batch_sentinel.style.height = remaining_height_estimate + "rem";
+
+	if (ui_sostituzioni_batch_sentinel.offsetTop - ui_sostituzioni_lista_container.scrollTop < ui_sostituzioni_lista_container.clientHeight) {
+		requestAnimationFrame(renderNextSostituzioniBatch);
+		return;
+	}
+}
 
 function render_ora_predefinita(ora_predefinita) {
 	if (ora_predefinita.match(/^[0-9]+$/) !== null) {
@@ -77,11 +142,8 @@ async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora
 	}
 
 	// Converte da unix timestamp a dd/mm/yyyy
-	data = new Date(data * 1000).toLocaleDateString(userLocale, {
-		year: "numeric",
-		month: "2-digit",
-		day: "2-digit"
-	})
+	const dateObject = new Date(data * 1000);
+	data = sostituzioneDateFormatter.format(dateObject);
 
 	return ui_sostituzione_html_template.replace("{id}", id).replace('{pubblicato}', pubblicato).replace("{incompleta}", incompleta).replace("{sovrapposizioni}", sovrapposizioni).replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note).replace("{icona_pubblicato}", icona_pubblicato).replace("{icona_incompleta}", icona_incompleta).replace("{icona_sovrapposizioni}", icona_sovrapposizioni)
 }
@@ -91,77 +153,22 @@ async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora
 // 	ui_sostituzioni_lista.innerHTML += sostituzione_html
 // }
 
-async function refresh_sostituzioni(hard_refresh) {
-	hard_refresh = typeof hard_refresh === 'boolean' ? hard_refresh : false
-
+async function refresh_sostituzioni() {
 	// Ordina e filtra
 	sostituzioni_applica_filtri()
 	ordina_sostituzioni()
 
-	if (hard_refresh) {
-		// Rimuovi completamente ogni dato e rigenera la lista. Per liste di grandi dimensioni, diventa un processo sostanzioso. Necessario al caricamento iniziale.
+	// Rimuovi completamente ogni dato e rigenera la lista. Necessario al caricamento iniziale.
+	renderedSostituzioni = 0;
+	ui_sostituzioni_lista.innerHTML = "";
 
-		ui_sostituzioni_lista.innerHTML = ""
-
-		const promises = sostituzioni_visualizzate.map(element => {
+	pendingSostituzioni = await Promise.all(
+		sostituzioni_visualizzate.map(element => {
 			return format_sostituzione_to_html(element.id, element.pubblicato, element.cancellato, element.data, element.ora_inizio, element.ora_fine, element.ora_predefinita, element.numero_aula, element.nome_classe, element.nome_docente, element.cognome_docente, element.note, element.incompleta, element.sovrapposizioni, element.descrizione_sovrapposizione);
-		});
+		})
+	);
 
-		const htmlStrings = await Promise.all(promises);
-
-		if (sostituzioni_visualizzate.length > 100) {
-			ui_sostituzioni_lista.innerHTML = htmlStrings.slice(0, 30).join('');
-			await new Promise(resolve => setTimeout(resolve, 1))
-			ui_sostituzioni_lista.innerHTML += htmlStrings.slice(30).join('');
-		} else {
-			ui_sostituzioni_lista.innerHTML = htmlStrings.join('');
-		}
-
-		if (sostituzioni_write) {
-			for (const sostituzione of document.querySelectorAll(".sostituzione")) {
-				sostituzione.oncontextmenu = (e) => { mostra_context_menu_sostituzione(e, sostituzione) }
-			}
-		}
-
-		attach_tooltips()
-	}
-
-
-	// Non rigenerare la lista ma mostra soltanto le sostituzioni filtrate, le altre vengono nascoste
-
-	const elementsMap = new Map();
-	const elementsToShow = []
-	const elementsToHide = []
-	let index = 0;
-
-	const ids = sostituzioni_visualizzate.map(element => element.id);
-
-	for (const sostituzione of document.querySelectorAll(".sostituzione")) {
-		const id = parseInt(sostituzione.dataset.id);
-		if (ids.includes(id)) {
-			elementsToShow.push(sostituzione);
-			elementsMap.set(id, { sostituzione, index });
-			index++;
-		} else {
-			elementsToHide.push(sostituzione);
-		}
-	}
-
-	// Move elements up and down based on the new order
-	for (let newIndex = 0; newIndex < ids.length; newIndex++) {
-		const id = ids[newIndex];
-		const { sostituzione } = elementsMap.get(id);
-
-		// Move the element only if the new position is different from the current position
-		if (newIndex !== sostituzione.index) {
-			const referenceNode = newIndex > index ? ui_sostituzioni_lista.children[newIndex + 1] : ui_sostituzioni_lista.children[newIndex];
-			ui_sostituzioni_lista.insertBefore(sostituzione, referenceNode);
-		}
-	};
-
-	elementsToHide.forEach(element => element.classList.add("hidden"));
-	elementsToShow.forEach(element => element.classList.remove("hidden"));
-
+	renderNextSostituzioniBatch(); // first batch
 
 	ui_sostituzioni_messaggio_informativo.classList.add("hidden")
 	if (sostituzioni_visualizzate.length === 0) {
