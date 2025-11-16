@@ -1,50 +1,41 @@
 # 📺 Display
 
-Installazione e setup per display
+Questa pagina mostra come creare una visualizzazione passiva (kiosk) delle informazioni del sistema.
 
+**Prerequisiti** sono l'installazione e la configurazione del **server**, e l'impostazione di un **codice di autenticazione**.
 
-## Introduzione
+Questa guida mostra come raggiungere lo scopo utilizzando un sistema operativo basato su *Debian* (Ubuntu, Linux Mint, Pop!_OS, ...), quindi i comandi mostrati includono `apt` per la gestione di pacchetti, `systemd` per gestione di sistema, ecc.
 
-di fondo è la visualizzazione di una pagina web, qualsiasi metodo per arrivarci va bene, anche smart tv
-questa è una guida per l'installazione con debian per semplicità, quindi i comandi utilizzeranno systemd, apt eccetera, ma qualunque modo per ottenere il risultato desiderato per ogni step andrà bene.
-cosa importante è impostare i codici di sicurezza
+Essenzialmente un *kiosk* è la visualizzazione di una pagina web, quindi qualsiasi metodo per arrivarci andrà bene - vecchi laptop, Smart TV, single-board computer, ...
+
+È possibile comunque seguire i passaggi in questa guida, usandoli come riferimento e adattandoli per ottenere lo stesso risultato su un sistema differente.
+
 
 ## Requisiti
 
-* pc (raspberry pi, vecchio laptop)
-* internet
-* un cervello
-* display
+* Computer dedicato (Raspberry PI, laptop, ...)
+* Connessione internet
+* Monitor (preferibilmente 16:9)
 
-## Impostazione Codice di Autenticazione
+### Impostazione Codice di Autenticazione
 
-## Installazione Sistema Operativo
-
-Debian
-
-Chiavetta usb, installazione, internet
-
-Installare versione minimale, solo sistema base
-
-Nella selezione di software da installare, installare soltanto i software standard di sistema, mentre togliere la spunta da ambiente desktop debian e gnome
-
-riavviare
-
-eseguire il login
-
-### Configurazione di sistema
-
-#### Prevenire la sospensione automatica
-
-Crea il file `/etc/systemd/sleep.conf.d/nosuspend.conf`
-
-```ini
-[Sleep]
-AllowSuspend=no
-AllowHibernation=no
-AllowSuspendThenHibernate=no
-AllowHybridSleep=no
+**Istruzioni temporanee**: modificare il file `configurazione.json`, aggiungendo all'opzione `displayauthcode` un valore.
+```json
+{
+  "displayauthcode": {
+    ...
+    "valore": [
+      {"valore": "xxxxxxxxxxxxxx"},
+      {"valore": "yyyyyyyyyyyyyy"}
+    ]
+  }
+}
 ```
+
+Istruzioni future (da implementare):
+Nell'interfaccia di ScuolaSync, andare in **Impostazioni > Visualizzazione Fisica > Codici di autorizzazione** e aggiungere un codice alfanumerico a piacere.
+
+### Prevenire la sospensione automatica
 
 Se utilizzando un laptop, previeni la sospensione quando si abbassa lo schermo.
 Modifica il file `/etc/systemd/logind.conf`:
@@ -55,29 +46,32 @@ HandleLidSwitch=ignore
 HandleLidSwitchDocked=ignore
 ```
 
-## Installazione Software
+## Installazione
+
+La procedura di setup può essere eseguita in modo automatico con uno script, oppure manualmente seguendo i passaggi indicati.
 
 ### Installazione automatica
 
-Assicurarsi di eseguire lo script da una shell con accesso Root.
+La procedura automatica può essere eseguita solamente se:
+- Il sistema operativo è basato su Debian
+- Si ha accesso `root`
+
+[Questo script](https://github.com/nkoexe/scuolasync/blob/main/scripts/kiosk_install.sh) installa i software necessari, crea un utente 'scuolasync', configura il login automatico e l'apertura automatica della schermata.
+Deve essere eseguito come root.
+
 
 ```sh
-su root
+wget https://raw.githubusercontent.com/nkoexe/scuolasync/main/scripts/kiosk_install.sh
+sudo bash kiosk_install.sh
 ```
 
-Questo script installa i software necessari, crea un utente 'scuolasync' e configura lo startup automatico.
+Seguire le istruzioni a schermo, inserendo l'url del sito e il codice di autenticazione.
 
-```sh
-wget https://raw.githubusercontent.com/nkoexe/scuolasync/main/scripts/kiosk_install.sh; sh kiosk-install.sh
-```
-
-Se viene chiesto quale gestore di login usare, selezionare `lightdm`
-
-Inserire l'url del sito senza https e il codice di autenticazione
+Se dovessere venire chiesto quale gestore di login usare, selezionare `lightdm`
 
 ### Installazione manuale
 
-Aggiorna il sistema
+Aggiornare il sistema
 
 ```sh
 sudo apt update
@@ -86,11 +80,11 @@ sudo apt update
 Installazione dei software necessari
 
 ```sh
-sudo apt install xorg lightdm openbox sed unclutter chromium
+sudo apt install xorg lightdm openbox autorandr rxvt-unicode sed unclutter chromium
 ```
 
-Creazione file di configurazione di lightdm per il login automatico all'accensione
-`/etc/lightdm/lightdm.conf`
+Creazione file di configurazione di lightdm per il login automatico all'accensione `/etc/lightdm/lightdm.conf`
+
 Impostare `UTENTE` allo username effettivo.
 
 ```ini
@@ -99,8 +93,14 @@ autologin-user=UTENTE
 user-session=openbox
 ```
 
+Prevenire la sospensione automatica del display
+
+```sh
+sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+```
+
 Creare il file di startup di Openbox in `~/.config/openbox/autostart`
-Questo script verrà eseguito all'accensione, avvia chromium
+Questo script verrà eseguito all'accensione, imposterà automaticamente la risoluzione del display e avvierà chromium.
 Rimpiazzare URL con l'effettivo url del sito, e assicurarsi di inserire il codice di autenticazione definito prima.
 
 ```bash
@@ -109,8 +109,8 @@ Rimpiazzare URL con l'effettivo url del sito, e assicurarsi di inserire il codic
 # ---- variabili -----
 
 # codice di autorizzazione definito nelle impostazioni del sito
-code=""
-url="https://URL/display?code=$code"
+code="$code"
+url="https://$url/display?code=\$code"
 
 # --------------------
 
@@ -119,22 +119,23 @@ xset s noblank
 xset s off
 xset -dpms
 
-# Chiudi sessione con Ctrl-Alt-Backspace
-setxkbmap -option terminate:ctrl_alt_bksp
-
 # nascondi il cursore
 unclutter -idle 0.1 -root &
 
 while :
 do
   # setup e aggiornamento display
-  xrandr --auto
+  autorandr clone-largest
+
+  # tempo per eventuale ridimensionamento display
+  sleep 2
 
   # rimuovi flag di chromium per non far mostrare dialoghi
-  sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/UTENTE/.config/chromium/Default/Preferences
-  sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/UTENTE/.config/chromium/Default/Preferences
+  if [ -f "${HOME}/.config/chromium/Default/Preferences" ]; then
+    sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' ${HOME}/.config/chromium/Default/Preferences
+    sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' ${HOME}/.config/chromium/Default/Preferences
+  fi
 
-  # avvia chromium in modalità kiosk a schermo intero
   chromium \\
     --no-first-run \\
     --start-maximized \\
@@ -149,35 +150,4 @@ do
   # delay per il riavvio in caso di errore o chiusura manuale
   sleep 5
 done &
-```
-
-
-Creare il file `kiosk.sh`
-La posizione del file nel sistema è irrilevante, l'importante è ricordarsela, servirà in futuro.
-
-```bash
-#!/bin/bash
-# ---- variabili -----
-
-# codice di autorizzazione definito nelle impostazioni del sito
-code=""
-# rimpiazzare URL con l'effettivo url del sito
-url="https://URL/display?code=$code"
-
-# --------------------
-
-# mantieni lo schermo attivo
-xset s noblank
-xset s off
-xset -dpms
-
-# nascondi il cursore
-unclutter -idle 0.5 -root &
-
-# rimuovi flag di chromium per non far mostrare dialoghi
-sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/$USER/.config/chromium/Default/Preferences
-sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/$USER/.config/chromium/Default/Preferences
-
-# avvia chromium in modalità kiosk a schermo intero
-/usr/bin/chromium-browser --noerrdialogs --disable-infobars --kiosk $url &
 ```

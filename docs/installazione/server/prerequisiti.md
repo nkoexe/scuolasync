@@ -1,6 +1,6 @@
-# 🖥️ **Prerequisiti e Installazione per ScuolaSync**
+# 🖥️ **Prerequisiti**
 
-## ⚙️ **Prerequisiti del Sistema**
+## **Requisiti del Sistema**
 
 ### Hardware
 - **CPU:** Minimo 1 GHz
@@ -11,34 +11,23 @@ Questi sono requisiti minimi fittizi, il sistema di per se funzionerebbe anche s
   
 ### Software
 - **Sistema Operativo:** 
-  - **Linux:** Ubuntu 20.04 o superiore / Debian 10 o superiore
+  - **Linux:** Consigliato Debian 12 (lo script di installazione automatica funziona solo su distribuzioni basate su Debian, come Ubuntu).
   - **Pacchetti Necessari:**
     - `git`
     - `python3` (versione 3.11 o superiore)
-    - `pip`
+    - `python3-pip`
     - `nginx`
 
-## 📦 **Installazione del Sistema Operativo**
 
-Saltare questa sezione se il tuo sistema operativo è già installato, ma assicurarsi di possedere privilegi di amministratore.
+## **Configurazione del servizio di Autenticazione**
 
-1. **Scarica l'immagine ISO** di Ubuntu o Debian dal sito ufficiale.
-2. **Crea un'unità USB avviabile** utilizzando software come Rufus (Windows) o `dd` (Linux).
-3. **Avvia il server dall'unità USB** e segui le istruzioni per installare il sistema operativo.
-4. **Aggiorna il sistema** dopo l'installazione:
-   ```bash
-   sudo apt update && sudo apt upgrade -y
-   ```
+### Scelta del Provider
+Scegli il provider *Single-Sign-On* (SSO) in base agli account utilizzati dall'istituto:
 
-## 🔐 **Configurazione dell'Autenticazione SSO**
+- **Microsoft**: Office 365 Education.
+- **Google**: Google Workspace for Education.
 
-### Scelta del Provider SSO
-Scegli il provider SSO in base agli account utilizzati dalla tua scuola:
-
-- **Microsoft SSO**: Utilizzato principalmente in istituti che utilizzano Office 365.
-- **Google SSO**: Utilizzato principalmente da scuole che fanno uso di Google Workspace for Education.
-
-### Passaggi per Configurare SSO
+### Configurazione Single-Sign-On (SSO)
 
 Istruzioni temporanee. Questa sezione verrà aggiornata in futuro.
 
@@ -64,14 +53,17 @@ Istruzioni temporanee. Questa sezione verrà aggiornata in futuro.
    - Clicca su "Select a project" e poi su "New Project".
    - Dai un nome al progetto (es. `ScuolaSync`).
    - Clicca su "Create".
-3. **Abilita l'API di Google**:
-   - Vai su "API & Services" > "Library".
-   - Cerca e abilita "Google People API".
-4. **Ottieni Client ID e Client Secret**:
+3. **Ottieni Client ID e Client Secret**:
    - Vai su "API & Services" > "Credentials".
    - Clicca su "Create Credentials" e scegli "OAuth 2.0 Client IDs".
-   - Seleziona "Web application" come tipo di applicazione e aggiungi i tuoi URI di reindirizzamento (es. `http://scuolasync.fuss.bz.it/loginredirect`).
+   - Seleziona "Web application" come tipo di applicazione e aggiungi i tuoi redirect URI (tuodominio + `loginredirect`, ad es. `http://scuolasync.fuss.bz.it/loginredirect`).
    - Salva il **Client ID** e il **Client Secret**.
 
 ### Nota Finale
 Assicurati di configurare correttamente i redirect URI nelle impostazioni del tuo progetto, in modo che il sistema SSO possa autenticarlo correttamente. Questi valori saranno utilizzati nella configurazione dell'applicazione ScuolaSync.
+
+
+## **Requisiti per lo script di installazione automatica**
+- **Accesso Root** per configurare avvio automatico e permessi del sistema
+- **Connessione Internet** per scaricare i pacchetti e il codice sorgente 
+

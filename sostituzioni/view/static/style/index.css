@@ -713,6 +713,14 @@ input[type="date"].sostituzioni-filtro-data-opzione::before {
     color: #00000070;
 }
 
+/* per intersection observer and loading filler */
+#sostituzioni-batch-sentinel {
+    width: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+    background-size: 100% 2.5rem;
+    background-position: 2.5rem;
+}
+
 
 /* LISTA SOSTITUZIONI */
 #sostituzioni-lista li {
