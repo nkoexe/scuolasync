@@ -48,7 +48,7 @@ let renderedSostituzioni = 0;
 
 const sostituzioniBatchObserver = new IntersectionObserver(entries => {
 	if (entries.some(entry => entry.boundingClientRect.top < entry.rootBounds.bottom)) {
-		renderNextSostituzioniBatch();
+		renderNextBatch();
 
 	}
 }, {
@@ -63,14 +63,14 @@ sostituzioniBatchObserver.observe(ui_sostituzioni_batch_sentinel);
 // fix for jump in scrolls
 ui_sostituzioni_lista_container.addEventListener("scrollend", () => {
 	if (ui_sostituzioni_batch_sentinel.offsetTop - ui_sostituzioni_lista_container.scrollTop < ui_sostituzioni_lista_container.clientHeight) {
-		requestAnimationFrame(renderNextSostituzioniBatch);
+		requestAnimationFrame(renderNextBatch);
 	}
 });
 
-function renderNextSostituzioniBatch() {
+function renderNextBatch(amount = SOSTITUZIONI_BATCH_SIZE) {
 	if (renderedSostituzioni >= pendingSostituzioni.length) return;
 
-	const nextChunk = pendingSostituzioni.slice(renderedSostituzioni, renderedSostituzioni + SOSTITUZIONI_BATCH_SIZE);
+	const nextChunk = pendingSostituzioni.slice(renderedSostituzioni, renderedSostituzioni + amount);
 	const fragment = document.createDocumentFragment();
 
 	// Combine all HTML into a single string and parse once
@@ -94,7 +94,7 @@ function renderNextSostituzioniBatch() {
 	ui_sostituzioni_batch_sentinel.style.height = remaining_height_estimate + "rem";
 
 	if (ui_sostituzioni_batch_sentinel.offsetTop - ui_sostituzioni_lista_container.scrollTop < ui_sostituzioni_lista_container.clientHeight) {
-		requestAnimationFrame(renderNextSostituzioniBatch);
+		requestAnimationFrame(renderNextBatch);
 		return;
 	}
 }
@@ -148,11 +148,6 @@ async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora
 	return ui_sostituzione_html_template.replace("{id}", id).replace('{pubblicato}', pubblicato).replace("{incompleta}", incompleta).replace("{sovrapposizioni}", sovrapposizioni).replace("{data}", data).replace("{ora}", ora).replace("{numero_aula}", numero_aula).replace("{nome_classe}", nome_classe).replace("{nome_docente}", nome_docente).replace("{cognome_docente}", cognome_docente).replace("{note}", note).replace("{icona_pubblicato}", icona_pubblicato).replace("{icona_incompleta}", icona_incompleta).replace("{icona_sovrapposizioni}", icona_sovrapposizioni)
 }
 
-// async function add_sostituzione_to_ui_list(id, pubblicato, cancellato, data, ora_inizio, ora_fine, ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note) {
-// 	let sostituzione_html = format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note)
-// 	ui_sostituzioni_lista.innerHTML += sostituzione_html
-// }
-
 async function refresh_sostituzioni() {
 	// Ordina e filtra
 	sostituzioni_applica_filtri()
@@ -160,6 +155,7 @@ async function refresh_sostituzioni() {
 
 	// Rimuovi completamente ogni dato e rigenera la lista. Necessario al caricamento iniziale.
 	renderedSostituzioni = 0;
+	ui_sostituzioni_lista_container.scrollTo(0, 0);
 	ui_sostituzioni_lista.innerHTML = "";
 
 	pendingSostituzioni = await Promise.all(
@@ -168,10 +164,15 @@ async function refresh_sostituzioni() {
 		})
 	);
 
-	renderNextSostituzioniBatch(); // first batch
+	// smaller first batch for faster initial render
+	renderNextBatch(20);
+	setTimeout(() => {
+		renderNextBatch(200);
+	}, 100);
 
 	ui_sostituzioni_messaggio_informativo.classList.add("hidden")
 	if (sostituzioni_visualizzate.length === 0) {
+		ui_sostituzioni_batch_sentinel.style.height = "0rem";
 		ui_sostituzioni_messaggio_informativo.innerHTML = "<span>" + messaggio_nessuna_sostituzione + "</span>"
 		ui_sostituzioni_messaggio_informativo.classList.remove("hidden")
 	}
