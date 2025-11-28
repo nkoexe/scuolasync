@@ -12,9 +12,6 @@ const ui_evento_html_template = `
 const ui_eventi_lista = document.querySelector("#eventi-lista")
 const ui_eventi_messaggio_informativo = document.querySelector("#eventi-messaggio-informativo")
 
-ui_eventi_lista.querySelectorAll(".placeholder").forEach(element => {
-    element.style.animationDelay = `${Math.random()}s`
-});
 
 function format_date(data_ora_inizio, data_ora_fine) {
     // format date objects to single string
