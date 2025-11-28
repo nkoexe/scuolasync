@@ -9,8 +9,8 @@ const ui_evento_html_template = `
 </li>`
 
 
-const ui_eventi_lista = document.getElementById("eventi-lista")
-// const ui_eventi_messaggio_informativo = document.getElementById("sostituzioni-messaggio-informativo")
+const ui_eventi_lista = document.querySelector("#eventi-lista")
+const ui_eventi_messaggio_informativo = document.querySelector("#eventi-messaggio-informativo")
 
 ui_eventi_lista.querySelectorAll(".placeholder").forEach(element => {
     element.style.animationDelay = `${Math.random()}s`
@@ -80,6 +80,12 @@ function refresh_eventi() {
     eventi.forEach(element => {
         add_evento_to_ui_list(element.id, element.pubblicato, element.urgente, element.data_ora_inizio, element.data_ora_fine, element.testo)
     })
+
+    ui_eventi_messaggio_informativo.classList.add("hidden")
+    if (eventi.length === 0) {
+        ui_eventi_messaggio_informativo.innerHTML = "<span>Nulla in programma.</span>"
+        ui_eventi_messaggio_informativo.classList.remove("hidden")
+    }
 
     if (eventi_write) {
         for (const evento of document.getElementsByClassName("evento")) {
