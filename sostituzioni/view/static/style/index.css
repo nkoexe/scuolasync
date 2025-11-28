@@ -859,6 +859,18 @@ input[type="date"].sostituzioni-filtro-data-opzione::before {
     border-radius: 10px;
 }
 
+#eventi-messaggio-informativo {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+#eventi-messaggio-informativo span {
+    margin: auto;
+    font-size: 16px;
+    color: #00000070;
+}
+
 /* LISTA EVENTI */
 #eventi-container {
     height: calc(100% - 70px);
@@ -880,25 +892,6 @@ input[type="date"].sostituzioni-filtro-data-opzione::before {
     padding: 15px 15px;
     background-color: var(--color-evento-urgente);
     border-radius: 0.5rem;
-}
-
-@keyframes placeholder-animation {
-    0% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0.5;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
-
-.evento.placeholder {
-    height: 70px;
-    animation: placeholder-animation 1s ease-in-out infinite;
 }
 
 .evento-data {

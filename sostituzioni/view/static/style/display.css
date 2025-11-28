@@ -386,6 +386,19 @@ ul {
     box-shadow: 0 -0.5vh 0.5vh var(--color-eventi-bg);
 }
 
+#eventi-messaggio-informativo {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+#eventi-messaggio-informativo span {
+    margin: auto;
+    font-size: 1vw;
+    color: #00000070;
+}
+
+
 .evento {
     display: flex;
     flex-direction: column;

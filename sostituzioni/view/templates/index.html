@@ -67,15 +67,9 @@
           </div>
         </div>
         <div id="eventi-container">
+          <div id="eventi-messaggio-informativo"><span>Caricamento...</span></div>
           <div id="eventi-lista-container">
-            <ul id="eventi-lista">
-              <li>
-                <div class="evento placeholder"></div>
-              </li>
-              <li>
-                <div class="evento placeholder"></div>
-              </li>
-            </ul>
+            <ul id="eventi-lista"></ul>
           </div>
         </div>
       </div>
@@ -441,7 +435,7 @@
   <script src="{{url_for('static', filename='scripts/lib/fuzzyset.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/lib/compare.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/lib/selezione.js')}}"></script>
-  <script src="{{url_for('static', filename='scripts/lib/tooltip.js')}}"></script>
+  <script src="{{ url_for('static', filename='scripts/lib/tooltip.js') }}" defer onload="attach_tooltips()"></script>
   <script src="{{url_for('static', filename='scripts/ui.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/eventi.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/notizie.js')}}"></script>
