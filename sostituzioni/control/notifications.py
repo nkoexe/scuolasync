@@ -19,7 +19,7 @@
 """
 
 import logging
-from time import time
+from datetime import datetime, timedelta
 from json import dumps
 from threading import Thread
 from pywebpush import webpush, WebPushException
@@ -34,6 +34,7 @@ logger = logging.getLogger(__name__)
 class Notification:
     def __init__(self, sostituzione: Sostituzione):
         if sostituzione.ora_predefinita is not None:
+            # ora = f"{sostituzione.ora_predefinita}a ora" if (sostituzione.ora_predefinita) != "1" else "1a ora"
             self.title = f"Supplenza alla {sostituzione.ora_predefinita}a ora"
         elif sostituzione.ora_inizio is not None and sostituzione.ora_fine is not None:
             self.title = (
@@ -53,9 +54,16 @@ class NotificationManager:
         self.private_key = configurazione.get("vapidprivatekey").valore
         self.public_key = configurazione.get("vapidpublickey").valore
 
+        if not self.private_key or not self.public_key:
+            logger.warning("VAPID keys not found, notifications will not work.")
+
     def send_upcoming(self):
-        after = int(time())
-        before = after + 24 * 60 * 60
+        after = (
+            datetime.now()
+            .replace(hour=0, minute=0, second=0, microsecond=0)
+            .timestamp()
+        )
+        before = after + timedelta(days=1).total_seconds()
 
         s = sostituzioni.filtra({"data_inizio": after, "data_fine": before})
         logger.info(f"Found {len(s)} upcoming sostituzioni")

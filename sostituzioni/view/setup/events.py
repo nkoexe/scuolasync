@@ -51,8 +51,8 @@ def setup_done():
     from sostituzioni.control.util import generate_vapid_keys
 
     vapid_keys = generate_vapid_keys()
-    configurazione.set("vapid_private_key", vapid_keys["private_key"])
-    configurazione.set("vapid_public_key", vapid_keys["public_key"])
+    configurazione.set("vapidprivatekey", vapid_keys["private_key"])
+    configurazione.set("vapidpublickey", vapid_keys["public_key"])
 
     # create admin user
     from sostituzioni.control.cli import aggiungi_utente
