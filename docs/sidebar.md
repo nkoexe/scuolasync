@@ -1,4 +1,5 @@
 * [⭐ ScuolaSync](README.md)
+* [✏️ Utilizzo](utilizzo/README.md)  
 * [⚒️ Installazione](installazione/README.md)  
   * [🖥️ Server](installazione/server/README.md)
     * [Prerequisiti](installazione/server/prerequisiti.md)
