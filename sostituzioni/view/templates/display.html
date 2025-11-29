@@ -77,9 +77,11 @@
               <div id="sostituzioni-didascalia-aula" class="sostituzioni-didascalia">
                 <span>Aula</span>
               </div>
+              {% if configurazione.get('displaymostrapiano') %}
               <div id="sostituzioni-didascalia-piano" class="sostituzioni-didascalia">
                 <span>Piano</span>
               </div>
+              {% endif %}
               <div id="sostituzioni-didascalia-note" class="sostituzioni-didascalia">
                 <span>Note</span>
               </div>
@@ -106,9 +108,10 @@
   <script>
     const messaggio_nessuna_sostituzione = "{{ configurazione.get('displaynosostituzionimsg') }}"
     const giorni_da_mostrare = {{ configurazione.get('displayrangegiornifuturi').valore }}
-    const giorni_da_mostrare_lavorativi = Boolean({{ configurazione.get('displayrangegiornifuturi').unita }})
+    const giorni_da_mostrare_lavorativi = {{ configurazione.get('displayrangegiornifuturi').unita | tojson }}
     const tempo_scroll_eventi = {{ configurazione.get('displaytemposcrolleventi') }} * 1000
     const tempo_scroll_sostituzioni = {{ configurazione.get('displaytemposcrollsostituzioni') }} * 1000
+    const mostra_piano = {{ configurazione.get('displaymostrapiano').valore | tojson }}
 
     let eventi = []
     let notizie = []
