@@ -84,15 +84,9 @@
           </div>
         </div>
         <div id="eventi-container">
+          <div id="eventi-messaggio-informativo"><span>Caricamento...</span></div>
           <div id="eventi-lista-container">
-            <ul id="eventi-lista">
-              <li>
-                <div class="evento placeholder"></div>
-              </li>
-              <li>
-                <div class="evento placeholder"></div>
-              </li>
-            </ul>
+            <ul id="eventi-lista"></ul>
           </div>
         </div>
       </div>
@@ -273,6 +267,7 @@
             <div id="sostituzioni-lista-container">
               <div id="sostituzioni-messaggio-informativo"><span>Caricamento...</span></div>
               <div id="sostituzioni-lista"></div>
+              <div id="sostituzioni-batch-sentinel"></div>
             </div>
           </div>
           <div id="sostituzioni-info-container">
@@ -452,12 +447,12 @@
     let classi = []
     let docenti = []
   </script>
-  <script src="{{ url_for('static', filename='scripts/lib/socket.io.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='scripts/lib/notyf.min.js') }}" defer onload="notyf = new Notyf({duration: 3000})"></script>
+  <script src="{{url_for('static', filename='scripts/lib/socket.io.min.js') }}"></script>
+  <script src="{{url_for('static', filename='scripts/lib/notyf.min.js') }}" defer onload="notyf = new Notyf({duration: 3000})"></script>
   <script src="{{url_for('static', filename='scripts/lib/fuzzyset.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/lib/compare.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/lib/selezione.js')}}"></script>
-  <script src="{{url_for('static', filename='scripts/lib/tooltip.js')}}"></script>
+  <script src="{{url_for('static', filename='scripts/lib/tooltip.js') }}" defer onload="attach_tooltips()"></script>
   <script src="{{url_for('static', filename='scripts/lib/popup.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/ui.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/notifiche.js')}}"></script>

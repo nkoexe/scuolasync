@@ -30,7 +30,7 @@ socket.on("lista sostituzioni", (data) => {
 
     sostituzioni_visualizzate = sostituzioni
 
-    refresh_sostituzioni(true)
+    refresh_sostituzioni()
 })
 
 

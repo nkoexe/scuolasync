@@ -1432,7 +1432,7 @@ class Sostituzione(ElementoDatabaseConStorico):
 
         # trasforma da "1a ora" a "1"
         if new.endswith("a ora"):
-            new = new[0]
+            new = new.rstrip("a ora")
 
         self._ora_predefinita = new
 

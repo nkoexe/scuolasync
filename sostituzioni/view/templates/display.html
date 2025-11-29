@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/display.css') }}">
   {% if configurazione.get('displayqrcode') %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='style/display_qr.css') }}">
+  <link rel="stylesheet" id="qrcode_css" href="{{ url_for('static', filename='style/display_qr.css') }}">
   {% endif %}
   <link rel="stylesheet" id="colortheme_css" href="{{ url_for('static', filename='style/theme/'~configurazione.get('colortheme')~'.css') }}">
   {% for theme in configurazione.extra_themes %}
@@ -41,11 +41,11 @@
         <span id="qr-description">Controlla le<br>supplenze online!</span>
       </div>
       {% endif %}
-
       <div id="eventi-frame" class="frame">
         <div id="header-eventi">
           <h2 id="header-eventi-titolo">Prossimi Eventi</h2>
         </div>
+        <div id="eventi-messaggio-informativo"><span>Nulla in programma!</span></div>
         <div id="eventi-container">
           <ul id="eventi-lista"></ul>
         </div>
@@ -95,6 +95,13 @@
         </div>
       </div>
     </div>
+    <div id="disconnected-container">
+      <div id="disconnected-icon" class="material-symbols-rounded">wifi_off</div>
+      <div id="disconnected-text">
+        <div id="disconnected-title">Connessione persa</div>
+        <div id="disconnected-description">Ultimo aggiornamento: <span id="disconnected-since"></span></div>
+      </div>
+    </div>
   </div>
   <script>
     const messaggio_nessuna_sostituzione = "{{ configurazione.get('displaynosostituzionimsg') }}"
@@ -115,7 +122,6 @@
   </script>
   <script src="{{url_for('static', filename='scripts/lib/compare.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/display/ui.js')}}"></script>
-  <script src="{{url_for('static', filename='scripts/eventi.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/display/eventi.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/display/notizie.js')}}"></script>
   <script src="{{url_for('static', filename='scripts/display/sostituzioni.js')}}"></script>

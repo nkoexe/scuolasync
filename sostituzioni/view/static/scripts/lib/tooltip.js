@@ -17,8 +17,8 @@ tooltip_content.appendChild(tooltip_text)
 const tooltip_padding = 10
 
 
-function attach_tooltips() {
-  for (const element of document.querySelectorAll('[data-tooltip]')) {
+function attach_tooltips({ root = document } = {}) {
+  for (const element of root.querySelectorAll('[data-tooltip]')) {
     element.onmouseover = () => {
       tooltip_text.innerHTML = element.dataset.tooltip
       tooltip.classList.remove("tooltip-bottom")

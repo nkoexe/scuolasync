@@ -71,7 +71,7 @@ function sostituzioni_applica_filtri() {
   }
 }
 
-let sostituzioni_filtro_ora = new Filtro({ query: "#sostituzioni-filtro-ora", filtra_lista: prendi_ora, render: element => element.length == 1 ? element + "a ora" : element, autocomplete: true })
+let sostituzioni_filtro_ora = new Filtro({ query: "#sostituzioni-filtro-ora", filtra_lista: prendi_ora, render: render_ora_predefinita, autocomplete: true })
 let sostituzioni_filtro_classe = new Filtro({ query: "#sostituzioni-filtro-classe", filtra_lista: prendi_nome })
 let sostituzioni_filtro_aula = new Filtro({ query: "#sostituzioni-filtro-aula", filtra_lista: prendi_numero })
 let sostituzioni_filtro_docente = new Filtro({ query: "#sostituzioni-filtro-docente", filtra_lista: prendi_cognome_nome })

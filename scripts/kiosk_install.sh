@@ -1,53 +1,86 @@
 #!/bin/bash
 
-# aggiorna e installa pacchetti necessari
+if [ "$(id -u)" -ne 0 ]; then
+  echo "This script must be run as root. Please run with sudo or as root."
+  exit 1
+fi
+
+SCUOLASYNC_HOME="/home/scuolasync"
+
+### Prerequisiti
 apt-get update
 apt-get install \
   xorg \
   lightdm \
   openbox \
   autorandr \
+  rxvt-unicode \
   sed \
   unclutter \
   chromium \
   -y
 
-# crea gruppo
-/sbin/groupadd scuolasync
+# crea utente e gruppo, ignora errori se esistono già
+/sbin/groupadd scuolasync || true
+/sbin/useradd -m scuolasync -g scuolasync -s /bin/bash || true
 
-# crea utente
-/sbin/useradd -m scuolasync -g scuolasync -s /bin/bash
-
-# imposta permessi
 # fix per chromium che altrimenti ci sputa
-# sarebbe meglio utilizzare chown e dare i permessi all'utente, ma chown non funziona subito dopo aver creato l'utente, todo trovare fix
-mkdir -p /home/scuolasync/.config/chromium
-chmod -R 777 /home/scuolasync/.config/chromium
+mkdir -p ${SCUOLASYNC_HOME}/.config/chromium/
 
-# rimuovi console virtuale
-cat > /etc/X11/xorg.conf << EOF
-Section "ServerFlags"
-    Option "DontVTSwitch" "true"
-EndSection
-EOF
-
-# crea configurazione lightdm
+# Autologin
 cat > /etc/lightdm/lightdm.conf << EOF
 [SeatDefaults]
 autologin-user=scuolasync
 user-session=openbox
 EOF
 
-# input da utente del sito web
-read -p "Inserire l'url di base del sito (senza https://): " url
-# input da utente per il codice di autorizzazione
-read -p "Inserire il codice di autorizzazione (oppure premere invio per non utilizzarlo): " code
+# Niente pisolini
+mkdir -p /etc/systemd/sleep.conf.d
+cat > /etc/systemd/sleep.conf.d/nosuspend.conf << EOF
+[Sleep]
+AllowSuspend=no
+AllowHibernation=no
+AllowSuspendThenHibernate=no
+AllowHybridSleep=no
+EOF
+
+### Input dati ScuolaSync
+echo "Inserire l'url di base del sito:"
+read -p "> https://" url
+
+echo "Inserire il codice di autorizzazione (oppure premere invio per non utilizzarlo):"
+read -p "> " code
 
 
-# creazione script di avvio openbox
-mkdir -p /home/scuolasync/.config/openbox
+mkdir -p ${SCUOLASYNC_HOME}/.config/openbox
 
-cat > /home/scuolasync/.config/openbox/autostart << EOF
+# keybinds
+cat > ${SCUOLASYNC_HOME}/.config/openbox/rc.xml << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<openbox_config xmlns="http://openbox.org/3.4/rc">
+  <keyboard>
+    <keybind key="W-Escape">
+      <action name="Exit"/>
+    </keybind>
+    <keybind key="C-A-Escape">
+      <action name="Exit"/>
+    </keybind>
+    <keybind key="W-Enter">
+      <action name="Execute">
+        <command>urxvt</command>
+      </action>
+    </keybind>
+    <keybind key="C-A-t">
+      <action name="Execute">
+        <command>urxvt</command>
+      </action>
+    </keybind>
+  </keyboard>
+</openbox_config>
+EOF
+
+# script di avvio openbox
+cat > ${SCUOLASYNC_HOME}/.config/openbox/autostart << EOF
 #!/bin/bash
 
 # ---- variabili -----
@@ -63,9 +96,6 @@ xset s noblank
 xset s off
 xset -dpms
 
-# Chiudi sessione con Ctrl-Alt-Backspace
-setxkbmap -option terminate:ctrl_alt_bksp
-
 # nascondi il cursore
 unclutter -idle 0.1 -root &
 
@@ -74,11 +104,15 @@ do
   # setup e aggiornamento display
   autorandr clone-largest
 
-  # rimuovi flag di chromium per non far mostrare dialoghi
-  sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/scuolasync/.config/chromium/Default/Preferences
-  sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/scuolasync/.config/chromium/Default/Preferences
+  # tempo per eventuale ridimensionamento display
+  sleep 2
 
-  # avvia chromium in modalità kiosk a schermo intero
+  # rimuovi flag di chromium per non far mostrare dialoghi
+  if [ -f "${SCUOLASYNC_HOME}/.config/chromium/Default/Preferences" ]; then
+    sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' ${SCUOLASYNC_HOME}/.config/chromium/Default/Preferences
+    sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' ${SCUOLASYNC_HOME}/.config/chromium/Default/Preferences
+  fi
+
   chromium \\
     --no-first-run \\
     --start-maximized \\
@@ -95,4 +129,7 @@ do
 done &
 EOF
 
+chown -R scuolasync:scuolasync "${SCUOLASYNC_HOME}"
+
+echo
 echo "Installazione completata! Riavviare il sistema per avviare il kiosk."

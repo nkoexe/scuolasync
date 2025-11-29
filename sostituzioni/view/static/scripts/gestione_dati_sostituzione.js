@@ -8,19 +8,42 @@ const gestione_dati_sostituzione_ora_inizio = document.getElementById('gestione-
 const gestione_dati_sostituzione_ora_fine = document.getElementById('gestione-dati-sostituzione-ora-fine');
 
 
-const gestione_dati_sostituzione_ora_predefinita = new Selezione({ query: '#gestione-dati-sostituzione-ora-predefinita', filtra_lista: prendi_ora, render: element => element.length == 1 ? element + "a ora" : element, autocomplete: true });
+const gestione_dati_sostituzione_ora_predefinita = new Selezione({ query: '#gestione-dati-sostituzione-ora-predefinita', filtra_lista: prendi_ora, render: render_ora_predefinita, autocomplete: true });
 const gestione_dati_sostituzione_docente = new Selezione({ query: '#gestione-dati-sostituzione-docente', filtra_lista: prendi_cognome_nome, autocomplete: true });
-const gestione_dati_sostituzione_aula = new Selezione({ query: '#gestione-dati-sostituzione-aula', filtra_lista: prendi_numero, autocomplete: true });
 const gestione_dati_sostituzione_note = new Selezione({ query: '#gestione-dati-sostituzione-note', filtra_lista: prendi_testo });
-const gestione_dati_sostituzione_classe = new Selezione({
-    query: '#gestione-dati-sostituzione-classe', callback: (selected) => {
-        if (!gestione_dati_sostituzione_aula.valore && selected) {
-            const aule = classi.find(classe => classe.nome == selected).aule_ospitanti;
-            if (aule.length > 0) {
-                gestione_dati_sostituzione_aula.valore = aule[0];
-            }
+const gestione_dati_sostituzione_aula = new Selezione({
+    query: '#gestione-dati-sostituzione-aula',
+    filtra_lista: prendi_numero,
+    autocomplete: true,
+    callback: (selected) => {
+        if (!selected) {
+            gestione_dati_sostituzione_aula.modificato_manualmente = false;
+            return;
         }
-    }, filtra_lista: prendi_nome, autocomplete: true
+        gestione_dati_sostituzione_aula.modificato_manualmente = true;
+    }
+});
+gestione_dati_sostituzione_aula.modificato_manualmente = false;
+
+const gestione_dati_sostituzione_classe = new Selezione({
+    query: '#gestione-dati-sostituzione-classe',
+    filtra_lista: prendi_nome,
+    autocomplete: true,
+    callback: (selected) => {
+        if (gestione_dati_sostituzione_aula.modificato_manualmente) {
+            return;
+        }
+        if (!selected) {
+            gestione_dati_sostituzione_aula.valore = '';
+            return;
+        }
+
+        const aule = classi.find(classe => classe.nome == selected).aule_ospitanti;
+        if (aule.length > 0) {
+            gestione_dati_sostituzione_aula.valore = aule[0];
+            gestione_dati_sostituzione_aula.modificato_manualmente = false;
+        }
+    }
 });
 
 
@@ -33,6 +56,8 @@ function mostra_gestione_sostituzione() {
     gestione_dati_sostituzione_docente.aggiorna(docenti);
     gestione_dati_sostituzione_classe.aggiorna(classi);
     gestione_dati_sostituzione_aula.aggiorna(aule);
+
+    gestione_dati_sostituzione_aula.modificato_manualmente = false;
 
     ui_gestione_dati.open();
     ui_gestione_dati_sostituzione.classList.remove('hidden');
