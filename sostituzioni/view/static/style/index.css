@@ -1020,7 +1020,7 @@ input[type="date"].sostituzioni-filtro-data-opzione::before {
     transform: translateX(100%);
     transition: all 0.2s allow-discrete;
     padding-left: 50px;
-    mask: radial-gradient(circle at 0 31px, transparent 30px, black 30px);
+    mask: radial-gradient(circle at 0 31px, transparent 29.5px, black 30.5px);
     clip-path: polygon(0 0, 100% 0, 100% 100%, 30px 100%, 30px 30px);
     overflow: hidden;
     z-index: 50;

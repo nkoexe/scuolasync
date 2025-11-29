@@ -24,6 +24,7 @@ self.addEventListener("push", (event) => {
   const options = {
     body: data.body,
     tag: title.replace(/ /g, "_"),
+    icon: "static/icons/android-chrome-192x192.png",
     data: {
       url: data.url || "/"
     }

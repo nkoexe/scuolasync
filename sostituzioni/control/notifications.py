@@ -34,12 +34,18 @@ logger = logging.getLogger(__name__)
 class Notification:
     def __init__(self, sostituzione: Sostituzione):
         if sostituzione.ora_predefinita is not None:
-            # ora = f"{sostituzione.ora_predefinita}a ora" if (sostituzione.ora_predefinita) != "1" else "1a ora"
-            self.title = f"Supplenza alla {sostituzione.ora_predefinita}a ora"
+            ora = (
+                f"{sostituzione.ora_predefinita}a ora"
+                if sostituzione.ora_predefinita.isdigit()
+                else sostituzione.ora_predefinita
+            )
+            self.title = f"Supplenza alla {ora}"
         elif sostituzione.ora_inizio is not None and sostituzione.ora_fine is not None:
             self.title = (
                 f"Supplenza oggi {sostituzione.ora_inizio}-{sostituzione.ora_fine}"
             )
+        else:
+            self.title = "Supplenza oggi"
 
         self.body = f"In {sostituzione.nome_classe} (aula {sostituzione.numero_aula})"
 
