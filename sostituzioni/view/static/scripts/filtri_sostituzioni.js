@@ -130,7 +130,7 @@ function sostituzioni_filtra_data() {
       data_inizio.setDate(data_inizio.getDate() + 1)
       data_inizio.setHours(0, 0, 0, 0)
       data_fine = new Date()
-      data_fine.setDate(data_inizio.getDate())
+      data_fine.setDate(data_fine.getDate() + 1)
       data_fine.setHours(23, 59, 59, 0)
 
       filtri = {

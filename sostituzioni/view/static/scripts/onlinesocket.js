@@ -71,8 +71,8 @@ socket.on("lista docenti", (data) => {
 
 // le sostituzioni vengono aggiornate una per una con gli eventi sotto
 // socket.on("aggiornamento sostituzioni", () => {
-    // filtri = sostituzioni_filtra_data()
-    // s_richiedi_sostituzioni(filtri)
+// filtri = sostituzioni_filtra_data()
+// s_richiedi_sostituzioni(filtri)
 // })
 
 socket.on("aggiornamento eventi", () => {
@@ -85,14 +85,14 @@ socket.on("aggiornamento notizie", () => {
 
 socket.on("sostituzione inserita", (data) => {
     if (data.cognome_docente)
-		data.cognome_docente = data.cognome_docente.toUpperCase();
+        data.cognome_docente = data.cognome_docente.toUpperCase();
 
     aggiungi_sostituzione(data);
 })
 
 socket.on("sostituzione modificata", (data) => {
     if (data.cognome_docente)
-		data.cognome_docente = data.cognome_docente.toUpperCase();
+        data.cognome_docente = data.cognome_docente.toUpperCase();
 
     modifica_sostituzione_visualizzata(data);
 })
