@@ -2,33 +2,34 @@ class Filtro extends Selezione {
   constructor({ query, ordinamento, filtra_lista, render, select_on_keydown, autocomplete }) {
     super({ query: query, callback: refresh_sostituzioni, filtra_lista: filtra_lista, render: render, select_on_keydown: select_on_keydown, autocomplete: autocomplete })
 
-    this.ordinamento = ordinamento
-    this.ordinamento = (typeof this.ordinamento === "undefined") ? true : this.ordinamento
+    this.ordinamento = (typeof ordinamento === "undefined") ? true : ordinamento
     if (this.ordinamento) {
       this.ui_ordinamento = this.ui_container.getElementsByClassName("sostituzioni-ordinamento")[0]
       this.ui_ordinamento_frecciasu = this.ui_ordinamento.children[0]
       this.ui_ordinamento_frecciagiu = this.ui_ordinamento.children[1]
     }
 
-    this.ordina = false
-    this.verso_ordinamento = 1  // 1: crescente, -1: decrescente
-
     if (this.ordinamento) {
       this.ui_ordinamento.onclick = (event) => {
-        this.verso_ordinamento *= -1
-
-        if (this.verso_ordinamento === 1) {
-          this.ui_ordinamento_frecciasu.classList.add("selected")
-          this.ui_ordinamento_frecciagiu.classList.remove("selected")
+        if (sostituzioni_ordinamento != query) {
+          sostituzioni_ordinamento = query
+          sostituzioni_verso_ordinamento = -1
         } else {
-          this.ui_ordinamento_frecciasu.classList.remove("selected")
-          this.ui_ordinamento_frecciagiu.classList.add("selected")
+          sostituzioni_verso_ordinamento = sostituzioni_verso_ordinamento * -1
         }
 
-        this.ordina = true
         refresh_sostituzioni()
-        this.ordina = false
       }
+    }
+  }
+
+  ui_mostra_ordinamento() {
+    if (sostituzioni_verso_ordinamento === 1) {
+      this.ui_ordinamento_frecciasu.classList.add("selected")
+      this.ui_ordinamento_frecciagiu.classList.remove("selected")
+    } else {
+      this.ui_ordinamento_frecciasu.classList.remove("selected")
+      this.ui_ordinamento_frecciagiu.classList.add("selected")
     }
   }
 
@@ -39,7 +40,11 @@ class Filtro extends Selezione {
 }
 
 function sostituzioni_applica_filtri() {
-  sostituzioni_visualizzate = sostituzioni.filter(element => element.pubblicato == true)
+  sostituzioni_visualizzate = sostituzioni
+
+  if (!sostituzioni_write) {
+    sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.pubblicato == true)
+  }
 
   if (sostituzioni_filtro_ora.selected !== null) {
     sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.ora_predefinita === (sostituzioni_filtro_ora.selected))

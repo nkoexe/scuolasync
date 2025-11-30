@@ -69,11 +69,11 @@ socket.on("lista docenti", (data) => {
     sostituzioni_filtro_docente.aggiorna(docenti)
 })
 
-// todo mostrare messaggio informativo che invita a ricaricare la pagina
-socket.on("aggiornamento sostituzioni", () => {
+// le sostituzioni vengono aggiornate una per una con gli eventi sotto
+// socket.on("aggiornamento sostituzioni", () => {
     // filtri = sostituzioni_filtra_data()
     // s_richiedi_sostituzioni(filtri)
-})
+// })
 
 socket.on("aggiornamento eventi", () => {
     s_richiedi_eventi()
