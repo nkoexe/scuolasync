@@ -39,7 +39,8 @@ class Filtro extends Selezione {
 }
 
 function sostituzioni_applica_filtri() {
-  sostituzioni_visualizzate = sostituzioni
+  sostituzioni_visualizzate = sostituzioni.filter(element => element.pubblicato == true)
+
   if (sostituzioni_filtro_ora.selected !== null) {
     sostituzioni_visualizzate = sostituzioni_visualizzate.filter(element => element.ora_predefinita === (sostituzioni_filtro_ora.selected))
   }

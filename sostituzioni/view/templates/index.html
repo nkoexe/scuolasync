@@ -255,10 +255,14 @@
           <div id="sostituzioni-info-container">
             <span class="sostituzioni-info" data-tooltip="Numero totale di sostituzioni per i filtri applicati."><span id="sostituzioni-info-numero-totale" class="sostituzioni-info-numero"></span> sostituzioni</span>
             <span class="sostituzioni-info"><span id="sostituzioni-info-numero-oggi" class="sostituzioni-info-numero"></span> oggi</span>
+            {% if utente.ruolo.nome != 'visualizzatore' %}
             <span class="sostituzioni-info" data-tooltip="Numero di sostituzioni che sono visibili soltanto a editor."><span id="sostituzioni-info-numero-nascoste" class="sostituzioni-info-numero"></span> nascoste</span>
             <span class="sostituzioni-info" data-tooltip="Numero di sostituzioni che hanno uno o più campi necessari vuoti."><span id="sostituzioni-info-numero-incomplete" class="sostituzioni-info-numero"></span> incomplete</span>
             <span class="sostituzioni-info" data-tooltip="Numero di sostituzioni che hanno sovrapposizioni di docente, classe o aula."><span id="sostituzioni-info-numero-errori" class="sostituzioni-info-numero"></span> errori</span>
-            <span class="sostituzioni-info hidden" id="sostituzioni-info-aggiornamento"><a href="{{ url_for('impostazioni.update')}}">Aggiornamento disponibile!</a></span>
+            {% endif %}
+            {% if utente.ruolo.nome == 'amministratore' and configurazione.aggiornamento_disponibile %}
+            <span class="sostituzioni-info" id="sostituzioni-info-aggiornamento"><a href="{{ url_for('impostazioni.update')}}">Aggiornamento disponibile!</a></span>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -409,9 +413,6 @@
     const mostra_link_informa_docente = {{ configurazione.get('mostralinkiformadocente').valore | tojson }}
     const oggetto_mail_informa_docente = `{{ configurazione.get('oggettomailinformadocente') }}`
     const corpo_mail_informa_docente = `{{ configurazione.get('corpomailinformadocente').valore.replace('\\n', '%0A').replace('<br>', '%0A') | safe }}`
-    {% endif %}
-    {% if utente.ruolo.nome == 'amministratore' %}
-    const aggiornamento_disponibile = {{ configurazione.aggiornamento_disponibile | tojson }}
     {% endif %}
 
     const notizie_write = {{ utente.permessi.notizie.write | tojson }}

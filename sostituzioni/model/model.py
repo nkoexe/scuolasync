@@ -144,6 +144,12 @@ class NotaStandard(NotaStandard):
 
 
 class Sostituzione(Sostituzione):
+    descrizioni_sovrapposizione = {
+        "docente": "Il docente ha una supplenza alla stessa ora.",
+        "aula": "Questa aula ha due supplenze in contemporanea.",
+        "classe": "Questa classe ha due supplenze in contemporanea.",
+    }
+
     def __init__(
         self,
         # id: int | None = None,
@@ -254,6 +260,28 @@ class Sostituzione(Sostituzione):
     def __str__(self):
         return f"Sostituzione {self.id if self.id is not None else '(nuova)'} - ({self.numero_aula}, {self.nome_classe}, {self.nome_docente} {self.cognome_docente}, {self.data}, {self.ora_predefinita}, {self.ora_inizio}, {self.ora_fine}, {self.note})"
 
+    def dump(self):
+        return {
+            "id": self.id,
+            "cancellato": self.cancellato,
+            "pubblicato": self.pubblicato,
+            "numero_aula": self.numero_aula,
+            "nome_classe": self.nome_classe,
+            "nome_docente": self.nome_docente,
+            "cognome_docente": self.cognome_docente,
+            "data": self.data,
+            "ora_predefinita": self.ora_predefinita,
+            "ora_inizio": self.ora_inizio,
+            "ora_fine": self.ora_fine,
+            "note": self.note,
+            "incompleta": self.incompleta,
+            # idea: mandare la lista di sovrapposizioni, on hover l'altra sostituzione con errore lampeggia
+            "sovrapposizioni": len(self.sovrapposizioni) > 0,
+            "descrizione_sovrapposizione": Sostituzione.descrizioni_sovrapposizione.get(
+                self.elemento_sovrapposizione, None
+            ),
+        }
+
 
 class Evento(Evento):
     def __init__(
@@ -337,34 +365,7 @@ class Sostituzioni(SearchableList):
                 del self.indice_per_data[sostituzione.data]
 
     def to_json(self):
-        descrizioni_sovrapposizione = {
-            "docente": "Il docente ha una supplenza alla stessa ora.",
-            "aula": "Questa aula ha due supplenze in contemporanea.",
-            "classe": "Questa classe ha due supplenze in contemporanea.",
-        }
-        return [
-            {
-                "id": sostituzione.id,
-                "cancellato": sostituzione.cancellato,
-                "pubblicato": sostituzione.pubblicato,
-                "numero_aula": sostituzione.numero_aula,
-                "nome_classe": sostituzione.nome_classe,
-                "nome_docente": sostituzione.nome_docente,
-                "cognome_docente": sostituzione.cognome_docente,
-                "data": sostituzione.data,
-                "ora_predefinita": sostituzione.ora_predefinita,
-                "ora_inizio": sostituzione.ora_inizio,
-                "ora_fine": sostituzione.ora_fine,
-                "note": sostituzione.note,
-                "incompleta": sostituzione.incompleta,
-                # idea: mandare la lista di sovrapposizioni, on hover l'altra sostituzione con errore lampeggia
-                "sovrapposizioni": len(sostituzione.sovrapposizioni) > 0,
-                "descrizione_sovrapposizione": descrizioni_sovrapposizione.get(
-                    sostituzione.elemento_sovrapposizione, None
-                ),
-            }
-            for sostituzione in self
-        ]
+        return [sostituzione.dump() for sostituzione in self]
 
     @staticmethod
     @beartype
@@ -616,6 +617,8 @@ class Sostituzioni(SearchableList):
         self.check_errori(sostituzione)
 
         # print(f"errori - {time() - start_time:.6f}")
+
+        return sostituzione
 
     @beartype
     def elimina(self, id: int, mantieni_in_storico: bool = True):
