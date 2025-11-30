@@ -31,6 +31,8 @@ body {
 body {
     width: 100%;
     height: 100%;
+    color: var(--color-text);
+    -webkit-touch-callout: none !important;
 }
 
 ul {
@@ -43,6 +45,13 @@ button {
     border: none;
     padding: 0;
     cursor: pointer;
+    color: var(--color-text);
+}
+
+/* fuck you safari */
+select,
+input {
+    color: var(--color-text)
 }
 
 .notizia a,
@@ -434,7 +443,7 @@ option:disabled {
 }
 
 #sostituzioni-container {
-    min-width: 900px;
+    min-width: 850px;
     height: 100%;
     /* questo min-width è stato messo per mantenere spazio per la lettura chiara dei dati, */
 }
@@ -1044,6 +1053,30 @@ input[type="date"].sostituzioni-filtro-data-opzione::before {
     border-color: var(--color-selezione-hover-delete-bg);
     background-color: var(--color-selezione-hover-delete-bg);
     color: var(--color-selezione-hover-delete-fg);
+}
+
+/* Aggiustamenti per desktop */
+@media (max-width: 1300px) {
+
+    #sostituzioni-filtro-data,
+    #sostituzioni-lista .sostituzione-data {
+        width: 6rem;
+    }
+
+    #sostituzioni-filtro-ora,
+    #sostituzioni-lista .sostituzione-ora {
+        width: 5rem;
+    }
+
+    #sostituzioni-filtro-classe,
+    #sostituzioni-lista .sostituzione-classe {
+        width: 8rem;
+    }
+
+    #sostituzioni-filtro-docente,
+    #sostituzioni-lista .sostituzione-docente {
+        width: 10rem;
+    }
 }
 
 /* MOBILE */

@@ -155,13 +155,14 @@ def nuova_sostituzione(data):
         # pubblicato=data.get("pubblicato"),
         dati=data,
     )
+
     try:
         sostituzioni.inserisci(sostituzione)
     except Exception as e:
         emit("errore inserimento sostituzione", str(e))
         return False
 
-    emit("aggiornamento sostituzioni", broadcast=True)
+    emit("sostituzione inserita", sostituzione.dump(), broadcast=True)
     emit("aggiornamento sostituzioni", broadcast=True, namespace="/display")
 
     return True
@@ -183,13 +184,13 @@ def modifica_sostituzione(data):
         return False
 
     try:
-        sostituzioni.modifica(data.get("id"), data.get("data"))
+        sostituzione = sostituzioni.modifica(data.get("id"), data.get("data"))
     except Exception as e:
         logger.error(f"Errore durante la modifica della sostituzione: {e}")
         emit("errore modifica sostituzione", str(e))
         return False
 
-    emit("aggiornamento sostituzioni", broadcast=True)
+    emit("sostituzione modificata", sostituzione.dump(), broadcast=True)
     emit("aggiornamento sostituzioni", broadcast=True, namespace="/display")
 
     return True
@@ -204,7 +205,7 @@ def elimina_sostituzione(data):
     # todo usare default mantieniinstorico di configurazione
     sostituzioni.elimina(data.get("id"), data.get("mantieni_in_storico", True))
 
-    emit("aggiornamento sostituzioni", broadcast=True)
+    emit("sostituzione eliminata", {"id": data.get("id")}, broadcast=True)
     emit("aggiornamento sostituzioni", broadcast=True, namespace="/display")
 
     return True

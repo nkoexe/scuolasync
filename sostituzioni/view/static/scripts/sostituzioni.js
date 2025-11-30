@@ -30,11 +30,13 @@ const ui_sostituzioni_lista = document.querySelector("#sostituzioni-lista")
 const ui_sostituzioni_messaggio_informativo = document.querySelector("#sostituzioni-messaggio-informativo")
 const ui_sostituzioni_batch_sentinel = document.querySelector("#sostituzioni-batch-sentinel");
 
-
 const ui_sostituzioni_ordinamento_data = document.querySelector("#sostituzioni-ordinamento-data")
 const ui_sostituzioni_ordinamento_data_up = ui_sostituzioni_ordinamento_data.children[0]
 const ui_sostituzioni_ordinamento_data_down = ui_sostituzioni_ordinamento_data.children[1]
-let sostituzioni_data_verso_ordinamento = 1
+
+let sostituzioni_ordinamento = "data"
+let sostituzioni_verso_ordinamento = 1
+
 
 const sostituzioneDateFormatter = new Intl.DateTimeFormat(userLocale, {
 	year: "numeric",
@@ -43,13 +45,11 @@ const sostituzioneDateFormatter = new Intl.DateTimeFormat(userLocale, {
 });
 
 const SOSTITUZIONI_BATCH_SIZE = 200;
-let pendingSostituzioni = [];
 let renderedSostituzioni = 0;
 
 const sostituzioniBatchObserver = new IntersectionObserver(entries => {
 	if (entries.some(entry => entry.boundingClientRect.top < entry.rootBounds.bottom)) {
 		renderNextBatch();
-
 	}
 }, {
 	root: ui_sostituzioni_lista_container,
@@ -67,10 +67,17 @@ ui_sostituzioni_lista_container.addEventListener("scrollend", () => {
 	}
 });
 
-function renderNextBatch(amount = SOSTITUZIONI_BATCH_SIZE) {
-	if (renderedSostituzioni >= pendingSostituzioni.length) return;
+async function renderNextBatch(amount = SOSTITUZIONI_BATCH_SIZE, initial = false) {
+	if (renderedSostituzioni >= sostituzioni_visualizzate.length) return;
 
-	const nextChunk = pendingSostituzioni.slice(renderedSostituzioni, renderedSostituzioni + amount);
+	const nextChunk = await Promise.all(
+		sostituzioni_visualizzate
+			.slice(renderedSostituzioni, renderedSostituzioni + amount)
+			.map(element => {
+				return format_sostituzione_to_html(element.id, element.pubblicato, element.cancellato, element.data, element.ora_inizio, element.ora_fine, element.ora_predefinita, element.numero_aula, element.nome_classe, element.nome_docente, element.cognome_docente, element.note, element.incompleta, element.sovrapposizioni, element.descrizione_sovrapposizione);
+			})
+	);
+
 	const fragment = document.createDocumentFragment();
 
 	// Combine all HTML into a single string and parse once
@@ -90,13 +97,32 @@ function renderNextBatch(amount = SOSTITUZIONI_BATCH_SIZE) {
 
 	renderedSostituzioni += nextChunk.length;
 
-	const remaining_height_estimate = (pendingSostituzioni.length - renderedSostituzioni) * 2.5; // 2.5rem minimo per sostituzione
+	const remaining_height_estimate = (sostituzioni_visualizzate.length - renderedSostituzioni) * 2.5; // 2.5rem minimo per sostituzione
 	ui_sostituzioni_batch_sentinel.style.height = remaining_height_estimate + "rem";
 
-	if (ui_sostituzioni_batch_sentinel.offsetTop - ui_sostituzioni_lista_container.scrollTop < ui_sostituzioni_lista_container.clientHeight) {
-		requestAnimationFrame(renderNextBatch);
-		return;
+	// if initial render, not checking .offsetTop means not halting to calculate the style
+	// this saves like a couple ms
+	// next batch will be rendered in 100 ms anyway
+	if (!initial) {
+		if (ui_sostituzioni_batch_sentinel.offsetTop - ui_sostituzioni_lista_container.scrollTop < ui_sostituzioni_lista_container.clientHeight) {
+			requestAnimationFrame(renderNextBatch);
+			return;
+		}
 	}
+}
+
+async function render_singola_sostituzione(sostituzione) {
+	const html = await format_sostituzione_to_html(sostituzione.id, sostituzione.pubblicato, sostituzione.cancellato, sostituzione.data, sostituzione.ora_inizio, sostituzione.ora_fine, sostituzione.ora_predefinita, sostituzione.numero_aula, sostituzione.nome_classe, sostituzione.nome_docente, sostituzione.cognome_docente, sostituzione.note, sostituzione.incompleta, sostituzione.sovrapposizioni, sostituzione.descrizione_sovrapposizione)
+	const template = document.createElement("template");
+	template.innerHTML = html;
+
+	if (sostituzioni_write) {
+		template.content.firstChild.oncontextmenu = (e) => { mostra_context_menu_sostituzione(e, e.currentTarget) }
+	}
+
+	attach_tooltips({ root: template.content })
+
+	return template.content.firstChild;
 }
 
 function render_ora_predefinita(ora_predefinita) {
@@ -158,14 +184,8 @@ async function refresh_sostituzioni() {
 	ui_sostituzioni_lista_container.scrollTo(0, 0);
 	ui_sostituzioni_lista.innerHTML = "";
 
-	pendingSostituzioni = await Promise.all(
-		sostituzioni_visualizzate.map(element => {
-			return format_sostituzione_to_html(element.id, element.pubblicato, element.cancellato, element.data, element.ora_inizio, element.ora_fine, element.ora_predefinita, element.numero_aula, element.nome_classe, element.nome_docente, element.cognome_docente, element.note, element.incompleta, element.sovrapposizioni, element.descrizione_sovrapposizione);
-		})
-	);
-
 	// smaller first batch for faster initial render
-	renderNextBatch(20);
+	renderNextBatch(20, true);
 	setTimeout(() => {
 		renderNextBatch(200);
 	}, 100);
@@ -177,7 +197,96 @@ async function refresh_sostituzioni() {
 		ui_sostituzioni_messaggio_informativo.classList.remove("hidden")
 	}
 
-	// Aggiorna info sostituzioni
+	aggiorna_info_sostituzioni()
+}
+
+function ordina_sostituzioni() {
+	// rimuovi ordinamento dei vari filtri
+	ui_sostituzioni_ordinamento_data_up.classList.remove("selected")
+	ui_sostituzioni_ordinamento_data_down.classList.remove("selected")
+	sostituzioni_filtro_ora.ui_rimuovi_ordinamento()
+	sostituzioni_filtro_classe.ui_rimuovi_ordinamento()
+	sostituzioni_filtro_aula.ui_rimuovi_ordinamento()
+	sostituzioni_filtro_docente.ui_rimuovi_ordinamento()
+
+	// ordina i dati secondo l'ordinamento impostato
+	switch (sostituzioni_ordinamento) {
+		case "data":
+			sostituzioni_visualizzate.sort((a, b) => {
+				res = compara_data(a, b) * sostituzioni_verso_ordinamento
+				if (res == 0) { res = compara_ora_predefinita(b, a) }
+				if (res == 0) { res = compara_docente(b, a) }
+				return res
+			})
+
+			if (sostituzioni_verso_ordinamento === 1) {
+				ui_sostituzioni_ordinamento_data_up.classList.remove("selected")
+				ui_sostituzioni_ordinamento_data_down.classList.add("selected")
+			} else {
+				ui_sostituzioni_ordinamento_data_down.classList.remove("selected")
+				ui_sostituzioni_ordinamento_data_up.classList.add("selected")
+			}
+
+			break;
+
+		case "#sostituzioni-filtro-ora":
+			sostituzioni_visualizzate.sort((a, b) => {
+				res = compara_ora_predefinita(a, b) * sostituzioni_verso_ordinamento
+				if (res == 0) { res = compara_data(a, b) }
+				if (res == 0) { res = compara_docente(a, b) }
+				return res
+			})
+
+			sostituzioni_filtro_ora.ui_mostra_ordinamento()
+			break;
+
+		case "#sostituzioni-filtro-classe":
+			sostituzioni_visualizzate.sort((a, b) => {
+				res = compara_classe(a, b) * sostituzioni_verso_ordinamento
+				if (res == 0) { res = compara_data(a, b) }
+				if (res == 0) { res = compara_ora_predefinita(a, b) }
+				return res
+			})
+
+			sostituzioni_filtro_classe.ui_mostra_ordinamento()
+			break;
+
+		case "#sostituzioni-filtro-aula":
+			sostituzioni_visualizzate.sort((a, b) => {
+				res = compara_aula(a, b) * sostituzioni_verso_ordinamento
+				if (res == 0) { res = compara_data(a, b) }
+				if (res == 0) { res = compara_ora_predefinita(a, b) }
+				return res
+			})
+
+			sostituzioni_filtro_aula.ui_mostra_ordinamento()
+			break;
+
+		case "#sostituzioni-filtro-docente":
+			sostituzioni_visualizzate.sort((a, b) => {
+				res = compara_docente(a, b) * sostituzioni_verso_ordinamento
+				if (res == 0) { res = compara_data(a, b) }
+				if (res == 0) { res = compara_ora_predefinita(a, b) }
+				return res
+			})
+
+			sostituzioni_filtro_docente.ui_mostra_ordinamento()
+			break;
+	}
+}
+
+ui_sostituzioni_ordinamento_data.onclick = (e) => {
+	if (sostituzioni_ordinamento !== "data") {
+		sostituzioni_ordinamento = "data"
+		sostituzioni_verso_ordinamento = 1
+	} else {
+		sostituzioni_verso_ordinamento = sostituzioni_verso_ordinamento * -1
+	}
+
+	refresh_sostituzioni()
+}
+
+function aggiorna_info_sostituzioni() {
 	let now = new Date()
 	now.setHours(0, 0, 0, 0)
 	now = now.getTime() / 1000
@@ -211,84 +320,105 @@ async function refresh_sostituzioni() {
 	}
 }
 
-function ordina_sostituzioni() {
-	// rimuovi ordinamento dei vari filtri	
-	ui_sostituzioni_ordinamento_data_up.classList.remove("selected")
-	ui_sostituzioni_ordinamento_data_down.classList.remove("selected")
 
-	if (!sostituzioni_filtro_ora.ordina) {
-		sostituzioni_filtro_ora.ui_rimuovi_ordinamento()
-		sostituzioni_filtro_ora.verso_ordinamento = 1
+async function aggiungi_sostituzione(data) {
+	sostituzioni.push(data)
+
+	sostituzioni_applica_filtri()
+	ordina_sostituzioni()
+	aggiorna_info_sostituzioni()
+
+	const new_sostituzione_index = sostituzioni_visualizzate.findIndex(element => element.id === data.id)
+	if (new_sostituzione_index === -1) {
+		// filtered out
+		return;
 	}
-	if (!sostituzioni_filtro_classe.ordina) {
-		sostituzioni_filtro_classe.ui_rimuovi_ordinamento()
-		sostituzioni_filtro_classe.verso_ordinamento = 1
-	}
-	if (!sostituzioni_filtro_aula.ordina) {
-		sostituzioni_filtro_aula.ui_rimuovi_ordinamento()
-		sostituzioni_filtro_aula.verso_ordinamento = 1
-	}
-	if (!sostituzioni_filtro_docente.ordina) {
-		sostituzioni_filtro_docente.ui_rimuovi_ordinamento()
-		sostituzioni_filtro_docente.verso_ordinamento = 1
+	if (new_sostituzione_index >= renderedSostituzioni) {
+		// not rendered yet
+		return;
 	}
 
-	// ordina i dati secondo l'ordinamento impostato
-	if (sostituzioni_filtro_ora.ordina) {
-		sostituzioni_visualizzate.sort((a, b) => {
-			res = compara_ora_predefinita(a, b) * sostituzioni_filtro_ora.verso_ordinamento
-			if (res == 0) { res = compara_data(a, b) }
-			if (res == 0) { res = compara_docente(a, b) }
-			return res
-		})
-		sostituzioni_data_verso_ordinamento = -1
-	} else if (sostituzioni_filtro_classe.ordina) {
-		sostituzioni_visualizzate.sort((a, b) => {
-			res = compara_classe(a, b) * sostituzioni_filtro_classe.verso_ordinamento
-			if (res == 0) { res = compara_data(a, b) }
-			if (res == 0) { res = compara_ora_predefinita(a, b) }
-			return res
-		})
-		sostituzioni_data_verso_ordinamento = -1
-	} else if (sostituzioni_filtro_aula.ordina) {
-		sostituzioni_visualizzate.sort((a, b) => {
-			res = compara_aula(a, b) * sostituzioni_filtro_aula.verso_ordinamento
-			if (res == 0) { res = compara_data(a, b) }
-			if (res == 0) { res = compara_ora_predefinita(a, b) }
-			return res
-		})
-		sostituzioni_data_verso_ordinamento = -1
-	} else if (sostituzioni_filtro_docente.ordina) {
-		sostituzioni_visualizzate.sort((a, b) => {
-			res = compara_docente(a, b) * sostituzioni_filtro_docente.verso_ordinamento
-			if (res == 0) { res = compara_data(a, b) }
-			if (res == 0) { res = compara_ora_predefinita(a, b) }
-			return res
-		})
-		sostituzioni_data_verso_ordinamento = -1
+	const new_sostituzione_element = await render_singola_sostituzione(data)
+
+	const referenceNode = ui_sostituzioni_lista.querySelector(`.sostituzione[data-id='${sostituzioni_visualizzate[new_sostituzione_index + 1]?.id}']`);
+	if (referenceNode) {
+		referenceNode.before(new_sostituzione_element);
 	} else {
-
-		if (sostituzioni_data_verso_ordinamento === 1) {
-			ui_sostituzioni_ordinamento_data_down.classList.add("selected")
-		} else {
-			ui_sostituzioni_ordinamento_data_up.classList.add("selected")
-		}
-
-		sostituzioni_visualizzate.sort((a, b) => {
-			res = compara_data(a, b) * sostituzioni_data_verso_ordinamento
-			if (res == 0) { res = compara_ora_predefinita(b, a) }
-			if (res == 0) { res = compara_docente(b, a) }
-			return res
-		})
+		ui_sostituzioni_lista.appendChild(new_sostituzione_element);
 	}
+	renderedSostituzioni++;
 }
 
-ui_sostituzioni_ordinamento_data.onclick = (e) => {
-	sostituzioni_data_verso_ordinamento *= -1
-	refresh_sostituzioni()
+async function modifica_sostituzione_visualizzata(data) {
+	let sostituzione = sostituzioni.find(element => element.id === data.id)
+	let sostituzione_element = ui_sostituzioni_lista.querySelector(`.sostituzione[data-id='${data.id}']`)
+
+	if (sostituzione) {
+		for (const key in data) {
+			sostituzione[key] = data[key]
+		}
+	} else {
+		aggiungi_sostituzione(data);
+		return;
+	}
+
+	sostituzioni_applica_filtri()
+	ordina_sostituzioni()
+	aggiorna_info_sostituzioni()
+
+	const sostituzione_index = sostituzioni_visualizzate.findIndex(element => element.id === data.id)
+
+	if (sostituzione_index === -1) {
+		// filtered out
+		if (sostituzione_element) {
+			sostituzione_element.remove();
+			renderedSostituzioni--;
+		}
+		return;
+	}
+
+	if (sostituzione_element) {
+		const new_sostituzione_element = await render_singola_sostituzione(sostituzione)
+		sostituzione_element.replaceWith(new_sostituzione_element);
+
+		return;
+	}
+
+	if (sostituzione_index >= renderedSostituzioni) {
+		// not rendered yet
+		return;
+	}
+
+	const new_sostituzione_element = await render_singola_sostituzione(data)
+
+	const referenceNode = ui_sostituzioni_lista.querySelector(`.sostituzione[data-id='${sostituzioni_visualizzate[sostituzione_index + 1]?.id}']`);
+	if (referenceNode) {
+		referenceNode.before(new_sostituzione_element);
+	} else {
+		ui_sostituzioni_lista.appendChild(new_sostituzione_element);
+	}
+	renderedSostituzioni++;
 }
 
+async function elimina_sostituzione_visualizzata(id) {
+	sostituzioni.splice(sostituzioni.findIndex(element => element.id === id), 1)
+	const sostituzione_list_index = sostituzioni_visualizzate.findIndex(element => element.id === id)
 
-if (typeof aggiornamento_disponibile !== 'undefined' && aggiornamento_disponibile) {
-	document.querySelector("#sostituzioni-info-aggiornamento").classList.remove("hidden")
+	if (sostituzione_list_index !== -1) {
+		sostituzioni_visualizzate.splice(sostituzione_list_index, 1)
+	}
+
+	aggiorna_info_sostituzioni()
+
+	if (sostituzione_list_index >= renderedSostituzioni) {
+		// not rendered yet
+		return;
+	}
+
+	let sostituzione_element = ui_sostituzioni_lista.querySelector(`.sostituzione[data-id='${id}']`)
+
+	if (sostituzione_element) {
+		sostituzione_element.remove();
+		renderedSostituzioni--;
+	}
 }

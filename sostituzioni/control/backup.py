@@ -49,6 +49,10 @@ def backup():
     # upload to Google Drive
     drive_service = service_account_login()
 
+    # No service account key found, skip Google Drive backup
+    if drive_service == -1:
+        return local_file
+
     if not drive_service:
         logger.error("Errore nell'autenticazione con Google Drive")
         return local_file
@@ -165,10 +169,10 @@ def service_account_login():
     chiave_account_servizio = configurazione.get("backupserviceaccountkey").path
 
     if not chiave_account_servizio.is_file():
-        logger.warning(
+        logger.debug(
             f"Chiave per l'account di servizio non trovata, non è possibile eseguire il backup su Google Drive. ({chiave_account_servizio})"
         )
-        return None
+        return -1
 
     credentials = service_account.Credentials.from_service_account_file(
         chiave_account_servizio, scopes=["https://www.googleapis.com/auth/drive.file"]

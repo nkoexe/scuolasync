@@ -418,6 +418,17 @@
       "default": false,
       "valore": false
     },
+    "displaymostrapiano": {
+      "titolo": "Mostra Piano",
+      "descrizione": "Mostra sul display il piano associato all'aula nella lista delle sostituzioni.",
+      "sezione": "visualizzazionefisica",
+      "trigger": "display",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "booleano",
+      "default": true,
+      "valore": true
+    },
     "displaytemposcrolleventi": {
       "titolo": "Intervallo di scorrimento eventi",
       "descrizione": "Imposta il tempo, in secondi, dopo il quale la lista degli eventi passa automaticamente alla pagina successiva.",

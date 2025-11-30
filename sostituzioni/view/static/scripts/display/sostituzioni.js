@@ -17,9 +17,10 @@ const ui_sostituzione_html_template = `
   <div class="sostituzione-data sostituzione-aula">
     <span>{numero_aula}</span>
   </div>
-  <div class="sostituzione-data sostituzione-piano">
-    <span>{piano_aula}</span>
-  </div>
+  ${mostra_piano ?
+		`<div class="sostituzione-data sostituzione-piano">
+    		<span>{piano_aula}</span>
+  		</div>` : ''}
   <div class="sostituzione-data sostituzione-note">
     <span>{note}</span>
   </div>
@@ -55,7 +56,7 @@ function format_sostituzione_to_html(oggi, data, ora_inizio, ora_fine, ora_prede
 	if (nome_classe == null) { nome_classe = "" }
 	let piano_aula = ""
 	if (numero_aula == null) { numero_aula = "" }
-	else {
+	else if (mostra_piano) {
 		const aula = aule.find(aula => aula.numero === numero_aula)
 		if (aula) {
 			if (aula.piano == "-1") { piano_aula = "Seminterrato" }

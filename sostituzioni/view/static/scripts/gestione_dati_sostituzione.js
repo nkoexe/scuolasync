@@ -130,10 +130,9 @@ function mostra_modifica_sostituzione(id) {
 }
 
 function conferma_modifica_sostituzione(id) {
-    data = fix_date_from_input(gestione_dati_sostituzione_data.valueAsNumber) / 1000;
+    let data = fix_date_from_input(gestione_dati_sostituzione_data.valueAsNumber) / 1000;
 
-    s_modifica_sostituzione(
-        id, {
+    let dati = {
         data: data,
         ora_predefinita: gestione_dati_sostituzione_ora_predefinita.valore,
         ora_inizio: gestione_dati_sostituzione_ora_inizio.value,
@@ -142,7 +141,9 @@ function conferma_modifica_sostituzione(id) {
         nome_classe: gestione_dati_sostituzione_classe.valore,
         numero_aula: gestione_dati_sostituzione_aula.valore,
         note: gestione_dati_sostituzione_note.valore
-    });
+    }
+
+    s_modifica_sostituzione(id, dati);
 
     nascondi_gestione_dati();
 }
@@ -175,8 +176,5 @@ function mostra_duplica_sostituzione(id) {
 }
 
 function pubblica_sostituzione(id, pubblica = true) {
-    s_modifica_sostituzione(
-        id, {
-        pubblicato: pubblica
-    });
+    s_modifica_sostituzione(id, { pubblicato: pubblica });
 }

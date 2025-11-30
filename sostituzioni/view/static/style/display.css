@@ -216,6 +216,11 @@ ul {
     width: 12.5vw;
 }
 
+:not(:has(#sostituzioni-didascalia-piano)) #sostituzioni-didascalia-aula,
+:not(:has(.sostituzione-piano)) #sostituzioni-lista .sostituzione-aula {
+    width: 19vw;
+}
+
 #sostituzioni-didascalia-piano,
 #sostituzioni-lista .sostituzione-piano {
     width: 7.7vw;

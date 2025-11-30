@@ -69,11 +69,11 @@ socket.on("lista docenti", (data) => {
     sostituzioni_filtro_docente.aggiorna(docenti)
 })
 
-// todo mostrare messaggio informativo che invita a ricaricare la pagina
-socket.on("aggiornamento sostituzioni", () => {
-    filtri = sostituzioni_filtra_data()
-    s_richiedi_sostituzioni(filtri)
-})
+// le sostituzioni vengono aggiornate una per una con gli eventi sotto
+// socket.on("aggiornamento sostituzioni", () => {
+    // filtri = sostituzioni_filtra_data()
+    // s_richiedi_sostituzioni(filtri)
+// })
 
 socket.on("aggiornamento eventi", () => {
     s_richiedi_eventi()
@@ -83,9 +83,22 @@ socket.on("aggiornamento notizie", () => {
     s_richiedi_notizie()
 })
 
-socket.on("esportazione completata", () => {
-    notyf.success("Esportazione completata.")
-    window.open("/export")
+socket.on("sostituzione inserita", (data) => {
+    if (data.cognome_docente)
+		data.cognome_docente = data.cognome_docente.toUpperCase();
+
+    aggiungi_sostituzione(data);
+})
+
+socket.on("sostituzione modificata", (data) => {
+    if (data.cognome_docente)
+		data.cognome_docente = data.cognome_docente.toUpperCase();
+
+    modifica_sostituzione_visualizzata(data);
+})
+
+socket.on("sostituzione eliminata", (data) => {
+    elimina_sostituzione_visualizzata(data.id);
 })
 
 socket.on("errore inserimento sostituzione", (msg) => {
@@ -94,6 +107,11 @@ socket.on("errore inserimento sostituzione", (msg) => {
 
 socket.on("errore modifica sostituzione", (msg) => {
     notyf.error("Errore nella modifica della sostituzione")
+})
+
+socket.on("esportazione completata", () => {
+    notyf.success("Esportazione completata.")
+    window.open("/export")
 })
 
 socket.on("errore esportazione", (msg) => {
@@ -157,14 +175,11 @@ function s_elimina_sostituzione(id, mantieni_in_storico) {
 }
 
 function s_modifica_sostituzione(id, data) {
-    socket.emit("modifica sostituzione", {
-        id: id,
-        data: data
-    }, (ok) => {
+    socket.emit("modifica sostituzione", { id: id, data: data }, (ok) => {
         if (ok) {
             notify_success("Sostituzione modificata correttamente.")
         }
-    })
+    });
 }
 
 
