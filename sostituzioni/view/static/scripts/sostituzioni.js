@@ -159,7 +159,7 @@ async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora
 		incompleta = ""
 		icona_incompleta = ""
 	}
-	if (sovrapposizioni) {
+	if (sovrapposizioni.length > 0) {
 		sovrapposizioni = "sovrapposizioni"
 		icona_sovrapposizioni = '<span class="material-symbols-rounded icon" data-tooltip="' + descrizione_sovrapposizione + '">warning</span>'
 	} else {
@@ -306,7 +306,7 @@ function aggiorna_info_sostituzioni() {
 		if (sostituzione.incompleta) {
 			sostituzioni_incomplete++
 		}
-		if (sostituzione.sovrapposizioni) {
+		if (sostituzione.sovrapposizioni.length > 0) {
 			sostituzioni_errori++
 		}
 	}

@@ -276,7 +276,7 @@ class Sostituzione(Sostituzione):
             "note": self.note,
             "incompleta": self.incompleta,
             # idea: mandare la lista di sovrapposizioni, on hover l'altra sostituzione con errore lampeggia
-            "sovrapposizioni": len(self.sovrapposizioni) > 0,
+            "sovrapposizioni": [s.id for s in self.sovrapposizioni],
             "descrizione_sovrapposizione": Sostituzione.descrizioni_sovrapposizione.get(
                 self.elemento_sovrapposizione, None
             ),
