@@ -362,6 +362,8 @@ async function modifica_sostituzione_visualizzata(data) {
 		return;
 	}
 
+	const previous_index = sostituzioni_visualizzate.findIndex(element => element.id === data.id)
+
 	sostituzioni_applica_filtri()
 	ordina_sostituzioni()
 	aggiorna_info_sostituzioni()
@@ -377,11 +379,16 @@ async function modifica_sostituzione_visualizzata(data) {
 		return;
 	}
 
-	if (sostituzione_element) {
+	if (sostituzione_index === previous_index && sostituzione_element) {
 		const new_sostituzione_element = await render_singola_sostituzione(sostituzione)
 		sostituzione_element.replaceWith(new_sostituzione_element);
 
 		return;
+	}
+
+	if (sostituzione_element) {
+		sostituzione_element.remove();
+		renderedSostituzioni--;
 	}
 
 	if (sostituzione_index >= renderedSostituzioni) {
