@@ -144,12 +144,6 @@ class NotaStandard(NotaStandard):
 
 
 class Sostituzione(Sostituzione):
-    descrizioni_sovrapposizione = {
-        "docente": "Il docente ha una supplenza alla stessa ora.",
-        "aula": "Questa aula ha due supplenze in contemporanea.",
-        "classe": "Questa classe ha due supplenze in contemporanea.",
-    }
-
     def __init__(
         self,
         # id: int | None = None,
@@ -167,8 +161,7 @@ class Sostituzione(Sostituzione):
         super(Sostituzione, self).__init__()
 
         self.incompleta: bool = False
-        self.sovrapposizioni: list = []
-        self.elemento_sovrapposizione: str | None = None
+        self.sovrapposizioni: dict[int, str] = {}
 
         # if id is not None:
         #     super().__init__(id)
@@ -276,10 +269,7 @@ class Sostituzione(Sostituzione):
             "note": self.note,
             "incompleta": self.incompleta,
             # idea: mandare la lista di sovrapposizioni, on hover l'altra sostituzione con errore lampeggia
-            "sovrapposizioni": [s.id for s in self.sovrapposizioni],
-            "descrizione_sovrapposizione": Sostituzione.descrizioni_sovrapposizione.get(
-                self.elemento_sovrapposizione, None
-            ),
+            "sovrapposizioni": self.sovrapposizioni,
         }
 
 
@@ -407,97 +397,88 @@ class Sostituzioni(SearchableList):
         - Stessa data e ora, stesso docente
         """
 
+        sostituzione.sovrapposizioni = {}
+
         if sostituzione.data not in self.indice_per_data:
             return False, None
 
         for sostituzione_altra in self.indice_per_data[sostituzione.data]:
             # Controllo per supplenze contemporanee
+            # è antecedente, il messaggio mostrato sarà per la classe.
+            # Non devono essere cancellate e non devono essere la stessa sostituzione
+            # Il controllo avviene invece anche per le sostituzioni non pubblicate
             if (
-                # Non devono essere cancellate e non devono essere la stessa sostituzione
-                # Il controllo avviene anche alle sostituzioni non pubblicate
-                sostituzione_altra.id != sostituzione.id
-                and not sostituzione.cancellato
-                and not sostituzione_altra.cancellato
-                and (
-                    # Se entrambe le sostituzioni hanno ora_predefinita, controlla che siano uguali
-                    sostituzione_altra.ora_predefinita == sostituzione.ora_predefinita
-                    if (
-                        sostituzione_altra.ora_predefinita
-                        and sostituzione.ora_predefinita
-                    )
-                    else (
-                        # Altrimenti controlla che la ora d'inizio di una sia anteriore all'altra
-                        (
-                            sostituzione.ora_inizio
-                            and sostituzione_altra.ora_fine
-                            and (sostituzione.ora_inizio < sostituzione_altra.ora_fine)
-                        )
-                        # Oppure che la ora di fine sia posteriore all'altra
-                        or (
-                            sostituzione.ora_fine
-                            and sostituzione_altra.ora_inizio
-                            and (sostituzione.ora_fine > sostituzione_altra.ora_inizio)
-                        )
-                    )
-                )
+                sostituzione_altra.id == sostituzione.id
+                or sostituzione_altra.cancellato
+                or sostituzione.cancellato
             ):
-                # Controlli per sostituzioni contemporanee, riordinare gli if per stabilire la gerarchia
-                # In una sostituzione che ha sovrapposizioni sia di classe sia di docente, se l'if di classe
-                # è antecedente, il messaggio mostrato sarà per la classe.
+                continue
 
-                # Stessa classe
-                if sostituzione.nome_classe and (
-                    sostituzione_altra.nome_classe == sostituzione.nome_classe
-                ):
-                    if contrassegna_altre:
-                        sostituzione_altra.sovrapposizioni.append(sostituzione)
-                        sostituzione_altra.elemento_sovrapposizione = "classe"
+            # Controlla solo le sostituzioni con stessa ora
+            if sostituzione_altra.ora_predefinita and sostituzione.ora_predefinita:
+                # L'ora predefinita è definita ma diversa, skip
+                if sostituzione_altra.ora_predefinita != sostituzione.ora_predefinita:
+                    continue
 
-                    sostituzione.sovrapposizioni.append(sostituzione_altra)
-                    sostituzione.elemento_sovrapposizione = "classe"
-
-                    return True
-
-                # Stessa aula
-                elif sostituzione.numero_aula and (
-                    sostituzione_altra.numero_aula == sostituzione.numero_aula
-                ):
-                    if contrassegna_altre:
-                        sostituzione_altra.sovrapposizioni.append(sostituzione)
-                        sostituzione_altra.elemento_sovrapposizione = "aula"
-
-                    sostituzione.sovrapposizioni.append(sostituzione_altra)
-                    sostituzione.elemento_sovrapposizione = "aula"
-
-                    return True
-
-                # Stesso docente
-                elif (
-                    sostituzione.nome_docente
-                    and (
-                        sostituzione_altra.nome_docente == sostituzione.nome_docente
-                        and sostituzione_altra.cognome_docente
+            # Oppure quelle che in qualche modo si sovrappongono
+            else:
+                if (
+                    # Ora inizio della prima è prima della fine della seconda
+                    not (
+                        (sostituzione.ora_inizio and sostituzione_altra.ora_fine)
+                        and (sostituzione.ora_inizio < sostituzione_altra.ora_fine)
                     )
-                    == sostituzione.cognome_docente
+                    # Ora inizio della seconda è prima della fine della prima
+                    and not (
+                        (sostituzione.ora_fine and sostituzione_altra.ora_inizio)
+                        and (sostituzione.ora_fine > sostituzione_altra.ora_inizio)
+                    )
                 ):
-                    if contrassegna_altre:
-                        sostituzione_altra.sovrapposizioni.append(sostituzione)
-                        sostituzione_altra.elemento_sovrapposizione = "docente"
+                    continue
 
-                    sostituzione.sovrapposizioni.append(sostituzione_altra)
-                    sostituzione.elemento_sovrapposizione = "docente"
+            # Controlli per sostituzioni contemporanee, riordinare gli if per stabilire la gerarchia
+            # In una sostituzione che ha sovrapposizioni sia di classe sia di docente, se l'if di classe
+            # è antecedente, il messaggio mostrato sarà per la classe.
 
-                    return True
+            # Stessa classe
+            if sostituzione.nome_classe and (
+                sostituzione_altra.nome_classe == sostituzione.nome_classe
+            ):
+                if contrassegna_altre:
+                    sostituzione_altra.sovrapposizioni[sostituzione.id] = "classe"
 
-        sostituzione.sovrapposizioni = []
-        sostituzione.elemento_sovrapposizione = None
+                sostituzione.sovrapposizioni[sostituzione_altra.id] = "classe"
 
-        return False
+            # Stessa aula
+            elif sostituzione.numero_aula and (
+                sostituzione_altra.numero_aula == sostituzione.numero_aula
+            ):
+                if contrassegna_altre:
+                    sostituzione_altra.sovrapposizioni[sostituzione.id] = "aula"
+
+                sostituzione.sovrapposizioni[sostituzione_altra.id] = "aula"
+
+            # Stesso docente
+            elif (
+                sostituzione.nome_docente
+                and (
+                    sostituzione_altra.nome_docente == sostituzione.nome_docente
+                    and sostituzione_altra.cognome_docente
+                )
+                == sostituzione.cognome_docente
+            ):
+                if contrassegna_altre:
+                    sostituzione_altra.sovrapposizioni[sostituzione.id] = "docente"
+
+                sostituzione.sovrapposizioni[sostituzione_altra.id] = "docente"
 
     @beartype
     def rimuovi_altre_sovrapposizioni(self, sostituzione: Sostituzione):
-        for sostituzione_altra in sostituzione.sovrapposizioni:
-            self.check_sovrapposizioni(sostituzione_altra)
+        for id in sostituzione.sovrapposizioni.keys():
+            sostituzione_altra = self.get(id)
+
+            if sostituzione_altra:
+                self.check_sovrapposizioni(sostituzione_altra)
 
     @beartype
     def check_errori(

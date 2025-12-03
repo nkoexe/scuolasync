@@ -24,6 +24,11 @@ const ui_sostituzione_html_template = `<div class="sostituzione ${sostituzioni_w
 </div>` : ''}
 </div>`
 
+const descrizioni_sovrapposizione = {
+	"docente": "Il docente ha una supplenza alla stessa ora.",
+	"aula": "Questa aula ha due supplenze in contemporanea.",
+	"classe": "Questa classe ha due supplenze in contemporanea.",
+}
 
 const ui_sostituzioni_lista_container = document.querySelector("#sostituzioni-lista-container");
 const ui_sostituzioni_lista = document.querySelector("#sostituzioni-lista")
@@ -74,7 +79,7 @@ async function renderNextBatch(amount = SOSTITUZIONI_BATCH_SIZE, initial = false
 		sostituzioni_visualizzate
 			.slice(renderedSostituzioni, renderedSostituzioni + amount)
 			.map(element => {
-				return format_sostituzione_to_html(element.id, element.pubblicato, element.cancellato, element.data, element.ora_inizio, element.ora_fine, element.ora_predefinita, element.numero_aula, element.nome_classe, element.nome_docente, element.cognome_docente, element.note, element.incompleta, element.sovrapposizioni, element.descrizione_sovrapposizione);
+				return format_sostituzione_to_html(element.id, element.pubblicato, element.cancellato, element.data, element.ora_inizio, element.ora_fine, element.ora_predefinita, element.numero_aula, element.nome_classe, element.nome_docente, element.cognome_docente, element.note, element.incompleta, element.sovrapposizioni);
 			})
 	);
 
@@ -112,7 +117,7 @@ async function renderNextBatch(amount = SOSTITUZIONI_BATCH_SIZE, initial = false
 }
 
 async function render_singola_sostituzione(sostituzione) {
-	const html = await format_sostituzione_to_html(sostituzione.id, sostituzione.pubblicato, sostituzione.cancellato, sostituzione.data, sostituzione.ora_inizio, sostituzione.ora_fine, sostituzione.ora_predefinita, sostituzione.numero_aula, sostituzione.nome_classe, sostituzione.nome_docente, sostituzione.cognome_docente, sostituzione.note, sostituzione.incompleta, sostituzione.sovrapposizioni, sostituzione.descrizione_sovrapposizione)
+	const html = await format_sostituzione_to_html(sostituzione.id, sostituzione.pubblicato, sostituzione.cancellato, sostituzione.data, sostituzione.ora_inizio, sostituzione.ora_fine, sostituzione.ora_predefinita, sostituzione.numero_aula, sostituzione.nome_classe, sostituzione.nome_docente, sostituzione.cognome_docente, sostituzione.note, sostituzione.incompleta, sostituzione.sovrapposizioni)
 	const template = document.createElement("template");
 	template.innerHTML = html;
 
@@ -133,7 +138,7 @@ function render_ora_predefinita(ora_predefinita) {
 	}
 }
 
-async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note, incompleta, sovrapposizioni, descrizione_sovrapposizione) {
+async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora_inizio, ora_fine, ora_predefinita, numero_aula, nome_classe, nome_docente, cognome_docente, note, incompleta, sovrapposizioni) {
 	if (ora_predefinita == null) {
 		if (ora_inizio == null) { ora = "" }
 		else {
@@ -159,7 +164,8 @@ async function format_sostituzione_to_html(id, pubblicato, cancellato, data, ora
 		incompleta = ""
 		icona_incompleta = ""
 	}
-	if (sovrapposizioni.length > 0) {
+	if (Object.keys(sovrapposizioni).length > 0) {
+		descrizione_sovrapposizione = descrizioni_sovrapposizione[sovrapposizioni[Object.keys(sovrapposizioni)[0]]]
 		sovrapposizioni = "sovrapposizioni"
 		icona_sovrapposizioni = '<span class="material-symbols-rounded icon" data-tooltip="' + descrizione_sovrapposizione + '">warning</span>'
 	} else {
@@ -328,6 +334,15 @@ async function aggiungi_sostituzione(data) {
 	ordina_sostituzioni()
 	aggiorna_info_sostituzioni()
 
+	// aggiorna altre sostituzioni con nuova sovrapposizione
+	for (const key of Object.keys(data.sovrapposizioni)) {
+		let sostituzione_altra = sostituzioni.find(element => element.id == key)
+		if (sostituzione_altra) {
+			sostituzione_altra.sovrapposizioni[data.id] = data.sovrapposizioni[key]
+			ui_sostituzioni_lista.querySelector(`.sostituzione[data-id='${key}']`)?.replaceWith(await render_singola_sostituzione(sostituzione_altra));
+		}
+	}
+
 	const new_sostituzione_index = sostituzioni_visualizzate.findIndex(element => element.id === data.id)
 	if (new_sostituzione_index === -1) {
 		// filtered out
@@ -353,6 +368,8 @@ async function modifica_sostituzione_visualizzata(data) {
 	let sostituzione = sostituzioni.find(element => element.id === data.id)
 	let sostituzione_element = ui_sostituzioni_lista.querySelector(`.sostituzione[data-id='${data.id}']`)
 
+	const previous_sovrapposizioni = sostituzione.sovrapposizioni
+
 	if (sostituzione) {
 		for (const key in data) {
 			sostituzione[key] = data[key]
@@ -360,6 +377,40 @@ async function modifica_sostituzione_visualizzata(data) {
 	} else {
 		aggiungi_sostituzione(data);
 		return;
+	}
+
+	const prev_keys = Object.keys(previous_sovrapposizioni);
+	const curr_keys = Object.keys(sostituzione.sovrapposizioni);
+	if (prev_keys.length !== curr_keys.length || !prev_keys.every(key => previous_sovrapposizioni[key] === sostituzione.sovrapposizioni[key])) {
+		for (const key of prev_keys) {
+			if (!curr_keys.includes(key)) {
+				// sovrapposizione non c'è più
+				let sostituzione_altra = sostituzioni.find(element => element.id == key)
+				if (sostituzione_altra) {
+					delete sostituzione_altra.sovrapposizioni[sostituzione.id]
+					ui_sostituzioni_lista.querySelector(`.sostituzione[data-id='${key}']`)?.replaceWith(await render_singola_sostituzione(sostituzione_altra));
+				}
+
+			} else if (previous_sovrapposizioni[key] !== sostituzione.sovrapposizioni[key]) {
+				// tipo di sovrapposizione cambiato
+				let sostituzione_altra = sostituzioni.find(element => element.id == key)
+				if (sostituzione_altra) {
+					sostituzione_altra.sovrapposizioni[sostituzione.id] = sostituzione.sovrapposizioni[key]
+					ui_sostituzioni_lista.querySelector(`.sostituzione[data-id='${key}']`)?.replaceWith(await render_singola_sostituzione(sostituzione_altra));
+				}
+			}
+		}
+
+		for (const key of curr_keys) {
+			if (!prev_keys.includes(key)) {
+				// nuova sovrapposizione
+				let sostituzione_altra = sostituzioni.find(element => element.id == key)
+				if (sostituzione_altra) {
+					sostituzione_altra.sovrapposizioni[sostituzione.id] = sostituzione.sovrapposizioni[key]
+					ui_sostituzioni_lista.querySelector(`.sostituzione[data-id='${key}']`)?.replaceWith(await render_singola_sostituzione(sostituzione_altra));
+				}
+			}
+		}
 	}
 
 	const previous_index = sostituzioni_visualizzate.findIndex(element => element.id === data.id)
@@ -408,6 +459,17 @@ async function modifica_sostituzione_visualizzata(data) {
 }
 
 async function elimina_sostituzione_visualizzata(id) {
+	const sovrapposizioni = sostituzioni.find(element => element.id == id).sovrapposizioni
+
+	// aggiorna altre sostituzioni rimuovendo la sovrapposizione
+	for (const key of Object.keys(sovrapposizioni)) {
+		let sostituzione_altra = sostituzioni.find(element => element.id == key)
+		if (sostituzione_altra) {
+			delete sostituzione_altra.sovrapposizioni[id]
+			ui_sostituzioni_lista.querySelector(`.sostituzione[data-id='${key}']`)?.replaceWith(await render_singola_sostituzione(sostituzione_altra));
+		}
+	}
+
 	sostituzioni.splice(sostituzioni.findIndex(element => element.id === id), 1)
 	const sostituzione_list_index = sostituzioni_visualizzate.findIndex(element => element.id === id)
 
