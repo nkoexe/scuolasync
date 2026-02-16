@@ -701,6 +701,15 @@ class Configurazione:
                 # Altrimenti aggiunge la nuova sezione
                 self.sezioni.append(sezione_template)
 
+        # Rimuove le sezioni che non sono più presenti nel template
+        sezioni_template_ids = set(configurazione_template.sezioni.keys())
+        sezioni_da_rimuovere = [
+            sezione for sezione in self.sezioni
+            if sezione.id not in sezioni_template_ids
+        ]
+        for sezione in sezioni_da_rimuovere:
+            self.sezioni.remove(sezione)
+
         for opzione_template in configurazione_template.opzioni:
             # Se l'opzione è già presente nella configurazione locale
             if opzione_template.id in self.opzioni.keys():

@@ -1,117 +1,38 @@
 {
   "sezioni": {
-    "sistema": {
-      "titolo": "Sistema",
-      "descrizione": "Impostazioni generali di sistema, come nome e colori."
-    },
     "scuola": {
       "titolo": "Informazioni Istituto",
-      "descrizione": "Informazioni sull'istituto scolastico a cui è associato il sistema, come nome, logo e sito web."
+      "descrizione": "Informazioni sull'istituto come nome, logo, collegamenti web e email di supporto."
     },
     "login": {
       "titolo": "Autenticazione",
-      "descrizione": "Impostazioni per l'accesso al sistema e opzioni della pagina di login."
+      "descrizione": "Impostazioni relative a login e sicurezza."
+    },
+    "appearance": {
+      "titolo": "Personalizzazione",
+      "descrizione": "Aspetto generale del sistema, colori e messaggi informativi."
     },
     "visualizzazioneonline": {
       "titolo": "Visualizzazione Online",
-      "descrizione": "Visualizzazione degli elementi nell'interfaccia online: preferenze visive, messaggi informativi."
+      "descrizione": "Preferenze per la visualizzazione da computer o mobile: messaggi, notifiche."
     },
     "visualizzazionefisica": {
-      "titolo": "Visualizzazione Fisica",
-      "descrizione": "Preferenze della visualizzazione su display."
+      "titolo": "Display",
+      "descrizione": "Preferenze della visualizzazione su display fisico."
     },
     "backup": {
       "titolo": "Backup",
-      "descrizione": "Esecuzione e ripristino di backup del sistema."
+      "descrizione": "Esecuzione e ripristino di backup."
     },
-    "percorsi": {
-      "titolo": "Configurazione e Database",
-      "descrizione": "Configurazione di percorsi utilizzati dal sistema e altre impostazioni di database."
+    "system": {
+      "titolo": "Dati Tecnici",
+      "descrizione": "Configurazione di percorsi file, database e versioni."
     }
   },
   "opzioni": {
-    "systitle": {
-      "titolo": "Nome del sistema",
-      "descrizione": "Titolo mostrato nell'intestazione della pagina principale.",
-      "sezione": "sistema",
-      "disabilitato": false,
-      "nascosto": false,
-      "tipo": "testo",
-      "lunghezza_massima": 30,
-      "default": "ScuolaSync",
-      "valore": "ScuolaSync"
-    },
-    "colortheme": {
-      "titolo": "Tema",
-      "descrizione": "Scegli il tema di colori per l'interfaccia utente.",
-      "sezione": "sistema",
-      "trigger": "display",
-      "disabilitato": false,
-      "nascosto": false,
-      "tipo": "selezione",
-      "scelte": [
-        "Mahatma Gandhi",
-        "Andrea e Pietro Delai",
-        "Gabriel Lamé",
-        "Obi-Wan Kenobi",
-        "Giuseppe Garibaldi",
-        "Luigi Negrelli"
-      ],
-      "default": 0,
-      "valore": 0
-    },
-    "seasonalthemes": {
-      "titolo": "Temi Stagionali",
-      "descrizione": "Abilita l'uso di temi stagionali in certi momenti dell'anno. Fiocchi a Natale, ragnatele ad Halloween...",
-      "sezione": "sistema",
-      "trigger": "seasonalthemes",
-      "disabilitato": false,
-      "nascosto": false,
-      "tipo": "booleano",
-      "default": true,
-      "valore": true
-    },
-    "sysstate": {
-      "titolo": "Stato del sistema",
-      "descrizione": "Utilizzare la modalità \"In Produzione\" per l'utilizzo regolare. Utilizzare modalità \"In Manutenzione\" per il debug del sistema.",
-      "sezione": "sistema",
-      "trigger": "reboot",
-      "disabilitato": false,
-      "nascosto": false,
-      "tipo": "selezione",
-      "scelte": [
-        "In Produzione",
-        "In Manutenzione",
-        "In Sviluppo"
-      ],
-      "default": 0,
-      "valore": 0
-    },
-    "maintenancemsg": {
-      "titolo": "Messaggio di manutenzione",
-      "descrizione": "Testo che verrà mostrato agli utenti che cercano di accedere al sito quando esso è in modalità manutenzione.",
-      "sezione": "sistema",
-      "disabilitato": false,
-      "nascosto": false,
-      "tipo": "testo",
-      "lunghezza_massima": null,
-      "default": "Sistema attualmente in manutenzione, grazie per la pazienza.",
-      "valore": "Sistema attualmente in manutenzione, grazie per la pazienza."
-    },
-    "version": {
-      "titolo": "Versione del sistema",
-      "descrizione": "",
-      "sezione": "sistema",
-      "disabilitato": true,
-      "nascosto": false,
-      "tipo": "testo",
-      "lunghezza_massima": null,
-      "default": "",
-      "valore": ""
-    },
     "schoolname": {
-      "titolo": "Nome dell'Istituto Scolastico",
-      "descrizione": "Specifica il nome dell'istituto scolastico a cui è associato il sistema. Questo nome apparirà nelle pagine di privacy e licenze, e nel titolo delle pagine.",
+      "titolo": "Nome dell'istituto",
+      "descrizione": "Nome dell'istituto scolastico a cui è associato il sistema.",
       "sezione": "scuola",
       "disabilitato": false,
       "nascosto": false,
@@ -121,8 +42,8 @@
       "valore": ""
     },
     "schoolmainlogo": {
-      "titolo": "Logo Principale",
-      "descrizione": "Logo principale dell'istituto scolastico. Questo logo apparirà nella pagina di accesso.",
+      "titolo": "Logo principale",
+      "descrizione": "Logo dell'istituto che verrà mostrato nella pagina di accesso.",
       "sezione": "scuola",
       "disabilitato": false,
       "nascosto": false,
@@ -138,8 +59,8 @@
       "mime": "image/*"
     },
     "schoolheaderlogo": {
-      "titolo": "Logo Intestazione",
-      "descrizione": "Logo che verrà visualizzato nell'intestazione della pagina principale e nelle pagine delle impostazioni.",
+      "titolo": "Logo per intestazione",
+      "descrizione": "Logo che verrà mostrato nell'intestazione della pagina principale.",
       "sezione": "scuola",
       "disabilitato": false,
       "nascosto": false,
@@ -155,8 +76,8 @@
       "mime": "image/*"
     },
     "schoollink": {
-      "titolo": "Pagina Web dell'Istituto",
-      "descrizione": "Link alla pagina principale dell'istituto scolastico. Questo link verrà collegato al nome dell'istituto nella pagina di licenze.",
+      "titolo": "Pagina web dell'istituto",
+      "descrizione": "Link alla pagina web principale dell'istituto scolastico.",
       "sezione": "scuola",
       "disabilitato": false,
       "nascosto": false,
@@ -166,8 +87,8 @@
       "valore": ""
     },
     "schoolprivacylink": {
-      "titolo": "Informativa Privacy",
-      "descrizione": "Link alla pagina dell'informativa privacy dell'istituto scolastico. Verrà inserito nella pagina di privacy del sistema.",
+      "titolo": "Informativa privacy",
+      "descrizione": "Link alla pagina web dell'informativa privacy dell'istituto.",
       "sezione": "scuola",
       "disabilitato": false,
       "nascosto": false,
@@ -178,7 +99,7 @@
     },
     "supportemail": {
       "titolo": "Email di supporto",
-      "descrizione": "Email alla quale gli utenti potranno scrivere per problemi tecnici, richieste di accesso, ecc.",
+      "descrizione": "Email alla quale gli utenti potranno scrivere per problemi tecnici, richieste di accesso o altro.",
       "sezione": "scuola",
       "disabilitato": false,
       "nascosto": false,
@@ -187,9 +108,39 @@
       "default": "",
       "valore": ""
     },
+    "newyeardate": {
+      "titolo": "Data di inizio nuovo anno",
+      "descrizione": "Data nella quale si passa all'anno scolastico successivo.",
+      "sezione": "scuola",
+      "disabilitato": false,
+      "nascosto": true,
+      "tipo": "numero_unita",
+      "intervallo": [
+        1,
+        31
+      ],
+      "scelte_unita": [
+        "Gennaio",
+        "Febbraio",
+        "Marzo",
+        "Aprile",
+        "Maggio",
+        "Giugno",
+        "Luglio",
+        "Agosto",
+        "Settembre",
+        "Ottobre",
+        "Novembre",
+        "Dicembre"
+      ],
+      "unita_default": 7,
+      "unita": 7,
+      "default": 31,
+      "valore": 31
+    },
     "ssochoice": {
-      "titolo": "Gestore Single Sign-On",
-      "descrizione": "Scelta se utilizzare account Google oppure Microsoft per eseguire l'accesso al sistema.",
+      "titolo": "Gestore Account",
+      "descrizione": "Scelta se utilizzare account Google oppure Microsoft per eseguire l'accesso.",
       "sezione": "login",
       "trigger": "reboot",
       "disabilitato": false,
@@ -247,7 +198,7 @@
       "valore": ""
     },
     "redirecturi": {
-      "titolo": "Single Sign On Redirect URI",
+      "titolo": "Single Sign-On Redirect URI",
       "descrizione": "",
       "sezione": "login",
       "disabilitato": true,
@@ -283,10 +234,51 @@
       "default": "",
       "valore": ""
     },
+    "systitle": {
+      "titolo": "Nome del sistema",
+      "descrizione": "Titolo mostrato nell'intestazione della pagina principale.",
+      "sezione": "appearance",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "testo",
+      "lunghezza_massima": 30,
+      "default": "ScuolaSync",
+      "valore": "ScuolaSync"
+    },
+    "colortheme": {
+      "titolo": "Tema",
+      "descrizione": "Colori per l'interfaccia utente.",
+      "sezione": "appearance",
+      "trigger": "display",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "selezione",
+      "scelte": [
+        "Mahatma Gandhi",
+        "Andrea e Pietro Delai",
+        "Gabriel Lamé",
+        "Obi-Wan Kenobi",
+        "Giuseppe Garibaldi",
+        "Luigi Negrelli"
+      ],
+      "default": 0,
+      "valore": 0
+    },
+    "seasonalthemes": {
+      "titolo": "Temi Stagionali",
+      "descrizione": "Abilita l'uso di temi speciali in certi momenti dell'anno. Fiocchi a Natale, ragnatele ad Halloween...",
+      "sezione": "appearance",
+      "trigger": "seasonalthemes",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "booleano",
+      "default": true,
+      "valore": true
+    },
     "loginpageparagraph": {
-      "titolo": "Paragrafo di Note",
-      "descrizione": "Testo che verrà visualizzato sotto al pulsante di accesso. Può essere stilizzato, includendo &lt;br&gt; per andare a capo, &lt;b&gt; per grassetto, &lt;i&gt; per corsivo ecc.",
-      "sezione": "login",
+      "titolo": "Paragrafo note login",
+      "descrizione": "Testo che verrà mostrato sotto al pulsante di accesso nella pagina di login. Può essere stilizzato, includendo &lt;br&gt; per andare a capo, &lt;b&gt; per grassetto, &lt;i&gt; per corsivo ecc.",
+      "sezione": "visualizzazioneonline",
       "disabilitato": false,
       "nascosto": false,
       "tipo": "testo",
@@ -296,7 +288,7 @@
     },
     "nosostituzionimsg": {
       "titolo": "Errore nessuna sostituzione",
-      "descrizione": "Testo che verrà mostrato quando non ci sono sostituzioni da visualizzare per i filtri che l'utente ha impostato.",
+      "descrizione": "Testo che verrà mostrato quando la lista di sostituzioni è vuota.",
       "sezione": "visualizzazioneonline",
       "disabilitato": false,
       "nascosto": false,
@@ -327,8 +319,8 @@
       "valore": true
     },
     "mostralinkiformadocente": {
-      "titolo": "Avviso Docente in menu contestuale",
-      "descrizione": "Mostra un pulsante nel menu contestuale di una sostituzione per mandare una email al docente. Utile per informare di variazioni o eventuali in modo immediato.",
+      "titolo": "Avviso docente nel menu contestuale",
+      "descrizione": "Mostra un pulsante nel menu 'tasto destro' di una sostituzione per mandare una email al docente.",
       "sezione": "visualizzazioneonline",
       "disabilitato": false,
       "nascosto": false,
@@ -337,8 +329,8 @@
       "valore": false
     },
     "oggettomailinformadocente": {
-      "titolo": "Oggetto Mail di Avviso Docente",
-      "descrizione": "Oggetto della email di avviso che verrà inviata al docente. Utilizzare i placeholder {docente}, {classe}, {aula}, {data}, {ora} per indicare le rispettive informazioni.",
+      "titolo": "Oggetto email di avviso docente",
+      "descrizione": "Oggetto della email di avviso che verrà inviata. Utilizzare i placeholder {docente}, {classe}, {aula}, {data}, {ora} per indicare le rispettive informazioni.",
       "sezione": "visualizzazioneonline",
       "disabilitato": false,
       "nascosto": false,
@@ -348,8 +340,8 @@
       "valore": "Supplenza in {classe} - aula {aula}"
     },
     "corpomailinformadocente": {
-      "titolo": "Corpo Mail di Avviso Docente",
-      "descrizione": "Corpo del messaggio di avviso che verrà inviato al docente. Utilizzare i placeholder {docente}, {classe}, {aula}, {data}, {ora} per indicare le rispettive informazioni.",
+      "titolo": "Corpo email di avviso docente",
+      "descrizione": "Corpo del messaggio di avviso che verrà inviato. Utilizzare i placeholder {docente}, {classe}, {aula}, {data}, {ora} per indicare le rispettive informazioni.",
       "sezione": "visualizzazioneonline",
       "disabilitato": false,
       "nascosto": false,
@@ -360,7 +352,7 @@
     },
     "displaynosostituzionimsg": {
       "titolo": "Errore nessuna sostituzione",
-      "descrizione": "Testo che verrà mostrato quando non ci sono sostituzioni future e la lista è vuota.",
+      "descrizione": "Testo che verrà mostrato quando la lista è vuota.",
       "sezione": "visualizzazionefisica",
       "trigger": "display",
       "disabilitato": false,
@@ -371,8 +363,8 @@
       "valore": "Nessuna supplenza in vista!"
     },
     "displayrangegiornifuturi": {
-      "titolo": "Numero di Giorni da Visualizzare",
-      "descrizione": "Visualizza le sostituzioni per il numero di giorni futuri specificato, incluso il giorno corrente. Ad esempio, impostando a 3, se il giorno corrente è lunedì verranno mostrate le sostituzioni fino a mercoledì incluso. Viene considerato giorno lavorativo un qualsiasi giorno che abbia una sostituzione. Imposta a -1 per disabilitare il limite e mostrare tutte le sostituzioni future.",
+      "titolo": "Numero di giorni da mostrare",
+      "descrizione": "Visualizza le sostituzioni per il numero di giorni futuri specificato, incluso il giorno corrente. Esempio: impostando a 3, se il giorno corrente è lunedì, verranno mostrate le sostituzioni fino a mercoledì incluso. Viene considerato giorno lavorativo un qualsiasi giorno che abbia una sostituzione. Imposta a -1 per disabilitare il limite e mostrare tutte le sostituzioni future.",
       "sezione": "visualizzazionefisica",
       "trigger": "display",
       "disabilitato": false,
@@ -408,7 +400,7 @@
       "valore": []
     },
     "displayqrcode": {
-      "titolo": "Mostra Codice QR",
+      "titolo": "Mostra codice QR",
       "descrizione": "Mostra un codice QR sul display che porta alla versione online della pagina.",
       "sezione": "visualizzazionefisica",
       "trigger": "display",
@@ -419,8 +411,8 @@
       "valore": false
     },
     "displaymostrapiano": {
-      "titolo": "Mostra Piano",
-      "descrizione": "Mostra sul display il piano associato all'aula nella lista delle sostituzioni.",
+      "titolo": "Mostra piano",
+      "descrizione": "Mostra sul display il piano dell'edificio associato all'aula.",
       "sezione": "visualizzazionefisica",
       "trigger": "display",
       "disabilitato": false,
@@ -431,7 +423,7 @@
     },
     "displaytemposcrolleventi": {
       "titolo": "Intervallo di scorrimento eventi",
-      "descrizione": "Imposta il tempo, in secondi, dopo il quale la lista degli eventi passa automaticamente alla pagina successiva.",
+      "descrizione": "Imposta il tempo in secondi dopo il quale la lista degli eventi passa automaticamente alla pagina successiva.",
       "sezione": "visualizzazionefisica",
       "trigger": "display",
       "disabilitato": false,
@@ -446,7 +438,7 @@
     },
     "displaytemposcrollsostituzioni": {
       "titolo": "Intervallo di scorrimento sostituzioni",
-      "descrizione": "Imposta il tempo, in secondi, dopo il quale la lista delle sostituzioni passa automaticamente alla pagina successiva.",
+      "descrizione": "Imposta il tempo in secondi dopo il quale la lista delle sostituzioni passa automaticamente alla pagina successiva.",
       "sezione": "visualizzazionefisica",
       "trigger": "display",
       "disabilitato": false,
@@ -461,7 +453,7 @@
     },
     "maxbackupdays": {
       "titolo": "Eliminazione automatica backup",
-      "descrizione": "Il backup viene mantenuto per questo numero di giorni, dopodiché viene automaticamente eliminato. Impostare a -1 per disattivare l'eliminazione automatica. Per il calcolo, viene considerata la data dell'ultima modifica.",
+      "descrizione": "Il backup viene mantenuto per questo numero di giorni, dopodiché viene automaticamente eliminato. Impostare a -1 per disattivare l'eliminazione automatica.",
       "sezione": "backup",
       "disabilitato": false,
       "nascosto": false,
@@ -474,7 +466,7 @@
       "valore": 30
     },
     "backupdir": {
-      "titolo": "Cartella di Backup",
+      "titolo": "Cartella di backup",
       "descrizione": "Directory locale nella quale eseguire il backup.",
       "sezione": "backup",
       "disabilitato": false,
@@ -514,10 +506,37 @@
       "default": "",
       "valore": ""
     },
+    "sysstate": {
+      "titolo": "Stato del sistema",
+      "descrizione": "Utilizzare la modalità \"In Produzione\" per l'utilizzo regolare. Utilizzare modalità \"In Manutenzione\" per il debug del sistema.",
+      "sezione": "system",
+      "trigger": "reboot",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "selezione",
+      "scelte": [
+        "In Produzione",
+        "In Manutenzione",
+        "In Sviluppo"
+      ],
+      "default": 0,
+      "valore": 0
+    },
+    "maintenancemsg": {
+      "titolo": "Messaggio di manutenzione",
+      "descrizione": "Testo che verrà mostrato agli utenti che cercano di accedere al sito quando esso è in modalità manutenzione.",
+      "sezione": "system",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "testo",
+      "lunghezza_massima": null,
+      "default": "Sistema attualmente in manutenzione, grazie per la pazienza.",
+      "valore": "Sistema attualmente in manutenzione, grazie per la pazienza."
+    },
     "rootpath": {
       "titolo": "Percorso radice - Root",
       "descrizione": "Percorso della cartella nella quale sono posizionati i file di questo sistema.",
-      "sezione": "percorsi",
+      "sezione": "system",
       "disabilitato": true,
       "nascosto": false,
       "tipo": "percorso",
@@ -531,7 +550,7 @@
     "configpath": {
       "titolo": "Percorso file di configurazione",
       "descrizione": "Posizione del file JSON delle impostazioni del sistema.",
-      "sezione": "percorsi",
+      "sezione": "system",
       "disabilitato": true,
       "nascosto": false,
       "tipo": "percorso",
@@ -545,8 +564,8 @@
     },
     "scriptsdir": {
       "titolo": "Directory degli script",
-      "descrizione": "Script per creazione di database, reload del sistema eccetera.",
-      "sezione": "percorsi",
+      "descrizione": "Script per creazione di database ed eventuali futuri.",
+      "sezione": "system",
       "disabilitato": true,
       "nascosto": true,
       "tipo": "percorso",
@@ -561,7 +580,7 @@
     "docsdir": {
       "titolo": "Directory dei file di documentazione",
       "descrizione": "Documentazione per l'installazione e l'utilizzo del sistema.",
-      "sezione": "percorsi",
+      "sezione": "system",
       "disabilitato": true,
       "nascosto": true,
       "tipo": "percorso",
@@ -576,7 +595,7 @@
     "databasepath": {
       "titolo": "Posizione database",
       "descrizione": "Percorso nel quale si trova il database del sistema.",
-      "sezione": "percorsi",
+      "sezione": "system",
       "disabilitato": false,
       "nascosto": false,
       "tipo": "percorso",
@@ -591,7 +610,7 @@
     "authdatabasepath": {
       "titolo": "Posizione database gestione utenti",
       "descrizione": "Percorso del database nel quale sono salvati i dati degli utenti autorizzati ad accedere al sistema.",
-      "sezione": "percorsi",
+      "sezione": "system",
       "disabilitato": false,
       "nascosto": false,
       "tipo": "percorso",
@@ -606,7 +625,7 @@
     "flaskstaticdir": {
       "titolo": "Cartella file statici",
       "descrizione": "File statici utilizzati dal sistema: CSS, JS, immagini e icone.",
-      "sezione": "percorsi",
+      "sezione": "system",
       "disabilitato": false,
       "nascosto": true,
       "tipo": "percorso",
@@ -621,7 +640,7 @@
     "flasktemplatedir": {
       "titolo": "Cartella template HTML",
       "descrizione": "Cartella nella quale si trovano i template delle pagine HTML usate dal sistema.",
-      "sezione": "percorsi",
+      "sezione": "system",
       "disabilitato": false,
       "nascosto": true,
       "tipo": "percorso",
@@ -633,35 +652,16 @@
       "default": "view/templates",
       "valore": "view/templates"
     },
-    "newyeardate": {
-      "titolo": "Data di inizio nuovo anno",
-      "descrizione": "Data nella quale si passa all'anno scolastico successivo.",
-      "sezione": "percorsi",
-      "disabilitato": false,
+    "version": {
+      "titolo": "Versione del sistema",
+      "descrizione": "",
+      "sezione": "system",
+      "disabilitato": true,
       "nascosto": false,
-      "tipo": "numero_unita",
-      "intervallo": [
-        1,
-        31
-      ],
-      "scelte_unita": [
-        "Gennaio",
-        "Febbraio",
-        "Marzo",
-        "Aprile",
-        "Maggio",
-        "Giugno",
-        "Luglio",
-        "Agosto",
-        "Settembre",
-        "Ottobre",
-        "Novembre",
-        "Dicembre"
-      ],
-      "unita_default": 7,
-      "unita": 7,
-      "default": 31,
-      "valore": 31
+      "tipo": "testo",
+      "lunghezza_massima": null,
+      "default": "",
+      "valore": ""
     }
   }
 }
