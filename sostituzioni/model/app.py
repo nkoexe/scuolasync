@@ -38,7 +38,7 @@ except FileNotFoundError:
     # reimport the module creating the database first
     import sostituzioni.control.database
 
-
+import sostituzioni.control.migrate
 from sostituzioni.control.cli import database_cli, importer_cli, backup_cli
 import sostituzioni.control.cron
 

@@ -599,6 +599,16 @@
       "default": "database/database.db",
       "valore": "database/database.db"
     },
+    "databaseversion": {
+      "titolo": "Versione database",
+      "descrizione": "Versione del database del sistema. Informazione interna utilizzata per gestire le migrazioni del database. Non modificare.",
+      "sezione": "percorsi",
+      "disabilitato": false,
+      "nascosto": true,
+      "tipo": "numero",
+      "default": 1,
+      "valore": 1
+    },
     "flaskstaticdir": {
       "titolo": "Cartella file statici",
       "descrizione": "File statici utilizzati dal sistema: CSS, JS, immagini e icone.",
