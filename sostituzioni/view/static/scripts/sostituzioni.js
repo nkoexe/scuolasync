@@ -348,8 +348,7 @@ async function aggiungi_sostituzione(data) {
 		// filtered out
 		return;
 	}
-	if (new_sostituzione_index >= renderedSostituzioni) {
-		// not rendered yet
+	if (new_sostituzione_index > renderedSostituzioni) {
 		return;
 	}
 
@@ -442,7 +441,7 @@ async function modifica_sostituzione_visualizzata(data) {
 		renderedSostituzioni--;
 	}
 
-	if (sostituzione_index >= renderedSostituzioni) {
+	if (sostituzione_index > renderedSostituzioni) {
 		// not rendered yet
 		return;
 	}
