@@ -595,46 +595,7 @@ class Configurazione:
     def __init__(self):
         self.logfile = logfile
         self.trigger = set()
-        self.aggiornamento_disponibile = False
         self.extra_themes = []
-        self.shell_commands = {}
-
-        if which("git") is None:
-            logger.error("Git non trovato.")
-
-            self.shell_commands["update"] = []
-            self.shell_commands["get_version"] = ["echo", "ext"]
-            self.shell_commands["check_update"] = ["echo", "ext"]
-            return
-
-        if os.name == "nt":
-            self.shell_commands["update"] = ["git", "pull"]
-            self.shell_commands["get_version"] = [
-                "git",
-                "rev-parse",
-                # "--short",
-                "HEAD",
-            ]
-            self.shell_commands["check_update"] = [
-                "git",
-                "ls-remote",
-                "origin",
-                "main",
-            ]
-        else:
-            self.shell_commands["update"] = ["git", "pull"]
-            self.shell_commands["get_version"] = [
-                "git",
-                "rev-parse",
-                # "--short",
-                "HEAD",
-            ]
-            self.shell_commands["check_update"] = [
-                "git",
-                "ls-remote",
-                "origin",
-                "main",
-            ]
 
     @beartype
     def load(self, file: Path = CONFIG_FILE):
@@ -666,14 +627,6 @@ class Configurazione:
         # Aggiorna il percorso base di sistema e quello del file di configurazione
         self.set("rootpath", [0, str(ROOT_PATH)], force=True)
         self.set("configpath", [0, str(file)], force=True)
-
-        # Carica il dato di versione del sistema
-        v = (
-            subprocess.check_output(self.shell_commands["get_version"])
-            .decode("utf-8")
-            .strip()
-        )
-        self.set("version", v, force=True)
 
         return True
 
@@ -733,33 +686,6 @@ class Configurazione:
             )
 
         del configurazione_template
-
-    def check_update(self):
-        rootpath = self.get("rootpath").path
-
-        # "/scuolasync/sostituzioni", git è un livello più alto
-        repopath = rootpath.parent
-
-        try:
-            new_version = (
-                subprocess.run(
-                    self.shell_commands["check_update"],
-                    cwd=repopath,
-                    capture_output=True,
-                )
-                .stdout.decode("utf-8")
-                .split("\t")[0]
-                .strip()
-            )
-        except Exception as e:
-            logger.error(f"Errore durante il controllo dell'aggiornamento: {e}")
-            raise e
-
-        self.aggiornamento_disponibile = (
-            new_version != configurazione.get("version").valore
-        )
-
-        return self.aggiornamento_disponibile
 
     @beartype
     def esegui_trigger(self):

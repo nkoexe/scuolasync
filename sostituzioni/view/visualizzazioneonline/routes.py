@@ -23,6 +23,7 @@ from datetime import datetime
 
 from sostituzioni.control.exporter import Exporter
 from sostituzioni.control.configurazione import configurazione
+from sostituzioni.control.updater import updater
 from sostituzioni.model.auth import login_required, role_required, current_user
 from sostituzioni.view.visualizzazioneonline import online
 
@@ -33,6 +34,7 @@ def index():
     return render_template(
         "index.html",
         title=configurazione.get("systitle"),
+        aggiornamento_disponibile=updater.aggiornamento_disponibile,
         configurazione=configurazione,
         utente=current_user,
     )

@@ -260,7 +260,7 @@
             <span class="sostituzioni-info" data-tooltip="Numero di sostituzioni che hanno uno o più campi necessari vuoti."><span id="sostituzioni-info-numero-incomplete" class="sostituzioni-info-numero"></span> incomplete</span>
             <span class="sostituzioni-info" data-tooltip="Numero di sostituzioni che hanno sovrapposizioni di docente, classe o aula."><span id="sostituzioni-info-numero-errori" class="sostituzioni-info-numero"></span> errori</span>
             {% endif %}
-            {% if utente.ruolo.nome == 'amministratore' and configurazione.aggiornamento_disponibile %}
+            {% if utente.ruolo.nome == 'amministratore' and aggiornamento_disponibile %}
             <span class="sostituzioni-info" id="sostituzioni-info-aggiornamento"><a href="{{ url_for('impostazioni.update')}}">Aggiornamento disponibile!</a></span>
             {% endif %}
           </div>

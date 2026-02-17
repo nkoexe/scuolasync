@@ -23,6 +23,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 
 from sostituzioni.control.configurazione import configurazione
+from sostituzioni.control.updater import updater
 from sostituzioni.control.backup import backup
 from sostituzioni.control.database import database
 
@@ -37,46 +38,11 @@ scheduler.add_job(
 
 # Controllo aggiornamento - ogni due ore
 scheduler.add_job(
-    configurazione.check_update,
+    updater.check_update,
     trigger=CronTrigger(
         year="*", month="*", day="*", hour="*/2", minute="0", second="0"
     ),
     name="check_update",
-)
-
-# Passaggio a nuovo anno scolastico - definito nella configurazione
-giorno = configurazione.get("newyeardate").valore
-mese = configurazione.get("newyeardate").unita + 1
-
-
-def new_school_year():
-    # todo move function to database file
-    # get execution timestamp
-    # todo: get current year and use config date in order to allow execution on different dates
-    timestamp = int(datetime.now().timestamp())
-
-    # insert in archive statement
-    insert_statement = f"INSERT INTO archivio_sostituzioni SELECT * FROM sostituzione WHERE data < {timestamp};"
-
-    # delete statement
-    delete_statement = f"DELETE FROM sostituzione WHERE data < {timestamp};"
-
-    # execute commands
-    database.connect()
-    database.execute(insert_statement)
-    database.execute(delete_statement)
-    database.close()
-
-    # update list of sostituzioni
-
-
-# todo update dynamically
-scheduler.add_job(
-    lambda: print("Passaggio a nuovo anno scolastico"),
-    trigger=CronTrigger(
-        year="*", month=mese, day=giorno, hour="0", minute="0", second="0"
-    ),
-    name="new_school_year",
 )
 
 
