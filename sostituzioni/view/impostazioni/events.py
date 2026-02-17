@@ -19,14 +19,13 @@
 """
 
 import logging
-import subprocess
-import os
 import re
 from datetime import datetime, timedelta
 from flask import url_for
 from flask_socketio import emit
 
 from sostituzioni.control.configurazione import configurazione
+from sostituzioni.control.updater import updater
 from sostituzioni.control.cron import scheduler
 from sostituzioni.control.importer import Docenti
 from sostituzioni.model.model import (
@@ -104,26 +103,31 @@ def carica_file(dati):
 @login_required
 @role_required("impostazioni.write")
 def check_update():
-
     try:
-        aggiornamento = configurazione.check_update()
+        aggiornamento = updater.check_update()
     except Exception as e:
         emit("check update errore", str(e))
         return
 
-    emit("check update successo", {"value": aggiornamento})
+    new_version = None
+    release_notes = None
+
+    if aggiornamento:
+        new_version = updater.get_remote_version()
+        release_notes = updater.get_release_notes()
+
+    emit("check update successo", {"value": aggiornamento, "new_version": new_version, "release_notes": release_notes})
 
 
 @socketio.on("update", namespace="/impostazioni")
 @login_required
 @role_required("impostazioni.write")
 def update():
-    rootpath = configurazione.get("rootpath").path
-
-    # "/scuolasync/sostituzioni", git è un livello più alto
-    repopath = rootpath.parent
-
-    subprocess.run(configurazione.shell_commands["update"], cwd=repopath)
+    try:
+        updater.update()
+    except Exception as e:
+        emit("update errore", str(e))
+        return
 
     reboot()
 

@@ -17,21 +17,23 @@ a {
 }
 
 #main-container {
-    display: grid;
-    grid-template-columns: 60% 40%;
+    display: flex;
+    gap: 5%;
+    justify-content: center;
     width: 100%;
     height: 100%;
-    padding: 0 5%;
+    margin: 0;
+    padding: 5%;
 }
 
 #text-container {
     padding: 5%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
 #version {
-    flex: 1;
     display: flex;
 }
 
@@ -62,12 +64,6 @@ a {
     width: 100%;
 }
 
-#description {
-    flex: 1;
-    margin: 0;
-    font-size: 1.5rem;
-}
-
 #title-container {
     display: grid;
     align-items: center;
@@ -79,7 +75,34 @@ a {
     margin: 3vh 0;
 }
 
+#description {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+#release-notes-container {
+    margin: 1vh;
+    font-size: 1.2rem;
+    padding: 3vh 4vh;
+    border-radius: 2vh;
+    background-color: var(--color-opzioni);
+    transition: all 0.5s 0.5s;
+}
+
+#release-notes-container:not(.visible) {
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+}
+
+#release-notes {
+    margin: 1rem 0.5rem;
+}
+
 #button-container {
+    flex: 1;
+    min-width: fit-content;
+    max-width: 450px;
     display: grid;
     align-items: center;
 }
@@ -88,12 +111,14 @@ a {
     position: relative;
     display: flex;
     flex-direction: column;
+    align-items: center;
     height: 200px;
     width: 200px;
     max-width: 100%;
     border-radius: 70px;
     background-color: var(--color-pulsante);
-    transition: all 0.3s, box-shadow .5s ease-out;
+    color: var(--color-accent-text) !important;
+    transition: width 0.3s, box-shadow 0.5s ease-out;
     user-select: none;
 }
 
@@ -101,6 +126,7 @@ a {
     width: min(500px, 100%);
     box-shadow: 0 5px 10px #00000080, 0 15px 30px #00000055;
     cursor: pointer;
+    transition-delay: 0.3s, 0s;
 }
 
 #button.active:hover {
@@ -112,39 +138,41 @@ a {
     height: 100%;
     display: flex;
     align-items: center;
-    opacity: 0;
+    justify-content: center;
     font-size: 3rem;
     font-weight: 700;
-    color: var(--color-accent-text);
-    transition: all 0.3s, color 0s;
+    opacity: 0;
+    transition: all 0.3s;
 }
 
 #button.active #button-text-container {
     max-width: 100%;
+    opacity: 1;
+    transition-delay: .4s;
 }
 
 #button-text-container-inner {
-    max-width: 100%;
-    padding: 0 15%;
     padding-bottom: 5px;
     display: flex;
     align-items: center;
     text-wrap: nowrap;
     min-width: auto;
-    transition: inherit;
 }
 
-#button-text {}
+#button-text {
+    color: inherit;
+}
 
 #button-icon {
     font-size: 3rem;
     margin-left: 0.5rem;
     padding-top: 5px;
-    transition: inherit;
+    color: inherit;
+    transition: all 0.3s;
 }
 
 #button.active:hover #button-icon {
-    margin-left: 1.5rem;
+    translate: 1rem 0;
 }
 
 #loading-container {
@@ -154,7 +182,12 @@ a {
     width: 150px;
     height: 150px;
     opacity: 0;
-    transition: all 0.5s;
+    transition: opacity 0.5s;
+}
+
+#button:not(.active) #loading-container {
+    opacity: 1;
+    transition-delay: 0.5s;
 }
 
 #loading {
@@ -164,10 +197,6 @@ a {
     border: 10px solid var(--color-accent-text);
     border-top-color: transparent;
     animation: loading 1s cubic-bezier(.2, .45, 1, .8) infinite;
-}
-
-#button.active #loading-container {
-    display: none;
 }
 
 @keyframes loading {
@@ -192,7 +221,7 @@ a {
 
 @media (max-width: 1300px) {
     #main-container {
-        grid-template-columns: 100%;
+        flex-direction: column;
         padding: 0 5vw;
     }
 

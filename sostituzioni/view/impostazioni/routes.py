@@ -24,6 +24,7 @@ from datetime import datetime
 
 from sostituzioni.control.logging import file
 from sostituzioni.control.configurazione import configurazione
+from sostituzioni.control.updater import updater
 from sostituzioni.model.auth import login_required, role_required, utenti
 from sostituzioni.model.model import Classe, Aula, Docente, OraPredefinita, NotaStandard
 from sostituzioni.view.impostazioni import impostazioni
@@ -122,7 +123,7 @@ def gestione_note():
 def reboot():
     return render_template(
         "updater.html",
-        version=configurazione.get("version").valore,
+        version=updater.version,
         configurazione=configurazione,
         reboot=True,
     )
@@ -134,7 +135,7 @@ def reboot():
 def update():
     return render_template(
         "updater.html",
-        version=configurazione.get("version").valore,
+        version=updater.version,
         configurazione=configurazione,
         reboot=False,  # indica semplicemente che non è la pagina di reboot
     )
@@ -142,7 +143,7 @@ def update():
 
 @impostazioni.route("/version")
 def version():
-    return configurazione.get("version").valore
+    return updater.version
 
 
 @impostazioni.route("/log")
