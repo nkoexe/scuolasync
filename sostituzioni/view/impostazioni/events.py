@@ -109,7 +109,14 @@ def check_update():
         emit("check update errore", str(e))
         return
 
-    emit("check update successo", {"value": aggiornamento})
+    new_version = None
+    release_notes = None
+
+    if aggiornamento:
+        new_version = updater.get_remote_version()
+        release_notes = updater.get_release_notes()
+
+    emit("check update successo", {"value": aggiornamento, "new_version": new_version, "release_notes": release_notes})
 
 
 @socketio.on("update", namespace="/impostazioni")

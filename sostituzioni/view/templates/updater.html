@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link rel="stylesheet" href="{{ url_for('static', filename='style/colori.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/impostazioni.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style/updater.css') }}">
   <link rel="stylesheet" id="colortheme_css" href="{{ url_for('static', filename='style/theme/'~configurazione.get('colortheme')~'.css') }}">
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
@@ -18,11 +19,15 @@
 <body>
   <div id="main-container">
     <div id="text-container">
-      <div id="version"><span>Versione: <a href="https://github.com/nkoexe/scuolasync/commit/{{version}}" target="_blank">{{version}}</a></span></div>
+      <div id="version"><span>Versione: <a href="https://github.com/nkoexe/scuolasync/commits/{{version}}" target="_blank">{{version}}<span id="new-version"></span></a></span></div>
       <div id="title-container">
         <h1 id="title"></h1>
       </div>
       <p id="description"></p>
+      <div id="release-notes-container">
+        <h2>Novità e cambiamenti:</h2>
+        <p id="release-notes">Hey! ;P</p>
+      </div>
     </div>
     <div id="button-container">
       <a id="button" tabindex="0">
