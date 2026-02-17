@@ -18,6 +18,7 @@
     <https://www.gnu.org/licenses/agpl-3.0.html>.
 """
 
+import html
 import logging
 import re
 from datetime import datetime, timedelta
@@ -115,6 +116,8 @@ def check_update():
     if aggiornamento:
         new_version = updater.get_remote_version()
         release_notes = updater.get_release_notes()
+        if release_notes:
+            release_notes = html.escape(release_notes).replace('\n', '<br>')
 
     emit("check update successo", {"value": aggiornamento, "new_version": new_version, "release_notes": release_notes})
 
