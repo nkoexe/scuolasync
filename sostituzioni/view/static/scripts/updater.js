@@ -72,7 +72,9 @@ socket.on("check update successo", (data) => {
     if (data.value) {
         ui_prompt("Aggiornamento disponibile!", "", data.release_notes, "Aggiorna", update, null)
         document.querySelector("#new-version").innerHTML = " >>> " + data.new_version
-
+        let old_href = document.querySelector("#version a").href
+        // replace "/commits/" with "/compare/", and add "...{new_version}" at the end
+        document.querySelector("#version a").href = old_href.replace("/commits/", "/compare/") + "..." + data.new_version
     } else {
         ui_prompt("Nessun aggiornamento disponibile.", "Questa è la versione del software più recente!", "", "Torna al sito", null, "/")
     }

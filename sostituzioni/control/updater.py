@@ -11,7 +11,6 @@ logger = logging.getLogger(__name__)
 class Updater:
     class Commands:
         GET_LOCAL_VERSION = "git describe --tags --abbrev=0"
-        GET_LOCAL_VERSION = "echo v0.0.0"
         GET_REMOTE_VERSION = "git fetch --tags --quiet && git tag -l --sort=-v:refname"
         GET_RELEASE_NOTES = "git fetch --tags --quiet && git tag -l --sort=-v:refname --format='%(contents)'"
 
