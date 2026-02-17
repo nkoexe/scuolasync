@@ -196,5 +196,16 @@ class Updater:
             logger.error(f"Errore durante il rollback: {e}")
 
 
+    def auto_update(self):
+        if not configurazione.get("autoupdate"):
+            return
+
+        if self.check_update():
+            logger.info("Aggiornamento disponibile, avviando processo di aggiornamento...")
+            try:
+                self.update()
+            except Exception as e:
+                logger.error(f"Auto-aggiornamento fallito: {e}")
+
 
 updater = Updater()
