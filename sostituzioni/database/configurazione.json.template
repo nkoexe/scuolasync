@@ -25,8 +25,8 @@
       "descrizione": "Esecuzione e ripristino di backup."
     },
     "system": {
-      "titolo": "Dati Tecnici",
-      "descrizione": "Configurazione di percorsi file, database e versioni."
+      "titolo": "Sistema",
+      "descrizione": "Configurazione di dati tecnici, percorsi file, database e versioni."
     }
   },
   "opzioni": {
@@ -532,6 +532,16 @@
       "lunghezza_massima": null,
       "default": "Sistema attualmente in manutenzione, grazie per la pazienza.",
       "valore": "Sistema attualmente in manutenzione, grazie per la pazienza."
+    },
+    "autoupdate": {
+      "titolo": "Aggiornamento automatico",
+      "descrizione": "Controlla e installa automaticamente gli aggiornamenti ogni notte alle 3:00.",
+      "sezione": "system",
+      "disabilitato": false,
+      "nascosto": false,
+      "tipo": "booleano",
+      "default": false,
+      "valore": false
     },
     "rootpath": {
       "titolo": "Percorso radice - Root",

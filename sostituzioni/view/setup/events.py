@@ -1,3 +1,4 @@
+import os
 import re
 from flask_socketio import emit
 
@@ -47,9 +48,10 @@ def sso_choice(choice):
 def setup_done():
     configurazione.esporta()
 
-    from sostituzioni.control.cli import aggiungi_utente
+    if "SCUOLASYNC_SSO_SWITCH" not in os.environ:
+        from sostituzioni.control.cli import aggiungi_utente
 
-    aggiungi_utente(configurazione.admin_email, "amministratore")
+        aggiungi_utente(configurazione.admin_email, "amministratore")
 
     from sostituzioni.view.impostazioni.events import reboot
 

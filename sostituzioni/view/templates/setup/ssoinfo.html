@@ -1,6 +1,5 @@
 {% extends 'setup/base.html' %}
-{% from "macro/impostazioni.html" import
-opzione_testo with context %}
+{% from "macro/impostazioni.html" import opzione_testo with context %}
 
 {% block back_url %}{{ url_for('setup.sso') }}{% endblock %}
 {% block next_url %}{{ url_for('setup.next') }}{% endblock %}
@@ -9,9 +8,57 @@ opzione_testo with context %}
 {% set ssoprovider = "Google Cloud" if ssochoice == 0 else "Microsoft Entra" %}
 
 {% block content %}
+
+{% if just_changing_sso_provider | default(False) %}
+
+<style>
+  .nav-button {
+    display: none !important;
+  }
+
+  #header-titolo {
+    margin: auto;
+    margin-top: 30px;
+  }
+
+  #progress {
+    display: none !important;
+  }
+
+  #button-riavvia {
+    animation: none !important;
+  }
+
+  .opzioni-container.warn {
+    background-color: var(--color-danger);
+    color: var(--color-danger-fg);
+    font-size: 20px;
+    margin-bottom: 50px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .exclamation {
+    font-size: 42px;
+  }
+</style>
+<div class="opzioni-container warn">
+  <span class="material-symbols-rounded exclamation">cloud_alert</span>
+  <span>Vedi questa pagina perché le credenziali per passare al login con {{ssoprovider}} non sono ancora configurate.</span>
+</div>
+
+{% endif %}
+
+
 <div class="opzioni-container">
+  {% if just_changing_sso_provider | default(False) %}
+  <h2>Modifica Provider SSO</h2>
+  {% else %}
   <h2>Dati Preliminari</h2>
-  <p>Per poter compilare questa sezione servono dati del progetto {{ssoprovider}}.<br>Assicurati di avere OAuth Client ID e Client Secret a disposizione.<br><a href="/docs#/installazione/server/prerequisiti?id=passaggi-per-configurare-sso" target="_blank">Scopri come</a>.</p>
+  {% endif %}
+
+  <p>Per poter compilare questa sezione servono dati del progetto {{ssoprovider}}.<br>Assicurati di avere OAuth Client ID e Client Secret a disposizione.<br><a href="/docs#/installazione/server/prerequisiti?id=configurazione-single-sign-on-sso" target="_blank">Scopri come</a>.</p>
 </div>
 <div class="opzioni-container">
   <ul class="opzioni-lista">
@@ -42,6 +89,31 @@ opzione_testo with context %}
     </li>
   </ul>
 </div>
+
+{% if just_changing_sso_provider | default(False) %}
+<button id="button-riavvia"><span>Riavvia</span><span class="arrow material-symbols-rounded">arrow_forward</span></button>
+
+<script>
+  document.querySelector("#button-riavvia").onclick = () => {
+    document.querySelector("#main-container").style.transition = "all 0.5s";
+    document.querySelector("#main-container").style.opacity = "0";
+    document.querySelector("#main-frame").style.overflow = "hidden";
+    document.querySelector("#main-frame").scrollTo(0, 0);
+
+    document.querySelector("#button-riavvia").style.opacity = "0";
+    document.querySelector("#header-titolo").style.marginTop = "100px";
+    document.querySelector("#header-titolo svg").style.transition = "width 1s";
+    document.querySelector("#header-titolo svg").style.width = "400px";
+    document.querySelector("#scuolasync_s").style.animation = "2s 2s loading infinite";
+
+    socket.emit("setup done");
+
+    socket.on("connect", () => {
+      window.location.reload();
+    });
+  }
+</script>
+{% endif %}
 
 <style>
   #progress {

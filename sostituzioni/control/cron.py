@@ -45,6 +45,13 @@ scheduler.add_job(
     name="check_update",
 )
 
+# Aggiornamento automatico - ogni giorno alle 3:00
+scheduler.add_job(
+    updater.auto_update,
+    trigger=CronTrigger(year="*", month="*", day="*", hour="3", minute="0", second="0"),
+    name="auto_update",
+)
+
 
 # temi stagionali
 def update_seasonal_themes():

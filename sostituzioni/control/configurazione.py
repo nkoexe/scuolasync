@@ -19,10 +19,9 @@
 """
 
 import os
-import subprocess
-from shutil import which
 from pathlib import Path
 from json import load, dump
+from types import MethodType
 import logging
 
 from beartype import beartype
@@ -657,7 +656,8 @@ class Configurazione:
         # Rimuove le sezioni che non sono più presenti nel template
         sezioni_template_ids = set(configurazione_template.sezioni.keys())
         sezioni_da_rimuovere = [
-            sezione for sezione in self.sezioni
+            sezione
+            for sezione in self.sezioni
             if sezione.id not in sezioni_template_ids
         ]
         for sezione in sezioni_da_rimuovere:
@@ -820,13 +820,8 @@ class Configurazione:
 configurazione = Configurazione()
 
 
-if "SCUOLASYNC_SETUP" in os.environ:
-    # initialize an empty configuration for setup mode
-    configurazione.load(CONFIG_TEMPLATE)
-
+def use_force_set():
     # override set method to force save even on disabled options
-    from types import MethodType
-
     def force_set(
         self, id_opzione: str, dati: Any, force: bool = False, salva: bool = False
     ):
@@ -835,8 +830,41 @@ if "SCUOLASYNC_SETUP" in os.environ:
     configurazione._set = configurazione.set
     configurazione.set = MethodType(force_set, configurazione)
 
+# -----
+
+if "SCUOLASYNC_SETUP" in os.environ:
+    # initialize an empty configuration for setup mode
+    configurazione.load(CONFIG_TEMPLATE)
+
+    use_force_set()
+
 else:
     # regular startup
     configurazione.load()
 
     configurazione.applica_aggiornamenti()
+
+# -----
+
+ssochoice = configurazione.get("ssochoice").valore
+
+# is all sso data in the system?
+if ssochoice == 0:
+    # Google
+    if (
+        not configurazione.get("gclientid").valore
+        or not configurazione.get("gclientsecret").valore
+    ):
+        logger.warning("SSO Google: client ID o client secret non impostati.")
+        os.environ["SCUOLASYNC_SSO_SWITCH"] = "1"
+        use_force_set()
+
+elif ssochoice == 1:
+    # Microsoft
+    if (
+        not configurazione.get("msclientid").valore
+        or not configurazione.get("msclientsecret").valore
+    ):
+        logger.warning("SSO Microsoft: client ID o client secret non impostati.")
+        os.environ["SCUOLASYNC_SSO_SWITCH"] = "1"
+        use_force_set()

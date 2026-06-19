@@ -1,5 +1,7 @@
-from flask import Blueprint
+import os
+from flask import Blueprint, render_template
 
+from sostituzioni.control import configurazione
 from sostituzioni.model.auth import (
     utenti,
     login_user,
@@ -7,7 +9,6 @@ from sostituzioni.model.auth import (
     Utente,
     User,
 )
-
 
 setup = Blueprint("setup", __name__)
 
@@ -21,7 +22,14 @@ def login_setup_user():
         login_user(User("setup"))
 
 
-from sostituzioni.view.setup import routes, events
+if "SCUOLASYNC_SSO_SWITCH" in os.environ:
+    # only use this setup page for changing sso provider
+    from sostituzioni.view.setup import onlysso, events
+
+else:
+    # regular setup
+    from sostituzioni.view.setup import routes, events
+
 
 # some events are the same as the settings page, remember to set namespace to "/impostazioni"
 from sostituzioni.view.impostazioni import events
