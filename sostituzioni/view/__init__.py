@@ -41,7 +41,7 @@ import sostituzioni.view.docs
 
 logger.debug("Importing blueprints..")
 
-if "SCUOLASYNC_SETUP" in environ:
+if "SCUOLASYNC_SETUP" in environ or "SCUOLASYNC_SSO_SWITCH" in environ:
     from sostituzioni.view.setup import setup as setup_blueprint
 
     app.register_blueprint(setup_blueprint)
