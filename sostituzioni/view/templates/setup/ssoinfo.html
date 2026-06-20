@@ -129,7 +129,8 @@
   })
 
   const redirecturi_input = document.querySelector("#redirecturi input");
-  redirecturi_input.value = window.location.href.replace("ssoinfo", "loginredirect");
+  // if path ends with ssoinfo replace it, but append /loginredirect in any case
+  redirecturi_input.value = window.location.href.replace(/(\/ssoinfo|\/?)$/, '/loginredirect');
   redirecturi_input.oninput();
   redirecturi_input.disabled = true;
   redirecturi_input.style.opacity = 1;
